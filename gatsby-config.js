@@ -5,5 +5,31 @@
  */
 
 module.exports = {
-  /* Your site config here */
+  plugins: [
+    {
+      resolve: `gatsby-plugin-material-ui`,
+    },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `POW!`,
+        short_name: `A privacy-first period tracker app`,
+        start_url: `/`,
+        background_color: `#f7f0eb`,
+        theme_color: `#a2466c`,
+        display: `standalone`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-netlify`,
+      options: {
+        headers: {
+          "/manifest.webmanifest": [
+            // Requirement of Blockstack
+            "Access-Control-Allow-Origin: *",
+          ],
+        },
+      },
+    },
+  ],
 }
