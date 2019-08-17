@@ -25,7 +25,12 @@ const DEFAULT_ENTRY = {
   text: "",
 }
 
-const Log = ({ postEntry, entries, isProcessing, deleteEntries }) => {
+const Log = ({
+  entries = [],
+  isProcessing,
+  handleSubmitEntry,
+  handleDeleteAll,
+}) => {
   const classes = useStyles()
   const entryInputRef = useRef()
   const [entry, setEntry] = useState(DEFAULT_ENTRY)
@@ -34,19 +39,19 @@ const Log = ({ postEntry, entries, isProcessing, deleteEntries }) => {
     setEntry({ ...entry, [name]: event.target.value })
   }
 
-  const handleSubmit = event => {
+  const onSubmit = event => {
     if (isProcessing) return
 
     event.preventDefault()
-    postEntry({ ...entry, id: Date.now() })
+    handleSubmitEntry({ ...entry, id: Date.now() })
     setEntry(DEFAULT_ENTRY)
   }
 
-  const handleDeleteAll = event => {
+  const onDeleteAll = event => {
     if (isProcessing) return
 
     event.preventDefault()
-    deleteEntries()
+    handleDeleteAll()
   }
 
   useEffect(() => {
@@ -59,7 +64,7 @@ const Log = ({ postEntry, entries, isProcessing, deleteEntries }) => {
 
   return (
     <Container>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={onSubmit}>
         <TextField
           inputRef={entryInputRef}
           label="How are you feeling today?"
@@ -74,19 +79,21 @@ const Log = ({ postEntry, entries, isProcessing, deleteEntries }) => {
         />
       </form>
 
-      {entries.map(entry => (
-        <Card key={entry.id} elevation={0} className={classes.card}>
-          <CardContent>
-            <Typography variant="body1" component="p">
-              {entry.text}
-            </Typography>
-          </CardContent>
-        </Card>
-      ))}
+      {entries
+        .sort((a, b) => b.id - a.id)
+        .map(entry => (
+          <Card key={entry.id} elevation={0} className={classes.card}>
+            <CardContent>
+              <Typography variant="body1" component="p">
+                {entry.text}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
 
       {entries.length > 0 && (
         <Button
-          onClick={handleDeleteAll}
+          onClick={onDeleteAll}
           disabled={isProcessing}
           type="submit"
           size="small"

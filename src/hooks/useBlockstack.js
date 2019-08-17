@@ -42,11 +42,9 @@ const useBlockstack = () => {
 
     try {
       const content = await userSession.getFile(FILE_PATH)
-      console.timeEnd("get")
       return JSON.parse(content)
     } catch (error) {
       console.warn(error)
-      return []
     }
   }
 

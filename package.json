@@ -21,6 +21,7 @@
     "gatsby-plugin-manifest": "^2.2.5",
     "gatsby-plugin-material-ui": "^2.1.5",
     "gatsby-plugin-netlify": "^2.1.4",
+    "lodash": "^4.17.15",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
