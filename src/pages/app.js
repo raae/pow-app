@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react"
 import { Link } from "gatsby"
 
 import AppTemplate from "../templates/app"
-import useAuth from "./../hooks/useAuth"
+import useBlockstack from "../hooks/useBlockstack"
 import Log from "./../components/Log"
 
 const AppPage = () => {
-  const { isPending, putJson, getJson } = useAuth()
+  const { isPending, putJson, getJson } = useBlockstack()
   const [entries, setEntries] = useState([])
   const [isProcessing, setIsProcessing] = useState(false)
 

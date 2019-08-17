@@ -6,7 +6,7 @@ const userSession = new UserSession({ appConfig })
 
 const FILE_PATH = "test/test.json"
 
-const useAuth = ({ force } = {}) => {
+const useBlockstack = ({ force } = {}) => {
   const [isPending, setIsPending] = useState(true)
   const [user, setUser] = useState(null)
 
@@ -74,4 +74,4 @@ const useAuth = ({ force } = {}) => {
   }
 }
 
-export default useAuth
+export default useBlockstack

@@ -1,11 +1,11 @@
 import React from "react"
 import { Link } from "gatsby"
 
-import useAuth from "./../hooks/useAuth"
+import useBlockstack from "./../hooks/useBlockstack"
 import Layout from "./../components/Layout"
 
 const PublicTemplate = ({ children }) => {
-  const { isAuthenticated, isPending, signIn } = useAuth()
+  const { isAuthenticated, isPending, signIn } = useBlockstack()
 
   const signedOutItem = {
     label: "Sign In",
