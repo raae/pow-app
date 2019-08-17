@@ -5,13 +5,13 @@ import useBlockstack from "../hooks/useBlockstack"
 import Layout from "./../components/Layout"
 
 const AppTemplate = ({ children, navItems }) => {
-  const { user, isPending } = useBlockstack()
+  const { isPending, isAuthenticated } = useBlockstack()
 
-  if (!user && !isPending) {
+  if (!isAuthenticated && !isPending) {
     navigate("/")
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return null
   }
 

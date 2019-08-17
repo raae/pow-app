@@ -6,7 +6,7 @@ import useBlockstack from "../hooks/useBlockstack"
 import Log from "./../components/Log"
 
 const AppPage = () => {
-  const { isPending, putJson, getJson } = useBlockstack()
+  const { isPending, putJson, getJson, isAuthenticated } = useBlockstack()
   const [entries, setEntries] = useState([])
   const [isProcessing, setIsProcessing] = useState(false)
 
@@ -31,6 +31,8 @@ const AppPage = () => {
   }
 
   useEffect(() => {
+    if (!isAuthenticated) return
+
     const initData = async () => {
       setIsProcessing(true)
       const loadedEntries = await getJson()
@@ -41,7 +43,7 @@ const AppPage = () => {
     }
 
     initData()
-  }, [])
+  }, [isAuthenticated])
 
   const navItems = [
     {

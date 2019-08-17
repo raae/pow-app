@@ -32,16 +32,21 @@ const useBlockstack = ({ force } = {}) => {
   const putJson = async json => {
     if (!userSession) return
 
-    return userSession.putFile(FILE_PATH, JSON.stringify(json))
+    try {
+      return userSession.putFile(FILE_PATH, JSON.stringify(json))
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   const getJson = async () => {
     if (!userSession) return
 
-    const content = await userSession.getFile(FILE_PATH)
     try {
+      const content = await userSession.getFile(FILE_PATH)
       return JSON.parse(content)
     } catch (error) {
+      console.warn(error)
       return []
     }
   }
