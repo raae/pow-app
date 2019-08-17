@@ -4,6 +4,8 @@ import { AppConfig, UserSession } from "blockstack"
 const appConfig = new AppConfig(["store_write"])
 const userSession = new UserSession({ appConfig })
 
+const FILE_PATH = "test/test.json"
+
 const useAuth = ({ force } = {}) => {
   const [isPending, setIsPending] = useState(true)
   const [user, setUser] = useState(null)

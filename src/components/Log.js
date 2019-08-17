@@ -6,12 +6,18 @@ import {
   Typography,
   Card,
   CardContent,
+  Button,
 } from "@material-ui/core"
 
 const useStyles = makeStyles(theme => ({
   root: {},
   card: {
     marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+  },
+  deleteButton: {
+    marginLeft: "auto",
+    display: "block",
   },
 }))
 
@@ -19,7 +25,7 @@ const DEFAULT_ENTRY = {
   text: "",
 }
 
-const Log = ({ postEntry, entries, isProcessing }) => {
+const Log = ({ postEntry, entries, isProcessing, deleteEntries }) => {
   const classes = useStyles()
   const entryInputRef = useRef()
   const [entry, setEntry] = useState(DEFAULT_ENTRY)
@@ -34,6 +40,13 @@ const Log = ({ postEntry, entries, isProcessing }) => {
     event.preventDefault()
     postEntry({ ...entry, id: Date.now() })
     setEntry(DEFAULT_ENTRY)
+  }
+
+  const handleDeleteAll = event => {
+    if (isProcessing) return
+
+    event.preventDefault()
+    deleteEntries()
   }
 
   useEffect(() => {
@@ -60,6 +73,7 @@ const Log = ({ postEntry, entries, isProcessing }) => {
           disabled={isProcessing}
         />
       </form>
+
       {entries.map(entry => (
         <Card key={entry.id} elevation={0} className={classes.card}>
           <CardContent>
@@ -69,6 +83,18 @@ const Log = ({ postEntry, entries, isProcessing }) => {
           </CardContent>
         </Card>
       ))}
+
+      {entries.length > 0 && (
+        <Button
+          onClick={handleDeleteAll}
+          disabled={isProcessing}
+          type="submit"
+          size="small"
+          className={classes.deleteButton}
+        >
+          Delete everything
+        </Button>
+      )}
     </Container>
   )
 }

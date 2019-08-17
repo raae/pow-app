@@ -11,8 +11,20 @@ const AppPage = () => {
   const [isProcessing, setIsProcessing] = useState(false)
 
   const postEntry = async entry => {
+    const newEntries = [entry, ...entries]
     setIsProcessing(true)
-    await putJson([entry, ...entries])
+    setEntries(newEntries)
+    await putJson(newEntries)
+    const loadedEntries = await getJson()
+    setEntries(loadedEntries)
+    setIsProcessing(false)
+  }
+
+  const deleteEntries = async () => {
+    const newEntries = []
+    setIsProcessing(true)
+    setEntries(newEntries)
+    await putJson(newEntries)
     const loadedEntries = await getJson()
     setEntries(loadedEntries)
     setIsProcessing(false)
@@ -24,8 +36,8 @@ const AppPage = () => {
       const loadedEntries = await getJson()
       if (loadedEntries) {
         setEntries(loadedEntries)
-        setIsProcessing(false)
       }
+      setIsProcessing(false)
     }
 
     initData()
@@ -45,6 +57,7 @@ const AppPage = () => {
     <AppTemplate navItems={navItems}>
       <Log
         postEntry={postEntry}
+        deleteEntries={deleteEntries}
         entries={entries}
         isProcessing={isProcessing}
       ></Log>
