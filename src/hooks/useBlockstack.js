@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react"
-import { AppConfig, UserSession } from "blockstack"
-
-const appConfig = new AppConfig(["store_write"])
-const userSession = new UserSession({ appConfig })
+import { useState, useEffect, useRef } from "react"
+import { UserSession } from "blockstack"
 
 const FILE_PATH = "test/test.json"
 
-const useBlockstack = ({ force } = {}) => {
+const useBlockstack = () => {
+  const userSession = useRef(new UserSession()).current
   const [isPending, setIsPending] = useState(true)
   const [user, setUser] = useState(null)
 
@@ -44,6 +42,7 @@ const useBlockstack = ({ force } = {}) => {
 
     try {
       const content = await userSession.getFile(FILE_PATH)
+      console.timeEnd("get")
       return JSON.parse(content)
     } catch (error) {
       console.warn(error)
