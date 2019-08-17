@@ -4,7 +4,9 @@ import { AppConfig, UserSession } from "blockstack"
 const appConfig = new AppConfig(["store_write"])
 const userSession = new UserSession({ appConfig })
 
-const useAuth = ({ force } = {}) => {
+const FILE_PATH = "test/test.json"
+
+const useBlockstack = ({ force } = {}) => {
   const [isPending, setIsPending] = useState(true)
   const [user, setUser] = useState(null)
 
@@ -25,6 +27,28 @@ const useAuth = ({ force } = {}) => {
 
     setIsPending(true)
     userSession.signUserOut(signOutRedirectURI)
+  }
+
+  const putJson = async json => {
+    if (!userSession) return
+
+    try {
+      return userSession.putFile(FILE_PATH, JSON.stringify(json))
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  const getJson = async () => {
+    if (!userSession) return
+
+    try {
+      const content = await userSession.getFile(FILE_PATH)
+      return JSON.parse(content)
+    } catch (error) {
+      console.warn(error)
+      return []
+    }
   }
 
   useEffect(() => {
@@ -50,7 +74,9 @@ const useAuth = ({ force } = {}) => {
     isPending,
     signIn,
     signOut,
+    putJson,
+    getJson,
   }
 }
 
-export default useAuth
+export default useBlockstack

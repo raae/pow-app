@@ -2,11 +2,11 @@ import React from "react"
 import { Link } from "gatsby"
 
 import AppTemplate from "../templates/app"
-import useAuth from "./../hooks/useAuth"
+import useBlockstack from "./../hooks/useBlockstack"
 import Profile from "../components/Profile"
 
 const App = () => {
-  const { user, signOut } = useAuth()
+  const { user, signOut } = useBlockstack()
 
   const navItems = [
     {
