@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { AppConfig, UserSession } from "blockstack"
-import { navigate } from "gatsby"
+
+const appConfig = new AppConfig(["store_write"])
+const userSession = new UserSession({ appConfig })
 
 const useAuth = ({ force } = {}) => {
   const [isPending, setIsPending] = useState(true)
-  const [userSession, setUserSession] = useState(null)
   const [user, setUser] = useState(null)
 
   const signIn = () => {
@@ -26,16 +27,22 @@ const useAuth = ({ force } = {}) => {
     userSession.signUserOut(signOutRedirectURI)
   }
 
-  useEffect(() => {
-    if (!userSession) {
-      try {
-        const appConfig = new AppConfig(["store_write", "publish_data"])
-        setUserSession(new UserSession(appConfig))
-      } catch (error) {
-        console.error(error)
-      }
+  const putJson = async json => {
+    if (!userSession) return
+
+    return userSession.putFile(FILE_PATH, JSON.stringify(json))
+  }
+
+  const getJson = async () => {
+    if (!userSession) return
+
+    const content = await userSession.getFile(FILE_PATH)
+    try {
+      return JSON.parse(content)
+    } catch (error) {
+      return []
     }
-  }, [])
+  }
 
   useEffect(() => {
     if (!userSession) return
@@ -51,11 +58,8 @@ const useAuth = ({ force } = {}) => {
       })
     } else {
       setIsPending(false)
-      if (force) {
-        navigate("/")
-      }
     }
-  }, [userSession])
+  }, [])
 
   return {
     user,
@@ -63,6 +67,8 @@ const useAuth = ({ force } = {}) => {
     isPending,
     signIn,
     signOut,
+    putJson,
+    getJson,
   }
 }
 

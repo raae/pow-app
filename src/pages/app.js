@@ -1,13 +1,35 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "gatsby"
 
 import AppTemplate from "../templates/app"
 import useAuth from "./../hooks/useAuth"
-
-import Hero from "./../components/Hero"
+import Log from "./../components/Log"
 
 const AppPage = () => {
-  const { isPending } = useAuth()
+  const { isPending, putJson, getJson } = useAuth()
+  const [entries, setEntries] = useState([])
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  const postEntry = async entry => {
+    setIsProcessing(true)
+    await putJson([entry, ...entries])
+    const loadedEntries = await getJson()
+    setEntries(loadedEntries)
+    setIsProcessing(false)
+  }
+
+  useEffect(() => {
+    const initData = async () => {
+      setIsProcessing(true)
+      const loadedEntries = await getJson()
+      if (loadedEntries) {
+        setEntries(loadedEntries)
+        setIsProcessing(false)
+      }
+    }
+
+    initData()
+  }, [])
 
   const navItems = [
     {
@@ -21,7 +43,11 @@ const AppPage = () => {
 
   return (
     <AppTemplate navItems={navItems}>
-      <Hero>Track your period</Hero>
+      <Log
+        postEntry={postEntry}
+        entries={entries}
+        isProcessing={isProcessing}
+      ></Log>
     </AppTemplate>
   )
 }

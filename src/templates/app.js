@@ -1,15 +1,19 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, navigate } from "gatsby"
 
 import useAuth from "./../hooks/useAuth"
 import Layout from "./../components/Layout"
 
 const AppTemplate = ({ children, navItems }) => {
-  const { isAuthenticated, isPending } = useAuth({
-    force: true,
-  })
+  const { user, isPending } = useAuth()
 
-  if (!isAuthenticated && !isPending) return null
+  if (!user && !isPending) {
+    navigate("/")
+  }
+
+  if (!user) {
+    return null
+  }
 
   const homeItem = {
     label: "POW!",
