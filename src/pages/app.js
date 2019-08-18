@@ -1,21 +1,16 @@
 import React from "react"
 import { Link } from "gatsby"
 
-import AppTemplate from "../templates/app"
 import useBlockstack from "../hooks/useBlockstack"
-import Log from "./../components/Log"
-import useStorage from "../hooks/useStorage"
+import useEntries from "../store/useEntries"
+
+import AppTemplate from "../templates/app"
+import EntryForm from "../components/EntryForm"
+import EntryList from "../components/EntryList"
 
 const AppPage = () => {
-  const { isPending, putJson, getJson, isAuthenticated } = useBlockstack()
-  const [
-    { entries, isInitializing, isUpdating },
-    { addEntry, deleteEntries },
-  ] = useStorage({
-    isAuthenticated,
-    putJson,
-    getJson,
-  })
+  const { isPending } = useBlockstack()
+  const [{ entries }, { addEntry }] = useEntries()
 
   const navItems = [
     {
@@ -27,14 +22,12 @@ const AppPage = () => {
     },
   ]
 
+  console.log("Entries", entries)
+
   return (
     <AppTemplate navItems={navItems}>
-      <Log
-        handleSubmitEntry={addEntry}
-        handleDeleteAll={deleteEntries}
-        entries={entries}
-        isProcessing={isInitializing || isUpdating}
-      ></Log>
+      <EntryForm handleSubmitEntry={addEntry}></EntryForm>
+      <EntryList entries={entries}></EntryList>
     </AppTemplate>
   )
 }
