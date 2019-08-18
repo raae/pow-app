@@ -10,7 +10,7 @@ import EntryList from "../components/EntryList"
 
 const AppPage = () => {
   const { isPending } = useBlockstack()
-  const [{ entries }, { addEntry }] = useEntries()
+  const [{ entries, entriesByDate }, { changeEntry }] = useEntries()
 
   const navItems = [
     {
@@ -26,7 +26,10 @@ const AppPage = () => {
 
   return (
     <AppTemplate navItems={navItems}>
-      <EntryForm handleSubmitEntry={addEntry}></EntryForm>
+      <EntryForm
+        entriesByDate={entriesByDate}
+        handleSubmitEntry={changeEntry}
+      ></EntryForm>
       <EntryList entries={entries}></EntryList>
     </AppTemplate>
   )

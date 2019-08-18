@@ -30,8 +30,15 @@ const useEntries = () => {
   }
 
   return [
-    { entries: values(entriesByDate) },
-    { addEntry, changeEntry, clearEntry },
+    {
+      entriesByDate,
+      entries: values(entriesByDate),
+    },
+    {
+      addEntry,
+      changeEntry,
+      clearEntry,
+    },
   ]
 }
 

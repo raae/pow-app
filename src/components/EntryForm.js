@@ -1,8 +1,12 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { Container, makeStyles, TextField } from "@material-ui/core"
 
 const useStyles = makeStyles(theme => ({
-  form: {},
+  form: {
+    "& > *": {
+      marginBottom: theme.spacing(2),
+    },
+  },
 }))
 
 const DEFAULT_ENTRY = {
@@ -10,9 +14,10 @@ const DEFAULT_ENTRY = {
   date: "",
 }
 
-const EntryForm = ({ entries = [], handleSubmitEntry }) => {
+const EntryForm = ({ entriesByDate = {}, handleSubmitEntry }) => {
   const classes = useStyles()
   const entryInputRef = useRef()
+  const noteRef = useRef()
   const [entry, setEntry] = useState(DEFAULT_ENTRY)
 
   const handleChange = name => event => {
@@ -23,8 +28,23 @@ const EntryForm = ({ entries = [], handleSubmitEntry }) => {
     event.preventDefault()
     handleSubmitEntry(entry)
     setEntry(DEFAULT_ENTRY)
-    entryInputRef.current.focus()
+    entryInputRef.current.blur()
   }
+
+  useEffect(() => {
+    if (!entry.date) return
+
+    const excitingEntry = entriesByDate[entry.date]
+    if (excitingEntry) {
+      noteRef.current = excitingEntry.note
+      setEntry(excitingEntry)
+    } else if (entry.note === noteRef.current) {
+      setEntry({ ...entry, note: DEFAULT_ENTRY.note })
+      entryInputRef.current.focus()
+    } else {
+      entryInputRef.current.focus()
+    }
+  }, [entry.date])
 
   return (
     <Container component="form" className={classes.form} onSubmit={onSubmit}>
@@ -42,7 +62,6 @@ const EntryForm = ({ entries = [], handleSubmitEntry }) => {
         inputRef={entryInputRef}
         label="How are you feeling today?"
         placeholder="I feel like ...!"
-        // multiline
         fullWidth
         value={entry.note}
         onChange={handleChange("note")}
