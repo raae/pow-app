@@ -5,8 +5,8 @@ import { useStore } from "./store"
 const useEntries = () => {
   const [{ entriesByDate }, setState] = useStore()
 
-  const updateEntry = entry => {
-    setState(state => ({
+  const updateEntry = (entry) => {
+    setState((state) => ({
       ...state,
       entriesByDate: {
         ...state.entriesByDate,
@@ -16,15 +16,15 @@ const useEntries = () => {
     }))
   }
 
-  const addEntry = entry => {
+  const addEntry = (entry) => {
     updateEntry(entry)
   }
 
-  const changeEntry = entry => {
+  const changeEntry = (entry) => {
     updateEntry(entry)
   }
 
-  const clearEntry = entry => {
+  const clearEntry = (entry) => {
     // Remove everything, but the date
     updateEntry({ date: entry.date })
   }

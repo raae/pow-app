@@ -7,7 +7,7 @@ import {
   CardContent,
 } from "@material-ui/core"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(4),
@@ -21,7 +21,7 @@ const EntryList = ({ entries = [] }) => {
     <Container>
       {entries
         .sort((a, b) => (b.date > a.date ? 1 : -1))
-        .map(entry => (
+        .map((entry) => (
           <Card key={entry.date} elevation={0} className={classes.card}>
             <CardContent>
               <Typography

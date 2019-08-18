@@ -25,7 +25,7 @@ const useBlockstack = () => {
   const { user, isPending } = auth || defaultState
 
   const updateAuthState = ({ user, isPending }) => {
-    setState(state => ({
+    setState((state) => ({
       ...state,
       auth: {
         user,
@@ -56,7 +56,7 @@ const useBlockstack = () => {
     userSession.signUserOut(signOutRedirectURI)
   }
 
-  const putJson = async json => {
+  const putJson = async (json) => {
     if (!userSession) return
 
     try {
@@ -85,7 +85,7 @@ const useBlockstack = () => {
       updateAuthState({ user, isPending: false })
     } else if (userSession.isSignInPending()) {
       updateAuthState({ isPending: true })
-      userSession.handlePendingSignIn().then(user => {
+      userSession.handlePendingSignIn().then((user) => {
         updateAuthState({ user, isPending: false })
       })
     } else {

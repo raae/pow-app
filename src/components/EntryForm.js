@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Container, makeStyles, TextField } from "@material-ui/core"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   form: {
     "& > *": {
       marginBottom: theme.spacing(2),
@@ -20,11 +20,11 @@ const EntryForm = ({ entriesByDate = {}, handleSubmitEntry }) => {
   const noteRef = useRef()
   const [entry, setEntry] = useState(DEFAULT_ENTRY)
 
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     setEntry({ ...entry, [name]: event.target.value })
   }
 
-  const onSubmit = event => {
+  const onSubmit = (event) => {
     event.preventDefault()
     handleSubmitEntry(entry)
     setEntry(DEFAULT_ENTRY)
