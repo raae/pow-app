@@ -25,7 +25,6 @@ const EntryList = ({ entries = [] }) => {
           <Card key={entry.date} elevation={0} className={classes.card}>
             <CardContent>
               <Typography
-                variant="body1"
                 variant="overline"
                 component="p"
                 color="textSecondary"
