@@ -10,9 +10,17 @@ const useEntries = () => {
       ...state,
       entriesByDate: {
         ...state.entriesByDate,
-        // Add or overwrite entry
+        // Add or overwrite existing entry
         [entry.date]: { ...entry, timestamp: Date.now() },
       },
+    }))
+  }
+
+  const setEntriesByDate = (entries) => {
+    // Used when entries are loaded from the
+    setState((state) => ({
+      ...state,
+      entriesByDate: entries,
     }))
   }
 
@@ -32,12 +40,13 @@ const useEntries = () => {
   return [
     {
       entriesByDate,
-      entries: values(entriesByDate),
+      entries: values(entriesByDate || {}),
     },
     {
       addEntry,
       changeEntry,
       clearEntry,
+      setEntriesByDate,
     },
   ]
 }

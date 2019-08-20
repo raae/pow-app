@@ -57,7 +57,7 @@ const useBlockstack = () => {
   }
 
   const putJson = async (json) => {
-    if (!userSession) return
+    if (!user) return
 
     try {
       return userSession.putFile(FILE_PATH, JSON.stringify(json))
@@ -67,7 +67,7 @@ const useBlockstack = () => {
   }
 
   const getJson = async () => {
-    if (!userSession) return
+    if (!user) return
 
     try {
       const content = await userSession.getFile(FILE_PATH)
