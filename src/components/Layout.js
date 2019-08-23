@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core"
 import LogoIcon from "@material-ui/icons/Face"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "column",
@@ -42,7 +42,7 @@ const Nav = ({ items = [], ...props }) => (
   </nav>
 )
 
-const Home = itemProps => (
+const Home = (itemProps) => (
   <Chip {...itemProps} clickable color="primary" icon={<LogoIcon />}></Chip>
 )
 

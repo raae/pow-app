@@ -1,17 +1,17 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
 
-import useBlockstack from "../hooks/useBlockstack"
+import useBlockstack from "../store/useBlockstack"
 import Layout from "./../components/Layout"
 
 const AppTemplate = ({ children, navItems }) => {
-  const { isPending, isAuthenticated } = useBlockstack()
+  const [{ isPending, user }] = useBlockstack()
 
-  if (!isAuthenticated && !isPending) {
+  if (!user && !isPending) {
     navigate("/")
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     return null
   }
 

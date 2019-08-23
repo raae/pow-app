@@ -1,49 +1,16 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Link } from "gatsby"
 
+import useBlockstack from "../store/useBlockstack"
+import useEntries from "../store/useEntries"
+
 import AppTemplate from "../templates/app"
-import useBlockstack from "../hooks/useBlockstack"
-import Log from "./../components/Log"
+import EntryForm from "../components/EntryForm"
+import EntryList from "../components/EntryList"
 
 const AppPage = () => {
-  const { isPending, putJson, getJson, isAuthenticated } = useBlockstack()
-  const [entries, setEntries] = useState([])
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const postEntry = async entry => {
-    const newEntries = [entry, ...entries]
-    setIsProcessing(true)
-    setEntries(newEntries)
-    await putJson(newEntries)
-    const loadedEntries = await getJson()
-    setEntries(loadedEntries)
-    setIsProcessing(false)
-  }
-
-  const deleteEntries = async () => {
-    const newEntries = []
-    setIsProcessing(true)
-    setEntries(newEntries)
-    await putJson(newEntries)
-    const loadedEntries = await getJson()
-    setEntries(loadedEntries)
-    setIsProcessing(false)
-  }
-
-  useEffect(() => {
-    if (!isAuthenticated) return
-
-    const initData = async () => {
-      setIsProcessing(true)
-      const loadedEntries = await getJson()
-      if (loadedEntries) {
-        setEntries(loadedEntries)
-      }
-      setIsProcessing(false)
-    }
-
-    initData()
-  }, [isAuthenticated])
+  const [{ isPending }] = useBlockstack()
+  const [{ entries, entriesByDate }, { changeEntry }] = useEntries()
 
   const navItems = [
     {
@@ -57,12 +24,11 @@ const AppPage = () => {
 
   return (
     <AppTemplate navItems={navItems}>
-      <Log
-        postEntry={postEntry}
-        deleteEntries={deleteEntries}
-        entries={entries}
-        isProcessing={isProcessing}
-      ></Log>
+      <EntryForm
+        entriesByDate={entriesByDate}
+        handleSubmitEntry={changeEntry}
+      ></EntryForm>
+      <EntryList entries={entries}></EntryList>
     </AppTemplate>
   )
 }

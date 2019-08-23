@@ -1,7 +1,7 @@
 import React from "react"
 import { Button, Container, Typography, makeStyles } from "@material-ui/core"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   actions: {
     textAlign: "center",
     margin: theme.spacing(2),
