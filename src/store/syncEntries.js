@@ -1,7 +1,15 @@
 import { useEffect, useRef } from "react"
-import { isEmpty, merge, isEqual } from "lodash"
+import { isEmpty, mergeWith, isEqual } from "lodash"
 import useEntries from "./useEntries"
 import useBlockstack from "./useBlockstack"
+
+const mergeCustomizer = (objValue, srcValue) => {
+  if (objValue.timestamp > srcValue.timestamp) {
+    return objValue
+  } else {
+    return srcValue
+  }
+}
 
 const syncEntries = () => {
   const persistedEntriesRef = useRef()
@@ -12,7 +20,11 @@ const syncEntries = () => {
     const persistedEntriesByDate = await getJson()
     persistedEntriesRef.current = persistedEntriesByDate
     if (persistedEntriesByDate) {
-      const mergedEntries = merge(persistedEntriesByDate, entriesByDate)
+      const mergedEntries = mergeWith(
+        persistedEntriesByDate,
+        entriesByDate,
+        mergeCustomizer
+      )
       setEntriesByDate(mergedEntries)
       return mergedEntries
     }
