@@ -15,30 +15,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry }) => {
+const Entry = ({ entry = {} }) => {
   const classes = useStyles()
-  entry.tags = ["exhausted"]
-
-  if (!entry.date) return null
-
-  const date = new Date(entry.date)
-
-  let tags = [
-    { label: "exhausted", confidence: 0.5 },
-    { label: "happy", confidence: 0.7 },
-    { label: "period", confidence: 0.3 },
-    { label: "headache", confidence: 0.5 },
-  ]
-
-  tags = tags.map((tag) => ({
-    ...tag,
-    selected: entry.tags.includes(tag.label),
-  }))
-
   return (
     <div className={classes.root}>
-      <EntryHeader date={date}></EntryHeader>
-      <EntryTags tags={tags}></EntryTags>
+      <EntryHeader date={entry.date}></EntryHeader>
+      <EntryTags tags={entry.tags}></EntryTags>
       <EntryNote note={entry.note}></EntryNote>
     </div>
   )

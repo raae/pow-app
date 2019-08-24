@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EntryHeader = ({ date }) => {
   const classes = useStyles()
-
+  date = new Date(date)
   return (
     <header className={classes.root}>
       <Typography className={classes.day} variant="overline">

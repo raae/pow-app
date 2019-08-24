@@ -39,8 +39,7 @@ const useEntries = () => {
 
   return [
     {
-      entriesByDate,
-      entries: values(entriesByDate || {}),
+      entriesByDate: entriesByDate,
     },
     {
       addEntry,
