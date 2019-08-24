@@ -1,5 +1,3 @@
-import { values } from "lodash"
-
 import { useStore } from "./store"
 
 const useEntries = () => {

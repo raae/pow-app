@@ -3,7 +3,7 @@ import React from "react"
 import { makeStyles } from "@material-ui/core"
 
 import EntryHeader from "./EntryHeader"
-import EntryTags from "./EntryTags"
+import EntryMain from "./EntryMain"
 import EntryNote from "./EntryNote"
 
 const useStyles = makeStyles((theme) => ({
@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
+    zIndex: 1,
   },
 }))
 
@@ -20,7 +21,7 @@ const Entry = ({ entry = {} }) => {
   return (
     <div className={classes.root}>
       <EntryHeader date={entry.date}></EntryHeader>
-      <EntryTags tags={entry.tags}></EntryTags>
+      <EntryMain tags={entry.tags} note={entry.note}></EntryMain>
       <EntryNote note={entry.note}></EntryNote>
     </div>
   )

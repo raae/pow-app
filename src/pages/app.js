@@ -18,13 +18,15 @@ const AppPage = () => {
   }).map((date) => {
     const dateString = format(date, "yyyy-MM-dd")
     const entry = entriesByDate[dateString] || {}
-    console.log(dateString, entry)
     const predictions = [
-      { label: "exhausted", confidence: 0.5 },
-      { label: "happy", confidence: 0.7 },
-      { label: "period", confidence: 0.3 },
-      { label: "headache", confidence: 0.5 },
-    ].slice(0, Math.round(Math.random() * 4))
+      "exhausted",
+      "happy",
+      "period",
+      "headache",
+      "heavyflow",
+      "angry",
+      "PMS",
+    ].slice(0, Math.round(Math.random() * 6))
 
     entry.tags = Math.random() > 0.5 ? ["exhausted"] : []
 
@@ -33,8 +35,9 @@ const AppPage = () => {
       note: entry.note,
       tags: predictions.map((prediction) => {
         return {
-          ...prediction,
-          selected: entry.tags.includes(prediction.label),
+          label: prediction,
+          selected: entry.tags.includes(prediction),
+          confidence: Math.random() + 0.3,
         }
       }),
     }
