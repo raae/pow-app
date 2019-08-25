@@ -1,6 +1,6 @@
 import React from "react"
 
-import { makeStyles } from "@material-ui/core"
+import { Container, makeStyles } from "@material-ui/core"
 
 import EntryHeader from "./EntryHeader"
 import EntryMain from "./EntryMain"
@@ -16,14 +16,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry = {} }) => {
+const Entry = ({ entry = {}, handleEntryChange }) => {
   const classes = useStyles()
+
+  const onChange = (name) => (param) => {
+    const updatedEntry = { ...entry }
+    updatedEntry[name] = param
+    handleEntryChange(updatedEntry)
+  }
+
   return (
-    <article className={classes.root}>
+    <Container component="article" className={classes.root}>
       <EntryHeader date={entry.date}></EntryHeader>
-      <EntryMain tags={entry.tags} date={entry.date}></EntryMain>
-      <EntryNote note={entry.note}></EntryNote>
-    </article>
+      <EntryMain
+        tags={entry.tags}
+        predictions={entry.predictions}
+        date={entry.date}
+        onTagsChange={onChange("tags")}
+      ></EntryMain>
+      <EntryNote note={entry.note} onNoteChange={onChange("note")}></EntryNote>
+    </Container>
   )
 }
 

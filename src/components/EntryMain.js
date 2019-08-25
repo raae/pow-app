@@ -1,9 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import classnames from "classnames"
 import { isToday } from "date-fns"
-import { IconButton, Paper, Chip, makeStyles } from "@material-ui/core"
-import AddIcon from "@material-ui/icons/Add"
-import { underline } from "ansi-colors"
+import {
+  IconButton,
+  Paper,
+  Chip,
+  TextField,
+  InputAdornment,
+  makeStyles,
+} from "@material-ui/core"
+
+import AddTag from "./AddTag"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   tags: {
     margin: theme.spacing(1),
     marginBottom: theme.spacing(-0.5),
-    "& [role='button'], & button": {
+    "& > [role='button'], & > button": {
       marginRight: theme.spacing(1),
       marginBottom: theme.spacing(1.25),
     },
@@ -26,65 +33,103 @@ const useStyles = makeStyles((theme) => ({
       display: "inline-block",
     },
   },
-  help: {
-    textDecoration: underline,
-  },
 }))
 
-const Tag = ({ selected, confidence, label }) => {
-  if (selected) {
-    return <Chip clickable color="primary" label={label}></Chip>
-  } else {
-    return (
-      <Chip
-        clickable
-        variant="outlined"
-        label={label}
-        style={{ opacity: confidence }}
-      ></Chip>
-    )
+const Tag = ({ selected, confidence, label, toggleTagSelection }) => {
+  return selected ? (
+    <Chip
+      clickable
+      onClick={() => toggleTagSelection(label)}
+      color="primary"
+      label={label}
+    />
+  ) : (
+    <Chip
+      clickable
+      onClick={() => toggleTagSelection(label)}
+      variant="outlined"
+      label={label}
+      style={{ opacity: confidence }}
+    />
+  )
+}
+
+const NoTags = ({ children }) => {
+  const classes = useStyles()
+  return <div className={classes.tags}>{children}</div>
+}
+
+const Tags = ({ tags, predictions, onTagsSelectionChange, children }) => {
+  const classes = useStyles()
+  const choices = [...predictions]
+  tags.forEach((label) => {
+    const choice = predictions.find((pred) => pred.label === label)
+    if (!choice) {
+      choices.unshift({
+        label,
+      })
+    }
+  })
+
+  const toggleTagSelection = (label) => {
+    const tagIndex = tags.indexOf(label)
+    if (tagIndex === -1) {
+      onTagsSelectionChange([...tags, label])
+    } else {
+      onTagsSelectionChange([
+        ...tags.slice(0, tagIndex),
+        ...tags.slice(tagIndex + 1, tags.length),
+      ])
+    }
   }
-}
 
-const Tags = ({ tags }) => {
-  const classes = useStyles()
-  const lastTag = tags.pop()
   return (
     <div className={classes.tags}>
-      {tags.map((tag) => {
-        return <Tag key={tag.label} {...tag}></Tag>
+      {choices.map((prediction) => {
+        return (
+          <Tag
+            key={prediction.label}
+            selected={tags.includes(prediction.label)}
+            toggleTagSelection={toggleTagSelection}
+            {...prediction}
+          ></Tag>
+        )
       })}
-      <span>
-        <Tag key={lastTag.label} {...lastTag}></Tag>
-        <IconButton size="small" aria-label="Add tag">
-          <AddIcon></AddIcon>
-        </IconButton>
-      </span>
+      {children}
     </div>
   )
 }
 
-const NoTags = () => {
-  const classes = useStyles()
-  return (
-    <div className={classes.tags}>
-      <IconButton size="small" aria-label="Add tag">
-        <AddIcon></AddIcon>
-      </IconButton>
-    </div>
-  )
-}
-
-const EntryMain = ({ tags, date }) => {
+const EntryMain = ({ tags, predictions, date, onTagsChange }) => {
   const classes = useStyles()
   const today = isToday(new Date(date))
-  console.log("is today", today)
+  const empty = tags.length === 0 && predictions.length === 0
+  const onTagsSelectionChange = (tags) => {
+    onTagsChange(tags)
+  }
+
+  const onAddTag = (label) => {
+    onTagsChange([...tags, label])
+  }
+
   return (
     <Paper
       elevation={today ? 3 : 1}
       className={classnames(classes.root, { [classes.today]: today })}
     >
-      {!tags.length ? <NoTags></NoTags> : <Tags tags={tags}></Tags>}
+      {empty ? (
+        <NoTags>
+          <AddTag onAddTag={onAddTag}></AddTag>
+        </NoTags>
+      ) : (
+        <Tags
+          tags={tags}
+          predictions={predictions}
+          onTagsSelectionChange={onTagsSelectionChange}
+        >
+          <AddTag onAddTag={onAddTag}></AddTag>
+        </Tags>
+      )}
     </Paper>
   )
 }

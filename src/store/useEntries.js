@@ -1,4 +1,5 @@
 import { useStore } from "./store"
+import { uniq } from "lodash"
 
 const useEntries = () => {
   const [{ entriesByDate }, setState] = useStore()
@@ -9,7 +10,11 @@ const useEntries = () => {
       entriesByDate: {
         ...state.entriesByDate,
         // Add or overwrite existing entry
-        [entry.date]: { ...entry, timestamp: Date.now() },
+        [entry.date]: {
+          ...entry,
+          tags: uniq(entry.tags),
+          timestamp: Date.now(),
+        },
       },
     }))
   }

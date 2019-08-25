@@ -6,7 +6,7 @@ import useBlockstack from "../store/useBlockstack"
 import useEntries from "../store/useEntries"
 
 import AppTemplate from "../templates/app"
-import EntryList from "../components/EntryList"
+import Entry from "../components/Entry"
 
 const AppPage = () => {
   const [{ isPending }] = useBlockstack()
@@ -26,17 +26,15 @@ const AppPage = () => {
       "heavyflow",
       "angry",
       "PMS",
-    ].slice(0, Math.round(Math.random() * 6))
-
-    entry.tags = Math.random() > 0.5 ? ["exhausted"] : []
+    ]
 
     return {
       date: dateString,
       note: entry.note,
-      tags: predictions.map((prediction) => {
+      tags: entry.tags ? entry.tags : [],
+      predictions: predictions.map((prediction) => {
         return {
           label: prediction,
-          selected: entry.tags.includes(prediction),
           confidence: Math.random() + 0.3,
         }
       }),
@@ -55,7 +53,15 @@ const AppPage = () => {
 
   return (
     <AppTemplate navItems={navItems}>
-      <EntryList entries={entries}></EntryList>
+      {entries.map((entry) => {
+        return (
+          <Entry
+            key={entry.date}
+            entry={entry}
+            handleEntryChange={changeEntry}
+          ></Entry>
+        )
+      })}
     </AppTemplate>
   )
 }
