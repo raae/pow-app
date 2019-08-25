@@ -2,18 +2,10 @@ import React from "react"
 import { isFuture as fnsIsFuture, isToday as fnsIsToday } from "date-fns"
 import classnames from "classnames"
 
-import {
-  Container,
-  Paper,
-  Button,
-  makeStyles,
-  TextField,
-} from "@material-ui/core"
+import { Container, Paper, makeStyles } from "@material-ui/core"
 
 import EntryHeader from "./EntryHeader"
 import EntryNote from "./EntryNote"
-import TagForm from "./TagForm"
-import TagList from "./TagList"
 import EntryPredictions from "./EntryPredictions"
 
 const useStyles = makeStyles((theme) => ({
@@ -82,10 +74,7 @@ const Entry = ({ entry = {}, predictions = [], handleEntryChange }) => {
           ></EntryNote>
         </Paper>
       )}
-      <EntryPredictions
-        predictions={predictions}
-        // onAddTag={!isFuture ? onAddTag : null}
-      ></EntryPredictions>
+      <EntryPredictions predictions={predictions}></EntryPredictions>
     </Container>
   )
 }

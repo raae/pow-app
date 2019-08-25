@@ -36,8 +36,6 @@ const EntryPredictions = ({ predictions = [], onAddTag, ...props }) => {
           <Chip
             key={pred.label}
             size="small"
-            clickable={!!onAddTag}
-            onClick={() => onAddTag && onAddTag(pred.label)}
             label={pred.label}
             style={{ opacity: pred.confidence }}
             {...props}
