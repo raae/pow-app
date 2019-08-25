@@ -5,6 +5,7 @@ import useEntries from "../store/useEntries"
 import AppTemplate from "../templates/app"
 import Entries from "../components/Entries"
 import navItem from "../components/navItem"
+import Loading from "../components/Loading"
 
 const AppPage = () => {
   const [{ isPending }] = useBlockstack()
@@ -31,7 +32,7 @@ const AppPage = () => {
           scrollTimestamp={scrollTimestamp}
         ></Entries>
       ) : (
-        "LOADING"
+        <Loading></Loading>
       )}
     </AppTemplate>
   )

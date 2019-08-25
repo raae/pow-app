@@ -4,7 +4,7 @@ import { addDays, eachDayOfInterval, format } from "date-fns"
 
 import Entry from "./Entry"
 
-const Entries = ({ entriesByDate, onEntryChange, scrollTimestamp }) => {
+const Entries = ({ entriesByDate = {}, onEntryChange, scrollTimestamp }) => {
   const today = new Date()
 
   const range = eachDayOfInterval({
