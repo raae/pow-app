@@ -10,6 +10,17 @@ module.exports = {
       resolve: `gatsby-plugin-material-ui`,
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `indexSection`,
+        path: `src/content/index`,
+      },
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {},
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `POW!`,

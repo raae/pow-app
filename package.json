@@ -23,6 +23,8 @@
     "gatsby-plugin-manifest": "^2.2.5",
     "gatsby-plugin-material-ui": "^2.1.5",
     "gatsby-plugin-netlify": "^2.1.4",
+    "gatsby-source-filesystem": "^2.1.18",
+    "gatsby-transformer-remark": "^2.6.19",
     "lodash": "^4.17.15",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
