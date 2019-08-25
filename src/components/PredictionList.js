@@ -1,22 +1,30 @@
 import React, { useRef } from "react"
-import { Paper, Chip, Typography, makeStyles } from "@material-ui/core"
+import { Chip, Typography, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({}))
 
 const PredictionList = ({ predictions = [], onAddTag, ...props }) => {
-  const classes = useStyles()
   predictions = useRef(predictions).current
+  const hasPredictions = predictions.length > 0
 
   return (
     <>
-      <Typography variant="caption">
-        Around this day in your cycle you usually log:
-      </Typography>
+      {hasPredictions ? (
+        <Typography variant="caption">
+          Around this day in your cycle you usually log:
+        </Typography>
+      ) : (
+        <Typography variant="caption">
+          Around this day in your cycle you usually log nothing.
+        </Typography>
+      )}
       {predictions.map((pred) => {
         return (
           <Chip
+            key={pred.label}
             size="small"
-            onClick={() => onAddTag(pred.label)}
+            clickable={!!onAddTag}
+            onClick={() => onAddTag && onAddTag(pred.label)}
             label={pred.label}
             style={{ opacity: pred.confidence }}
             {...props}

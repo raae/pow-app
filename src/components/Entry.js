@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry = {}, handleEntryChange }) => {
+const Entry = ({ entry = {}, predictions = [], handleEntryChange }) => {
   const classes = useStyles()
   const date = new Date(entry.date)
   const isFuture = fnsIsFuture(date)
@@ -60,7 +60,10 @@ const Entry = ({ entry = {}, handleEntryChange }) => {
   }
 
   const onAddTag = (tag) => {
-    const changedTags = [...entry.tags, tag]
+    let changedTags = [tag]
+    if (entry.tags) {
+      changedTags = [...entry.tags, tag]
+    }
     onChange("tags")(changedTags)
   }
 
@@ -85,14 +88,12 @@ const Entry = ({ entry = {}, handleEntryChange }) => {
           ></TagList>
           {!isFuture && <TagForm onAddTag={onAddTag}></TagForm>}
         </div>
-        {(isFuture || isToday) && (
-          <div className={classes.predictions}>
-            <PredictionList
-              predictions={entry.predictions}
-              onAddTag={onAddTag}
-            ></PredictionList>
-          </div>
-        )}
+        <div className={classes.predictions}>
+          <PredictionList
+            predictions={predictions}
+            onAddTag={!isFuture ? onAddTag : null}
+          ></PredictionList>
+        </div>
       </Paper>
       {!isFuture && (
         <EntryNote

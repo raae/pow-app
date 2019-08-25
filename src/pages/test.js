@@ -1,15 +1,12 @@
 import React from "react"
-import { Link } from "gatsby"
 import { addDays, eachDayOfInterval, format } from "date-fns"
 
-import useBlockstack from "../store/useBlockstack"
 import useEntries from "../store/useEntries"
 
-import AppTemplate from "../templates/app"
+import TestTemplate from "../templates/test"
 import Entry from "../components/Entry"
 
-const AppPage = () => {
-  const [{ isPending }] = useBlockstack()
+const TestPage = () => {
   const [{ entriesByDate = {} }, { changeEntry }] = useEntries()
   const today = new Date()
   const range = eachDayOfInterval({
@@ -18,28 +15,37 @@ const AppPage = () => {
   }).map((date) => {
     const dateString = format(date, "yyyy-MM-dd")
     const entry = entriesByDate[dateString] || {}
+    const predictions = [
+      "exhausted",
+      "happy",
+      "hodepine",
+      "heavy flow",
+      "SINNA",
+      "PMS",
+      "sexytime",
+      "verk i livmor",
+    ]
 
     return {
       entry: {
         ...entry,
         date: dateString,
       },
-      predictions: [], // Need to add logic
+      predictions: predictions
+        .slice(Math.random() * 7, Math.random() * -7)
+        .map((prediction) => {
+          return {
+            label: prediction,
+            confidence: Math.random() + 0.3,
+          }
+        }),
     }
   })
 
-  const navItems = [
-    {
-      label: "Profile",
-      disabled: isPending,
-      variant: "outlined",
-      component: Link,
-      to: "/profile",
-    },
-  ]
+  const navItems = []
 
   return (
-    <AppTemplate navItems={navItems}>
+    <TestTemplate navItems={navItems}>
       {range.map(({ entry, predictions }) => {
         return (
           <Entry
@@ -50,8 +56,8 @@ const AppPage = () => {
           ></Entry>
         )
       })}
-    </AppTemplate>
+    </TestTemplate>
   )
 }
 
-export default AppPage
+export default TestPage

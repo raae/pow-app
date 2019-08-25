@@ -9,7 +9,14 @@ const TagList = ({ tags = [], onRemoveTag, ...props }) => {
   return (
     <>
       {tags.map((tag) => {
-        return <Chip onDelete={() => onRemoveTag(tag)} label={tag} {...props} />
+        return (
+          <Chip
+            key={tag}
+            onDelete={() => onRemoveTag(tag)}
+            label={tag}
+            {...props}
+          />
+        )
       })}
     </>
   )
