@@ -2,13 +2,19 @@ import React from "react"
 import { isFuture as fnsIsFuture, isToday as fnsIsToday } from "date-fns"
 import classnames from "classnames"
 
-import { Container, Paper, makeStyles } from "@material-ui/core"
+import {
+  Container,
+  Paper,
+  Button,
+  makeStyles,
+  TextField,
+} from "@material-ui/core"
 
 import EntryHeader from "./EntryHeader"
 import EntryNote from "./EntryNote"
 import TagForm from "./TagForm"
 import TagList from "./TagList"
-import PredictionList from "./PredictionList"
+import EntryPredictions from "./EntryPredictions"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     "&:last-child": {
       marginBottom: theme.spacing(3),
     },
+  },
+  main: {
+    zIndex: 1,
   },
   today: {
     borderColor: theme.palette.primary.light,
@@ -53,54 +62,30 @@ const Entry = ({ entry = {}, predictions = [], handleEntryChange }) => {
   const isFuture = fnsIsFuture(date)
   const isToday = fnsIsToday(date)
 
-  const onChange = (name) => (param) => {
-    const updatedEntry = { ...entry }
-    updatedEntry[name] = param
+  const onNoteChange = (note) => {
+    const updatedEntry = { ...entry, note }
     handleEntryChange(updatedEntry)
-  }
-
-  const onAddTag = (tag) => {
-    let changedTags = [tag]
-    if (entry.tags) {
-      changedTags = [...entry.tags, tag]
-    }
-    onChange("tags")(changedTags)
-  }
-
-  const onRemoveTag = (tagToRemove) => {
-    const changedTags = entry.tags.filter((tag) => tag !== tagToRemove)
-    onChange("tags")(changedTags)
   }
 
   return (
     <Container component="article" className={classes.root}>
-      <EntryHeader date={entry.date}></EntryHeader>
-      <Paper
-        elevation={isToday ? 3 : 1}
-        className={classnames({ [classes.today]: isToday })}
-      >
-        <div className={classes.tags}>
-          <TagList
-            tags={entry.tags}
-            onRemoveTag={onRemoveTag}
-            variant={isToday ? "default" : "outlined"}
-            color={isToday ? "primary" : "default"}
-          ></TagList>
-          {!isFuture && <TagForm onAddTag={onAddTag}></TagForm>}
-        </div>
-        <div className={classes.predictions}>
-          <PredictionList
-            predictions={predictions}
-            onAddTag={!isFuture ? onAddTag : null}
-          ></PredictionList>
-        </div>
-      </Paper>
+      <EntryHeader date={date} isToday={isToday}></EntryHeader>
       {!isFuture && (
-        <EntryNote
-          note={entry.note}
-          onNoteChange={onChange("note")}
-        ></EntryNote>
+        <Paper
+          elevation={isToday ? 3 : 1}
+          className={classnames(classes.main, { [classes.today]: isToday })}
+        >
+          <EntryNote
+            note={entry.note}
+            isToday={isToday}
+            onNoteChange={onNoteChange}
+          ></EntryNote>
+        </Paper>
       )}
+      <EntryPredictions
+        predictions={predictions}
+        // onAddTag={!isFuture ? onAddTag : null}
+      ></EntryPredictions>
     </Container>
   )
 }
