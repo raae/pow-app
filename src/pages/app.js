@@ -1,55 +1,38 @@
-import React from "react"
-import { Link } from "gatsby"
-import { addDays, eachDayOfInterval, format } from "date-fns"
-
+import React, { useState } from "react"
 import useBlockstack from "../store/useBlockstack"
 import useEntries from "../store/useEntries"
 
 import AppTemplate from "../templates/app"
-import Entry from "../components/Entry"
+import Entries from "../components/Entries"
+import navItem from "../components/navItem"
 
 const AppPage = () => {
   const [{ isPending }] = useBlockstack()
-  const [{ entriesByDate = {} }, { changeEntry }] = useEntries()
-  const today = new Date()
-  const range = eachDayOfInterval({
-    start: addDays(today, -1),
-    end: addDays(today, 30),
-  }).map((date) => {
-    const dateString = format(date, "yyyy-MM-dd")
-    const entry = entriesByDate[dateString] || {}
-
-    return {
-      entry: {
-        ...entry,
-        date: dateString,
-      },
-      predictions: [], // Need to add logic
-    }
-  })
+  const [{ entriesByDate, isFetched }, { changeEntry }] = useEntries()
+  const [scrollTimestamp, setScrollTimestamp] = useState()
 
   const navItems = [
     {
-      label: "Profile",
+      ...navItem("profile"),
       disabled: isPending,
-      variant: "outlined",
-      component: Link,
-      to: "/profile",
+    },
+    {
+      ...navItem("today"),
+      onClick: () => setScrollTimestamp(Date.now()),
     },
   ]
 
   return (
     <AppTemplate navItems={navItems}>
-      {range.map(({ entry, predictions }) => {
-        return (
-          <Entry
-            key={entry.date}
-            entry={entry}
-            predictions={predictions}
-            handleEntryChange={changeEntry}
-          ></Entry>
-        )
-      })}
+      {isFetched ? (
+        <Entries
+          entriesByDate={entriesByDate}
+          onEntryChange={changeEntry}
+          scrollTimestamp={scrollTimestamp}
+        ></Entries>
+      ) : (
+        "LOADING"
+      )}
     </AppTemplate>
   )
 }

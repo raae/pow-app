@@ -21,7 +21,7 @@ const mergeCustomizer = (objValue, srcValue) => {
 
 const syncEntries = () => {
   const persistedEntriesRef = useRef()
-  const [{ entriesByDate }, { setEntriesByDate }] = useEntries()
+  const [{ entriesByDate }, { setFetchedEntriesByDate }] = useEntries()
   const [{ user }, { getJson, putJson }] = useBlockstack()
 
   const fetchEntries = async () => {
@@ -33,7 +33,7 @@ const syncEntries = () => {
         entriesByDate,
         mergeCustomizer
       )
-      setEntriesByDate(mergedEntries)
+      setFetchedEntriesByDate(mergedEntries)
       return mergedEntries
     }
   }

@@ -7,6 +7,7 @@ import {
   Button,
   makeStyles,
   Chip,
+  IconButton,
 } from "@material-ui/core"
 import LogoIcon from "@material-ui/icons/Face"
 
@@ -17,8 +18,14 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
   },
   main: {
-    // marginTop: theme.spacing(2),
-    // marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+  },
+  nav: {
+    marginLeft: "auto",
+    "& > *": {
+      marginLeft: theme.spacing(1),
+    },
   },
   footer: {
     padding: theme.spacing(2),
@@ -34,11 +41,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Nav = ({ items = [], ...props }) => (
   <nav {...props}>
-    {items.map(({ label, ...itemProps }, key) => (
-      <Button key={key} {...itemProps}>
-        {label}
-      </Button>
-    ))}
+    {items.map(({ label, icon, ...itemProps }, key) =>
+      !icon ? (
+        <Button key={key} {...itemProps}>
+          {label}
+        </Button>
+      ) : (
+        <IconButton {...itemProps}>{icon}</IconButton>
+      )
+    )}
   </nav>
 )
 
@@ -55,7 +66,7 @@ const Layout = ({ homeItem, navItems, footer, children }) => {
       <AppBar color="inherit" position="sticky">
         <Toolbar>
           <Home className={classes.home} {...homeItem}></Home>
-          <Nav items={navItems} style={{ marginLeft: "auto" }}></Nav>
+          <Nav items={navItems} className={classes.nav}></Nav>
         </Toolbar>
       </AppBar>
       <main className={classes.main}>{children}</main>
