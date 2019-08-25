@@ -5,7 +5,7 @@ import { addDays, eachDayOfInterval, format } from "date-fns"
 import useBlockstack from "../store/useBlockstack"
 import useEntries from "../store/useEntries"
 
-import AppTemplate from "../templates/app"
+import TestTemplate from "../templates/test"
 import Entry from "../components/Entry"
 
 const AppPage = () => {
@@ -52,7 +52,7 @@ const AppPage = () => {
   ]
 
   return (
-    <AppTemplate navItems={navItems}>
+    <TestTemplate navItems={navItems}>
       {entries.map((entry) => {
         return (
           <Entry
@@ -62,7 +62,7 @@ const AppPage = () => {
           ></Entry>
         )
       })}
-    </AppTemplate>
+    </TestTemplate>
   )
 }
 
