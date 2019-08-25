@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 import {
   Typography,
@@ -75,6 +75,38 @@ const Note = ({ note = "", onEditNote }) => {
 const NoteForm = ({ note = "", onNoteChange, onClose }) => {
   const classes = useStyles()
   const [value, setValue] = useState(note)
+  const [placeholder, setPlaceholder] = useState()
+
+  useEffect(() => {
+    const placeholders = [
+      "My #period just started.",
+      "#energetic",
+      "So so #tired",
+      "Feeling #sexy!",
+      "I am #sad and #angry.",
+      "#period #heavyflow",
+      "Today I am #happy#happy#happy :D",
+      "I think i have #PMS",
+    ]
+
+    let index = Math.floor(Math.random() * placeholders.length)
+
+    const tick = () => {
+      setPlaceholder(placeholders[index])
+      if (index === placeholders.length - 1) {
+        index = 0
+      } else {
+        index++
+      }
+    }
+
+    const interval = setInterval(tick, 3500)
+    tick()
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const onSubmit = (event) => {
     event.preventDefault()
@@ -93,7 +125,7 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
         label="A note about today"
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        placeholder="I feel #onething and #anotherthing. And my #period just started."
+        placeholder={placeholder}
         helperText="Hashtags are used to predict how you might feel on this day in your next cycle."
         fullWidth
         multiline
