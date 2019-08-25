@@ -13,13 +13,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     zIndex: 1,
-    "&:first-child": {
-      marginTop: theme.spacing(3),
-    },
-
-    "&:last-child": {
-      marginBottom: theme.spacing(3),
-    },
   },
   main: {
     zIndex: 1,
@@ -48,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry = {}, predictions = [], handleEntryChange }) => {
+const Entry = ({ entry = {}, predictions = [], onEntryChange }) => {
   const classes = useStyles()
   const date = new Date(entry.date)
   const isFuture = fnsIsFuture(date)
@@ -56,7 +49,7 @@ const Entry = ({ entry = {}, predictions = [], handleEntryChange }) => {
 
   const onNoteChange = (note) => {
     const updatedEntry = { ...entry, note }
-    handleEntryChange(updatedEntry)
+    onEntryChange(updatedEntry)
   }
 
   return (
