@@ -21,7 +21,6 @@ const AppPage = () => {
     const predictions = [
       "exhausted",
       "happy",
-      "period",
       "headache",
       "heavyflow",
       "angry",
