@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
   },
   main: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(4),
+    // marginTop: theme.spacing(2),
+    // marginBottom: theme.spacing(2),
   },
   footer: {
     padding: theme.spacing(2),
@@ -52,7 +52,7 @@ const Layout = ({ homeItem, navItems, footer, children }) => {
   return (
     <div className={classes.root}>
       <CssBaseline></CssBaseline>
-      <AppBar color="inherit" elevation={0} position="sticky">
+      <AppBar color="inherit" position="sticky">
         <Toolbar>
           <Home className={classes.home} {...homeItem}></Home>
           <Nav items={navItems} style={{ marginLeft: "auto" }}></Nav>

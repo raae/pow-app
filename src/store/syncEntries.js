@@ -4,6 +4,14 @@ import useEntries from "./useEntries"
 import useBlockstack from "./useBlockstack"
 
 const mergeCustomizer = (objValue, srcValue) => {
+  if (!objValue) {
+    return srcValue
+  }
+
+  if (!srcValue) {
+    return objValue
+  }
+
   if (objValue.timestamp > srcValue.timestamp) {
     return objValue
   } else {

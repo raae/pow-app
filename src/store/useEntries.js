@@ -1,6 +1,13 @@
-import { values } from "lodash"
-
 import { useStore } from "./store"
+
+const tagsFromNote = (note) => {
+  const match = note.match(/#[^\s#]+/g)
+  if (!match) {
+    return []
+  } else {
+    return note.match(/#[^\s#]+/g).map((tag) => tag.replace("#", ""))
+  }
+}
 
 const useEntries = () => {
   const [{ entriesByDate }, setState] = useStore()
@@ -11,7 +18,11 @@ const useEntries = () => {
       entriesByDate: {
         ...state.entriesByDate,
         // Add or overwrite existing entry
-        [entry.date]: { ...entry, timestamp: Date.now() },
+        [entry.date]: {
+          ...entry,
+          tags: tagsFromNote(entry.note),
+          timestamp: Date.now(),
+        },
       },
     }))
   }
@@ -39,8 +50,7 @@ const useEntries = () => {
 
   return [
     {
-      entriesByDate,
-      entries: values(entriesByDate || {}),
+      entriesByDate: entriesByDate,
     },
     {
       addEntry,
