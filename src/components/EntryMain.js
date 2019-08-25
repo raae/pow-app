@@ -1,16 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import classnames from "classnames"
 import { isToday } from "date-fns"
-import {
-  IconButton,
-  Paper,
-  Chip,
-  TextField,
-  InputAdornment,
-  makeStyles,
-} from "@material-ui/core"
-
-import AddTag from "./AddTag"
+import { Paper, Chip, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,16 +91,12 @@ const Tags = ({ tags, predictions, onTagsSelectionChange, children }) => {
   )
 }
 
-const EntryMain = ({ tags, predictions, date, onTagsChange }) => {
+const EntryMain = ({ tags, predictions, date, onTagsChange, children }) => {
   const classes = useStyles()
   const today = isToday(new Date(date))
   const empty = tags.length === 0 && predictions.length === 0
   const onTagsSelectionChange = (tags) => {
     onTagsChange(tags)
-  }
-
-  const onAddTag = (label) => {
-    onTagsChange([...tags, label])
   }
 
   return (
@@ -118,16 +105,14 @@ const EntryMain = ({ tags, predictions, date, onTagsChange }) => {
       className={classnames(classes.root, { [classes.today]: today })}
     >
       {empty ? (
-        <NoTags>
-          <AddTag onAddTag={onAddTag}></AddTag>
-        </NoTags>
+        <NoTags>{children}</NoTags>
       ) : (
         <Tags
           tags={tags}
           predictions={predictions}
           onTagsSelectionChange={onTagsSelectionChange}
         >
-          <AddTag onAddTag={onAddTag}></AddTag>
+          {children}
         </Tags>
       )}
     </Paper>
