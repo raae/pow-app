@@ -13,7 +13,7 @@ const AppPage = () => {
   const [{ entriesByDate = {} }, { changeEntry }] = useEntries()
   const today = new Date()
   const entries = eachDayOfInterval({
-    start: addDays(today, -30),
+    start: addDays(today, -1),
     end: addDays(today, 30),
   }).map((date) => {
     const dateString = format(date, "yyyy-MM-dd")

@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
 const Entry = ({ entry = {} }) => {
   const classes = useStyles()
   return (
-    <div className={classes.root}>
+    <article className={classes.root}>
       <EntryHeader date={entry.date}></EntryHeader>
-      <EntryMain tags={entry.tags} note={entry.note}></EntryMain>
+      <EntryMain tags={entry.tags} date={entry.date}></EntryMain>
       <EntryNote note={entry.note}></EntryNote>
-    </div>
+    </article>
   )
 }
 

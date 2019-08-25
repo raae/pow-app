@@ -1,4 +1,6 @@
 import React from "react"
+import classnames from "classnames"
+import { isToday } from "date-fns"
 import { IconButton, Paper, Chip, makeStyles } from "@material-ui/core"
 import AddIcon from "@material-ui/icons/Add"
 import { underline } from "ansi-colors"
@@ -7,6 +9,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     zIndex: 100,
     padding: theme.spacing(2),
+  },
+  today: {
+    borderColor: theme.palette.primary.light,
+    borderWidth: 2,
+    borderStyle: "solid",
   },
   tags: {
     margin: theme.spacing(1),
@@ -68,11 +75,15 @@ const NoTags = () => {
   )
 }
 
-const EntryMain = ({ tags }) => {
+const EntryMain = ({ tags, date }) => {
   const classes = useStyles()
-
+  const today = isToday(new Date(date))
+  console.log("is today", today)
   return (
-    <Paper className={classes.root}>
+    <Paper
+      elevation={today ? 3 : 1}
+      className={classnames(classes.root, { [classes.today]: today })}
+    >
       {!tags.length ? <NoTags></NoTags> : <Tags tags={tags}></Tags>}
     </Paper>
   )
