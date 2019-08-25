@@ -35,6 +35,9 @@ const syncEntries = () => {
       )
       setFetchedEntriesByDate(mergedEntries)
       return mergedEntries
+    } else {
+      setFetchedEntriesByDate(entriesByDate)
+      return entriesByDate
     }
   }
 
