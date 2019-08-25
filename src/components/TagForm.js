@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const AddForm = ({ onTagSubmit, onTagCancel }) => {
+const Form = ({ onTagSubmit, onTagCancel }) => {
   const classes = useStyles()
   const [tag, setTag] = useState("")
 
@@ -62,7 +62,7 @@ const AddForm = ({ onTagSubmit, onTagCancel }) => {
   )
 }
 
-const AddTag = ({ onAddTag }) => {
+const TagForm = ({ onAddTag }) => {
   const [isAdding, setIsAdding] = useState()
 
   const onTagSubmit = (tag) => {
@@ -73,10 +73,10 @@ const AddTag = ({ onAddTag }) => {
   }
 
   return isAdding ? (
-    <AddForm
+    <Form
       onTagSubmit={onTagSubmit}
       onTagCancel={() => setIsAdding(false)}
-    ></AddForm>
+    ></Form>
   ) : (
     <IconButton
       onClick={() => setIsAdding(true)}
@@ -88,4 +88,4 @@ const AddTag = ({ onAddTag }) => {
   )
 }
 
-export default AddTag
+export default TagForm

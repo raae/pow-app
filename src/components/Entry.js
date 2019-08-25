@@ -1,27 +1,57 @@
 import React from "react"
-import { isFuture } from "date-fns"
+import { isFuture as fnsIsFuture, isToday as fnsIsToday } from "date-fns"
+import classnames from "classnames"
 
-import { Container, makeStyles } from "@material-ui/core"
+import { Container, Paper, makeStyles } from "@material-ui/core"
 
 import EntryHeader from "./EntryHeader"
-import EntryMain from "./EntryMain"
 import EntryNote from "./EntryNote"
-import AddTag from "./AddTag"
+import TagForm from "./TagForm"
+import TagList from "./TagList"
+import PredictionList from "./PredictionList"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     zIndex: 1,
+    "&:first-child": {
+      marginTop: theme.spacing(3),
+    },
+
+    "&:last-child": {
+      marginBottom: theme.spacing(3),
+    },
+  },
+  today: {
+    borderColor: theme.palette.primary.light,
+    borderWidth: 2,
+    borderStyle: "solid",
+  },
+  predictions: {
+    padding: theme.spacing(3),
+    paddingBottom: theme.spacing(2),
+    background: theme.palette.grey[100],
+    "& > *": {
+      marginRight: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+  },
+  tags: {
+    margin: theme.spacing(3),
+    marginBottom: theme.spacing(2),
+    "& > *": {
+      marginRight: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
   },
 }))
 
 const Entry = ({ entry = {}, handleEntryChange }) => {
   const classes = useStyles()
   const date = new Date(entry.date)
-  const future = isFuture(date)
+  const isFuture = fnsIsFuture(date)
+  const isToday = fnsIsToday(date)
 
   const onChange = (name) => (param) => {
     const updatedEntry = { ...entry }
@@ -29,22 +59,42 @@ const Entry = ({ entry = {}, handleEntryChange }) => {
     handleEntryChange(updatedEntry)
   }
 
-  const onAddTag = (label) => {
-    onChange("tags")([...entry.tags, label])
+  const onAddTag = (tag) => {
+    const changedTags = [...entry.tags, tag]
+    onChange("tags")(changedTags)
+  }
+
+  const onRemoveTag = (tagToRemove) => {
+    const changedTags = entry.tags.filter((tag) => tag !== tagToRemove)
+    onChange("tags")(changedTags)
   }
 
   return (
     <Container component="article" className={classes.root}>
       <EntryHeader date={entry.date}></EntryHeader>
-      <EntryMain
-        tags={entry.tags}
-        predictions={entry.predictions}
-        date={entry.date}
-        onTagsChange={onChange("tags")}
+      <Paper
+        elevation={isToday ? 3 : 1}
+        className={classnames({ [classes.today]: isToday })}
       >
-        {!future && <AddTag onAddTag={onAddTag}></AddTag>}
-      </EntryMain>
-      {!future && (
+        <div className={classes.tags}>
+          <TagList
+            tags={entry.tags}
+            onRemoveTag={onRemoveTag}
+            variant={isToday ? "default" : "outlined"}
+            color={isToday ? "primary" : "default"}
+          ></TagList>
+          {!isFuture && <TagForm onAddTag={onAddTag}></TagForm>}
+        </div>
+        {(isFuture || isToday) && (
+          <div className={classes.predictions}>
+            <PredictionList
+              predictions={entry.predictions}
+              onAddTag={onAddTag}
+            ></PredictionList>
+          </div>
+        )}
+      </Paper>
+      {!isFuture && (
         <EntryNote
           note={entry.note}
           onNoteChange={onChange("note")}
