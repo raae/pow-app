@@ -82,7 +82,7 @@ const AppBarItems = ({ items = [], ...props }) => (
           {label}
         </Button>
       ) : (
-        <IconButton color="inherit" {...itemProps}>
+        <IconButton key={key} color="inherit" {...itemProps}>
           {icon}
         </IconButton>
       )
