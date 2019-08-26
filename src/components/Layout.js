@@ -1,12 +1,10 @@
 import React from "react"
 
 import {
-  CssBaseline,
   AppBar,
   Toolbar,
   Button,
   makeStyles,
-  Chip,
   IconButton,
 } from "@material-ui/core"
 
@@ -61,7 +59,6 @@ const Layout = ({ homeItem, navItems, footer, children }) => {
 
   return (
     <div className={classes.root}>
-      <CssBaseline></CssBaseline>
       <AppBar elevation={0} color="inherit" position="sticky">
         <Toolbar>
           {homeItem}

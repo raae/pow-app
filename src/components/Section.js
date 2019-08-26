@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   hero: {
     "& h1": {
       ...theme.typography.h1,
+      color: theme.palette.primary.main,
       fontSize: "5rem",
       fontWeight: theme.typography.fontWeightBold,
       marginBottom: 0,
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     "& a:last-child": {
       display: "block",
       paddingLeft: theme.spacing(2),
-      marginTop: theme.spacing(-1),
+      marginTop: theme.spacing(0),
     },
   },
   text: {

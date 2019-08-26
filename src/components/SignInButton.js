@@ -9,13 +9,13 @@ const SignInButton = ({ children, ...props }) => {
 
   if (user) {
     return (
-      <Button {...props} component={Link} to="/app">
+      <Button component={Link} to="/app" {...props}>
         {children}
       </Button>
     )
   } else {
     return (
-      <Button {...props} to="/app" disabled={isPending} onClick={signIn}>
+      <Button to="/app" disabled={isPending} onClick={signIn} {...props}>
         {children}
       </Button>
     )

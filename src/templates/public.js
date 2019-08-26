@@ -5,6 +5,7 @@ import useBlockstack from "./../store/useBlockstack"
 import Layout from "./../components/Layout"
 import Mdx from "./../components/Mdx"
 import BrandButton from "../components/BrandButton"
+import BrandFooter from "../components/BrandFooter"
 
 const PublicTemplate = ({ children, location }) => {
   const [{ user, isPending }, { signIn }] = useBlockstack()
@@ -31,14 +32,8 @@ const PublicTemplate = ({ children, location }) => {
 
   const authItem = user ? signedInItem : signedOutItem
 
-  const footer = (
-    <>
-      Made with ❤ by <a href="https://raae.codes">@raae</a> and family.
-    </>
-  )
-
   return (
-    <Layout homeItem={homeItem} navItems={[authItem]} footer={footer}>
+    <Layout homeItem={homeItem} navItems={[authItem]} footer={<BrandFooter />}>
       <Mdx>{children}</Mdx>
     </Layout>
   )
