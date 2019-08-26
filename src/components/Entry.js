@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 1,
   },
   today: {
-    borderColor: theme.palette.primary.light,
+    borderColor: theme.palette.secondary.light,
     borderWidth: 2,
     borderStyle: "solid",
   },

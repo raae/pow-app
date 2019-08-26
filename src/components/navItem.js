@@ -15,7 +15,7 @@ const navItem = (variant) => {
     case "today":
       return {
         "aria-label": "Scroll to today",
-        icon: <TodayIcon color="primary" />,
+        icon: <TodayIcon color="secondary" />,
       }
 
     default:
