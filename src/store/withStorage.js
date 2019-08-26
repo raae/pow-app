@@ -7,7 +7,7 @@ const StoreSync = ({ children }) => {
   return children
 }
 
-const withStorage = ({ element, isSSR }) => {
+const withStorage = ({ element }) => {
   return (
     <StoreProvider>
       <StoreSync>{element}</StoreSync>
