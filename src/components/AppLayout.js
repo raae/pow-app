@@ -78,7 +78,7 @@ const AppBarItems = ({ items = [], ...props }) => (
   <>
     {items.map(({ label, icon, ...itemProps }, key) =>
       !icon ? (
-        <Button key={key} {...itemProps}>
+        <Button key={key} color="inherit" {...itemProps}>
           {label}
         </Button>
       ) : (

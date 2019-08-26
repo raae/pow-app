@@ -8,7 +8,6 @@ import navItem from "../components/navItem"
 import Loading from "../components/Loading"
 
 const AppPage = () => {
-  const [{ isPending }] = useBlockstack()
   const [{ entriesByDate, isFetched }, { changeEntry }] = useEntries()
   const [scrollTimestamp, setScrollTimestamp] = useState()
 

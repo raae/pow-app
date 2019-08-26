@@ -24,6 +24,6 @@ export default [
     label: "Settings",
     icon: <SettingsIcon />,
     component: Link,
-    to: "/profile",
+    to: "/settings",
   },
 ]
