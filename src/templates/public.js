@@ -2,10 +2,10 @@ import React from "react"
 import { Link } from "gatsby"
 
 import useBlockstack from "./../store/useBlockstack"
-import Layout from "./../components/Layout"
 import Mdx from "./../components/Mdx"
-import BrandButton from "../components/BrandButton"
-import BrandFooter from "../components/BrandFooter"
+import Layout from "./../components/BrandLayout"
+import Button from "../components/BrandButton"
+import Footer from "../components/BrandFooter"
 
 const PublicTemplate = ({ children, location }) => {
   const [{ user, isPending }, { signIn }] = useBlockstack()
@@ -24,7 +24,7 @@ const PublicTemplate = ({ children, location }) => {
     to: "/app",
   }
 
-  let homeItem = <BrandButton></BrandButton>
+  let homeItem = <Button></Button>
 
   if (location.pathname === "/") {
     homeItem = null
@@ -33,7 +33,7 @@ const PublicTemplate = ({ children, location }) => {
   const authItem = user ? signedInItem : signedOutItem
 
   return (
-    <Layout homeItem={homeItem} navItems={[authItem]} footer={<BrandFooter />}>
+    <Layout homeItem={homeItem} navItems={[authItem]} footer={<Footer />}>
       <Mdx>{children}</Mdx>
     </Layout>
   )

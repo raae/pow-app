@@ -12,11 +12,7 @@ const AppPage = () => {
   const [{ entriesByDate, isFetched }, { changeEntry }] = useEntries()
   const [scrollTimestamp, setScrollTimestamp] = useState()
 
-  const navItems = [
-    {
-      ...navItem("profile"),
-      disabled: isPending,
-    },
+  const appBarItems = [
     {
       ...navItem("today"),
       onClick: () => setScrollTimestamp(Date.now()),
@@ -24,7 +20,7 @@ const AppPage = () => {
   ]
 
   return (
-    <AppTemplate navItems={navItems}>
+    <AppTemplate appBarItems={appBarItems}>
       {isFetched ? (
         <Entries
           entriesByDate={entriesByDate}

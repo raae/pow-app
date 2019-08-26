@@ -6,7 +6,9 @@ import {
   Button,
   makeStyles,
   IconButton,
+  Link,
 } from "@material-ui/core"
+import BrandFooter from "./BrandFooter"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,7 +56,7 @@ const Nav = ({ items = [], ...props }) => (
   </nav>
 )
 
-const Layout = ({ homeItem, navItems, footer, children }) => {
+const BrandLayout = ({ homeItem, navItems, footer, children }) => {
   const classes = useStyles()
 
   return (
@@ -66,9 +68,11 @@ const Layout = ({ homeItem, navItems, footer, children }) => {
         </Toolbar>
       </AppBar>
       <main className={classes.main}>{children}</main>
-      <footer className={classes.footer}>{footer}</footer>
+      <footer className={classes.footer}>
+        <BrandFooter></BrandFooter>
+      </footer>
     </div>
   )
 }
 
-export default Layout
+export default BrandLayout

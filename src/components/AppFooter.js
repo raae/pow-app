@@ -1,10 +1,10 @@
 import React from "react"
 import { Link } from "@material-ui/core"
 
-const BrandFooter = () => {
+const AppFooter = () => {
   return (
     <>
-      Made with ❤ by{" "}
+      Made with ❤ <br /> by{" "}
       <Link target="_blank" rel="noopener" href="https://raae.codes">
         @raae
       </Link>{" "}
@@ -13,4 +13,4 @@ const BrandFooter = () => {
   )
 }
 
-export default BrandFooter
+export default AppFooter
