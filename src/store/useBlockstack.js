@@ -3,7 +3,7 @@ import { UserSession, AppConfig } from "blockstack"
 
 import { useStore } from "./store"
 
-const FILE_PATH = "test/test.json"
+const FILE_PATH = "version-0.json"
 
 const defaultState = {
   isPending: true,
