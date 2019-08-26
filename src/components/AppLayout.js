@@ -1,9 +1,6 @@
 import React from "react"
 
-import InboxIcon from "@material-ui/icons/MoveToInbox"
-import MailIcon from "@material-ui/icons/Mail"
 import MenuIcon from "@material-ui/icons/Menu"
-
 import {
   AppBar,
   Button,
@@ -16,11 +13,12 @@ import {
   ListItemText,
   ListItemIcon,
   Toolbar,
-  Link,
-  Typography,
+  makeStyles,
 } from "@material-ui/core"
-import { makeStyles, useTheme } from "@material-ui/core/styles"
+
 import AppFooter from "./AppFooter"
+import appFooterItems from "./appNavFooterItems"
+import appMainItems from "./appNavMainItems"
 
 const drawerWidth = 240
 
@@ -37,13 +35,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: theme.spacing(2),
   },
+  pushDown: {
+    marginTop: "auto",
+  },
+  toolbar: theme.mixins.toolbar,
   drawer: {
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    "& > *:last-child": {
-      marginTop: "auto",
-    },
     [theme.breakpoints.up("md")]: {
       width: drawerWidth,
       flexShrink: 0,
@@ -91,9 +90,19 @@ const AppBarItems = ({ items = [], ...props }) => (
   </>
 )
 
+const ListItems = ({ items = [] }) => {
+  {
+    return items.map(({ label, text, icon, ...itemProps }, index) => (
+      <ListItem button key={index} {...itemProps}>
+        {icon && <ListItemIcon>{icon}</ListItemIcon>}
+        <ListItemText primary={label} secondary={text} />
+      </ListItem>
+    ))
+  }
+}
+
 function AppLayout({ children, appBarItems }) {
   const classes = useStyles()
-  const theme = useTheme()
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
   function handleDrawerToggle() {
@@ -109,29 +118,18 @@ function AppLayout({ children, appBarItems }) {
       </Toolbar>
       <Divider />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItems items={appMainItems} />
       </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <footer className={classes.footer}>
-        <AppFooter></AppFooter>
+
+      <Divider className={classes.pushDown} />
+      <footer>
+        <List>
+          <ListItems items={appFooterItems} />
+        </List>
+        <Divider />
+        <div className={classes.footer}>
+          <AppFooter></AppFooter>
+        </div>
       </footer>
     </div>
   )
@@ -156,7 +154,7 @@ function AppLayout({ children, appBarItems }) {
         <Hidden mdUp implementation="js">
           <Drawer
             variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
+            anchor={"left"}
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
