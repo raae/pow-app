@@ -20,6 +20,16 @@ const useStyles = makeStyles((theme) => ({
   text: {
     flexGrow: 1,
   },
+  textField: {
+    "& label.Mui-focused": {
+      color: theme.palette.text.secondary,
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: theme.palette.grey[500],
+      },
+    },
+  },
   edit: {
     float: "right",
     opacity: 0.6,
@@ -121,6 +131,7 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
   return (
     <form className={classes.form} onSubmit={onSubmit}>
       <TextField
+        classes={{ root: classes.textField }}
         autoFocus={true}
         label="A note about today"
         value={value}
@@ -139,7 +150,12 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
         <Button size="small" onClick={onCancel}>
           Cancel
         </Button>
-        <Button size="small" type="submit" variant="contained" color="primary">
+        <Button
+          size="small"
+          type="submit"
+          variant="contained"
+          color="secondary"
+        >
           Save
         </Button>
       </div>

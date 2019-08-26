@@ -9,6 +9,10 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.background.paper,
     },
   },
+  container: {
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+  },
   hero: {
     "& h1": {
       ...theme.typography.h1,
@@ -72,7 +76,9 @@ const Section = ({ variant = "text", maxWidth = "md", children, ...props }) => {
   const classes = useStyles()
   return (
     <article className={`${classes.root} ${classes[variant]}`}>
-      <Container maxWidth={maxWidth}>{children}</Container>
+      <Container maxWidth={maxWidth} className={classes.container}>
+        {children}
+      </Container>
     </article>
   )
 }

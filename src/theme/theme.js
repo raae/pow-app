@@ -1,4 +1,3 @@
-import { red, deepPurple } from "@material-ui/core/colors"
 import { createMuiTheme } from "@material-ui/core/styles"
 
 // A custom theme for this app
@@ -7,7 +6,9 @@ const theme = createMuiTheme({
     primary: {
       main: "#e53935",
     },
-    secondary: deepPurple,
+    secondary: {
+      main: "#3f51b5",
+    },
   },
   props: {
     MuiLink: {
