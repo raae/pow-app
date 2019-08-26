@@ -4,5 +4,14 @@
   "singleQuote": false,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "overrides": [
+    {
+      "files": "*.mdx",
+      "options": {
+        "printWidth": 60,
+        "proseWrap": "always"
+      }
+    }
+  ]
 }

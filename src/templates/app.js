@@ -15,12 +15,6 @@ const AppTemplate = ({ children, navItems }) => {
     return null
   }
 
-  const homeItem = {
-    label: "POW!",
-    component: Link,
-    to: "/app",
-  }
-
   const footer = (
     <>
       Back to the app's <Link to="/">website</Link>.<br />
@@ -29,7 +23,7 @@ const AppTemplate = ({ children, navItems }) => {
   )
 
   return (
-    <Layout homeItem={homeItem} navItems={navItems} footer={footer}>
+    <Layout navItems={navItems} footer={footer}>
       {children}
     </Layout>
   )

@@ -9,7 +9,6 @@ import {
   Chip,
   IconButton,
 } from "@material-ui/core"
-import LogoIcon from "@material-ui/icons/Face"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,20 +16,21 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     minHeight: "100vh",
   },
+  appBar: {
+    background: "transparent",
+  },
   main: {
     flexGrow: 1,
     display: "flex",
     flexDirection: "column",
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
   },
   nav: {
-    marginLeft: "auto",
-    "& > *": {
-      marginLeft: theme.spacing(1),
+    "&:last-child": {
+      marginLeft: "auto",
     },
   },
   footer: {
+    borderTop: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(2),
     marginTop: "auto",
     backgroundColor: theme.palette.background.paper,
@@ -56,19 +56,15 @@ const Nav = ({ items = [], ...props }) => (
   </nav>
 )
 
-const Home = (itemProps) => (
-  <Chip {...itemProps} clickable color="primary" icon={<LogoIcon />}></Chip>
-)
-
 const Layout = ({ homeItem, navItems, footer, children }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <CssBaseline></CssBaseline>
-      <AppBar color="inherit" position="sticky">
+      <AppBar elevation={0} color="inherit" position="sticky">
         <Toolbar>
-          <Home className={classes.home} {...homeItem}></Home>
+          {homeItem}
           <Nav items={navItems} className={classes.nav}></Nav>
         </Toolbar>
       </AppBar>

@@ -10,15 +10,12 @@ module.exports = {
       resolve: `gatsby-plugin-material-ui`,
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        name: `indexSection`,
-        path: `src/content/index`,
+        defaultLayouts: {
+          default: require.resolve("./src/templates/public.js"),
+        },
       },
-    },
-    {
-      resolve: `gatsby-transformer-remark`,
-      options: {},
     },
     {
       resolve: `gatsby-plugin-manifest`,
