@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import useBlockstack from "../store/useBlockstack"
 import useEntries from "../store/useEntries"
 
 import AppTemplate from "../templates/app"

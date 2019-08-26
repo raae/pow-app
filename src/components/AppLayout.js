@@ -91,14 +91,12 @@ const AppBarItems = ({ items = [], ...props }) => (
 )
 
 const ListItems = ({ items = [] }) => {
-  {
-    return items.map(({ label, text, icon, ...itemProps }, index) => (
-      <ListItem button key={index} {...itemProps}>
-        {icon && <ListItemIcon>{icon}</ListItemIcon>}
-        <ListItemText primary={label} secondary={text} />
-      </ListItem>
-    ))
-  }
+  return items.map(({ label, text, icon, ...itemProps }, index) => (
+    <ListItem button key={index} {...itemProps}>
+      {icon && <ListItemIcon>{icon}</ListItemIcon>}
+      <ListItemText primary={label} secondary={text} />
+    </ListItem>
+  ))
 }
 
 function AppLayout({ children, appBarItems }) {

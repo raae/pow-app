@@ -6,7 +6,6 @@ import {
   Button,
   makeStyles,
   IconButton,
-  Link,
 } from "@material-ui/core"
 import BrandFooter from "./BrandFooter"
 
