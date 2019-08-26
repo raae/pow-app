@@ -4,10 +4,13 @@ import TodayIcon from "@material-ui/icons/Today"
 
 const navItem = (variant) => {
   switch (variant) {
+    case "app":
+      return {
+        component: Link,
+        to: "/app",
+      }
     case "profile":
       return {
-        label: "Profile",
-        variant: "outlined",
         component: Link,
         to: "/profile",
       }
@@ -15,7 +18,7 @@ const navItem = (variant) => {
     case "today":
       return {
         "aria-label": "Scroll to today",
-        icon: <TodayIcon color="secondary" />,
+        icon: <TodayIcon />,
       }
 
     default:
