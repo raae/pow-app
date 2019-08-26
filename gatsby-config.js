@@ -10,6 +10,14 @@ module.exports = {
       resolve: `gatsby-plugin-material-ui`,
     },
     {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        defaultLayouts: {
+          default: require.resolve("./src/templates/public.js"),
+        },
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `POW!`,

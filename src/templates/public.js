@@ -3,8 +3,11 @@ import { Link } from "gatsby"
 
 import useBlockstack from "./../store/useBlockstack"
 import Layout from "./../components/Layout"
+import Mdx from "./../components/Mdx"
+import BrandButton from "../components/BrandButton"
+import BrandFooter from "../components/BrandFooter"
 
-const PublicTemplate = ({ children }) => {
+const PublicTemplate = ({ children, location }) => {
   const [{ user, isPending }, { signIn }] = useBlockstack()
 
   const signedOutItem = {
@@ -15,29 +18,23 @@ const PublicTemplate = ({ children }) => {
   }
 
   const signedInItem = {
-    label: "Sign In",
+    label: "Go to app",
     variant: "outlined",
     component: Link,
     to: "/app",
   }
 
-  const homeItem = {
-    label: "POW!",
-    component: Link,
-    to: "/",
+  let homeItem = <BrandButton></BrandButton>
+
+  if (location.pathname === "/") {
+    homeItem = null
   }
 
   const authItem = user ? signedInItem : signedOutItem
 
-  const footer = (
-    <>
-      Made with ❤ by <a href="https://raae.codes">@raae</a>.
-    </>
-  )
-
   return (
-    <Layout homeItem={homeItem} navItems={[authItem]} footer={footer}>
-      {children}
+    <Layout homeItem={homeItem} navItems={[authItem]} footer={<BrandFooter />}>
+      <Mdx>{children}</Mdx>
     </Layout>
   )
 }
