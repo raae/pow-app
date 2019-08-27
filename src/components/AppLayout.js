@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "gatsby"
 
 import MenuIcon from "@material-ui/icons/Menu"
 import {
@@ -25,6 +26,7 @@ const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    minHeight: "100vh",
   },
   logo: {
     fontSize: "1.5rem",
@@ -72,6 +74,8 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    display: "flex",
+    flexDirection: "column",
   },
 }))
 
@@ -111,7 +115,7 @@ function AppLayout({ children, appBarItems }) {
   const drawer = (
     <div className={classes.drawer}>
       <Toolbar>
-        <Button to="/app" className={classes.logo} component="h1">
+        <Button to="/app" className={classes.logo} component={Link}>
           POW!
         </Button>
       </Toolbar>
