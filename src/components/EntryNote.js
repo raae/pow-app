@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   submitButton: {
-    display: "inline-block",
+    padding: "6px",
     boxShadow: theme.shadows[3],
     background: theme.palette.secondary.main,
     color: theme.palette.common.white,
@@ -135,7 +135,7 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
 
   return (
     <form className={classes.form} onSubmit={onSubmit}>
-      <Grid container spacing={1} noWrap>
+      <Grid container spacing={1} alignItems="center" noWrap>
         <Grid item>
           <TextField
             className={classes.textField}
