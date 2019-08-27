@@ -5,30 +5,22 @@ import {
   IconButton,
   TextField,
   Button,
+  Grid,
   makeStyles,
 } from "@material-ui/core"
 import EditIcon from "@material-ui/icons/Edit"
 import AddIcon from "@material-ui/icons/Add"
+import CancelIcon from "@material-ui/icons/Cancel"
+import SubmitIcon from "@material-ui/icons/CheckCircle"
 
 const useStyles = makeStyles((theme) => ({
   note: {
     padding: theme.spacing(2),
     display: "flex",
     alignItems: "center",
-    whiteSpace: "pre-wrap",
   },
   text: {
     flexGrow: 1,
-  },
-  textField: {
-    "& label.Mui-focused": {
-      color: theme.palette.text.secondary,
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: theme.palette.grey[500],
-      },
-    },
   },
   edit: {
     float: "right",
@@ -40,16 +32,29 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-start",
   },
   form: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(2.5),
     paddingLeft: theme.spacing(2.5),
     paddingRight: theme.spacing(2.5),
+    "& .MuiGrid-item:first-child": {
+      flexGrow: 1,
+    },
+    "& .MuiInputBase-input": {
+      marginBottom: theme.spacing(0.5),
+    },
+    "& .MuiInput-underline:after": {
+      borderColor: theme.palette.grey[500],
+    },
+    "& > :last-child": {
+      marginTop: theme.spacing(1.5),
+    },
   },
-  formActions: {
-    display: "flex",
-    justifyContent: "flex-end",
-    paddingTop: theme.spacing(1),
-    "& > *": {
-      marginLeft: theme.spacing(2),
+  submitButton: {
+    display: "inline-block",
+    boxShadow: theme.shadows[3],
+    background: theme.palette.secondary.main,
+    color: theme.palette.common.white,
+    "&:hover": {
+      background: theme.palette.secondary.dark,
     },
   },
 }))
@@ -130,35 +135,46 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
 
   return (
     <form className={classes.form} onSubmit={onSubmit}>
-      <TextField
-        classes={{ root: classes.textField }}
-        autoFocus={true}
-        label="A note about today"
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-        placeholder={placeholder}
-        helperText="Hashtags are used to predict how you might feel on this day in your next cycle."
-        fullWidth
-        multiline
-        variant="outlined"
-        margin="normal"
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <div className={classes.formActions}>
-        <Button size="small" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button
-          size="small"
-          type="submit"
-          variant="contained"
-          color="secondary"
-        >
-          Save
-        </Button>
-      </div>
+      <Grid container spacing={1} noWrap>
+        <Grid item>
+          <TextField
+            className={classes.textField}
+            autoFocus={true}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            placeholder={placeholder}
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <IconButton
+            size="small"
+            variant="contained"
+            color="default"
+            aria-label="Cancel"
+            onClick={onCancel}
+            className={classes.cancelButton}
+          >
+            <CancelIcon />
+          </IconButton>
+        </Grid>
+        <Grid item>
+          <IconButton
+            size="small"
+            variant="contained"
+            color="default"
+            type="submit"
+            aria-label="Save"
+            className={classes.submitButton}
+          >
+            <SubmitIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <Typography color="textSecondary" variant="caption" component="p">
+        Hashtags are used to predict how you might feel on this day in your next
+        cycle.
+      </Typography>
     </form>
   )
 }
