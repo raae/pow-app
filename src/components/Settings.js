@@ -24,6 +24,8 @@ const Profile = ({ user }) => {
 
   if (!user) return null
 
+  console.log(user.profile)
+
   return (
     <>
       <Container className={classes.container} maxWidth="sm">
@@ -38,7 +40,15 @@ const Profile = ({ user }) => {
               Stay in the loop
             </Typography>
             <Typography gutterBottom variant="body1">
-              Sign up for the <Link href="">POW! Newsletter</Link>.
+              Sign up for the{" "}
+              <Link
+                target="_blank"
+                rel="noopener"
+                href="http://eepurl.com/gBCgT9"
+              >
+                POW! Newsletter
+              </Link>
+              .
             </Typography>
             <Typography gutterBottom variant="body2" color="textSecondary">
               We send you off to another site to sign up. Your Blockstack id is
