@@ -1,5 +1,7 @@
 import React, { useState } from "react"
+
 import useEntries from "../store/useEntries"
+import useStatus from "../store/useStatus"
 
 import AppTemplate from "../templates/app"
 import Entries from "../components/Entries"
@@ -7,7 +9,8 @@ import navItem from "../components/navItem"
 import Loading from "../components/Loading"
 
 const AppPage = () => {
-  const [{ entriesByDate, isFetched }, { changeEntry }] = useEntries()
+  const [{ isInitialized }] = useStatus()
+  const [{ entriesByDate }, { changeEntry }] = useEntries()
   const [scrollTimestamp, setScrollTimestamp] = useState()
 
   const appBarItems = [
@@ -19,7 +22,7 @@ const AppPage = () => {
 
   return (
     <AppTemplate appBarItems={appBarItems}>
-      {isFetched ? (
+      {isInitialized ? (
         <Entries
           entriesByDate={entriesByDate}
           onEntryChange={changeEntry}

@@ -1,15 +1,16 @@
 import React from "react"
 import { StoreProvider } from "./store.js"
-import syncEntries from "../store/syncEntries"
+import usePersistStorage from "./syncToStorage"
+import { DEFAULT_STATE } from "./constants"
 
 const StoreSync = ({ children }) => {
-  syncEntries()
+  usePersistStorage()
   return children
 }
 
 const withStorage = ({ element }) => {
   return (
-    <StoreProvider>
+    <StoreProvider initialValue={DEFAULT_STATE}>
       <StoreSync>{element}</StoreSync>
     </StoreProvider>
   )

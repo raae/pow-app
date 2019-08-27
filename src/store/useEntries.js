@@ -10,7 +10,7 @@ const tagsFromNote = (note) => {
 }
 
 const useEntries = () => {
-  const [{ entriesByDate, isFetched }, setState] = useStore()
+  const [{ entriesByDate }, setState] = useStore()
 
   const updateEntry = (entry) => {
     setState((state) => ({
@@ -27,12 +27,10 @@ const useEntries = () => {
     }))
   }
 
-  const setFetchedEntriesByDate = (entries) => {
-    // Used when entries are loaded from the
+  const overrideAllEntriesByDate = (newEntries) => {
     setState((state) => ({
       ...state,
-      isFetched: true,
-      entriesByDate: entries,
+      entriesByDate: newEntries,
     }))
   }
 
@@ -52,13 +50,12 @@ const useEntries = () => {
   return [
     {
       entriesByDate,
-      isFetched,
     },
     {
       addEntry,
       changeEntry,
       clearEntry,
-      setFetchedEntriesByDate,
+      overrideAllEntriesByDate,
     },
   ]
 }

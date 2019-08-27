@@ -24,8 +24,6 @@ const Profile = ({ user }) => {
 
   if (!user) return null
 
-  console.log(user.profile)
-
   return (
     <>
       <Container className={classes.container} maxWidth="sm">
