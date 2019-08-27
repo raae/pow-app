@@ -1,4 +1,5 @@
 import { createMuiTheme } from "@material-ui/core/styles"
+import "typeface-seymour-one"
 
 // A custom theme for this app
 const theme = createMuiTheme({

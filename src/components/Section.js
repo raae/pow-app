@@ -16,9 +16,10 @@ const useStyles = makeStyles((theme) => ({
   hero: {
     "& h1": {
       ...theme.typography.h1,
+      fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
       color: theme.palette.primary.main,
-      fontSize: "5rem",
       fontWeight: theme.typography.fontWeightBold,
+      fontSize: "5rem",
       marginBottom: 0,
     },
     "& h2": {

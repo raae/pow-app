@@ -28,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     fontSize: "1.5rem",
-    color: theme.palette.primary.main,
+    fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
     fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.primary.main,
   },
   footer: {
     textAlign: "center",

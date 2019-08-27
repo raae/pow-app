@@ -11218,6 +11218,11 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
+typeface-seymour-one@^0.0.71:
+  version "0.0.71"
+  resolved "https://registry.yarnpkg.com/typeface-seymour-one/-/typeface-seymour-one-0.0.71.tgz#74b0cc72ccd4cadbeed2ca8b636a59ceed431d2a"
+  integrity sha512-UpxlpHoafZous5fTqng1Jtxldn9fBAi6quOiN7lFhw/DCv99SHl8mER0Dta262OwduyzYEAgC02au1SE4cHnYA==
+
 typeforce@^1.11.3, typeforce@^1.11.5:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/typeforce/-/typeforce-1.18.0.tgz#d7416a2c5845e085034d70fcc5b6cc4a90edbfdc"
