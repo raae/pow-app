@@ -13,7 +13,7 @@ export default [
     component: "a",
     target: "_blank",
     rel: "noopener",
-    href: "#",
+    href: "https://www.producthunt.com/",
   },
   {
     label: "Open Website",
