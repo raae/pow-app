@@ -12,7 +12,12 @@ const Link = ({ children, ...props }) => {
   }
 
   return (
-    <MaterialLink component={internal ? GatsbyLink : null} {...props}>
+    <MaterialLink
+      target="_blank"
+      rel="noopener"
+      component={internal ? GatsbyLink : "a"}
+      {...props}
+    >
       {children}
     </MaterialLink>
   )

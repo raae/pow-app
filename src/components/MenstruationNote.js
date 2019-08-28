@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
     paddingBottom: theme.spacing(2),
+
+    "& a": {
+      marginTop: theme.spacing(1),
+    },
   },
 }))
 
@@ -26,7 +30,6 @@ const NoMenstruationTagSetting = () => {
         color="secondary"
         to="/settings"
         size="small"
-        fullWidth
         component={Link}
       >
         Configure tag
@@ -38,7 +41,7 @@ const NoMenstruationTagSetting = () => {
 const NotEnoughData = () => {
   return (
     <>
-      <Typography gutterBottom>
+      <Typography>
         There is not enough data yet to give you personalized predictions. Keep
         on tracking.
       </Typography>
