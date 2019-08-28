@@ -7,6 +7,5 @@ exports.onPostBootstrap = () => {
     /icons\//g,
     "https://www.usepow.app/icons/"
   )
-  console.log(updatedManifest)
-  fs.writeFileSync(MANIFEST_FILE_PATH, manifest)
+  fs.writeFileSync(MANIFEST_FILE_PATH, updatedManifest)
 }
