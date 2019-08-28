@@ -2,7 +2,6 @@ import React, { useState } from "react"
 
 import useEntries from "../store/useEntries"
 import useStatus from "../store/useStatus"
-import useSettings from "../store/useSettings"
 
 import AppTemplate from "../templates/app"
 import Entries from "../components/Entries"
@@ -13,7 +12,6 @@ import MenstruationNote from "../components/MenstruationNote"
 const AppPage = () => {
   const [{ isInitialized }] = useStatus()
   const [{ entriesByDate }, { changeEntry }] = useEntries()
-  const [{ menstruationSettings }] = useSettings()
   const [scrollTimestamp, setScrollTimestamp] = useState()
 
   const appBarItems = [
@@ -23,9 +21,7 @@ const AppPage = () => {
     },
   ]
 
-  const aside = isInitialized && (
-    <MenstruationNote menstruationSettings={menstruationSettings} />
-  )
+  const aside = isInitialized && <MenstruationNote />
 
   return (
     <AppTemplate appBarItems={appBarItems} aside={aside}>

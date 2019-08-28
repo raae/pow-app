@@ -12,6 +12,11 @@ export const DEFAULT_STATE = {
       tag: "",
     },
   },
+  predictions: {
+    defaultCycle: 28,
+    averageCycle: null,
+    currentCycleStart: "2019-08-26",
+  },
   status: {
     [INIT_STATUS_KEY]: false,
   },
