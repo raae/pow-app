@@ -1,6 +1,6 @@
 import { useEffect } from "react"
-import { differenceInDays, addDays, eachDayOfInterval, format } from "date-fns"
-import { values } from "lodash"
+import { differenceInDays, addDays, format } from "date-fns"
+import { values, sum } from "lodash"
 
 import { useStore } from "./store"
 import useEntries from "./useEntries"
@@ -28,12 +28,12 @@ const usePredictions = () => {
     return predictions[key]
   }
 
-  const setCurrentCycleStartEntry = (entry) => {
-    if (entry) {
-      updatePrediction("currentCycleStart", entry.date)
-    } else {
-      updatePrediction("currentCycleStart", null)
-    }
+  const setCurrentCycleStart = (date) => {
+    updatePrediction("currentCycleStart", date)
+  }
+
+  const setAverageCycle = (length) => {
+    updatePrediction("averageCycle", length)
   }
 
   const getCurrentCycleDay = () => {
@@ -76,8 +76,24 @@ const usePredictions = () => {
         }
       })
       .sort((a, b) => (a.date > b.date ? -1 : 1))
+      .map((entry) => entry.date)
 
-    setCurrentCycleStartEntry(cycleStartEntries[0])
+    setCurrentCycleStart(cycleStartEntries[0])
+
+    if (cycleStartEntries.length > 1) {
+      const cycleLengths = cycleStartEntries.map((date, index, array) => {
+        if (index > 0) {
+          return differenceInDays(new Date(array[index - 1]), new Date(date))
+        } else {
+          return 0
+        }
+      })
+
+      const averageCycleLength = sum(cycleLengths) / (cycleLengths.length - 1)
+      setAverageCycle(averageCycleLength)
+    } else {
+      setAverageCycle(null)
+    }
   }, [entriesByDate, menstruationSettings.tag])
 
   return [
