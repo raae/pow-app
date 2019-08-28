@@ -6,6 +6,8 @@ import {
   Button,
   makeStyles,
   IconButton,
+  Typography,
+  Link,
 } from "@material-ui/core"
 import BrandFooter from "./BrandFooter"
 
@@ -55,14 +57,16 @@ const Nav = ({ items = [], ...props }) => (
   </nav>
 )
 
-const BrandLayout = ({ homeItem, navItems, footer, children }) => {
+const BrandLayout = ({ navItems, footer, children }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <AppBar elevation={0} color="inherit" position="sticky">
         <Toolbar>
-          {homeItem}
+          <Typography>
+            This app in in open <Link href="/#beta">beta</Link>.
+          </Typography>
           <Nav items={navItems} className={classes.nav}></Nav>
         </Toolbar>
       </AppBar>
