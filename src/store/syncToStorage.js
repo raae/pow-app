@@ -6,11 +6,11 @@ import useStatus from "./useStatus"
 import useSettings from "./useSettings"
 
 const mergeCustomizer = (objValue, srcValue) => {
-  if (!objValue) {
+  if (!objValue || !objValue.timestamp) {
     return srcValue
   }
 
-  if (!srcValue) {
+  if (!srcValue || !srcValue.timestamp) {
     return objValue
   }
 
@@ -21,7 +21,7 @@ const mergeCustomizer = (objValue, srcValue) => {
   }
 }
 
-const mergeSlice = (sliceA, sliceB) => {
+const mergeSlice = (sliceA = {}, sliceB = {}) => {
   return mergeWith(sliceA, sliceB, mergeCustomizer)
 }
 
@@ -30,7 +30,7 @@ const usePersistStorage = () => {
   const [{ isInitialized }, { setIsInitialized }] = useStatus()
   const [{ settings }, { overrideAllSettings }] = useSettings()
   const [{ entriesByDate }, { overrideAllEntriesByDate }] = useEntries()
-  const [{ auth, user }, { getJson, putJson }] = useBlockstack()
+  const [{ user }, { getJson, putJson }] = useBlockstack()
 
   const fetchPersistedDataAndMerge = async () => {
     const persistedData = await getJson()
@@ -87,7 +87,7 @@ const usePersistStorage = () => {
   }, [user])
 
   useEffect(() => {
-    // if (!user) return
+    if (!user) return
 
     const onWindowFocus = () => {
       fetchPersistedDataAndMerge()
