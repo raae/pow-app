@@ -1,6 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 
+import SEO from "../components/Seo"
 import useBlockstack from "./../store/useBlockstack"
 import Mdx from "./../components/Mdx"
 import Layout from "./../components/BrandLayout"
@@ -33,9 +34,12 @@ const PublicTemplate = ({ children, location }) => {
   const authItem = user ? signedInItem : signedOutItem
 
   return (
-    <Layout homeItem={homeItem} navItems={[authItem]} footer={<Footer />}>
-      <Mdx>{children}</Mdx>
-    </Layout>
+    <>
+      <SEO />
+      <Layout homeItem={homeItem} navItems={[authItem]} footer={<Footer />}>
+        <Mdx>{children}</Mdx>
+      </Layout>
+    </>
   )
 }
 
