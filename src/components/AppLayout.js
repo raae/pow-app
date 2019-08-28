@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: 0,
     width: "100%",
+    zIndex: 10,
     [theme.breakpoints.up("md")]: {
       marginLeft: drawerWidth,
       width: `calc(100% - ${drawerWidth}px)`,
