@@ -65,7 +65,7 @@ const BrandLayout = ({ navItems, footer, children }) => {
       <AppBar elevation={0} color="inherit" position="sticky">
         <Toolbar>
           <Typography>
-            This app in in open <Link href="/#beta">beta</Link>.
+            This app is in open <Link href="/#beta">beta</Link>.
           </Typography>
           <Nav items={navItems} className={classes.nav}></Nav>
         </Toolbar>
