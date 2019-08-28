@@ -4,6 +4,7 @@ import useEntries from "../store/useEntries"
 import useStatus from "../store/useStatus"
 
 import AppTemplate from "../templates/app"
+import SEO from "../components/Seo"
 import Entries from "../components/Entries"
 import navItem from "../components/navItem"
 import Loading from "../components/Loading"
@@ -24,17 +25,20 @@ const AppPage = () => {
   const aside = isInitialized && <MenstruationNote />
 
   return (
-    <AppTemplate appBarItems={appBarItems} aside={aside}>
-      {isInitialized ? (
-        <Entries
-          entriesByDate={entriesByDate}
-          onEntryChange={changeEntry}
-          scrollTimestamp={scrollTimestamp}
-        ></Entries>
-      ) : (
-        <Loading></Loading>
-      )}
-    </AppTemplate>
+    <>
+      <SEO title="Log" />
+      <AppTemplate appBarItems={appBarItems} aside={aside}>
+        {isInitialized ? (
+          <Entries
+            entriesByDate={entriesByDate}
+            onEntryChange={changeEntry}
+            scrollTimestamp={scrollTimestamp}
+          ></Entries>
+        ) : (
+          <Loading></Loading>
+        )}
+      </AppTemplate>
+    </>
   )
 }
 

@@ -5,6 +5,12 @@
  */
 
 module.exports = {
+  siteMetadata: {
+    title: `POW!`,
+    description: `Take charge of your menstrual cycle. POW! is an adaptable privacy-first menstrual tracker app.`,
+    twitter: "@usepowapp",
+    image: "https://www.usepow.app/static/some.png",
+  },
   plugins: [
     {
       resolve: `gatsby-plugin-material-ui`,
@@ -21,7 +27,7 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `POW!`,
-        short_name: `A privacy-first period tracker app`,
+        short_name: `POW!`,
         start_url: `/`,
         background_color: `#fafafa`,
         theme_color: `#e53935`,
