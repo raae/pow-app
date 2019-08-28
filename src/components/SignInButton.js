@@ -15,7 +15,7 @@ const SignInButton = ({ children, ...props }) => {
     )
   } else {
     return (
-      <Button to="/app" disabled={isPending} onClick={signIn} {...props}>
+      <Button disabled={isPending} onClick={signIn} {...props}>
         {children}
       </Button>
     )

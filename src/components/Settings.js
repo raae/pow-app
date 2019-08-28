@@ -9,6 +9,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 
+import MenstruationSettings from "./MenstruationSettings"
+
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: theme.spacing(10),
@@ -20,11 +22,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Profile = ({ user }) => {
-  const classes = useStyles()
-
   if (!user) return null
 
-  console.log(user.profile)
+  const classes = useStyles()
 
   return (
     <>
@@ -32,6 +32,9 @@ const Profile = ({ user }) => {
         <Card>
           <CardHeader title={user.profile.name} subheader={user.username} />
         </Card>
+      </Container>
+      <Container className={classes.container} maxWidth="sm">
+        <MenstruationSettings />
       </Container>
       <Container className={classes.container} maxWidth="sm">
         <Card>

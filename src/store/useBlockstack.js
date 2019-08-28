@@ -5,13 +5,9 @@ import { useStore } from "./store"
 
 const FILE_PATH = "version-0.json"
 
-const defaultState = {
-  isPending: true,
-}
-
 const makeUserSession = () => {
   // Options are supposed to be optional,
-  // but for some reason this throws in SSR
+  // but for some reason this throws an error in SSR
   const options = {
     appConfig: new AppConfig(),
   }
@@ -22,7 +18,6 @@ const useBlockstack = () => {
   const userSession = useRef(makeUserSession()).current
 
   const [{ auth }, setState] = useStore()
-  const { user, isPending } = auth || defaultState
 
   const updateAuthState = ({ user, isPending }) => {
     setState((state) => ({
@@ -32,6 +27,13 @@ const useBlockstack = () => {
         isPending,
       },
     }))
+  }
+
+  const getValue = (key) => {
+    if (!auth.hasOwnProperty(key)) {
+      console.warn(`No ${key} on auth slice of state`, auth)
+    }
+    return auth[key]
   }
 
   const signIn = () => {
@@ -57,8 +59,9 @@ const useBlockstack = () => {
   }
 
   const putJson = async (json) => {
-    if (!user) return
+    if (!auth.user) return
 
+    console.log("putJson", FILE_PATH, json)
     try {
       return userSession.putFile(FILE_PATH, JSON.stringify(json))
     } catch (error) {
@@ -67,18 +70,20 @@ const useBlockstack = () => {
   }
 
   const getJson = async () => {
-    if (!user) return
+    if (!auth.user) return
 
     try {
       const content = await userSession.getFile(FILE_PATH)
-      return JSON.parse(content)
+      const parsedContent = JSON.parse(content)
+      console.log("getJson", FILE_PATH, parsedContent)
+      return parsedContent
     } catch (error) {
-      console.warn(error)
+      console.warn("getJson", error)
     }
   }
 
   useEffect(() => {
-    if (!userSession || user) return
+    if (!userSession || auth.user) return
 
     if (userSession.isUserSignedIn()) {
       const user = userSession.loadUserData()
@@ -95,8 +100,9 @@ const useBlockstack = () => {
 
   return [
     {
-      user: user,
-      isPending: isPending,
+      auth,
+      user: getValue("user"),
+      isPending: getValue("isPending"),
     },
     {
       signIn,

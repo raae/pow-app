@@ -135,7 +135,7 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
 
   return (
     <form className={classes.form} onSubmit={onSubmit}>
-      <Grid container spacing={1} alignItems="center" noWrap>
+      <Grid container spacing={1} alignItems="center">
         <Grid item>
           <TextField
             className={classes.textField}
