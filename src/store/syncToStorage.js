@@ -52,11 +52,11 @@ const usePersistStorage = () => {
       )
 
       mergedData.settings = mergeSlice(persistedData.settings, settings)
-
-      setIsInitialized(true)
-      overrideAllEntriesByDate(mergedData.entriesByDate)
-      overrideAllSettings(mergedData.settings)
     }
+
+    setIsInitialized(true)
+    overrideAllEntriesByDate(mergedData.entriesByDate)
+    overrideAllSettings(mergedData.settings)
 
     return mergedData
   }

@@ -3,7 +3,7 @@ import { UserSession, AppConfig } from "blockstack"
 
 import { useStore } from "./store"
 
-const FILE_PATH = "test/test1.json"
+const FILE_PATH = "version-0.json"
 
 const makeUserSession = () => {
   // Options are supposed to be optional,
