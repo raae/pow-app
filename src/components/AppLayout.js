@@ -63,6 +63,15 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: "auto",
     },
   },
+  aside: {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+    },
+  },
   menuButton: {
     marginRight: theme.spacing(2),
     [theme.breakpoints.up("md")]: {
@@ -74,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    alignItems: "stretch",
     display: "flex",
     flexDirection: "column",
   },
@@ -104,7 +114,7 @@ const ListItems = ({ items = [] }) => {
   ))
 }
 
-function AppLayout({ children, appBarItems }) {
+function AppLayout({ children, appBarItems, aside }) {
   const classes = useStyles()
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
@@ -186,6 +196,7 @@ function AppLayout({ children, appBarItems }) {
         <div className={classes.toolbar} />
         {children}
       </main>
+      <aside className={classes.aside}>{aside}</aside>
     </div>
   )
 }

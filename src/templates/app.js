@@ -4,7 +4,7 @@ import { navigate } from "gatsby"
 import useBlockstack from "../store/useBlockstack"
 import Layout from "../components/AppLayout"
 
-const AppTemplate = ({ children, appBarItems }) => {
+const AppTemplate = ({ children, appBarItems, aside }) => {
   const [{ isPending, user }] = useBlockstack()
 
   if (!user && !isPending) {
@@ -15,7 +15,11 @@ const AppTemplate = ({ children, appBarItems }) => {
     return null
   }
 
-  return <Layout appBarItems={appBarItems}>{children}</Layout>
+  return (
+    <Layout appBarItems={appBarItems} aside={aside}>
+      {children}
+    </Layout>
+  )
 }
 
 export default AppTemplate
