@@ -9,7 +9,7 @@ export const DEFAULT_STATE = {
   entriesByDate: {},
   settings: {
     [MENSTRUATION_SETTINGS_KEY]: {
-      tags: [],
+      tag: "",
     },
   },
   status: {

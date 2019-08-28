@@ -61,7 +61,7 @@ const useBlockstack = () => {
   const putJson = async (json) => {
     if (!auth.user) return
 
-    console.log("putJson", FILE_PATH)
+    console.log("putJson", FILE_PATH, json)
     try {
       return userSession.putFile(FILE_PATH, JSON.stringify(json))
     } catch (error) {
@@ -73,9 +73,9 @@ const useBlockstack = () => {
     if (!auth.user) return
 
     try {
-      console.log("getJson", FILE_PATH)
       const content = await userSession.getFile(FILE_PATH)
       const parsedContent = JSON.parse(content)
+      console.log("getJson", FILE_PATH, parsedContent)
       return parsedContent
     } catch (error) {
       console.warn("getJson", error)
