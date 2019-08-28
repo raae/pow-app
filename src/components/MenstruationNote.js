@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(3),
     paddingBottom: theme.spacing(2),
-    zIndex: 10,
+    zIndex: 100,
   },
 }))
 

@@ -15,7 +15,7 @@ export const DEFAULT_STATE = {
   predictions: {
     defaultCycle: 28,
     averageCycle: null,
-    currentCycleStart: "2019-08-26",
+    currentCycleStart: null,
   },
   status: {
     [INIT_STATUS_KEY]: false,

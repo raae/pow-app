@@ -28,7 +28,7 @@ const EntryPredictions = ({ predictions = [], onAddTag, ...props }) => {
         </Typography>
       ) : (
         <Typography variant="caption">
-          Around this day in your cycle you usually do not tag anything.
+          Predictions based on your tags coming soon.
         </Typography>
       )}
       {predictions.map((pred) => {
