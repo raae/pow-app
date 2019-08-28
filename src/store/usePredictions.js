@@ -73,6 +73,8 @@ const usePredictions = () => {
           } else {
             return !yesterdayEntry.tags.includes(tag)
           }
+        } else {
+          return false
         }
       })
       .sort((a, b) => (a.date > b.date ? -1 : 1))
@@ -89,8 +91,8 @@ const usePredictions = () => {
         }
       })
 
-      const averageCycleLength = sum(cycleLengths) / (cycleLengths.length - 1)
-      setAverageCycle(averageCycleLength)
+      const average = sum(cycleLengths) / (cycleLengths.length - 1)
+      setAverageCycle(average)
     } else {
       setAverageCycle(null)
     }
@@ -98,6 +100,8 @@ const usePredictions = () => {
 
   return [
     {
+      defaultCycle: getPrediction("defaultCycle"),
+      averageCycle: getPrediction("averageCycle"),
       currentCycleDay: getCurrentCycleDay(),
       nextMenstruation: getNextMenstruation(),
     },

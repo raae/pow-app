@@ -60,7 +60,7 @@ const NextMenstruation = ({ cycleDay, nextMenstruation, tag }) => {
   )
 }
 
-const MenstruationNote = ({}) => {
+const MenstruationNote = () => {
   const classes = useStyles()
   const [{ menstruationSettings }] = useSettings()
   const [{ currentCycleDay, nextMenstruation }] = usePredictions()
