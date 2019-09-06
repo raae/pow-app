@@ -5,7 +5,7 @@ import { format } from "date-fns"
 import { Paper, Button, Typography, makeStyles } from "@material-ui/core"
 
 import useSettings from "../store/useSettings"
-import usePredictions from "../store/usePredictions"
+import useCycle from "../store/useCycle"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,44 +40,53 @@ const NoMenstruationTagSetting = () => {
 
 const NotEnoughData = () => {
   return (
-    <>
-      <Typography>
-        There is not enough data yet to give you personalized predictions. Keep
-        on tracking.
-      </Typography>
-    </>
+    <Typography>
+      There is not enough data yet to give you personalized predictions. Keep on
+      tracking.
+    </Typography>
   )
 }
 
-const NextMenstruation = ({ cycleDay, nextMenstruation, tag }) => {
+const NextNote = ({ nextStartDate, tag }) => {
+  if (!nextStartDate) return null
+
+  nextStartDate = new Date(nextStartDate)
   return (
-    <>
-      <Typography gutterBottom>
-        Your are on day <strong>{cycleDay}</strong> of your current cycle.
-      </Typography>
-      <Typography gutterBottom>
-        Next <strong>#{tag}</strong> is coming around{" "}
-        <strong>{format(nextMenstruation, "eeee MMMM do")}</strong>.
-      </Typography>
-    </>
+    <Typography gutterBottom>
+      Next <strong>#{tag}</strong> is coming around{" "}
+      <strong>{format(nextStartDate, "eeee MMMM do")}</strong>.
+    </Typography>
+  )
+}
+
+const CycleDayNote = ({ cycleDay }) => {
+  if (!cycleDay) return null
+  return (
+    <Typography gutterBottom>
+      Your are on day <strong>{cycleDay}</strong> of your current cycle.
+    </Typography>
   )
 }
 
 const MenstruationNote = () => {
   const classes = useStyles()
   const [{ menstruationSettings }] = useSettings()
-  const [{ currentCycleDay, nextMenstruation }] = usePredictions()
+  const [{ nextStartDate }, { getCurrentDayInCycle }] = useCycle()
+  const cycleDay = getCurrentDayInCycle(Date.now())
+  const menstruationTag = menstruationSettings.tag
 
   let note = <NotEnoughData />
-  if (currentCycleDay) {
+  if (cycleDay || nextStartDate) {
     note = (
-      <NextMenstruation
-        cycleDay={currentCycleDay}
-        nextMenstruation={nextMenstruation}
-        tag={menstruationSettings.tag}
-      ></NextMenstruation>
+      <>
+        <CycleDayNote cycleDay={cycleDay}></CycleDayNote>
+        <NextNote
+          nextStartDate={nextStartDate}
+          tag={menstruationTag}
+        ></NextNote>
+      </>
     )
-  } else if (!menstruationSettings.tag) {
+  } else if (!menstruationTag) {
     note = <NoMenstruationTagSetting />
   }
   return (
