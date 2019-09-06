@@ -12,10 +12,12 @@ export const DEFAULT_STATE = {
       tag: "",
     },
   },
-  predictions: {
-    defaultCycle: 28,
-    averageCycle: null,
-    currentCycleStart: null,
+  cycle: {
+    startDates: [],
+    currentStartDate: null,
+    nextStartDate: null,
+    averageLength: null,
+    tags: {},
   },
   status: {
     [INIT_STATUS_KEY]: false,

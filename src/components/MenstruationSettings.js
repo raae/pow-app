@@ -17,7 +17,7 @@ import CancelIcon from "@material-ui/icons/Cancel"
 import SubmitIcon from "@material-ui/icons/CheckCircle"
 
 import useSettings from "../store/useSettings"
-import usePredictions from "../store/usePredictions"
+import useCycle from "../store/useCycle"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -165,7 +165,7 @@ const TagForm = ({ tag, onTagChange, onClose }) => {
 const MenstruationSettings = () => {
   const classes = useStyles()
   const [{ menstruationSettings }, { setMenstruationSettings }] = useSettings()
-  const [{ averageCycle, defaultCycle }] = usePredictions()
+  const [{ averageLength }] = useCycle()
   const [isEditing, setIsEditing] = useState(false)
 
   return (
@@ -193,17 +193,10 @@ const MenstruationSettings = () => {
               onClose={() => setIsEditing(false)}
             />
           )}
-          {averageCycle && (
+          {averageLength > 1 && (
             <Typography gutterBottom variant="body2" color="textSecondary">
-              POW! uses your tracked average cycle length of{" "}
-              <strong>{averageCycle} days</strong>.
-            </Typography>
-          )}
-          {!averageCycle && (
-            <Typography gutterBottom variant="body2" color="textSecondary">
-              POW! uses a default cycle length of{" "}
-              <strong>{defaultCycle} days</strong> until you have tracked a full
-              cycle.
+              Your tracked average cycle length is{" "}
+              <strong>{averageLength} days</strong>.
             </Typography>
           )}
         </CardContent>
