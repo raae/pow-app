@@ -30,7 +30,7 @@ const useCycle = () => {
   const getCurrentStartDate = () => {
     const startDates = getCycleValue("startDates")
     if (startDates.length > 0) {
-      return startDates[0]
+      return startDates[startDates.length - 1]
     }
   }
 

@@ -40,8 +40,9 @@ const entryHasTag = (entry, tag) => {
 }
 
 export const analyzeEntries = ({ entriesByDate, tag }) => {
+  // Sort entries by earliest first
   const sortedEntries = values(entriesByDate).sort((a, b) =>
-    a.date > b.date ? -1 : 1
+    a.date < b.date ? -1 : 1
   )
 
   const startDates = []
@@ -51,18 +52,14 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
   for (let entry of sortedEntries) {
     if (entryHasTag(entry, tag)) {
       const lastStartDate = getLastInArray(startDates)
-      let difference = daysBetweenDates(entry.date, lastStartDate)
-
-      if (difference >= 14) {
-        startDates.push(entry.date)
-        cycleLengths.push(difference)
-      } else {
-        replaceLastItemInArray(startDates, entry.date)
-
-        if (difference > 0 && cycleLengths.length > 0) {
-          difference = getLastInArray(cycleLengths) + difference
-          replaceLastItemInArray(cycleLengths, difference)
+      if (lastStartDate) {
+        let difference = daysBetweenDates(entry.date, lastStartDate)
+        if (difference >= 14) {
+          startDates.push(entry.date)
+          cycleLengths.push(difference)
         }
+      } else {
+        startDates.push(entry.date)
       }
     }
   }

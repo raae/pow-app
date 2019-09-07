@@ -68,7 +68,7 @@ describe("#analyzeEntries", () => {
     const tag = "menstruation"
 
     const result = {
-      startDates: ["2019-08-25", "2019-08-02"],
+      startDates: ["2019-08-02", "2019-08-25"],
       averageLength: 23,
       tags: {},
     }
@@ -99,7 +99,7 @@ describe("#analyzeEntries", () => {
     const averageLength = 28
 
     const result = {
-      startDates: ["2019-07-16", "2019-06-25", "2019-06-04"],
+      startDates: ["2019-06-04", "2019-06-25", "2019-07-16"],
       averageLength: 21,
       tags: {},
     }
@@ -157,7 +157,7 @@ describe("#analyzeEntries", () => {
     const averageLength = 28
 
     const result = {
-      startDates: ["2019-07-10", "2019-06-20", "2019-06-01"],
+      startDates: ["2019-06-01", "2019-06-20", "2019-07-10"],
       // 19 days, 20 days
       averageLength: 19.5,
       tags: {
