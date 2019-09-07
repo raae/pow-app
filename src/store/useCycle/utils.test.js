@@ -2,7 +2,7 @@ import { analyzeEntries, daysBetweenDates } from "./utils"
 
 describe("#daysBetweenDates", () => {
   test("date strings", () => {
-    expect(daysBetweenDates("2019-01-01", "2019-01-02")).toBe(1)
+    expect(daysBetweenDates("2019-01-01", "2019-01-02")).toBe(-1)
   })
 
   test("date and date string", () => {
@@ -12,7 +12,7 @@ describe("#daysBetweenDates", () => {
   test("dates", () => {
     expect(
       daysBetweenDates(new Date("2019-01-04"), new Date("2019-01-10"))
-    ).toBe(6)
+    ).toBe(-6)
   })
 })
 
@@ -39,16 +39,30 @@ describe("#analyzeEntries", () => {
         date: "2019-08-03",
         tags: ["flo"],
       },
+      "2019-08-04": {
+        date: "2019-08-04",
+        tags: ["happy", "cosy"],
+      },
       "2019-08-06": {
         date: "2019-08-06",
         tags: ["flo"],
+      },
+      "2019-08-08": {
+        date: "2019-08-08",
+        tags: ["happy", "hungry"],
       },
     }
     const tag = "flo"
 
     const result = {
       startDates: ["2019-08-02"],
-      tags: {},
+      tags: {
+        1: new Set(["flo"]),
+        2: new Set(["flo"]),
+        3: new Set(["happy", "cosy"]),
+        5: new Set(["flo"]),
+        7: new Set(["happy", "hungry"]),
+      },
     }
 
     expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
@@ -70,7 +84,9 @@ describe("#analyzeEntries", () => {
     const result = {
       startDates: ["2019-08-02", "2019-08-25"],
       averageLength: 23,
-      tags: {},
+      tags: {
+        1: new Set(["menstruation"]),
+      },
     }
 
     expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
@@ -82,6 +98,10 @@ describe("#analyzeEntries", () => {
         date: "2019-06-04",
         tags: ["period"],
       },
+      "2019-06-05": {
+        date: "2019-06-05",
+        tags: ["period", "hungry"],
+      },
       "2019-06-08": {
         date: "2019-06-08",
         tags: ["period"],
@@ -89,6 +109,10 @@ describe("#analyzeEntries", () => {
       "2019-06-25": {
         date: "2019-06-25",
         tags: ["period"],
+      },
+      "2019-06-26": {
+        date: "2019-06-26",
+        tags: ["period", "hungry", "angry"],
       },
       "2019-07-16": {
         date: "2019-07-16",
@@ -101,7 +125,11 @@ describe("#analyzeEntries", () => {
     const result = {
       startDates: ["2019-06-04", "2019-06-25", "2019-07-16"],
       averageLength: 21,
-      tags: {},
+      tags: {
+        1: new Set(["period"]),
+        2: new Set(["period", "hungry", "angry"]),
+        5: new Set(["period"]),
+      },
     }
 
     expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
@@ -161,13 +189,14 @@ describe("#analyzeEntries", () => {
       // 19 days, 20 days
       averageLength: 19.5,
       tags: {
-        // 0: ["period", "angry", "tired"],
-        // 1: ["period"],
-        // 2: ["period"],
-        // 9: ["period"],
-        // 11: ["happy", "hungry"],
-        // 13: ["exhausted"],
-        // 14: ["exhausted"],
+        1: new Set(["period", "angry", "tired"]),
+        2: new Set(["period"]),
+        3: new Set(["period"]),
+        6: new Set(["period"]),
+        11: new Set(["happy"]),
+        12: new Set(["hungry"]),
+        14: new Set(["exhausted"]),
+        15: new Set(["exhausted"]),
       },
     }
     expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)

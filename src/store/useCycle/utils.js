@@ -19,9 +19,9 @@ export const daysBetweenDates = (dateA, dateB) => {
     dateB = new Date(dateB)
   }
 
-  if (isNaN(dateA.valueOf()) || isNaN(dateB.valueOf())) return 0
+  if (isNaN(dateA.valueOf()) || isNaN(dateB.valueOf())) return -1
 
-  return Math.abs(differenceInDays(dateA, dateB))
+  return differenceInDays(dateA, dateB)
 }
 
 export const addDaysToDate = (date, days) => {
@@ -47,19 +47,31 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
 
   const startDates = []
   const cycleLengths = []
+  const tags = {}
   let averageLength = undefined
 
   for (let entry of sortedEntries) {
+    const lastStartDate = getLastInArray(startDates)
+    let difference = daysBetweenDates(entry.date, lastStartDate)
+
     if (entryHasTag(entry, tag)) {
-      const lastStartDate = getLastInArray(startDates)
-      if (lastStartDate) {
-        let difference = daysBetweenDates(entry.date, lastStartDate)
-        if (difference >= 14) {
-          startDates.push(entry.date)
-          cycleLengths.push(difference)
-        }
-      } else {
+      if (difference >= 14) {
         startDates.push(entry.date)
+        cycleLengths.push(difference)
+        difference = 0
+      } else if (difference === -1) {
+        startDates.push(entry.date)
+        difference = 0
+      }
+    }
+
+    if (difference > -1) {
+      // Tag dictionary starts on day 1
+      difference++
+      if (tags[difference]) {
+        tags[difference] = new Set([...tags[difference], ...entry.tags])
+      } else {
+        tags[difference] = new Set(entry.tags)
       }
     }
   }
@@ -71,6 +83,6 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
   return {
     startDates,
     averageLength,
-    tags: {},
+    tags,
   }
 }

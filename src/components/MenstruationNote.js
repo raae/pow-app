@@ -71,8 +71,8 @@ const CycleDayNote = ({ cycleDay }) => {
 const MenstruationNote = () => {
   const classes = useStyles()
   const [{ menstruationSettings }] = useSettings()
-  const [{ nextStartDate }, { getCurrentDayInCycle }] = useCycle()
-  const cycleDay = getCurrentDayInCycle(Date.now())
+  const [{ nextStartDate }, { getDayInCycle }] = useCycle()
+  const cycleDay = getDayInCycle(Date.now())
   const menstruationTag = menstruationSettings.tag
 
   let note = <NotEnoughData />

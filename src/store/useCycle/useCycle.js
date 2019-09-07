@@ -27,6 +27,10 @@ const useCycle = () => {
     return cycle[key]
   }
 
+  const getAverageLength = () => {
+    return Math.floor(getCycleValue("averageLength"))
+  }
+
   const getCurrentStartDate = () => {
     const startDates = getCycleValue("startDates")
     if (startDates.length > 0) {
@@ -36,25 +40,38 @@ const useCycle = () => {
 
   const getNextStartDate = () => {
     const currentStartDate = getCurrentStartDate()
-    const averageLength = getCycleValue("averageLength")
+    const averageLength = getAverageLength()
     if (averageLength && currentStartDate) {
       return addDaysToDate(currentStartDate, averageLength)
     }
   }
 
-  const getCurrentDayInCycle = (date) => {
+  const getDayInCycle = (date) => {
     const currentStartDate = getCurrentStartDate()
     if (currentStartDate) {
-      return daysBetweenDates(date, currentStartDate) + 1
+      const difference = daysBetweenDates(date, currentStartDate)
+      if (difference > -1) {
+        return (difference % getAverageLength()) + 1
+      }
+    }
+  }
+
+  const getTagsForCycleDay = (cycleDay) => {
+    if (cycleDay > 0) {
+      const tagsByCycleDay = getCycleValue("tags")
+      const tags = tagsByCycleDay[cycleDay]
+      if (tags) {
+        return [...tags]
+      } else {
+        return []
+      }
     }
   }
 
   useEffect(() => {
     const tag = menstruationSettings.tag
-    const averageLength = cycle.averageLength
-    const newCycle = analyzeEntries({ entriesByDate, tag, averageLength })
+    const newCycle = analyzeEntries({ entriesByDate, tag })
     updateCycle(newCycle)
-    console.log(newCycle)
   }, [entriesByDate, menstruationSettings.tag])
 
   return [
@@ -62,11 +79,11 @@ const useCycle = () => {
       startDates: getCycleValue("startDates"),
       currentStartDate: getCurrentStartDate(),
       nextStartDate: getNextStartDate(),
-      averageLength: getCycleValue("averageLength"),
-      tags: getCycleValue("tags"),
+      averageLength: getAverageLength(),
     },
     {
-      getCurrentDayInCycle,
+      getDayInCycle,
+      getTagsForCycleDay,
     },
   ]
 }

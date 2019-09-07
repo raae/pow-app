@@ -16,8 +16,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EntryPredictions = ({ predictions = [], onAddTag, ...props }) => {
+const EntryPredictions = ({ predictions, onAddTag, ...props }) => {
   const classes = useStyles()
+  if (!predictions) return null
+
   const hasPredictions = predictions.length > 0
 
   return (
@@ -27,20 +29,10 @@ const EntryPredictions = ({ predictions = [], onAddTag, ...props }) => {
           Around this day in your cycle you usually tag:
         </Typography>
       ) : (
-        <Typography variant="caption">
-          Predictions based on your tags coming soon.
-        </Typography>
+        <Typography variant="caption">Nothing to report.</Typography>
       )}
       {predictions.map((pred) => {
-        return (
-          <Chip
-            key={pred.label}
-            size="small"
-            label={pred.label}
-            style={{ opacity: pred.confidence }}
-            {...props}
-          />
-        )
+        return <Chip key={pred} size="small" label={pred} {...props} />
       })}
     </aside>
   )

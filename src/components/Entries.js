@@ -2,9 +2,15 @@ import React, { useEffect } from "react"
 import { Element, scroller } from "react-scroll"
 import { addDays, eachDayOfInterval, format } from "date-fns"
 
+import useEntries from "../store/useEntries"
+import useCycle from "../store/useCycle"
+
 import Entry from "./Entry"
 
-const Entries = ({ entriesByDate = {}, onEntryChange, scrollTimestamp }) => {
+const Entries = ({ scrollTimestamp }) => {
+  const [{ entriesByDate }, { changeEntry }] = useEntries()
+  const [_, { getDayInCycle, getTagsForCycleDay }] = useCycle()
+
   const today = new Date()
 
   const range = eachDayOfInterval({
@@ -13,13 +19,15 @@ const Entries = ({ entriesByDate = {}, onEntryChange, scrollTimestamp }) => {
   }).map((date) => {
     const dateString = format(date, "yyyy-MM-dd")
     const entry = entriesByDate[dateString] || {}
+    const dayInCycle = getDayInCycle(dateString)
 
     return {
       entry: {
         ...entry,
         date: dateString,
+        dayInCycle,
       },
-      predictions: [], // Need to add logic
+      predictions: getTagsForCycleDay(dayInCycle),
     }
   })
 
@@ -34,7 +42,7 @@ const Entries = ({ entriesByDate = {}, onEntryChange, scrollTimestamp }) => {
         <Entry
           entry={entry}
           predictions={predictions}
-          onEntryChange={onEntryChange}
+          onEntryChange={changeEntry}
         ></Entry>
       </Element>
     )
