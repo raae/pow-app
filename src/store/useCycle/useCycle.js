@@ -79,7 +79,7 @@ const useCycle = () => {
   }
 
   const getTagsForCycleDay = (cycleDay) => {
-    if (cycleDay < 1) return
+    if (!cycleDay || cycleDay < 1) return
 
     const tagsForCurrentCycle = getCurrentCycleTags(cycleDay)
     const tagsForFutureCycles = getFutureCycleTags(cycleDay)
