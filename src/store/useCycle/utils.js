@@ -1,4 +1,4 @@
-import { values, sum } from "lodash"
+import { values, sum, merge } from "lodash"
 import { differenceInDays, addDays, format } from "date-fns"
 
 const getLastInArray = (array) => {
@@ -46,8 +46,9 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
 
   const startDates = []
   const cycleLengths = []
-  const tags = {}
+  const cycleTags = []
   let averageLength = undefined
+  let tags = {}
 
   for (let entry of sortedEntries) {
     const lastStartDate = getLastInArray(startDates)
@@ -66,17 +67,21 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
 
     if (difference > -1) {
       // Tag dictionary starts on day 1
-      difference++
-      if (tags[difference]) {
-        tags[difference] = new Set([...tags[difference], ...entry.tags])
+      const cycle = startDates.length
+      const cycleDay = difference + 1
+      if (cycleTags[cycle]) {
+        cycleTags[cycle][cycleDay] = entry.tags
       } else {
-        tags[difference] = new Set(entry.tags)
+        cycleTags.push({ [cycleDay]: entry.tags })
       }
     }
   }
 
+  // Check if we have a full cycle
   if (cycleLengths.length > 0) {
     averageLength = sum(cycleLengths) / cycleLengths.length
+    // Do not use latest cycle data for predictions
+    tags = merge({}, ...cycleTags.slice(0, cycleTags.length - 1))
   }
 
   return {
