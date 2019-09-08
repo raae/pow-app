@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry = {}, predictions, onEntryChange }) => {
+const Entry = ({ entry = {}, isMenstruation, predictions, onEntryChange }) => {
   const classes = useStyles()
   const date = new Date(entry.date)
   const isFuture = fnsIsFuture(date)
@@ -54,7 +54,11 @@ const Entry = ({ entry = {}, predictions, onEntryChange }) => {
 
   return (
     <Container component="article" className={classes.root}>
-      <EntryHeader date={date} isToday={isToday}></EntryHeader>
+      <EntryHeader
+        date={date}
+        isToday={isToday}
+        isMenstruation={isMenstruation}
+      ></EntryHeader>
       {!isFuture && (
         <Paper
           elevation={isToday ? 3 : 1}

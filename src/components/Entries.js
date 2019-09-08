@@ -10,8 +10,7 @@ import Entry from "./Entry"
 const Entries = ({ scrollTimestamp }) => {
   const [{ entriesByDate }, { changeEntry }] = useEntries()
   const [
-    // eslint-disable-next-line
-    _,
+    { menstruationTag },
     { getDayInCycle, getTagsForCycleDay, getEntryKeyFromDate },
   ] = useCycle()
 
@@ -24,14 +23,25 @@ const Entries = ({ scrollTimestamp }) => {
     const entryKey = getEntryKeyFromDate(date)
     const entry = entriesByDate[entryKey] || {}
     const dayInCycle = getDayInCycle(entryKey)
+    const predictions = getTagsForCycleDay(dayInCycle)
+    let hasMenstruationTag = false
+
+    if (entry.tags) {
+      hasMenstruationTag =
+        hasMenstruationTag || entry.tags.includes(menstruationTag)
+    }
+    if (predictions) {
+      hasMenstruationTag =
+        hasMenstruationTag || predictions.includes(menstruationTag)
+    }
 
     return {
       entry: {
         ...entry,
         date: entryKey,
-        dayInCycle,
       },
-      predictions: getTagsForCycleDay(dayInCycle),
+      predictions,
+      isMenstruation: hasMenstruationTag,
     }
   })
 
@@ -40,12 +50,13 @@ const Entries = ({ scrollTimestamp }) => {
     scroller.scrollTo(getEntryKeyFromDate(yesterday), { offset: -60 })
   }, [scrollTimestamp])
 
-  return range.map(({ entry, predictions }) => {
+  return range.map(({ entry, predictions, isMenstruation }) => {
     return (
       <Element key={entry.date} name={entry.date}>
         <Entry
           entry={entry}
           predictions={predictions}
+          isMenstruation={isMenstruation}
           onEntryChange={changeEntry}
         ></Entry>
       </Element>
