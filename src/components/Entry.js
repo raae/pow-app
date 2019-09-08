@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry = {}, predictions = [], onEntryChange }) => {
+const Entry = ({ entry = {}, predictions, onEntryChange }) => {
   const classes = useStyles()
   const date = new Date(entry.date)
   const isFuture = fnsIsFuture(date)

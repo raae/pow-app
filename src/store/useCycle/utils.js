@@ -6,9 +6,8 @@ const getLastInArray = (array) => {
   return array[index]
 }
 
-const replaceLastItemInArray = (array, item) => {
-  const index = array.length > 0 ? array.length - 1 : 0
-  array[index] = item
+export const formatDateToEntryKey = (date) => {
+  return format(date, "yyyy-MM-dd")
 }
 
 export const daysBetweenDates = (dateA, dateB) => {
@@ -19,9 +18,9 @@ export const daysBetweenDates = (dateA, dateB) => {
     dateB = new Date(dateB)
   }
 
-  if (isNaN(dateA.valueOf()) || isNaN(dateB.valueOf())) return 0
+  if (isNaN(dateA.valueOf()) || isNaN(dateB.valueOf())) return -1
 
-  return Math.abs(differenceInDays(dateA, dateB))
+  return differenceInDays(dateA, dateB)
 }
 
 export const addDaysToDate = (date, days) => {
@@ -40,29 +39,38 @@ const entryHasTag = (entry, tag) => {
 }
 
 export const analyzeEntries = ({ entriesByDate, tag }) => {
+  // Sort entries by earliest first
   const sortedEntries = values(entriesByDate).sort((a, b) =>
-    a.date > b.date ? -1 : 1
+    a.date < b.date ? -1 : 1
   )
 
   const startDates = []
   const cycleLengths = []
+  const tags = {}
   let averageLength = undefined
 
   for (let entry of sortedEntries) {
-    if (entryHasTag(entry, tag)) {
-      const lastStartDate = getLastInArray(startDates)
-      let difference = daysBetweenDates(entry.date, lastStartDate)
+    const lastStartDate = getLastInArray(startDates)
+    let difference = daysBetweenDates(entry.date, lastStartDate)
 
+    if (entryHasTag(entry, tag)) {
       if (difference >= 14) {
         startDates.push(entry.date)
         cycleLengths.push(difference)
-      } else {
-        replaceLastItemInArray(startDates, entry.date)
+        difference = 0
+      } else if (difference === -1) {
+        startDates.push(entry.date)
+        difference = 0
+      }
+    }
 
-        if (difference > 0 && cycleLengths.length > 0) {
-          difference = getLastInArray(cycleLengths) + difference
-          replaceLastItemInArray(cycleLengths, difference)
-        }
+    if (difference > -1) {
+      // Tag dictionary starts on day 1
+      difference++
+      if (tags[difference]) {
+        tags[difference] = new Set([...tags[difference], ...entry.tags])
+      } else {
+        tags[difference] = new Set(entry.tags)
       }
     }
   }
@@ -74,6 +82,6 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
   return {
     startDates,
     averageLength,
-    tags: {},
+    tags,
   }
 }
