@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EntryPredictions = ({ predictions, onAddTag, ...props }) => {
   const classes = useStyles()
+
   if (!predictions) return null
 
   const hasPredictions = predictions.length > 0
