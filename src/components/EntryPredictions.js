@@ -1,5 +1,5 @@
 import React from "react"
-import { Chip, Typography, makeStyles } from "@material-ui/core"
+import { Typography, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,15 +27,15 @@ const EntryPredictions = ({ predictions, onAddTag, ...props }) => {
     <aside className={classes.root}>
       {hasPredictions ? (
         <Typography variant="caption">
-          In the past, on this day, you have tagged:
+          In the past, on this day in your cycle:
         </Typography>
       ) : (
         <Typography variant="caption">
-          In the past, on this day, you have not tagged anything.
+          In the past, on this day in your cycle, you have no tags.
         </Typography>
       )}
       {predictions.map((pred) => {
-        return <Chip key={pred} size="small" label={pred} {...props} />
+        return <Typography variant="caption">#{pred}</Typography>
       })}
     </aside>
   )

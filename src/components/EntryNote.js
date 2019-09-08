@@ -172,8 +172,7 @@ const NoteForm = ({ note = "", onNoteChange, onClose }) => {
         </Grid>
       </Grid>
       <Typography color="textSecondary" variant="caption" component="p">
-        Hashtags are used to predict how you might feel on this day in your next
-        cycle.
+        Use hashtags for things you would like to keep a close eye on.
       </Typography>
     </form>
   )
