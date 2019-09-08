@@ -4,7 +4,7 @@ export const tagsFromNote = (note) => {
     return []
   } else {
     return note
-      .match(/#[^\s#.'!"$%&()*+,\-.\/:;<=>?@\[\]^`{|}~]+/g)
+      .match(/#[^\s#.'!"$%&()*+,\-./:;<=>?@[\]^`{|}~]+/g)
       .map((tag) => tag.replace("#", ""))
   }
 }

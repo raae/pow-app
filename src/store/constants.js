@@ -17,7 +17,8 @@ export const DEFAULT_STATE = {
     currentStartDate: null,
     nextStartDate: null,
     averageLength: null,
-    tags: {},
+    tagsForCurrentCycle: {},
+    tagsForFutureCycles: {},
   },
   status: {
     [INIT_STATUS_KEY]: false,

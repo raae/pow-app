@@ -1,5 +1,15 @@
-import { values, sum, merge } from "lodash"
+import { values, sum, mergeWith, isArray } from "lodash"
 import { differenceInDays, addDays, format } from "date-fns"
+
+const mergeCycleTags = (cycleTags) => {
+  const customizer = (objValue, srcValue) => {
+    if (isArray(objValue)) {
+      return objValue.concat(srcValue)
+    }
+  }
+
+  return mergeWith({}, ...cycleTags, customizer)
+}
 
 const getLastInArray = (array) => {
   const index = array.length > 0 ? array.length - 1 : 0
@@ -48,7 +58,8 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
   const cycleLengths = []
   const cycleTags = []
   let averageLength = undefined
-  let tags = {}
+  let tagsForCurrentCycle = {}
+  let tagsForFutureCycles = {}
 
   for (let entry of sortedEntries) {
     const lastStartDate = getLastInArray(startDates)
@@ -81,12 +92,17 @@ export const analyzeEntries = ({ entriesByDate, tag }) => {
   if (cycleLengths.length > 0) {
     averageLength = sum(cycleLengths) / cycleLengths.length
     // Do not use latest cycle data for predictions
-    tags = merge({}, ...cycleTags.slice(0, cycleTags.length - 1))
+    tagsForCurrentCycle = mergeCycleTags(
+      cycleTags.slice(0, cycleTags.length - 1)
+    )
   }
+
+  tagsForFutureCycles = mergeCycleTags(cycleTags.slice(0, cycleTags.length))
 
   return {
     startDates,
     averageLength,
-    tags,
+    tagsForFutureCycles,
+    tagsForCurrentCycle,
   }
 }
