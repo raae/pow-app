@@ -23,7 +23,8 @@ describe("#analyzeEntries", () => {
 
     const result = {
       startDates: [],
-      tags: {},
+      tagsForCurrentCycle: {},
+      tagsForFutureCycles: {},
     }
 
     expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
@@ -52,7 +53,13 @@ describe("#analyzeEntries", () => {
 
     const result = {
       startDates: ["2019-08-02"],
-      tags: {},
+      tagsForCurrentCycle: {},
+      tagsForFutureCycles: {
+        1: ["flo"],
+        2: ["flo"],
+        5: ["flo"],
+        7: ["happy", "hungry"],
+      },
     }
 
     expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
@@ -82,9 +89,13 @@ describe("#analyzeEntries", () => {
     const result = {
       startDates: ["2019-08-02", "2019-08-25"],
       averageLength: 23,
-      tags: {
+      tagsForCurrentCycle: {
         1: ["menstruation"],
         2: ["hungry"],
+      },
+      tagsForFutureCycles: {
+        1: ["menstruation", "menstruation"],
+        2: ["hungry", "happy"],
       },
     }
 
@@ -124,9 +135,14 @@ describe("#analyzeEntries", () => {
     const result = {
       startDates: ["2019-06-04", "2019-06-25", "2019-07-16"],
       averageLength: 21,
-      tags: {
-        1: ["period"],
-        2: ["period", "hungry", "angry"],
+      tagsForCurrentCycle: {
+        1: ["period", "period"],
+        2: ["period", "hungry", "period", "hungry", "angry"],
+        5: ["period"],
+      },
+      tagsForFutureCycles: {
+        1: ["period", "period", "period"],
+        2: ["period", "hungry", "period", "hungry", "angry"],
         5: ["period"],
       },
     }
@@ -187,8 +203,18 @@ describe("#analyzeEntries", () => {
       startDates: ["2019-06-01", "2019-06-20", "2019-07-10"],
       // 19 days, 20 days
       averageLength: 19.5,
-      tags: {
-        1: ["period", "angry"],
+      tagsForCurrentCycle: {
+        1: ["period", "angry", "period", "angry"],
+        2: ["period"],
+        3: ["period"],
+        6: ["period"],
+        11: ["happy"],
+        12: ["hungry"],
+        14: ["exhausted"],
+        15: ["exhausted"],
+      },
+      tagsForFutureCycles: {
+        1: ["period", "angry", "period", "angry", "period", "tired"],
         2: ["period"],
         3: ["period"],
         6: ["period"],

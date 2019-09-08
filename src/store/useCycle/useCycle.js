@@ -58,10 +58,7 @@ const useCycle = () => {
 
     const currentStartDate = getCurrentStartDate()
     if (currentStartDate) {
-      const difference = daysBetweenDates(date, currentStartDate)
-      if (difference > -1) {
-        return (difference % getAverageLength()) + 1
-      }
+      return daysBetweenDates(date, currentStartDate) + 1
     }
   }
 
@@ -69,16 +66,25 @@ const useCycle = () => {
     return formatDateToEntryKey(date)
   }
 
+  const getCurrentCycleTags = (cycleDay) => {
+    const tagsForCurrentCycle = getCycleValue("tagsForCurrentCycle")
+    return tagsForCurrentCycle[cycleDay] || []
+  }
+
+  const getFutureCycleTags = (cycleDay) => {
+    const averageLength = getAverageLength()
+    if (cycleDay <= averageLength) return []
+    const tagsForFutureCycles = getCycleValue("tagsForFutureCycles")
+    return tagsForFutureCycles[cycleDay % averageLength] || []
+  }
+
   const getTagsForCycleDay = (cycleDay) => {
-    if (cycleDay > 0) {
-      const tagsByCycleDay = getCycleValue("tags")
-      const tags = tagsByCycleDay[cycleDay]
-      if (tags) {
-        return [...tags]
-      } else {
-        return []
-      }
-    }
+    if (cycleDay < 1) return
+
+    const tagsForCurrentCycle = getCurrentCycleTags(cycleDay)
+    const tagsForFutureCycles = getFutureCycleTags(cycleDay)
+    const set = new Set(tagsForCurrentCycle.concat(tagsForFutureCycles))
+    return [...set]
   }
 
   useEffect(() => {
