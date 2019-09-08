@@ -27,10 +27,12 @@ const EntryPredictions = ({ predictions, onAddTag, ...props }) => {
     <aside className={classes.root}>
       {hasPredictions ? (
         <Typography variant="caption">
-          Around this day in your cycle you usually tag:
+          In the past, on this day, you have tagged:
         </Typography>
       ) : (
-        <Typography variant="caption">Nothing to report.</Typography>
+        <Typography variant="caption">
+          In the past, on this day, you have not tagged anything.
+        </Typography>
       )}
       {predictions.map((pred) => {
         return <Chip key={pred} size="small" label={pred} {...props} />
