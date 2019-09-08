@@ -99,6 +99,7 @@ const useCycle = () => {
       currentStartDate: getCurrentStartDate(),
       nextStartDate: getNextStartDate(),
       averageLength: getAverageLength(),
+      menstruationTag: menstruationSettings.tag,
     },
     {
       getDayInCycle,
