@@ -1,5 +1,10 @@
 import { useEffect } from "react"
-import { analyzeEntries, daysBetweenDates, addDaysToDate } from "./utils"
+import {
+  analyzeEntries,
+  daysBetweenDates,
+  addDaysToDate,
+  formatDateToEntryKey,
+} from "./utils"
 
 import { useStore } from "../store"
 import useEntries from "../useEntries"
@@ -47,6 +52,10 @@ const useCycle = () => {
   }
 
   const getDayInCycle = (date) => {
+    if (!date) {
+      date = formatDateToEntryKey(Date.now())
+    }
+
     const currentStartDate = getCurrentStartDate()
     if (currentStartDate) {
       const difference = daysBetweenDates(date, currentStartDate)
@@ -54,6 +63,10 @@ const useCycle = () => {
         return (difference % getAverageLength()) + 1
       }
     }
+  }
+
+  const getEntryKeyFromDate = (date) => {
+    return formatDateToEntryKey(date)
   }
 
   const getTagsForCycleDay = (cycleDay) => {
@@ -84,6 +97,7 @@ const useCycle = () => {
     {
       getDayInCycle,
       getTagsForCycleDay,
+      getEntryKeyFromDate,
     },
   ]
 }

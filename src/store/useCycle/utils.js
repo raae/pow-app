@@ -6,9 +6,8 @@ const getLastInArray = (array) => {
   return array[index]
 }
 
-const replaceLastItemInArray = (array, item) => {
-  const index = array.length > 0 ? array.length - 1 : 0
-  array[index] = item
+export const formatDateToEntryKey = (date) => {
+  return format(date, "yyyy-MM-dd")
 }
 
 export const daysBetweenDates = (dateA, dateB) => {

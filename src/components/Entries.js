@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { Element, scroller } from "react-scroll"
-import { addDays, eachDayOfInterval, format } from "date-fns"
+import { addDays, eachDayOfInterval } from "date-fns"
 
 import useEntries from "../store/useEntries"
 import useCycle from "../store/useCycle"
@@ -9,7 +9,11 @@ import Entry from "./Entry"
 
 const Entries = ({ scrollTimestamp }) => {
   const [{ entriesByDate }, { changeEntry }] = useEntries()
-  const [_, { getDayInCycle, getTagsForCycleDay }] = useCycle()
+  const [
+    // eslint-disable-next-line
+    _,
+    { getDayInCycle, getTagsForCycleDay, getEntryKeyFromDate },
+  ] = useCycle()
 
   const today = new Date()
 
@@ -17,14 +21,14 @@ const Entries = ({ scrollTimestamp }) => {
     start: addDays(today, -60),
     end: addDays(today, 60),
   }).map((date) => {
-    const dateString = format(date, "yyyy-MM-dd")
-    const entry = entriesByDate[dateString] || {}
-    const dayInCycle = getDayInCycle(dateString)
+    const entryKey = getEntryKeyFromDate(date)
+    const entry = entriesByDate[entryKey] || {}
+    const dayInCycle = getDayInCycle(entryKey)
 
     return {
       entry: {
         ...entry,
-        date: dateString,
+        date: entryKey,
         dayInCycle,
       },
       predictions: getTagsForCycleDay(dayInCycle),
@@ -33,7 +37,7 @@ const Entries = ({ scrollTimestamp }) => {
 
   useEffect(() => {
     const yesterday = addDays(today, -1)
-    scroller.scrollTo(format(yesterday, "yyyy-MM-dd"), { offset: -60 })
+    scroller.scrollTo(getEntryKeyFromDate(yesterday), { offset: -60 })
   }, [scrollTimestamp])
 
   return range.map(({ entry, predictions }) => {
