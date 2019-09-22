@@ -43,6 +43,10 @@ module.exports = {
             // Requirement of Blockstack
             "Access-Control-Allow-Origin: *",
           ],
+          "/manifest.json": [
+            // Copy of manifest for Dappity
+            "Access-Control-Allow-Origin: *",
+          ],
         },
       },
     },
