@@ -8,12 +8,28 @@ const useStyles = makeStyles((theme) => ({
     "&:nth-child(even)": {
       background: theme.palette.background.paper,
     },
+    "& p img": {
+      maxWidth: "100%",
+      maxHeight: "100%",
+    },
   },
   container: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
   hero: {
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5),
+    "& > * > *": {
+      paddingTop: theme.spacing(5),
+      paddingBottom: theme.spacing(2),
+    },
+    "& img": {
+      marginBottom: -theme.spacing(8.5),
+      border: `4px solid ${theme.palette.secondary.main}`,
+      borderRadius: theme.shape.borderRadius / 2,
+      maxHeight: "30rem",
+    },
     "& h1": {
       ...theme.typography.h1,
       fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
@@ -26,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
       ...theme.typography.h2,
       fontSize: "3rem",
       marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(5),
       maxWidth: "30rem",
       lineHeight: 1.1,
     },
@@ -36,7 +51,10 @@ const useStyles = makeStyles((theme) => ({
     "& a:last-child": {
       display: "block",
       paddingLeft: theme.spacing(2),
-      marginTop: theme.spacing(0),
+      marginTop: theme.spacing(1),
+    },
+    "& p": {
+      margin: 0,
     },
   },
   text: {
@@ -52,6 +70,15 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: 1.7,
       marginTop: "0.5rem",
       marginBottom: "0.5rem",
+    },
+    "& p + small": {
+      display: "block",
+      marginTop: "-0.5rem",
+      textAlign: "center",
+    },
+    "& img": {
+      border: `4px solid ${theme.palette.secondary.main}`,
+      borderRadius: theme.shape.borderRadius / 2,
     },
   },
   list: {

@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     marginTop: "auto",
     backgroundColor: theme.palette.background.paper,
-    textAlign: "center",
   },
   home: {
     fontWeight: theme.typography.fontWeightBold,
