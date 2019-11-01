@@ -4,6 +4,10 @@
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
 
+require("dotenv").config({
+  path: `.env`,
+})
+
 module.exports = {
   siteMetadata: {
     title: `POW!`,
@@ -12,6 +16,12 @@ module.exports = {
     image: "https://www.usepow.app/static/some.png",
   },
   plugins: [
+    {
+      resolve: `fathom-tracking`,
+      options: {
+        siteId: process.env.FATHOM_SITE_ID,
+      },
+    },
     {
       resolve: `gatsby-plugin-material-ui`,
     },
