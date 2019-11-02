@@ -32,7 +32,7 @@ const onRenderBody = ({ setPostBodyComponents }, pluginOptions) => {
   const siteId = pluginOptions.siteId
 
   if (!siteId) {
-    console.warn("Fathom tracking", "Missing sideId")
+    console.warn("Fathom tracking missing sideId")
     return null
   }
 
