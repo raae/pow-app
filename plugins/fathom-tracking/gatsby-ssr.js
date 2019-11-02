@@ -1,12 +1,6 @@
 import React from "react"
 
 const createTrackingSnippet = (siteId) => {
-  if (!siteId) {
-    throw new Error(
-      "`siteId` must be provided when using the hosted version of Fathom"
-    )
-  }
-
   return `
     (function(f, a, t, h, o, m){
       a[h]=a[h]||function(){
@@ -35,9 +29,13 @@ const createTrackingScript = (siteId) => {
 }
 
 const onRenderBody = ({ setPostBodyComponents }, pluginOptions) => {
-  if (process.env.NODE_ENV !== "production") return null
-
   const siteId = pluginOptions.siteId
+
+  if (!siteId) {
+    console.warn("Fathom tracking", "Missing sideId")
+    return null
+  }
+
   return setPostBodyComponents([createTrackingScript(siteId)])
 }
 
