@@ -15,16 +15,13 @@ const Checkout = class extends React.Component {
   // You can find your key in the Dashboard:
   // https://dashboard.stripe.com/account/apikeys
   componentDidMount() {
+    if (!window || !window.Stripe) return
     this.stripe = window.Stripe("pk_test_XiirziufElakjoOpyuyCrPfo")
   }
   async redirectToCheckout(event) {
     event.preventDefault()
     const { error } = await this.stripe.redirectToCheckout({
-      items: [
-        { sku: "sku_Fvit7rtTpQFLdF", quantity: 1, name: "GOLD" },
-        { sku: "sku_G7M4RU5r64wP4L", quantity: 1, name: "SILVER" },
-        { sku: "sku_G7M4igcIzjEhU2", quantity: 1, name: "BRONZE" },
-      ],
+      items: [{ sku: this.props.sku, quantity: 1, name: this.props.name }],
       successUrl: `https://www.usepow.app/`,
       cancelUrl: `http://localhost:8000/`,
     })

@@ -16,9 +16,24 @@ const IndexPage = () => {
 
       <div>
         <article>
-          <Checkout value="sku_G7M4igcIzjEhU2" name="BRONZE" price="$33" />
-          <Checkout value="sku_G7M4RU5r64wP4L" name="SILVER" price="$66" />
-          <Checkout value="sku_Fvit7rtTpQFLdF" name="GOLD" price="$99" />
+          <Checkout
+            sku="sku_G7M4igcIzjEhU2"
+            value="sku_G7M4igcIzjEhU2"
+            name="BRONZE"
+            price="$33"
+          />
+          <Checkout
+            sku="sku_G7M4RU5r64wP4L"
+            value="sku_G7M4RU5r64wP4L"
+            name="SILVER"
+            price="$66"
+          />
+          <Checkout
+            sku="sku_Fvit7rtTpQFLdF"
+            value="sku_Fvit7rtTpQFLdF"
+            name="GOLD"
+            price="$99"
+          />
         </article>
       </div>
     </BrandLayout>
