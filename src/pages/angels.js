@@ -1,15 +1,11 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import BrandLayout from "../components/BrandLayout"
 import SEO from "../components/seo"
 import { Button } from "@material-ui/core"
-// import red from "@material-ui/core/colors/red"
 
 const IndexPage = () => {
-  //   console.log(window.Stripe)
-  //   const primary = red[500] // #F44336
   const stripe = window.Stripe("pk_test_XiirziufElakjoOpyuyCrPfo")
-
-  //   event.preventDefault()
+  const [sku, setSku] = useState("sku_G7M4igcIzjEhU2")
 
   const placeOrder = (sku) => {
     stripe.redirectToCheckout({
@@ -30,7 +26,7 @@ const IndexPage = () => {
       <div>
         <div>
           <Button
-            onClick={() => placeOrder("sku_G7M4igcIzjEhU2")}
+            onClick={() => placeOrder(sku)}
             variant="contained"
             color="primary"
           >
@@ -39,20 +35,21 @@ const IndexPage = () => {
         </div>
         <div>
           <Button
-            onClick={() => placeOrder("sku_G7M4igcIzjEhU2")}
+            onClick={() => placeOrder("sku_G7M4RU5r64wP4L")}
             variant="contained"
             color="primary"
+            price="$66"
           >
-            BRONZE
+            SILVER
           </Button>
         </div>
         <div>
           <Button
-            onClick={() => placeOrder("sku_G7M4igcIzjEhU2")}
+            onClick={() => placeOrder("sku_Fvit7rtTpQFLdF")}
             variant="contained"
             color="primary"
           >
-            BRONZE
+            GOLD
           </Button>
         </div>
         <div>
