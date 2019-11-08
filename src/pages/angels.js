@@ -3,7 +3,7 @@ import BrandLayout from "../components/BrandLayout"
 import SEO from "../components/seo"
 import { Button } from "@material-ui/core"
 
-const IndexPage = () => {
+const AngelsPage = () => {
   const stripe = window.Stripe("pk_test_XiirziufElakjoOpyuyCrPfo")
   const [sku, setSku] = useState("sku_G7M4igcIzjEhU2")
 
@@ -66,7 +66,7 @@ const IndexPage = () => {
   )
 }
 
-export default IndexPage
+export default AngelsPage
 // onClick={(event) => this.redirectToCheckout(event)}
 // sku="sku_G7M4igcIzjEhU2" name="BRONZE" price="33"
 // successUrl: "https://www.usepow.app/",
