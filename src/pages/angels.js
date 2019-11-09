@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react"
 import BrandLayout from "../components/BrandLayout"
 import SEO from "../components/seo"
-import { Button } from "@material-ui/core"
+// import { Button } from "@material-ui/core"
 import AngelCard from "../components/AngelCard"
 
-const AngelsPage = (props) => {
-  const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
+const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
+const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
+const SILVER_SKU = "sku_G7M4RU5r64wP4L"
+const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
+const DIAMOND_SKU = "sku_G7"
 
-  const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
-  const SILVER_SKU = "sku_G7M4RU5r64wP4L"
-  const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
-  const DIAMOND_SKU = "sku_G7"
-
+const AngelsPage = () => {
   const [stripe, setStripe] = useState()
 
   useEffect(() => {
@@ -42,41 +41,16 @@ const AngelsPage = (props) => {
             spoText="15 spots"
             liText="Lifetime access to POW! for one person."
             buttonText="Select"
+            skuProp={BRONZE_SKU}
+            onClick={() => placeOrder(BRONZE_SKU)}
           ></AngelCard>
         </div>
+
         <div>
-          <AngelCard>
-            <Button
-              onClick={() => placeOrder(SILVER_SKU)}
-              variant="contained"
-              color="primary"
-              price="$66"
-            >
-              SILVER
-            </Button>
-          </AngelCard>
+          <AngelCard></AngelCard>
         </div>
         <div>
-          <AngelCard>
-            <Button
-              onClick={() => placeOrder(GOLD_SKU)}
-              variant="contained"
-              color="primary"
-            >
-              GOLD
-            </Button>
-          </AngelCard>
-        </div>
-        <div>
-          <AngelCard>
-            <Button
-              onClick={() => placeOrder(DIAMOND_SKU)}
-              variant="contained"
-              color="primary"
-            >
-              DIAMOND
-            </Button>
-          </AngelCard>
+          <AngelCard></AngelCard>
         </div>
       </div>
     </BrandLayout>
@@ -90,3 +64,13 @@ export default AngelsPage
 // cancelUrl: "http://localhost:8000/cancel",
 //   const [sku] = useState("sku_G7M4igcIzjEhU2")
 // { useState, useEffect }
+// <div>
+//   <Button
+//     onClick={() => placeOrder(SILVER_SKU)}
+//     variant="contained"
+//     color="primary"
+//     price="$66"
+//   >
+//     SILVER
+//   </Button>
+// </div>

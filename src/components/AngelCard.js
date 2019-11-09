@@ -1,5 +1,5 @@
 //   component that takes props that replace the text in my example.
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Card from "@material-ui/core/Card"
 import CardActions from "@material-ui/core/CardActions"
@@ -52,8 +52,14 @@ export default function AngelCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained" color="primary">
-          {props.buttonText}
+        <Button
+          variant="contained"
+          color="primary"
+          skuPropProp={props.skuProp}
+          buttonTextPropProp={props.buttonText}
+          onClick={props.onClick}
+        >
+          {props.buttonText}{" "}
         </Button>
       </CardActions>
     </Card>
