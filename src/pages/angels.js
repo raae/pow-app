@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import BrandLayout from "../components/BrandLayout"
 import SEO from "../components/seo"
 import { Button } from "@material-ui/core"
 
 const AngelsPage = () => {
-  const stripe = window.Stripe("pk_test_XiirziufElakjoOpyuyCrPfo")
-  const [sku, setSku] = useState("sku_G7M4igcIzjEhU2")
+  const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
+
+  const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
+  const SILVER_SKU = "sku_G7M4RU5r64wP4L"
+  const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
+  const DIAMOND_SKU = "sku_G7"
+
+  const stripe = window.Stripe(STRIPE_KEY)
 
   const placeOrder = (sku) => {
     stripe.redirectToCheckout({
@@ -21,12 +27,12 @@ const AngelsPage = () => {
   }
   return (
     <BrandLayout>
-      <SEO title="Home" />
+      <SEO title="Angels" />
       <h1>POW!</h1>
       <div>
         <div>
           <Button
-            onClick={() => placeOrder(sku)}
+            onClick={() => placeOrder(BRONZE_SKU)}
             variant="contained"
             color="primary"
           >
@@ -35,7 +41,7 @@ const AngelsPage = () => {
         </div>
         <div>
           <Button
-            onClick={() => placeOrder("sku_G7M4RU5r64wP4L")}
+            onClick={() => placeOrder(SILVER_SKU)}
             variant="contained"
             color="primary"
             price="$66"
@@ -45,7 +51,7 @@ const AngelsPage = () => {
         </div>
         <div>
           <Button
-            onClick={() => placeOrder("sku_Fvit7rtTpQFLdF")}
+            onClick={() => placeOrder(GOLD_SKU)}
             variant="contained"
             color="primary"
           >
@@ -54,11 +60,11 @@ const AngelsPage = () => {
         </div>
         <div>
           <Button
-            onClick={() => placeOrder("sku_G7M4igcIzjEhU2")}
+            onClick={() => placeOrder(DIAMOND_SKU)}
             variant="contained"
             color="primary"
           >
-            BRONZE
+            DIAMOND
           </Button>
         </div>
       </div>
@@ -71,3 +77,5 @@ export default AngelsPage
 // sku="sku_G7M4igcIzjEhU2" name="BRONZE" price="33"
 // successUrl: "https://www.usepow.app/",
 // cancelUrl: "http://localhost:8000/cancel",
+//   const [sku] = useState("sku_G7M4igcIzjEhU2")
+// { useState, useEffect }
