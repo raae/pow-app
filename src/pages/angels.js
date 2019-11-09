@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import BrandLayout from "../components/BrandLayout"
 import SEO from "../components/seo"
 import { Button } from "@material-ui/core"
+import AngelCard from "../components/AngelCard"
 
-const AngelsPage = () => {
+const AngelsPage = (props) => {
   const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
 
   const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
@@ -11,7 +12,11 @@ const AngelsPage = () => {
   const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
   const DIAMOND_SKU = "sku_G7"
 
-  const stripe = window.Stripe(STRIPE_KEY)
+  const [stripe, setStripe] = useState()
+
+  useEffect(() => {
+    setStripe(window.Stripe(STRIPE_KEY))
+  }, [])
 
   const placeOrder = (sku) => {
     stripe.redirectToCheckout({
@@ -31,41 +36,47 @@ const AngelsPage = () => {
       <h1>POW!</h1>
       <div>
         <div>
-          <Button
-            onClick={() => placeOrder(BRONZE_SKU)}
-            variant="contained"
-            color="primary"
-          >
-            BRONZE
-          </Button>
+          <AngelCard
+            metalText="Bronze"
+            Pricetext="500 NOK"
+            spoText="15 spots"
+            liText="Lifetime access to POW! for one person."
+            buttonText="Select"
+          ></AngelCard>
         </div>
         <div>
-          <Button
-            onClick={() => placeOrder(SILVER_SKU)}
-            variant="contained"
-            color="primary"
-            price="$66"
-          >
-            SILVER
-          </Button>
+          <AngelCard>
+            <Button
+              onClick={() => placeOrder(SILVER_SKU)}
+              variant="contained"
+              color="primary"
+              price="$66"
+            >
+              SILVER
+            </Button>
+          </AngelCard>
         </div>
         <div>
-          <Button
-            onClick={() => placeOrder(GOLD_SKU)}
-            variant="contained"
-            color="primary"
-          >
-            GOLD
-          </Button>
+          <AngelCard>
+            <Button
+              onClick={() => placeOrder(GOLD_SKU)}
+              variant="contained"
+              color="primary"
+            >
+              GOLD
+            </Button>
+          </AngelCard>
         </div>
         <div>
-          <Button
-            onClick={() => placeOrder(DIAMOND_SKU)}
-            variant="contained"
-            color="primary"
-          >
-            DIAMOND
-          </Button>
+          <AngelCard>
+            <Button
+              onClick={() => placeOrder(DIAMOND_SKU)}
+              variant="contained"
+              color="primary"
+            >
+              DIAMOND
+            </Button>
+          </AngelCard>
         </div>
       </div>
     </BrandLayout>
