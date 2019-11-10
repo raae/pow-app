@@ -9,6 +9,9 @@ const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
 const SILVER_SKU = "sku_G7M4RU5r64wP4L"
 const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
 const DIAMOND_SKU = "sku_G7"
+//     Set up another AngelCard instance with only the button and make it work, to try to understand why it worked yesterday. 😸
+
+//      Then set up another AngelCard instance with only the button and make that the BRONZE one
 
 const AngelsPage = () => {
   const [stripe, setStripe] = useState()
@@ -36,10 +39,17 @@ const AngelsPage = () => {
       <div>
         <div>
           <AngelCard
-            metalText="Bronze"
-            Pricetext="500 NOK"
-            spoText="15 spots"
-            liText="Lifetime access to POW! for one person."
+            weddingAnniversary="Paper"
+            priceText="100 NOK"
+            onClick={() => placeOrder(SILVER_SKU)}
+          ></AngelCard>
+        </div>
+        <div>
+          <AngelCard
+            weddingAnniversary="Bronze"
+            priceText="800 NOK"
+            spotsText="15 spots"
+            description="Lifetime access to POW! for one person."
             buttonText="Select"
             skuProp={BRONZE_SKU}
             onClick={() => placeOrder(BRONZE_SKU)}
@@ -47,10 +57,34 @@ const AngelsPage = () => {
         </div>
 
         <div>
-          <AngelCard></AngelCard>
+          <AngelCard
+            priceText="2500 NOK"
+            weddingAnniversary="Silver"
+            onClick={() => placeOrder(SILVER_SKU)}
+          ></AngelCard>
         </div>
         <div>
-          <AngelCard></AngelCard>
+          <AngelCard
+            priceText="5000 NOK"
+            weddingAnniversary="Gold"
+            onClick={() => placeOrder(GOLD_SKU)}
+          ></AngelCard>
+        </div>
+        <div>
+          <AngelCard
+            weddingAnniversary="Diamond"
+            priceText="6000 NOK"
+            buttonText="No working sku yet"
+            onClick={() => placeOrder(DIAMOND_SKU)}
+          ></AngelCard>
+        </div>
+        <div>
+          <AngelCard
+            weddingAnniversary="Crown Jewel"
+            priceText="13 000 NOK"
+            buttonText="No working sku yet"
+            onClick={() => placeOrder(DIAMOND_SKU)}
+          ></AngelCard>
         </div>
       </div>
     </BrandLayout>

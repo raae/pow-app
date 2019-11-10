@@ -26,8 +26,7 @@ const useStyles = makeStyles({
     paddingLeft: "1.5em",
   },
 })
-
-export default function AngelCard(props) {
+const AngelCard = (props) => {
   const classes = useStyles()
   const bull = <span className={classes.bullet}>•</span>
 
@@ -42,13 +41,13 @@ export default function AngelCard(props) {
           POW! Angel
         </Typography>
         <Typography variant="h5" component="h2">
-          {props.metalText}
+          {props.weddingAnniversary}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {props.Pricetext} {bull} {props.spoText}
+          {props.priceText} {bull} {props.spotsText}
         </Typography>
         <Typography className={classes.list} variant="body2" component="ul">
-          <li>{props.liText}</li>
+          <li>{props.description}</li>
         </Typography>
       </CardContent>
       <CardActions>
@@ -65,3 +64,4 @@ export default function AngelCard(props) {
     </Card>
   )
 }
+export default AngelCard
