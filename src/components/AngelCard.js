@@ -38,7 +38,7 @@ const AngelCard = (props) => {
           color="textSecondary"
           gutterBottom
         >
-          POW! Angel
+          POW!
         </Typography>
         <Typography variant="h5" component="h2">
           {props.weddingAnniversary}
@@ -47,7 +47,9 @@ const AngelCard = (props) => {
           {props.priceText} {bull} {props.spotsText}
         </Typography>
         <Typography className={classes.list} variant="body2" component="ul">
-          <li>{props.description}</li>
+          <li>{props.description1}</li>
+          <li>{props.description2}</li>
+          <li>{props.description3}</li>
         </Typography>
       </CardContent>
       <CardActions>
