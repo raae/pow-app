@@ -10,6 +10,7 @@ const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
 const DIAMOND_SKU = "sku_G7"
 
 const AngelsPage = () => {
+  // <AngelsCeckout></AngelsCeckout>
   const [stripe, setStripe] = useState()
 
   useEffect(() => {
