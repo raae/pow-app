@@ -29,7 +29,7 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         defaultLayouts: {
-          default: require.resolve("./src/templates/public.js"),
+          default: require.resolve("./src/templates/page.js"),
         },
       },
     },

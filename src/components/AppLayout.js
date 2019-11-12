@@ -20,6 +20,7 @@ import {
 import AppFooter from "./AppFooter"
 import appFooterItems from "./appNavFooterItems"
 import appMainItems from "./appNavMainItems"
+import AppBarMenu from "./AppBarMenu"
 
 const drawerWidth = 240
 
@@ -90,22 +91,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const AppBarItems = ({ items = [], ...props }) => (
-  <>
-    {items.map(({ label, icon, ...itemProps }, key) =>
-      !icon ? (
-        <Button key={key} color="inherit" {...itemProps}>
-          {label}
-        </Button>
-      ) : (
-        <IconButton key={key} color="inherit" {...itemProps}>
-          {icon}
-        </IconButton>
-      )
-    )}
-  </>
-)
-
 const ListItems = ({ items = [] }) => {
   return items.map(({ label, text, icon, ...itemProps }, index) => (
     <ListItem button key={index} {...itemProps}>
@@ -161,7 +146,7 @@ function AppLayout({ children, appBarItems, aside }) {
           >
             <MenuIcon />
           </IconButton>
-          <AppBarItems items={appBarItems}></AppBarItems>
+          <AppBarMenu items={appBarItems}></AppBarMenu>
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">

@@ -28,7 +28,7 @@ const NoMenstruationTagSetting = () => {
       <Button
         variant="outlined"
         color="secondary"
-        to="/settings"
+        to="/app/settings"
         size="small"
         component={Link}
       >

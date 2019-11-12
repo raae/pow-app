@@ -1,10 +1,9 @@
 import React from "react"
+import PropTypes from "prop-types"
 import { navigate } from "gatsby"
-
 import useBlockstack from "../store/useBlockstack"
-import Layout from "../components/AppLayout"
 
-const AppTemplate = ({ children, appBarItems, aside }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
   const [{ isPending, user }] = useBlockstack()
 
   if (!user && !isPending) {
@@ -15,11 +14,11 @@ const AppTemplate = ({ children, appBarItems, aside }) => {
     return null
   }
 
-  return (
-    <Layout appBarItems={appBarItems} aside={aside}>
-      {children}
-    </Layout>
-  )
+  return <Component {...rest} />
 }
 
-export default AppTemplate
+PrivateRoute.propTypes = {
+  component: PropTypes.any.isRequired,
+}
+
+export default PrivateRoute
