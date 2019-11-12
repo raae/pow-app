@@ -44,7 +44,7 @@ const AngelCard = (props) => {
           {props.weddingAnniversary}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          {props.priceText} {bull} {props.spotsText}
+          {props.priceText} {bull} {props.spotsText} left
         </Typography>
         <Typography className={classes.list} variant="body2" component="ul">
           <li>{props.description1}</li>
