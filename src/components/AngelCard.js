@@ -53,13 +53,7 @@ const AngelCard = (props) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          variant="contained"
-          color="primary"
-          skuPropProp={props.skuProp}
-          buttonTextPropProp={props.buttonText}
-          onClick={props.onClick}
-        >
+        <Button variant="contained" color="primary" onClick={props.onClick}>
           {props.buttonText}{" "}
         </Button>
       </CardActions>
