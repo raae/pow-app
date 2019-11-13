@@ -54,7 +54,7 @@ const AngelCard = (props) => {
       </CardContent>
       <CardActions>
         <Button variant="contained" color="primary" onClick={props.onClick}>
-          {props.buttonText}{" "}
+          {props.buttonText}
         </Button>
       </CardActions>
     </Card>
