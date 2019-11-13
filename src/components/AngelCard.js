@@ -47,9 +47,9 @@ const AngelCard = (props) => {
           {props.priceText} {bull} {props.spotsText} left
         </Typography>
         <Typography className={classes.list} variant="body2" component="ul">
-          <li>{props.description1}</li>
-          <li>{props.description2}</li>
-          <li>{props.description3}</li>
+          {props.description.map((item) => (
+            <li>{item}</li>
+          ))}{" "}
         </Typography>
       </CardContent>
       <CardActions>

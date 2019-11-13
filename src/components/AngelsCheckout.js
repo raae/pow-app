@@ -38,7 +38,7 @@ const AngelsCheckout = () => {
             weddingAnniversary="Bronze Angel"
             priceText="500 NOK"
             spotsText="15 spots"
-            description1="Lifetime access to POW! for one person."
+            description={["Lifetime access to POW! for one person."]}
             buttonText="Select"
             skuProp={BRONZE_SKU}
             onClick={() => placeOrder(BRONZE_SKU)}
@@ -50,8 +50,10 @@ const AngelsCheckout = () => {
             weddingAnniversary="Silver Angel"
             priceText="2 000 NOK"
             spotsText="10 spots"
-            description1="Lifetime access to POW! for one person."
-            description2="VIP Treatment at the launch party for you and your +1 guest."
+            description={[
+              "Lifetime access to POW! for one person.",
+              "VIP Treatment at the launch party for you and your +1 guest.",
+            ]}
             buttonText="Select"
             skuProp={SILVER_SKU}
             onClick={() => placeOrder(SILVER_SKU)}
@@ -62,8 +64,10 @@ const AngelsCheckout = () => {
             priceText="5 000 NOK"
             weddingAnniversary="Gold Angel"
             spotsText="5 spots"
-            description1="Lifetime access to POW! for one person."
-            description2="VIP Treatment at the launch party for you and your +1 guest."
+            description={[
+              "Lifetime access to POW! for one person.",
+              "VIP Treatment at the launch party for you and your +1 guest.",
+            ]}
             buttonText="Select"
             skuProp={GOLD_SKU}
             onClick={() => placeOrder(GOLD_SKU)}
@@ -74,9 +78,11 @@ const AngelsCheckout = () => {
             weddingAnniversary="Diamond Angel"
             priceText="35 000 NOK"
             spotsText="15 spots"
-            description1="Lifetime access to POW! for one person."
-            description2="VIP Treatment at the launch party for you and your +1 guest."
-            description3="A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference."
+            description={[
+              "Lifetime access to POW! for one person.",
+              "VIP Treatment at the launch party for you and your +1 guest.",
+              "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference.",
+            ]}
             buttonText="Select"
             skuProp={DIAMOND_SKU}
             buttonText="No working sku yet"
