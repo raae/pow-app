@@ -40,7 +40,6 @@ const AngelsCheckout = () => {
             spotsText="15 spots"
             description={["Lifetime access to POW! for one person."]}
             buttonText="Select"
-            skuProp={BRONZE_SKU}
             onClick={() => placeOrder(BRONZE_SKU)}
           ></AngelCard>
         </div>
@@ -55,7 +54,6 @@ const AngelsCheckout = () => {
               "VIP Treatment at the launch party for you and your +1 guest.",
             ]}
             buttonText="Select"
-            skuProp={SILVER_SKU}
             onClick={() => placeOrder(SILVER_SKU)}
           ></AngelCard>
         </div>
@@ -69,7 +67,6 @@ const AngelsCheckout = () => {
               "VIP Treatment at the launch party for you and your +1 guest.",
             ]}
             buttonText="Select"
-            skuProp={GOLD_SKU}
             onClick={() => placeOrder(GOLD_SKU)}
           ></AngelCard>
         </div>
@@ -84,7 +81,6 @@ const AngelsCheckout = () => {
               "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference.",
             ]}
             buttonText="Select"
-            skuProp={DIAMOND_SKU}
             buttonText="No working sku yet"
             onClick={() => placeOrder(DIAMOND_SKU)}
           ></AngelCard>
