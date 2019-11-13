@@ -2,14 +2,14 @@ import React from "react"
 
 import useBlockstack from "../store/useBlockstack"
 
-import AppTemplate from "../templates/app"
 import SEO from "../components/Seo"
 import Settings from "../components/Settings"
+import AppLayout from "../components/AppLayout"
 
-const SettingsPage = () => {
+const SettingsRoute = () => {
   const [{ user }, { signOut }] = useBlockstack()
 
-  const appBarItems = [
+  const items = [
     {
       label: "Sign out",
       variant: "outlined",
@@ -18,13 +18,11 @@ const SettingsPage = () => {
   ]
 
   return (
-    <>
+    <AppLayout appBarItems={items}>
       <SEO title="Settings" />
-      <AppTemplate appBarItems={appBarItems}>
-        <Settings user={user}></Settings>
-      </AppTemplate>
-    </>
+      <Settings user={user}></Settings>
+    </AppLayout>
   )
 }
 
-export default SettingsPage
+export default SettingsRoute

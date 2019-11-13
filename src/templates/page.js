@@ -2,13 +2,13 @@ import React from "react"
 import { Link } from "gatsby"
 
 import SEO from "../components/Seo"
-import useBlockstack from "./../store/useBlockstack"
-import Mdx from "./../components/Mdx"
-import Layout from "./../components/BrandLayout"
+import useBlockstack from "../store/useBlockstack"
+import Mdx from "../components/Mdx"
+import Layout from "../components/BrandLayout"
 import Button from "../components/BrandButton"
 import Footer from "../components/BrandFooter"
 
-const PublicTemplate = ({ children, location }) => {
+const PageTemplate = ({ children, location }) => {
   const [{ user, isPending }, { signIn }] = useBlockstack()
 
   const signedOutItem = {
@@ -43,4 +43,4 @@ const PublicTemplate = ({ children, location }) => {
   )
 }
 
-export default PublicTemplate
+export default PageTemplate
