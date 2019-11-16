@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "1rem",
       marginBottom: "1rem",
     },
-    "& h1": {
+    "& > h1": {
       fontSize: "3.5rem",
       fontWeight: theme.typography.fontWeightBolder,
       marginTop: "5rem",
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
       letterSpacing: "-0.02em",
       lineHeight: 1.125,
     },
-    "& h2": {
+    "& > h2": {
       fontSize: "2.5rem",
       fontWeight: theme.typography.fontWeightBolder,
       marginTop: "3rem",
@@ -28,28 +28,28 @@ const useStyles = makeStyles((theme) => ({
       letterSpacing: "-0.02em",
       lineHeight: 1.125,
     },
-    "& h3": {
+    "& > h3": {
       fontSize: "1.75rem",
       fontWeight: theme.typography.fontWeightBold,
       marginTop: "2.5rem",
       marginBottom: "1rem",
       lineHeight: 1.125,
     },
-    "& h4": {
+    "& > h4": {
       fontSize: "1.5rem",
       fontWeight: theme.typography.fontWeightMedium,
       marginTop: "2.5rem",
       marginBottom: "1rem",
       lineHeight: 1.125,
     },
-    "& h5": {
+    "& > h5": {
       fontSize: "1.25rem",
       fontWeight: theme.typography.fontWeightMedium,
       marginTop: "2.5rem",
       marginBottom: "1rem",
       lineHeight: 1.125,
     },
-    "& h6": {
+    "& > h6": {
       fontSize: "1rem",
       fontWeight: theme.typography.fontWeightRegular,
       textTransform: "uppercase",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: "1rem",
       lineHeight: 1.125,
     },
-    "& ul": {
+    "& > ul": {
       marginLeft: "1rem",
       paddingLeft: "1.125rem",
 
@@ -66,14 +66,14 @@ const useStyles = makeStyles((theme) => ({
         lineHeight: 1.25,
       },
     },
-    "& blockquote": {
+    "& > blockquote": {
       fontWeight: theme.typography.fontWeightMedium,
       margin: "2rem 0",
       marginLeft: "0rem",
       paddingLeft: "1.5rem",
       borderLeft: `4px solid ${theme.palette.secondary.main}`,
     },
-    "& img": {
+    "& > img": {
       width: "50%",
       display: "block",
       marginTop: "1.5em",
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "1.5em",
       },
     },
-    "& .MuiButtonBase-root": {
+    "& > .MuiButtonBase-root": {
       "& + .MuiButtonBase-root": {
         marginLeft: "1rem",
       },
