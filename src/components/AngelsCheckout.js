@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react"
 
+import { BASE_URL, STRIPE_KEY } from "../constants"
 import AngelCard from "../components/AngelCard"
 
-const STRIPE_KEY = process.env.GATSBY_STRIPE_KEY
+const SUCCESS_URL = `${BASE_URL}/success`
+const CANCEL_URL = `${BASE_URL}/cancel`
 
 const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
 const SILVER_SKU = "sku_G7M4RU5r64wP4L"
@@ -31,8 +33,8 @@ const AngelsCheckout = () => {
           quantity: 1,
         },
       ],
-      successUrl: "http://localhost:8000/success",
-      cancelUrl: "http://localhost:8000/cancel",
+      successUrl: SUCCESS_URL,
+      cancelUrl: CANCEL_URL,
     })
   }
   return (
