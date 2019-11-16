@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
     lineHeight: 1.5,
     maxWidth: "40rem",
+
     "& > *": {
       marginTop: "1rem",
       marginBottom: "1rem",
@@ -73,8 +74,9 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: "1.5rem",
       borderLeft: `4px solid ${theme.palette.secondary.main}`,
     },
-    "& > img": {
-      width: "50%",
+    "& > p > img": {
+      width: "100%",
+      maxWidth: "23rem",
       display: "block",
       marginTop: "1.5em",
       border: `4px solid ${theme.palette.secondary.main}`,
