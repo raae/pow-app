@@ -26,10 +26,16 @@ module.exports = {
       resolve: `gatsby-plugin-material-ui`,
     },
     {
+      resolve: `gatsby-plugin-page-creator`,
+      options: {
+        path: `${__dirname}/src/pages`,
+      },
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       options: {
         defaultLayouts: {
-          default: require.resolve("./src/templates/page.js"),
+          default: require.resolve("./src/templates/mdx-page.js"),
         },
       },
     },

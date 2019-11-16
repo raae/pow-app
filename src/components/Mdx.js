@@ -1,39 +1,24 @@
 import React from "react"
-import { Link as GatsbyLink } from "gatsby"
 import { MDXProvider } from "@mdx-js/react"
-import Section from "./Section"
-import SignInButton from "./SignInButton"
-import { Link as MaterialLink, Grid } from "@material-ui/core"
 
-const Link = ({ children, ...props }) => {
-  const internal = /^\/(?!\/)/.test(props.href)
-  if (internal) {
-    props.to = props.href
-  }
-
-  return (
-    <MaterialLink
-      target="_blank"
-      rel="noopener"
-      component={internal ? GatsbyLink : "a"}
-      {...props}
-    >
-      {children}
-    </MaterialLink>
-  )
-}
+import BrandCopy from "../components/BrandCopy"
+import { Link, ButtonLink } from "../components/Link"
+import Logo from "../components/Logo"
+import SignInButton from "../components/SignInButton"
 
 const components = {
   a: Link,
 }
 
-const shortcodes = { Section, Grid, SignInButton }
+const shortcodes = { Logo, SignInButton, ButtonLink }
 
 const Mdx = ({ children }) => {
   return (
-    <MDXProvider components={{ ...shortcodes, ...components }}>
-      {children}
-    </MDXProvider>
+    <BrandCopy>
+      <MDXProvider components={{ ...components, ...shortcodes }}>
+        {children}
+      </MDXProvider>
+    </BrandCopy>
   )
 }
 
