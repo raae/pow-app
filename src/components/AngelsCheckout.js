@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import BrandLayout from "../components/BrandLayout"
-import SEO from "../components/seo"
+import SEO from "../components/Seo"
 import AngelCard from "../components/AngelCard"
 
 const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
@@ -80,7 +80,6 @@ const AngelsCheckout = () => {
               "VIP Treatment at the launch party for you and your +1 guest.",
               "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference.",
             ]}
-            buttonText="Select"
             buttonText="No working sku yet"
             onClick={() => placeOrder(DIAMOND_SKU)}
           ></AngelCard>

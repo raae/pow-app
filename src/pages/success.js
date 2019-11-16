@@ -1,6 +1,6 @@
 import React from "react"
 import BrandLayout from "../components/BrandLayout"
-import SEO from "../components/seo"
+import SEO from "../components/Seo"
 import { Link } from "gatsby"
 
 const SuccessPage = () => {
