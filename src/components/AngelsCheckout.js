@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react"
 
 import AngelCard from "../components/AngelCard"
 
-const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
+const STRIPE_KEY = process.env.GATSBY_STRIPE_KEY
+
 const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
 const SILVER_SKU = "sku_G7M4RU5r64wP4L"
 const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
@@ -12,10 +13,17 @@ const AngelsCheckout = () => {
   const [stripe, setStripe] = useState()
 
   useEffect(() => {
+    if (!STRIPE_KEY) {
+      console.warn("Stripe key is missing")
+      return
+    }
+
     setStripe(window.Stripe(STRIPE_KEY))
   }, [])
 
   const placeOrder = (sku) => {
+    if (!stripe) return
+
     stripe.redirectToCheckout({
       items: [
         {
