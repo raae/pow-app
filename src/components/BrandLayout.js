@@ -1,78 +1,75 @@
 import React from "react"
+import { Container, Divider, makeStyles } from "@material-ui/core"
 
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  makeStyles,
-  IconButton,
-  Typography,
-  Link,
-} from "@material-ui/core"
-import BrandFooter from "./BrandFooter"
+import BrandFooter from "../components/BrandFooter"
+import { Link } from "../components/Link"
+import SignInButton from "./SignInButton"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
+    borderTop: `4px solid ${theme.palette.primary.main}`,
+    padding: theme.spacing(2),
+    background: theme.palette.background.paper,
     minHeight: "100vh",
-  },
-  appBar: {
-    background: "transparent",
-  },
-  main: {
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-  nav: {
-    "&:last-child": {
-      marginLeft: "auto",
+
+    "& header": {
+      display: "flex",
+      alignItems: "center",
+      marginTop: theme.spacing(10),
+      "& > *:nth-child(2)": {
+        marginLeft: "auto",
+      },
+    },
+
+    "& footer": {
+      "& hr": {
+        display: "inline-block",
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(2),
+        width: theme.spacing(5),
+        border: `2px solid ${theme.palette.primary.main}`,
+      },
     },
   },
-  footer: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(2),
-    marginTop: "auto",
-    backgroundColor: theme.palette.background.paper,
+  container: {
+    maxWidth: "50rem",
   },
-  home: {
-    fontWeight: theme.typography.fontWeightBold,
-    transform: "scale(1.2)",
+  logo: {
+    display: "inline-block",
+    fontFamily: "Seymour One",
+    fontWeight: 900,
+    fontSize: theme.typography.h2.fontSize,
+    textDecoration: "none !important",
+    "&:hover": {
+      textDecoration: "none",
+      transform: "scale(1.2)",
+      color: theme.palette.primary.main,
+    },
   },
 }))
 
-const Nav = ({ items = [], ...props }) => (
-  <nav {...props}>
-    {items.map(({ label, icon, ...itemProps }, key) =>
-      !icon ? (
-        <Button key={key} {...itemProps}>
-          {label}
-        </Button>
-      ) : (
-        <IconButton {...itemProps}>{icon}</IconButton>
-      )
-    )}
-  </nav>
-)
-
-const BrandLayout = ({ navItems, footer, children }) => {
+const BrandLayout = ({ isHome = true, children }) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <AppBar elevation={0} color="inherit" position="sticky">
-        <Toolbar>
-          <Typography>
-            This app is in open <Link href="/#beta">beta</Link>.
-          </Typography>
-          <Nav items={navItems} className={classes.nav}></Nav>
-        </Toolbar>
-      </AppBar>
-      <main className={classes.main}>{children}</main>
-      <footer className={classes.footer}>
+      <Container className={classes.container} component="header">
+        <Link className={classes.logo} href="/">
+          !
+        </Link>
+        {isHome && (
+          <SignInButton variant="outlined" size="small" color="secondary">
+            Log in
+          </SignInButton>
+        )}
+      </Container>
+      <Container className={classes.container} component="main">
+        {children}
+      </Container>
+      <Container className={classes.container} component="footer">
+        <Divider />
         <BrandFooter></BrandFooter>
-      </footer>
+      </Container>
     </div>
   )
 }
