@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { Grid } from "@material-ui/core"
 
 import { BASE_URL, STRIPE_KEY } from "../constants"
 import AngelCard from "../components/AngelCard"
@@ -39,9 +40,8 @@ const AngelsCheckout = () => {
   }
   return (
     <>
-      <h1>POW!</h1>
-      <div>
-        <div>
+      <Grid container spacing={4} alignItems="stretch">
+        <Grid item xs={12} md={6}>
           <AngelCard
             weddingAnniversary="Bronze Angel"
             priceText="500 NOK"
@@ -50,9 +50,9 @@ const AngelsCheckout = () => {
             buttonText="Select"
             onClick={() => placeOrder(BRONZE_SKU)}
           ></AngelCard>
-        </div>
+        </Grid>
 
-        <div>
+        <Grid item xs={12} md={6}>
           <AngelCard
             weddingAnniversary="Silver Angel"
             priceText="2 000 NOK"
@@ -64,8 +64,10 @@ const AngelsCheckout = () => {
             buttonText="Select"
             onClick={() => placeOrder(SILVER_SKU)}
           ></AngelCard>
-        </div>
-        <div>
+        </Grid>
+      </Grid>
+      <Grid container spacing={4} alignItems="stretch">
+        <Grid item xs={12} md={6}>
           <AngelCard
             priceText="5 000 NOK"
             weddingAnniversary="Gold Angel"
@@ -77,8 +79,8 @@ const AngelsCheckout = () => {
             buttonText="Select"
             onClick={() => placeOrder(GOLD_SKU)}
           ></AngelCard>
-        </div>
-        <div>
+        </Grid>
+        <Grid item xs={12} md={6}>
           <AngelCard
             weddingAnniversary="Diamond Angel"
             priceText="35 000 NOK"
@@ -91,8 +93,8 @@ const AngelsCheckout = () => {
             buttonText="No working sku yet"
             onClick={() => placeOrder(DIAMOND_SKU)}
           ></AngelCard>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </>
   )
 }
