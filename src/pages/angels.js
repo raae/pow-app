@@ -6,12 +6,10 @@ import AngelsCheckout from "../components/AngelsCheckout"
 const AngelsPage = () => {
   return (
     <BrandLayout>
-      <SEO title="AngelsPage" />
+      <SEO title="Angels" />
       <AngelsCheckout></AngelsCheckout>
     </BrandLayout>
   )
 }
 
 export default AngelsPage
-
-// successUrl: "https://www.usepow.app/",

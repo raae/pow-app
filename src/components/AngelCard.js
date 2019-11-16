@@ -1,10 +1,12 @@
 import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
-import CardContent from "@material-ui/core/CardContent"
-import Button from "@material-ui/core/Button"
-import Typography from "@material-ui/core/Typography"
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+  makeStyles,
+} from "@material-ui/core"
 
 const useStyles = makeStyles({
   card: {
@@ -48,7 +50,7 @@ const AngelCard = (props) => {
         <Typography className={classes.list} variant="body2" component="ul">
           {props.description.map((item) => (
             <li>{item}</li>
-          ))}{" "}
+          ))}
         </Typography>
       </CardContent>
       <CardActions>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
-import BrandLayout from "../components/BrandLayout"
-import SEO from "../components/Seo"
+
 import AngelCard from "../components/AngelCard"
 
 const STRIPE_KEY = "pk_test_XiirziufElakjoOpyuyCrPfo"
@@ -29,8 +28,7 @@ const AngelsCheckout = () => {
     })
   }
   return (
-    <BrandLayout>
-      <SEO title="AngelsCheckout" />
+    <>
       <h1>POW!</h1>
       <div>
         <div>
@@ -85,7 +83,7 @@ const AngelsCheckout = () => {
           ></AngelCard>
         </div>
       </div>
-    </BrandLayout>
+    </>
   )
 }
 export default AngelsCheckout
