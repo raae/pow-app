@@ -1,0 +1,56 @@
+{
+  "stripeKey": "pk_test_dGK79jhHeLBlGpYxlQoEGoew00FXtd5Lsr",
+  "levels": [
+    {
+      "title": "Paper Angel",
+      "subtitle": "Paper Angel",
+      "priceText": "99 NOK",
+      "spotsText": "20 spots",
+      "sku": "sku_GC8cJ5S5qqEKa6",
+      "benefits": ["Lifetime of good POW! karma ;)"],
+      "action": "Become a Paper Angel"
+    },
+    {
+      "title": "Bronze Angel",
+      "priceText": "500 NOK",
+      "spotsText": "15 spots",
+      "sku": "sku_GC8dyqHK4yK6Zo",
+      "benefits": ["Lifetime access to POW! for one person."],
+      "action": "Become a Bronze Angel"
+    },
+    {
+      "title": "Silver Angel",
+      "sku": "",
+      "priceText": "2000 NOK",
+      "spotsText": "10 spots",
+      "benefits": [
+        "Lifetime access to POW! for one person.",
+        "VIP Treatment at the launch party for you and your +1 guest."
+      ],
+      "action": "Become a Silver Angel"
+    },
+    {
+      "title": "Gold Angel",
+      "sku": "",
+      "priceText": "5000 NOK",
+      "spotsText": "5 spots",
+      "benefits": [
+        "Lifetime access to POW! for one person.",
+        "VIP Treatment at the launch party for you and your +1 guest."
+      ],
+      "action": "Become a Gold Angel"
+    },
+    {
+      "title": "Diamond Angel",
+      "priceText": "35.000 NOK",
+      "spotsText": "3 spots",
+      "sku": "",
+      "benefits": [
+        "Lifetime access to POW! for one person.",
+        "VIP Treatment at the launch party for you and your +1 guest.",
+        "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference."
+      ],
+      "action": "Become a Diamond Angel"
+    }
+  ]
+}

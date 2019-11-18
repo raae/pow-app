@@ -7,21 +7,16 @@ import AngelCard from "../components/AngelCard"
 const SUCCESS_URL = `${BASE_URL}/success`
 const CANCEL_URL = `${BASE_URL}/cancel`
 
-const BRONZE_SKU = "sku_G7M4igcIzjEhU2"
-const SILVER_SKU = "sku_G7M4RU5r64wP4L"
-const GOLD_SKU = "sku_Fvit7rtTpQFLdF"
-const DIAMOND_SKU = "sku_G7"
-
-const AngelsCheckout = () => {
+const AngelsCheckout = ({ stripeKey, levels }) => {
   const [stripe, setStripe] = useState()
 
   useEffect(() => {
-    if (!STRIPE_KEY) {
+    if (!stripeKey) {
       console.warn("Stripe key is missing")
       return
     }
 
-    setStripe(window.Stripe(STRIPE_KEY))
+    setStripe(window.Stripe(stripeKey))
   }, [])
 
   const placeOrder = (sku) => {
@@ -41,59 +36,19 @@ const AngelsCheckout = () => {
   return (
     <>
       <Grid container spacing={4} alignItems="stretch">
-        <Grid item xs={12} md={6}>
-          <AngelCard
-            weddingAnniversary="Bronze Angel"
-            priceText="500 NOK"
-            spotsText="15 spots"
-            description={["Lifetime access to POW! for one person."]}
-            buttonText="Select"
-            onClick={() => placeOrder(BRONZE_SKU)}
-          ></AngelCard>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <AngelCard
-            weddingAnniversary="Silver Angel"
-            priceText="2 000 NOK"
-            spotsText="10 spots"
-            description={[
-              "Lifetime access to POW! for one person.",
-              "VIP Treatment at the launch party for you and your +1 guest.",
-            ]}
-            buttonText="Select"
-            onClick={() => placeOrder(SILVER_SKU)}
-          ></AngelCard>
-        </Grid>
-      </Grid>
-      <Grid container spacing={4} alignItems="stretch">
-        <Grid item xs={12} md={6}>
-          <AngelCard
-            priceText="5 000 NOK"
-            weddingAnniversary="Gold Angel"
-            spotsText="5 spots"
-            description={[
-              "Lifetime access to POW! for one person.",
-              "VIP Treatment at the launch party for you and your +1 guest.",
-            ]}
-            buttonText="Select"
-            onClick={() => placeOrder(GOLD_SKU)}
-          ></AngelCard>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <AngelCard
-            weddingAnniversary="Diamond Angel"
-            priceText="35 000 NOK"
-            spotsText="15 spots"
-            description={[
-              "Lifetime access to POW! for one person.",
-              "VIP Treatment at the launch party for you and your +1 guest.",
-              "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference.",
-            ]}
-            buttonText="No working sku yet"
-            onClick={() => placeOrder(DIAMOND_SKU)}
-          ></AngelCard>
-        </Grid>
+        {levels.map((level, index) => (
+          <Grid item key={index} xs={12} sm={6}>
+            <AngelCard
+              weddingAnniversary={level.title}
+              priceText={level.priceText}
+              spotsText={level.spotsText}
+              description={level.benefits}
+              buttonText={level.action}
+              disabled={!level.sku}
+              onClick={() => placeOrder(level.sku)}
+            ></AngelCard>
+          </Grid>
+        ))}
       </Grid>
     </>
   )
