@@ -22,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Profile = ({ user }) => {
-  if (!user) return null
-
   const classes = useStyles()
+
+  if (!user) return null
 
   return (
     <>

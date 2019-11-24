@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Grid } from "@material-ui/core"
 
-import { BASE_URL, STRIPE_KEY } from "../constants"
+import { BASE_URL } from "../constants"
 import AngelCard from "../components/AngelCard"
 
 const SUCCESS_URL = `${BASE_URL}/success`

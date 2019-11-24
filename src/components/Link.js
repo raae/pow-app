@@ -20,8 +20,8 @@ const prepareProps = (props) => {
 
   return {
     ...props,
-    target: !internal && "_blank",
-    rel: !internal && "noopener",
+    target: !internal ? "_blank" : null,
+    rel: !internal ? "noopener" : null,
     component: internal ? GatsbyLink : "a",
   }
 }
