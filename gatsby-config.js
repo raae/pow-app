@@ -20,6 +20,7 @@ module.exports = {
       resolve: `fathom-tracking`,
       options: {
         siteId: process.env.FATHOM_SITE_ID,
+        disabled: process.env.NETLIFY_DEV,
       },
     },
     {

@@ -36,6 +36,11 @@ const onRenderBody = ({ setPostBodyComponents }, pluginOptions) => {
     return null
   }
 
+  if (pluginOptions.disabled) {
+    console.warn("Fathom tracking disabled")
+    return null
+  }
+
   return setPostBodyComponents([createTrackingScript(siteId)])
 }
 
