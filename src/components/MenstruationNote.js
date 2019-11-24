@@ -3,9 +3,13 @@ import { Link } from "gatsby"
 import { format } from "date-fns"
 
 import { Paper, Button, Typography, makeStyles } from "@material-ui/core"
+import { useSelector } from "react-redux"
 
-import useSettings from "../store/useSettings"
-import useCycle from "../store/useCycle"
+import { selectMenstruationTag } from "../store/settings"
+import {
+  selectNextStartDate,
+  selectHumanCycleDayForToday,
+} from "../store/cycle"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,10 +74,11 @@ const CycleDayNote = ({ cycleDay }) => {
 
 const MenstruationNote = () => {
   const classes = useStyles()
-  const [{ menstruationSettings }] = useSettings()
-  const [{ nextStartDate }, { getDayInCycle }] = useCycle()
-  const cycleDay = getDayInCycle()
-  const menstruationTag = menstruationSettings.tag
+  const cycleDay = useSelector(selectHumanCycleDayForToday)
+  const nextStartDate = useSelector(selectNextStartDate)
+  const menstruationTag = useSelector(selectMenstruationTag)
+
+  console.log("Menstruation tag", menstruationTag)
 
   let note = <NotEnoughData />
   if (cycleDay || nextStartDate) {

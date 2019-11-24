@@ -1,4 +1,4 @@
-import { analyzeEntries, daysBetweenDates } from "./utils"
+import analyzeEntries, { daysBetweenDates } from "./analyze"
 
 describe("#daysBetweenDates", () => {
   test("date strings", () => {
@@ -19,15 +19,15 @@ describe("#daysBetweenDates", () => {
 describe("#analyzeEntries", () => {
   test("no cycle data", () => {
     const entriesByDate = {}
-    const tag = "period"
+    const menstruationTag = "period"
 
     const result = {
-      startDates: [],
+      currentCycleStartDate: undefined,
       tagsForCurrentCycle: {},
       tagsForFutureCycles: {},
     }
 
-    expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
+    expect(analyzeEntries({ entriesByDate, menstruationTag })).toEqual(result)
   })
 
   test("single cycle with gaps between menstruation tags", () => {
@@ -49,20 +49,20 @@ describe("#analyzeEntries", () => {
         tags: ["happy", "hungry"],
       },
     }
-    const tag = "flo"
+    const menstruationTag = "flo"
 
     const result = {
-      startDates: ["2019-08-02"],
+      currentCycleStartDate: "2019-08-02",
       tagsForCurrentCycle: {},
       tagsForFutureCycles: {
+        0: ["flo"],
         1: ["flo"],
-        2: ["flo"],
-        5: ["flo"],
-        7: ["happy", "hungry"],
+        4: ["flo"],
+        6: ["happy", "hungry"],
       },
     }
 
-    expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
+    expect(analyzeEntries({ entriesByDate, menstruationTag })).toEqual(result)
   })
 
   test("simple two cycle starts", () => {
@@ -84,22 +84,22 @@ describe("#analyzeEntries", () => {
         tags: ["happy"],
       },
     }
-    const tag = "menstruation"
+    const menstruationTag = "menstruation"
 
     const result = {
-      startDates: ["2019-08-02", "2019-08-25"],
-      averageLength: 23,
+      currentCycleStartDate: "2019-08-25",
+      averageCycleLength: 23,
       tagsForCurrentCycle: {
-        1: ["menstruation"],
-        2: ["hungry"],
+        0: ["menstruation"],
+        1: ["hungry"],
       },
       tagsForFutureCycles: {
-        1: ["menstruation", "menstruation"],
-        2: ["hungry", "happy"],
+        0: ["menstruation", "menstruation"],
+        1: ["hungry", "happy"],
       },
     }
 
-    expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
+    expect(analyzeEntries({ entriesByDate, menstruationTag })).toEqual(result)
   })
 
   test("simple three cycles", () => {
@@ -129,25 +129,24 @@ describe("#analyzeEntries", () => {
         tags: ["period"],
       },
     }
-    const tag = "period"
-    const averageLength = 28
+    const menstruationTag = "period"
 
     const result = {
-      startDates: ["2019-06-04", "2019-06-25", "2019-07-16"],
-      averageLength: 21,
+      currentCycleStartDate: "2019-07-16",
+      averageCycleLength: 21,
       tagsForCurrentCycle: {
-        1: ["period", "period"],
-        2: ["period", "hungry", "period", "hungry", "angry"],
-        5: ["period"],
+        0: ["period", "period"],
+        1: ["period", "hungry", "period", "hungry", "angry"],
+        4: ["period"],
       },
       tagsForFutureCycles: {
-        1: ["period", "period", "period"],
-        2: ["period", "hungry", "period", "hungry", "angry"],
-        5: ["period"],
+        0: ["period", "period", "period"],
+        1: ["period", "hungry", "period", "hungry", "angry"],
+        4: ["period"],
       },
     }
 
-    expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
+    expect(analyzeEntries({ entriesByDate, menstruationTag })).toEqual(result)
   })
 
   test("complex cycles", () => {
@@ -196,34 +195,33 @@ describe("#analyzeEntries", () => {
         tags: ["hungry"],
       },
     }
-    const tag = "period"
-    const averageLength = 28
+    const menstruationTag = "period"
 
     const result = {
-      startDates: ["2019-06-01", "2019-06-20", "2019-07-10"],
+      currentCycleStartDate: "2019-07-10",
       // 19 days, 20 days
-      averageLength: 19.5,
+      averageCycleLength: 19.5,
       tagsForCurrentCycle: {
-        1: ["period", "angry", "period", "angry"],
+        0: ["period", "angry", "period", "angry"],
+        1: ["period"],
         2: ["period"],
-        3: ["period"],
-        6: ["period"],
-        11: ["happy"],
-        12: ["hungry"],
+        5: ["period"],
+        10: ["happy"],
+        11: ["hungry"],
+        13: ["exhausted"],
         14: ["exhausted"],
-        15: ["exhausted"],
       },
       tagsForFutureCycles: {
-        1: ["period", "angry", "period", "angry", "period", "tired"],
+        0: ["period", "angry", "period", "angry", "period", "tired"],
+        1: ["period"],
         2: ["period"],
-        3: ["period"],
-        6: ["period"],
-        11: ["happy"],
-        12: ["hungry"],
+        5: ["period"],
+        10: ["happy"],
+        11: ["hungry"],
+        13: ["exhausted"],
         14: ["exhausted"],
-        15: ["exhausted"],
       },
     }
-    expect(analyzeEntries({ entriesByDate, tag })).toEqual(result)
+    expect(analyzeEntries({ entriesByDate, menstruationTag })).toEqual(result)
   })
 })

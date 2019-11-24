@@ -3,7 +3,7 @@ import { CssBaseline } from "@material-ui/core"
 import { ThemeProvider } from "@material-ui/styles"
 import theme from "./theme"
 
-const withStorage = ({ element }) => {
+export const withTheme = ({ element }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -11,5 +11,3 @@ const withStorage = ({ element }) => {
     </ThemeProvider>
   )
 }
-
-export default withStorage

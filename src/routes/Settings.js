@@ -1,26 +1,30 @@
 import React from "react"
 
-import useBlockstack from "../store/useBlockstack"
+import { useSelector, useDispatch } from "react-redux"
+import { selectUser, signOut } from "../store/auth"
 
 import SEO from "../components/Seo"
 import Settings from "../components/Settings"
+import Loading from "../components/Loading"
+
 import AppLayout from "../components/AppLayout"
 
 const SettingsRoute = () => {
-  const [{ user }, { signOut }] = useBlockstack()
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
 
   const items = [
     {
       label: "Sign out",
       variant: "outlined",
-      onClick: signOut,
+      onClick: () => dispatch(signOut()),
     },
   ]
 
   return (
     <AppLayout appBarItems={items}>
       <SEO title="Settings" />
-      <Settings user={user}></Settings>
+      {user ? <Settings user={user}></Settings> : <Loading></Loading>}
     </AppLayout>
   )
 }
