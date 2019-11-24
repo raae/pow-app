@@ -57,7 +57,12 @@ const AngelCard = (props) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button variant="contained" color="primary" onClick={props.onClick}>
+        <Button
+          disabled={props.disabled}
+          variant="contained"
+          color="primary"
+          onClick={props.onClick}
+        >
           {props.buttonText}
         </Button>
       </CardActions>
