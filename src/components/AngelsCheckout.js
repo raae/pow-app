@@ -58,7 +58,20 @@ const AngelsCheckout = ({ stripeKey, levels }) => {
       <Grid container spacing={4} alignItems="stretch">
         {levels.map((level, index) => {
           const soldCount = soldCountBySku[level.sku] || 0
-          console.log(level.sku, soldCount)
+          // const soldCount = 15
+
+          let spotsLeft = level.count - soldCount
+          console.log(
+            "spotsLeft",
+            spotsLeft,
+            level.title,
+            soldCount,
+            level.count
+          )
+
+          if (spotsLeft >= 17) {
+            console.log("This message will print!")
+          }
           // Add spots params to angel data levels
           // Calculate spots left based on level.spots
           // Dynamically change spotsText based on spots left
@@ -72,8 +85,12 @@ const AngelsCheckout = ({ stripeKey, levels }) => {
                 spotsText={level.spotsText}
                 description={level.benefits}
                 buttonText={level.action}
-                disabled={!level.sku || !stripe}
+                disabled={!level.sku || !stripe || spotsLeft < 1}
+                // disabled={spotsLeft <= 0}
+                // disabled {!stripe || !level.sku || spotsLeft < 1}
+                spotsLeft={spotsLeft}
                 onClick={() => placeOrder(level.sku)}
+                // onClick={() => setSoldCountBySku(soldCountBySku - 1)}
               ></AngelCard>
             </Grid>
           )

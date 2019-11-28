@@ -45,10 +45,10 @@ const AngelCard = (props) => {
     <Card className={classes.card}>
       <CardContent>
         <Typography variant="h6" component="h2">
-          <Logo>POW!</Logo> {props.weddingAnniversary}
+          <Logo>POW!S {props.weddingAnniversary}</Logo>
         </Typography>
         <Typography className={classes.subtitle} color="textSecondary">
-          {props.priceText} {bull} {props.spotsText} left
+          {props.priceText} {bull} {props.spotsLeft} {props.spotsText} left
         </Typography>
         <Typography className={classes.list} variant="body1" component="ul">
           {props.description.map((item) => (
