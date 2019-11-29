@@ -2,8 +2,7 @@
   "stripeKey": "pk_test_dGK79jhHeLBlGpYxlQoEGoew00FXtd5Lsr",
   "levels": [
     {
-      "title": "Paper ANGELS",
-      "subtitle": "Paper Angel",
+      "title": "Paper Angel",
       "priceText": "99 NOK",
       "spotsText": " spots",
       "sku": "sku_GC8cJ5S5qqEKa6",
@@ -12,7 +11,7 @@
       "count": 20
     },
     {
-      "title": "Bronze ANGELS",
+      "title": "Bronze Angel",
       "priceText": "500 NOK",
       "spotsText": " spots",
       "sku": "sku_GC8dyqHK4yK6Zo",
@@ -21,7 +20,7 @@
       "count": 15
     },
     {
-      "title": "Silver ANGELS",
+      "title": "Silver Angel",
       "sku": "",
       "priceText": "2000 NOK",
       "spotsText": " spots",
@@ -33,7 +32,7 @@
       "count": 10
     },
     {
-      "title": "Gold ANGELS",
+      "title": "Gold Angel",
       "sku": "",
       "priceText": "5000 NOK",
       "spotsText": " spots",
@@ -45,7 +44,7 @@
       "count": 5
     },
     {
-      "title": "Diamond ANGELS",
+      "title": "Diamond Angel",
       "priceText": "35.000 NOK",
       "spotsText": " spots",
       "sku": "",

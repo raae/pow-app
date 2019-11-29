@@ -45,7 +45,7 @@ const AngelCard = (props) => {
     <Card className={classes.card}>
       <CardContent>
         <Typography variant="h6" component="h2">
-          <Logo>POW!S {props.weddingAnniversary}</Logo>
+          <Logo>POW!</Logo> {props.weddingAnniversary}
         </Typography>
         <Typography className={classes.subtitle} color="textSecondary">
           {props.priceText} {bull} {props.spotsLeft} {props.spotsText} left
