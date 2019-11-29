@@ -42,6 +42,7 @@ exports.handler = async ({ headers, queryStringParameters: params }) => {
       body: JSON.stringify(eventsCountBySkuId, null, 2),
     }
   } catch (error) {
+    console.warn(JSON.stringify(error, null, 2))
     return {
       statusCode: 500,
       body: JSON.stringify(
