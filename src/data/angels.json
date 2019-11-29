@@ -3,8 +3,7 @@
   "levels": [
     {
       "title": "Paper Angel",
-      "priceText": "99 NOK",
-      "spotsText": " spots",
+      "priceText": "$9",
       "sku": "sku_GC8cJ5S5qqEKa6",
       "benefits": ["Lifetime of good POW! karma ;)"],
       "action": "Become a Paper Angel",
@@ -12,21 +11,19 @@
     },
     {
       "title": "Bronze Angel",
-      "priceText": "500 NOK",
-      "spotsText": " spots",
+      "priceText": "$54",
       "sku": "sku_GC8dyqHK4yK6Zo",
-      "benefits": ["Lifetime access to POW! for one person."],
+      "benefits": ["Lifetime access to POW!"],
       "action": "Become a Bronze Angel",
       "count": 15
     },
     {
       "title": "Silver Angel",
       "sku": "",
-      "priceText": "2000 NOK",
-      "spotsText": " spots",
+      "priceText": "$146",
       "benefits": [
-        "Lifetime access to POW! for one person.",
-        "Webinar. Or. VIP Treatment at the launch party for you and your +1 guest."
+        "Lifetime access to POW!",
+        "2 seats at privacy first webinars in April."
       ],
       "action": "Become a Silver Angel",
       "count": 10
@@ -34,27 +31,26 @@
     {
       "title": "Gold Angel",
       "sku": "",
-      "priceText": "5000 NOK",
-      "spotsText": " spots",
+      "priceText": "$375",
       "benefits": [
-        "Lifetime access to POW! for one person.",
-        "VIP Treatment at the launch party for you and your +1 guest."
+        "Lifetime access to POW!",
+        "5 seats at privacy first webinars in April.",
+        "VIP treatment at March 8th launch party in Oslo for you and your +1."
       ],
       "action": "Become a Gold Angel",
       "count": 5
     },
     {
       "title": "Diamond Angel",
-      "priceText": "35.000 NOK",
-      "spotsText": " spots",
+      "priceText": "$3,750",
       "sku": "",
       "benefits": [
-        "Lifetime access to POW! for one person.",
-        "VIP Treatment at the launch party for you and your +1 guest.",
-        "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference."
+        "Lifetime access to POW!",
+        "A 30-minute talk + QA on lessons learned building a privacy first apps.",
+        "Invoice possible."
       ],
       "action": "Become a Diamond Angel",
-      "count": 3
+      "count": 1
     }
   ]
 }
