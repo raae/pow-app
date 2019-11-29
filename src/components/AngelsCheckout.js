@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+import { isString } from "lodash"
 import { Grid } from "@material-ui/core"
 
 import { BASE_URL, GATSBY_AUTH_KEY } from "../constants"
@@ -57,19 +58,29 @@ const AngelsCheckout = ({ stripeKey, levels }) => {
     <>
       <Grid container spacing={4} alignItems="stretch">
         {levels.map((level, index) => {
-          const soldCount = soldCountBySku[level.sku] || 0
-          let spotsLeft = level.count - soldCount
+          let spotsText = `${level.count}`
+          let spotsLeft = "1" // only needs to be more than 0 to activate button
+
+          if (!isString(level.count)) {
+            spotsLeft = -1
+            spotsText = `? of ${level.count} spots left`
+
+            if (soldCountBySku) {
+              const soldCount = soldCountBySku[level.sku] || 0
+              spotsLeft = level.count - soldCount
+              spotsText = `${spotsLeft} of ${level.count} spots left`
+            }
+          }
 
           return (
             <Grid item key={index} xs={12} sm={6}>
               <AngelCard
                 weddingAnniversary={level.title}
                 priceText={level.priceText}
-                spotsText={level.spotsText}
+                spotsText={spotsText}
                 description={level.benefits}
                 buttonText={level.action}
                 disabled={!level.sku || !stripe || spotsLeft < 1}
-                spotsLeft={spotsLeft}
                 onClick={() => placeOrder(level.sku)}
               ></AngelCard>
             </Grid>
