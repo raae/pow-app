@@ -48,7 +48,7 @@ const AngelCard = (props) => {
           <Logo>POW!</Logo> {props.weddingAnniversary}
         </Typography>
         <Typography className={classes.subtitle} color="textSecondary">
-          {props.priceText} {bull} {props.spotsText} left
+          {props.priceText} {bull} {props.spotsText}
         </Typography>
         <Typography className={classes.list} variant="body1" component="ul">
           {props.description.map((item) => (
@@ -57,7 +57,12 @@ const AngelCard = (props) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.actions}>
-        <Button variant="contained" color="primary" onClick={props.onClick}>
+        <Button
+          disabled={props.disabled}
+          variant="contained"
+          color="primary"
+          onClick={props.onClick}
+        >
           {props.buttonText}
         </Button>
       </CardActions>

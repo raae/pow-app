@@ -3,54 +3,58 @@
   "levels": [
     {
       "title": "Paper Angel",
-      "subtitle": "Paper Angel",
       "priceText": "99 NOK",
-      "spotsText": "20 spots",
+      "spotsText": " spots",
       "sku": "sku_GC8cJ5S5qqEKa6",
       "benefits": ["Lifetime of good POW! karma ;)"],
-      "action": "Become a Paper Angel"
+      "action": "Become a Paper Angel",
+      "count": "Unlimited"
     },
     {
       "title": "Bronze Angel",
       "priceText": "500 NOK",
-      "spotsText": "15 spots",
+      "spotsText": " spots",
       "sku": "sku_GC8dyqHK4yK6Zo",
       "benefits": ["Lifetime access to POW! for one person."],
-      "action": "Become a Bronze Angel"
+      "action": "Become a Bronze Angel",
+      "count": 15
     },
     {
       "title": "Silver Angel",
       "sku": "",
       "priceText": "2000 NOK",
-      "spotsText": "10 spots",
+      "spotsText": " spots",
       "benefits": [
         "Lifetime access to POW! for one person.",
-        "VIP Treatment at the launch party for you and your +1 guest."
+        "Webinar. Or. VIP Treatment at the launch party for you and your +1 guest."
       ],
-      "action": "Become a Silver Angel"
+      "action": "Become a Silver Angel",
+      "count": 10
     },
     {
       "title": "Gold Angel",
       "sku": "",
       "priceText": "5000 NOK",
-      "spotsText": "5 spots",
+      "spotsText": " spots",
       "benefits": [
         "Lifetime access to POW! for one person.",
         "VIP Treatment at the launch party for you and your +1 guest."
       ],
-      "action": "Become a Gold Angel"
+      "action": "Become a Gold Angel",
+      "count": 5
     },
     {
       "title": "Diamond Angel",
       "priceText": "35.000 NOK",
-      "spotsText": "3 spots",
+      "spotsText": " spots",
       "sku": "",
       "benefits": [
         "Lifetime access to POW! for one person.",
         "VIP Treatment at the launch party for you and your +1 guest.",
         "A 30-minute talk on privacy in apps to be delivered after March 8th anywhere in Scandinavia or as a video conference."
       ],
-      "action": "Become a Diamond Angel"
+      "action": "Become a Diamond Angel",
+      "count": 3
     }
   ]
 }
