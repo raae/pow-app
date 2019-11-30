@@ -1,0 +1,15 @@
+{
+    "stripeKey": "pk_test_dGK79jhHeLBlGpYxlQoEGoew00FXtd5Lsr",
+    "paperAngel":
+
+        {
+           "title": "Paper Angel",
+           "priceText": "$9",
+           "sku": "sku_GC8cJ5S5qqEKa6",
+           "benefits": ["Lifetime of good POW! karma ;)"],
+           "action": "Become a Paper Angel",
+           "count": "Unlimited"
+         }
+
+  }
+
