@@ -1,18 +1,16 @@
 {
-  "stripeKey": "pk_test_dGK79jhHeLBlGpYxlQoEGoew00FXtd5Lsr",
+  "stripeKey": "pk_live_KfEXgEPDeTgj69HuErok8Dxb005XKqmm3O",
   "levels": [
     {
-
       "title": "Bronze Angel",
       "priceText": "$54",
-      "sku": "sku_GC8dyqHK4yK6Zo",
+      "sku": "sku_GCYpmhsk4M7HEp",
       "benefits": ["Lifetime access to POW!"],
       "action": "Become a Bronze Angel",
       "count": 15
     },
     {
       "title": "Silver Angel",
-
       "sku": "sku_GCYpsfPJuKzwyZ",
       "priceText": "$146",
       "benefits": [
