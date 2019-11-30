@@ -1,21 +1,19 @@
 {
   "stripeKey": "pk_test_dGK79jhHeLBlGpYxlQoEGoew00FXtd5Lsr",
   "levels": [
+
+
     {
-      "title": "Paper Angel",
-      "priceText": "$9",
-      "sku": "sku_GC8cJ5S5qqEKa6",
-      "benefits": ["Lifetime of good POW! karma ;)"],
-      "action": "Become a Paper Angel",
-      "count": "Unlimited"
-    },
-    {
-      "title": "Bronze Angel",
-      "priceText": "$54",
-      "sku": "sku_GC8dyqHK4yK6Zo",
-      "benefits": ["Lifetime access to POW!"],
-      "action": "Become a Bronze Angel",
-      "count": 15
+      "title": "Gold Angel",
+      "sku": "",
+      "priceText": "$375",
+      "benefits": [
+        "Lifetime access to POW!",
+        "5 seats at privacy first webinars in April.",
+        "VIP treatment at March 8th launch party in Oslo for you and your +1."
+      ],
+      "action": "Become a Gold Angel",
+      "count": 5
     },
     {
       "title": "Silver Angel",
@@ -29,16 +27,12 @@
       "count": 10
     },
     {
-      "title": "Gold Angel",
-      "sku": "",
-      "priceText": "$375",
-      "benefits": [
-        "Lifetime access to POW!",
-        "5 seats at privacy first webinars in April.",
-        "VIP treatment at March 8th launch party in Oslo for you and your +1."
-      ],
-      "action": "Become a Gold Angel",
-      "count": 5
+      "title": "Bronze Angel",
+      "priceText": "$54",
+      "sku": "sku_GC8dyqHK4yK6Zo",
+      "benefits": ["Lifetime access to POW!"],
+      "action": "Become a Bronze Angel",
+      "count": 15
     },
     {
       "title": "Diamond Angel",
@@ -54,3 +48,4 @@
     }
   ]
 }
+

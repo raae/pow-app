@@ -5,6 +5,7 @@ import { Grid } from "@material-ui/core"
 
 import { BASE_URL, GATSBY_AUTH_KEY } from "../constants"
 import AngelCard from "../components/AngelCard"
+import StripePaperButton from "../components/StripePaperButton"
 
 const SUCCESS_URL = `${BASE_URL}/success`
 const CANCEL_URL = `${BASE_URL}/cancel`
@@ -87,6 +88,9 @@ const AngelsCheckout = ({ stripeKey, levels }) => {
           )
         })}
       </Grid>
+      <div>
+        <StripePaperButton>Yu!</StripePaperButton>
+      </div>
     </>
   )
 }
