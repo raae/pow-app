@@ -2,6 +2,7 @@
   "stripeKey": "pk_live_KfEXgEPDeTgj69HuErok8Dxb005XKqmm3O",
   "levels": [
     {
+
       "title": "Bronze Angel",
       "priceText": "$54",
       "sku": "sku_GCYpmhsk4M7HEp",
@@ -11,12 +12,12 @@
     },
     {
       "title": "Silver Angel",
+
       "sku": "sku_GCYpsfPJuKzwyZ",
       "priceText": "$146",
       "benefits": [
         "Lifetime access to POW!",
         "2 seats at privacy webinar (dev and non-dev edition) in April."
-      ],
       "action": "Become a Silver Angel",
       "count": 10
     },
@@ -28,7 +29,6 @@
         "Lifetime access to POW!",
         "5 seats at privacy webinar (dev and non-dev edition) in April.",
         "VIP treatment at March 8th launch party in Oslo for you +1."
-      ],
       "action": "Become a Gold Angel",
       "count": 5
     },
@@ -42,7 +42,7 @@
         "Invoice possible."
       ],
       "action": "Become a Diamond Angel",
-      "count": 3
+      "count": 1
     }
   ]
 }
