@@ -1,52 +1,44 @@
 {
-  "stripeKey": "pk_test_dGK79jhHeLBlGpYxlQoEGoew00FXtd5Lsr",
+  "stripeKey": "pk_live_KfEXgEPDeTgj69HuErok8Dxb005XKqmm3O",
   "levels": [
-    {
-      "title": "Paper Angel",
-      "priceText": "$9",
-      "sku": "sku_GC8cJ5S5qqEKa6",
-      "benefits": ["Lifetime of good POW! karma ;)"],
-      "action": "Become a Paper Angel",
-      "count": "Unlimited"
-    },
     {
       "title": "Bronze Angel",
       "priceText": "$54",
-      "sku": "sku_GC8dyqHK4yK6Zo",
+      "sku": "sku_GCYpmhsk4M7HEp",
       "benefits": ["Lifetime access to POW!"],
       "action": "Become a Bronze Angel",
       "count": 15
     },
     {
       "title": "Silver Angel",
-      "sku": "",
+      "sku": "sku_GCYpsfPJuKzwyZ",
       "priceText": "$146",
       "benefits": [
         "Lifetime access to POW!",
-        "2 seats at privacy first webinars in April."
+        "2 seats at privacy webinar (dev and non-dev edition) in April."
       ],
       "action": "Become a Silver Angel",
       "count": 10
     },
     {
       "title": "Gold Angel",
-      "sku": "",
+      "sku": "sku_GCYqZcBmZown6M",
       "priceText": "$375",
       "benefits": [
         "Lifetime access to POW!",
-        "5 seats at privacy first webinars in April.",
-        "VIP treatment at March 8th launch party in Oslo for you and your +1."
+        "5 seats at privacy webinar (dev and non-dev edition) in April.",
+        "VIP treatment at March 8th launch party in Oslo for you +1."
       ],
-      "action": "Become a Gold Angel",
+        "action": "Become a Gold Angel",
       "count": 5
     },
     {
       "title": "Diamond Angel",
       "priceText": "$3,750",
-      "sku": "",
+      "sku": "sku_GCYqtraOWas7Oe",
       "benefits": [
         "Lifetime access to POW!",
-        "A 30-minute talk + QA on lessons learned building a privacy first apps.",
+        "A 40-minute talk + QA on lessons learned building a privacy first apps.",
         "Invoice possible."
       ],
       "action": "Become a Diamond Angel",
