@@ -11,7 +11,6 @@ const StripeButton = ({
   stripeKey = STRIPE_KEY,
   successUrl = SUCCESS_URL,
   cancelUrl = CANCEL_URL,
-  lineItems,
   lineItem,
   children,
   ...props
@@ -34,7 +33,6 @@ const StripeButton = ({
 
     try {
       const response = await axios.post("/.netlify/functions/checkout", {
-        line_items: lineItems,
         line_item: lineItem,
         success_url: successUrl,
         cancel_url: cancelUrl,
@@ -51,7 +49,7 @@ const StripeButton = ({
 
   return (
     <Button
-      disabled={!stripe || processing}
+      disabled={lineItem.amount < 100 || !stripe || processing}
       {...props}
       onClick={() => placeOrder()}
     >
