@@ -43,11 +43,11 @@ const slice = createSlice({
       })
     },
     [authSlice.actions.signOut]: () => {
-      console.log("SIGN OUT")
       return initialState
     },
   },
 })
+
 const selectSlice = (state) => state[slice.name]
 
 export const selectAllEntriesByDate = createSelector([selectSlice], (slice) => {

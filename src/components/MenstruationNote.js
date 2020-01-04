@@ -78,8 +78,6 @@ const MenstruationNote = () => {
   const nextStartDate = useSelector(selectNextStartDate)
   const menstruationTag = useSelector(selectMenstruationTag)
 
-  console.log("Menstruation tag", menstruationTag)
-
   let note = <NotEnoughData />
   if (cycleDay || nextStartDate) {
     note = (
