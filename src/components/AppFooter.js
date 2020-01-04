@@ -8,7 +8,7 @@ const AppFooter = () => {
       <Link target="_blank" rel="noopener" href="https://raae.codes">
         @raae
       </Link>{" "}
-      and family.
+      of Lilly Labs.
     </>
   )
 }
