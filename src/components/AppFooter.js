@@ -5,10 +5,14 @@ const AppFooter = () => {
   return (
     <>
       Made with ❤ <br /> by{" "}
-      <Link target="_blank" rel="noopener" href="https://raae.codes">
+      <Link target="_blank" rel="noopener" href="https://twitter.com/raae">
         @raae
       </Link>{" "}
-      of Lilly Labs.
+      of{" "}
+      <Link target="_blank" rel="noopener" href="https://lillylabs.no">
+        Lilly Labs
+      </Link>
+      .
     </>
   )
 }
