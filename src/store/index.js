@@ -1,5 +1,5 @@
-import React from "react"
-import { Provider } from "react-redux"
+import React, { useEffect } from "react"
+import { Provider, useDispatch } from "react-redux"
 import { combineReducers } from "redux"
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
 import { combineEpics, createEpicMiddleware } from "redux-observable"
@@ -43,6 +43,18 @@ if (typeof window !== `undefined`) {
   epicMiddleware.run(rootEpic)
 }
 
+export const Root = ({ children }) => {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch({ type: "init" })
+  }, [])
+  return <>{children}</>
+}
+
 export const withStore = ({ element }) => {
-  return <Provider store={store}>{element}</Provider>
+  return (
+    <Provider store={store}>
+      <Root>{element}</Root>
+    </Provider>
+  )
 }

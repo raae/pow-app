@@ -1,4 +1,4 @@
-import { startWith, map, exhaustMap, filter } from "rxjs/operators"
+import { map, exhaustMap, filter, take } from "rxjs/operators"
 import { ofType } from "redux-observable"
 
 import { UserSession } from "blockstack"
@@ -30,8 +30,8 @@ const initAuth = async () => {
 
 export const initEpic = (action$) =>
   action$.pipe(
-    startWith({ type: "auth/init" }),
-    ofType("auth/init"),
+    ofType("init"),
+    take(1),
     exhaustMap(async () => {
       try {
         const user = await initAuth()
