@@ -16,8 +16,9 @@ import AddIcon from "@material-ui/icons/Add"
 import CancelIcon from "@material-ui/icons/Cancel"
 import SubmitIcon from "@material-ui/icons/CheckCircle"
 
-import useSettings from "../store/useSettings"
-import useCycle from "../store/useCycle"
+import { updateMenstruationTag, selectMenstruationTag } from "../store/settings"
+import { selectAverageCycleLength } from "../store/cycle"
+import { useSelector, useDispatch } from "react-redux"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -164,9 +165,10 @@ const TagForm = ({ tag, onTagChange, onClose }) => {
 
 const MenstruationSettings = () => {
   const classes = useStyles()
-  const [{ menstruationSettings }, { setMenstruationSettings }] = useSettings()
-  const [{ averageLength }] = useCycle()
+  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(false)
+  const menstruationTag = useSelector(selectMenstruationTag)
+  const averageLength = useSelector(selectAverageCycleLength)
 
   return (
     <>
@@ -180,16 +182,15 @@ const MenstruationSettings = () => {
             predictions for future cycles.
           </Typography>
           {!isEditing && (
-            <Tag
-              tag={menstruationSettings.tag}
-              onEditTag={() => setIsEditing(true)}
-            />
+            <Tag tag={menstruationTag} onEditTag={() => setIsEditing(true)} />
           )}
 
           {isEditing && (
             <TagForm
-              tag={menstruationSettings.tag}
-              onTagChange={(value) => setMenstruationSettings({ tag: value })}
+              tag={menstruationTag}
+              onTagChange={(value) =>
+                dispatch(updateMenstruationTag({ tag: value }))
+              }
               onClose={() => setIsEditing(false)}
             />
           )}

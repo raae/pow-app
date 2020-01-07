@@ -1,11 +1,14 @@
 import React from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { selectUser, selectAuthIsPending, signIn } from "../store/auth"
 
-import useBlockstack from "./../store/useBlockstack"
 import { Button } from "@material-ui/core"
 import { Link } from "gatsby"
 
 const SignInButton = ({ children, ...props }) => {
-  const [{ user, isPending }, { signIn }] = useBlockstack()
+  const dispatch = useDispatch()
+  const user = useSelector(selectUser)
+  const isPending = useSelector(selectAuthIsPending)
 
   if (user) {
     return (
@@ -15,7 +18,11 @@ const SignInButton = ({ children, ...props }) => {
     )
   } else {
     return (
-      <Button disabled={isPending} onClick={signIn} {...props}>
+      <Button
+        disabled={isPending}
+        onClick={() => dispatch(signIn())}
+        {...props}
+      >
         {children}
       </Button>
     )

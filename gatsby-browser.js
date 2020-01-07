@@ -1,8 +1,8 @@
-import withStorage from "./src/store/withStorage"
-import withTheme from "./src/theme/withTheme"
+import { withStore } from "./src/store"
+import { withTheme } from "./src/theme"
 
-export const wrapPageElement = ({ element }) => {
-  return withTheme({ element: withStorage({ element }) })
+export const wrapRootElement = ({ element }) => {
+  return withTheme({ element: withStore({ element }) })
 }
 
 export const shouldUpdateScroll = ({ routerProps: { location } }) => {

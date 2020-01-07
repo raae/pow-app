@@ -34,8 +34,12 @@ const EntryPredictions = ({ predictions, onAddTag, ...props }) => {
           In the past, on this day in your cycle, you have no tags.
         </Typography>
       )}
-      {predictions.map((pred) => {
-        return <Typography variant="caption">#{pred}</Typography>
+      {predictions.map((pred, key) => {
+        return (
+          <Typography key={key} variant="caption">
+            #{pred}
+          </Typography>
+        )
       })}
     </aside>
   )

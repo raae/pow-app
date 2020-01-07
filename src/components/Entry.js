@@ -1,6 +1,11 @@
 import React from "react"
-import { isFuture as fnsIsFuture, isToday as fnsIsToday } from "date-fns"
+import { useSelector, useDispatch } from "react-redux"
+import { isFuture, isToday } from "date-fns"
 import classnames from "classnames"
+
+import { selectEntryForDate, updateEntry } from "../store/log"
+import { selectPredictionsForDate } from "../store/cycle"
+import { selectMenstruationTag } from "../store/settings"
 
 import { Container, Paper, makeStyles } from "@material-ui/core"
 
@@ -41,32 +46,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Entry = ({ entry = {}, isMenstruation, predictions, onEntryChange }) => {
+const selectIsMenstruation = (state, { tags = [], predictions = [] }) => {
+  const menstruationTag = selectMenstruationTag(state)
+  return tags.includes(menstruationTag) || predictions.includes(menstruationTag)
+}
+
+const Entry = ({ date }) => {
   const classes = useStyles()
-  const date = new Date(entry.date)
-  const isFuture = fnsIsFuture(date)
-  const isToday = fnsIsToday(date)
+  const dispatch = useDispatch()
+  const entry = useSelector((state) => selectEntryForDate(state, { date }))
+  const predictions = useSelector((state) =>
+    selectPredictionsForDate(state, { date })
+  )
+  const isMenstruation = useSelector((state) =>
+    selectIsMenstruation(state, {
+      tags: entry && entry.tags,
+      predictions,
+    })
+  )
 
   const onNoteChange = (note) => {
-    const updatedEntry = { ...entry, note }
-    onEntryChange(updatedEntry)
+    dispatch(updateEntry({ date, note }))
   }
 
   return (
     <Container component="article" className={classes.root}>
       <EntryHeader
         date={date}
-        isToday={isToday}
+        isToday={isToday(date)}
         isMenstruation={isMenstruation}
       ></EntryHeader>
-      {!isFuture && (
+      {!isFuture(date) && (
         <Paper
-          elevation={isToday ? 3 : 1}
-          className={classnames(classes.main, { [classes.today]: isToday })}
+          elevation={isToday(date) ? 3 : 1}
+          className={classnames(classes.main, {
+            [classes.today]: isToday(date),
+          })}
         >
           <EntryNote
-            note={entry.note}
-            isToday={isToday}
+            note={entry && entry.note}
+            isToday={isToday(date)}
             onNoteChange={onNoteChange}
           ></EntryNote>
         </Paper>

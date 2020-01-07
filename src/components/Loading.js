@@ -1,5 +1,5 @@
 import React from "react"
-import { Container, Typography, makeStyles } from "@material-ui/core"
+import { Container, CircularProgress, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -8,10 +8,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     paddingBottom: theme.spacing(3),
-
-    "& *": {
-      fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
-    },
+  },
+  circle: {
+    height: "10vh !important",
+    width: "10vh !important",
   },
 }))
 
@@ -19,9 +19,7 @@ const Loading = () => {
   const classes = useStyles()
   return (
     <Container className={classes.root}>
-      <Typography variant="h4" component="p">
-        Loading...
-      </Typography>
+      <CircularProgress className={classes.circle} />
     </Container>
   )
 }
