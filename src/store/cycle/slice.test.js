@@ -88,8 +88,18 @@ describe("Cycle/Selectors", () => {
 
   describe("#selectHumanCycleDayForDate", () => {
     test("return correct cycle day", () => {
-      expect(selectHumanCycleDayForDate.resultFunc(0)).toEqual(1)
-      expect(selectHumanCycleDayForDate.resultFunc(4)).toEqual(5)
+      expect(
+        selectHumanCycleDayForDate.resultFunc(
+          new Date("2019-11-01"),
+          new Date("2019-11-01")
+        )
+      ).toEqual(1)
+      expect(
+        selectHumanCycleDayForDate.resultFunc(
+          new Date("2019-11-01"),
+          new Date("2019-11-05")
+        )
+      ).toEqual(5)
     })
   })
 
