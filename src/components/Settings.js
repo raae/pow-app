@@ -47,7 +47,7 @@ const Profile = ({ user }) => {
               <Link
                 target="_blank"
                 rel="noopener"
-                href="http://eepurl.com/gBCgT9"
+                href="https://lillylabs.ck.page/a5f42d2b44"
               >
                 POW! Newsletter
               </Link>
