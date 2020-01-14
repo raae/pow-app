@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     fontSize: "1.5rem",
     fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
+    fontWeight: 900,
     fontWeight: theme.typography.fontWeightBold,
     color: theme.palette.primary.main,
   },

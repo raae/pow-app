@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    fontFamily: "Seymour One",
+    fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
     fontWeight: 900,
     color: theme.palette.primary.main,
     lineHeight: 1.5,
