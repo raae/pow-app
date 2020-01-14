@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     display: "inline-block",
-    fontFamily: "Seymour One",
+    fontFamily: `'Seymour One', ${theme.typography.h1.fontFamily}`,
     fontWeight: 900,
     fontSize: theme.typography.h2.fontSize,
     textDecoration: "none !important",
