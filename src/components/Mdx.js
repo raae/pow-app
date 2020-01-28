@@ -5,6 +5,7 @@ import BrandCopy from "../components/BrandCopy"
 import { Link, ButtonLink } from "../components/Link"
 import Logo from "../components/Logo"
 import SignInButton from "../components/SignInButton"
+import PaymentButton from "../components/PaymentButton"
 import StripeButton from "../components/StripeButton"
 import AngelsCheckout from "../components/AngelsCheckout"
 import AngelDonation from "../components/AngelDonation"
@@ -20,6 +21,7 @@ const shortcodes = {
   ButtonLink,
   AngelsCheckout,
   AngelDonation,
+  PaymentButton,
 }
 
 const Mdx = ({ children }) => {

@@ -6,6 +6,7 @@ import { combineEpics, createEpicMiddleware } from "redux-observable"
 
 import globalEpics from "./epics"
 import authSlice, { epics as authEpics } from "./auth"
+import subscriptionSlice, { epics as subscriptionEpics } from "./subscription"
 import dataSlice, { epics as dataEpics } from "./data"
 import logSlice, { epics as logEpics } from "./log"
 import cycleSlice, { epics as cycleEpics } from "./cycle"
@@ -13,6 +14,7 @@ import settingsSlice, { epics as settingsEpic } from "./settings"
 
 const rootReducer = combineReducers({
   [authSlice.name]: authSlice.reducer,
+  [subscriptionSlice.name]: subscriptionSlice.reducer,
   [dataSlice.name]: dataSlice.reducer,
   [logSlice.name]: logSlice.reducer,
   [settingsSlice.name]: settingsSlice.reducer,
@@ -22,6 +24,7 @@ const rootReducer = combineReducers({
 const rootEpic = combineEpics(
   ...globalEpics,
   ...authEpics,
+  ...subscriptionEpics,
   ...dataEpics,
   ...logEpics,
   ...settingsEpic,
