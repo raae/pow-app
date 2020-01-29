@@ -24,7 +24,7 @@ const StripeButton = ({
     }
 
     setStripe(window.Stripe(stripeKey))
-  }, [])
+  }, [stripeKey])
 
   const placeOrder = async () => {
     if (!stripe) return
