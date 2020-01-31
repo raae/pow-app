@@ -20,10 +20,10 @@ export const createCustomerEpic = (action$) =>
       try {
         const result = await axios.post("/.netlify/functions/customer")
 
-        if (!result.customer_id) {
+        if (!result.data.customer_id) {
           throw new Error("No customer_id field on result")
         }
-        return createCustomerFulfilled({ customerId: result.customer_id })
+        return createCustomerFulfilled({ customerId: result.data.customer_id })
       } catch ({ message }) {
         return createCustomerFailed({ error: { message } })
       }

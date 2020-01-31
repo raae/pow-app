@@ -8,7 +8,7 @@ import { fetchData, saveData } from "./data"
 import { selectUser } from "./auth"
 import {
   selectCustomerId,
-  selectSubscription,
+  selectSubscriptionData,
   createCustomer,
 } from "./subscription"
 
@@ -31,7 +31,7 @@ export const createSubscriptionCustomerEpic = (action$, state$) =>
   action$.pipe(
     filter((action) => {
       return (
-        action.type.includes("signInFulfilled") &&
+        action.type.includes("fetchFulfilled") &&
         !selectCustomerId(state$.value)
       )
     }),
@@ -46,6 +46,7 @@ export const fetchDataEpic = (action$, state$) =>
       filter((action) => {
         return (
           action.type.includes("signInFulfilled") ||
+          action.type.includes("createCustomerFulfilled") ||
           action.type.includes("update")
         )
       })
@@ -63,7 +64,10 @@ export const saveDataEpic = (action$, state$) =>
   // so that new data is merged in
   action$.pipe(
     filter((action) => {
-      return action.type.includes("update")
+      return (
+        action.type.includes("createCustomerFulfilled") ||
+        action.type.includes("update")
+      )
     }),
     switchMap(() => {
       return action$.pipe(
@@ -74,7 +78,7 @@ export const saveDataEpic = (action$, state$) =>
         map(() => {
           return saveData({
             settings: selectSettings(state$.value),
-            subscription: selectSubscription(state$.value),
+            subscription: selectSubscriptionData(state$.value),
             entriesByDate: selectAllEntriesByDate(state$.value),
           })
         })

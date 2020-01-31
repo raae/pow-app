@@ -14,6 +14,7 @@ const slice = createSlice({
     fetchFulfilled: (state, { payload }) => {
       state.isInitialized = true
       state.isPending = false
+      state.data = payload.data
     },
     fetchFailed: (state, { payload }) => {
       state.isPending = false

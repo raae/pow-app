@@ -4,10 +4,8 @@ import authSlice from "../auth"
 import dataSlice from "../data"
 
 const initialState = {
-  data: {
-    customerId: null,
-    lastVerified: null,
-  },
+  customerId: null,
+  isVerified: false,
   isPending: false,
   error: null,
 }
@@ -21,7 +19,7 @@ const slice = createSlice({
     },
     createCustomerFulfilled: (state, { payload }) => {
       state.isPending = false
-      state.data.customerId = payload.customerId
+      state.customerId = payload.customerId
     },
     createCustomerFailed: (state, { payload }) => {
       state.isPending = false
@@ -32,8 +30,8 @@ const slice = createSlice({
     },
     purchaseFulfilled: (state, { payload }) => {
       state.isPending = false
-      state.data.customerId = payload.customerId
-      state.data.lastVerified = Date.now()
+      state.customerId = payload.customerId
+      state.isVerified = true
     },
     purchaseFailed: (state, { payload }) => {
       state.isPending = false
@@ -44,14 +42,16 @@ const slice = createSlice({
     },
     validateFulfilled: (state) => {
       state.isPending = false
+      state.isVerified = true
     },
     validateFailed: (state) => {
-      state.data.customerId = null
+      state.isPending = false
+      state.isVerified = false
     },
   },
   extraReducers: {
     [dataSlice.actions.fetchFulfilled]: (state, { payload: { data } }) => {
-      state.data = data.subscription || initialState
+      state.customerId = state.customerId || data.subscription.customerId
     },
     [authSlice.actions.signOut]: () => {
       return initialState
@@ -62,12 +62,17 @@ const slice = createSlice({
 const selectSlice = (state) => state[slice.name]
 
 export const selectCustomerId = createSelector([selectSlice], (slice) => {
-  return slice.data.customerId
+  return slice.customerId
 })
 
-export const selectSubscription = createSelector([selectSlice], (slice) => {
-  return slice.data
-})
+export const selectSubscriptionData = createSelector(
+  [selectCustomerId],
+  (customerId) => {
+    return {
+      customerId,
+    }
+  }
+)
 
 export const actions = slice.actions
 
