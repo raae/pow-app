@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import TodayIcon from "@material-ui/icons/Today"
 
 import { useSelector } from "react-redux"
-import { selectUser } from "../store/auth"
 import { selectDataIsInitialized } from "../store/data"
 import { selectCalculationIsInitialized } from "../store/cycle"
 
