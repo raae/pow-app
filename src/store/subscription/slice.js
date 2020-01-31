@@ -5,8 +5,8 @@ import dataSlice from "../data"
 
 const initialState = {
   customerId: null,
-  isVerified: false,
-  isPending: false,
+  isValid: false,
+  isPending: true,
   error: null,
 }
 
@@ -14,6 +14,19 @@ const slice = createSlice({
   name: "subscription",
   initialState: initialState,
   reducers: {
+    validate: (state) => {
+      state.isPending = true
+    },
+    validateFulfilled: (state, { payload }) => {
+      state.isPending = false
+      state.isValid = payload.valid
+    },
+    validateFailed: (state, { payload }) => {
+      state.isPending = false
+      // Set true, so app can be used if Stripe fails etc.
+      state.isValid = true
+      state.error = payload.error
+    },
     createCustomer: (state) => {
       state.isPending = true
     },
@@ -37,17 +50,6 @@ const slice = createSlice({
       state.isPending = false
       state.error = payload.error
     },
-    validate: (state) => {
-      state.isPending = false
-    },
-    validateFulfilled: (state) => {
-      state.isPending = false
-      state.isVerified = true
-    },
-    validateFailed: (state) => {
-      state.isPending = false
-      state.isVerified = false
-    },
   },
   extraReducers: {
     [dataSlice.actions.fetchFulfilled]: (state, { payload: { data } }) => {
@@ -64,6 +66,13 @@ const selectSlice = (state) => state[slice.name]
 export const selectCustomerId = createSelector([selectSlice], (slice) => {
   return slice.customerId
 })
+
+export const selectSubscriptionIsPending = createSelector(
+  [selectSlice],
+  (slice) => {
+    return slice.isPending
+  }
+)
 
 export const selectSubscriptionData = createSelector(
   [selectCustomerId],

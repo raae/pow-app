@@ -1,20 +1,24 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { selectUser, selectAuthIsPending } from "../store/auth"
-import { purchaseSubscription } from "../store/subscription"
+import {
+  purchaseSubscription,
+  selectSubscriptionIsPending,
+} from "../store/subscription"
 
 import { Button } from "@material-ui/core"
 import SignInButton from "./SignInButton"
 
-const PaymentButton = ({ children, variant, ...props }) => {
+const SubscribeButton = ({ children, variant, ...props }) => {
   const dispatch = useDispatch()
   const user = useSelector(selectUser)
-  const isPending = useSelector(selectAuthIsPending)
+  const isAuthPending = useSelector(selectAuthIsPending)
+  const isSubscriptionPending = useSelector(selectSubscriptionIsPending)
 
   if (user) {
     return (
       <Button
-        disabled={isPending}
+        disabled={isAuthPending || isSubscriptionPending}
         onClick={() => dispatch(purchaseSubscription({ variant }))}
         {...props}
       >
@@ -26,4 +30,4 @@ const PaymentButton = ({ children, variant, ...props }) => {
   }
 }
 
-export default PaymentButton
+export default SubscribeButton

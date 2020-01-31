@@ -6,11 +6,7 @@ import { selectAllEntriesByDate } from "./log"
 import { calculateCycle } from "./cycle"
 import { fetchData, saveData } from "./data"
 import { selectUser } from "./auth"
-import {
-  selectCustomerId,
-  selectSubscriptionData,
-  createCustomer,
-} from "./subscription"
+import { selectSubscriptionData, validateSubscription } from "./subscription"
 
 export const calculateCycleEpic = (action$, state$) =>
   action$.pipe(
@@ -27,16 +23,14 @@ export const calculateCycleEpic = (action$, state$) =>
     })
   )
 
-export const createSubscriptionCustomerEpic = (action$, state$) =>
+export const validateSubscriptionEpic = (action$) =>
   action$.pipe(
     filter((action) => {
-      return (
-        action.type.includes("fetchFulfilled") &&
-        !selectCustomerId(state$.value)
-      )
+      return action.type.includes("fetchFulfilled")
     }),
+    take(1),
     map(() => {
-      return createCustomer()
+      return validateSubscription()
     })
   )
 
@@ -88,7 +82,7 @@ export const saveDataEpic = (action$, state$) =>
 
 export default [
   calculateCycleEpic,
-  createSubscriptionCustomerEpic,
+  validateSubscriptionEpic,
   fetchDataEpic,
   saveDataEpic,
 ]
