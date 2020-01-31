@@ -29,7 +29,7 @@ const AngelsCheckout = ({ stripeKey, levels }) => {
       .catch((error) => {
         console.warn("Status", error)
       })
-  }, [])
+  }, [stripeKey])
 
   useEffect(() => {
     if (!stripeKey) {
@@ -38,7 +38,7 @@ const AngelsCheckout = ({ stripeKey, levels }) => {
     }
 
     setStripe(window.Stripe(stripeKey))
-  }, [])
+  }, [stripeKey])
 
   const placeOrder = (sku) => {
     if (!stripe || !sku) return

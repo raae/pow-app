@@ -47,7 +47,7 @@ export const Root = ({ children }) => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch({ type: "init" })
-  }, [])
+  }, [dispatch])
   return <>{children}</>
 }
 

@@ -17,7 +17,7 @@ const Entries = ({ scrollTimestamp }) => {
   useEffect(() => {
     const yesterday = addDays(today, -1)
     scroller.scrollTo(keyFromDate(yesterday), { offset: -60 })
-  }, [scrollTimestamp])
+  }, [scrollTimestamp, today])
 
   return range.map((date) => {
     const key = keyFromDate(date)
