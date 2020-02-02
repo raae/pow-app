@@ -2,19 +2,14 @@ import { switchMap, filter } from "rxjs/operators"
 import { ofType } from "redux-observable"
 import axios from "axios"
 
-import {
-  BASE_URL,
-  STRIPE_KEY,
-  STRIPE_MONTHLY_PLAN,
-  STRIPE_YEARLY_PLAN,
-  STRIPE_LIFETIME_PLAN,
-} from "../../constants"
+import { STRIPE_ENV, STRIPE_KEY, BASE_URL } from "../../constants"
 
 import { selectUser } from "../auth"
 import { actions, selectCustomerId } from "./slice"
 
 const {
   validateFulfilled,
+  validateFailed,
   createCustomer,
   createCustomerFulfilled,
   createCustomerFailed,
@@ -25,11 +20,23 @@ export const validateEpic = (action$, state$) =>
   action$.pipe(
     ofType("subscription/validate"),
     switchMap(async () => {
-      console.log("validate")
-      if (selectCustomerId(state$.value)) {
-        // Todo run validation again stripe
-        return validateFulfilled({ valid: false })
+      const customerId = selectCustomerId(state$.value)
+      if (customerId) {
+        // There is a customer id,
+        // Check if there is a subscription
+        try {
+          const result = await axios.get("/.netlify/functions/subscription", {
+            params: {
+              customer_id: customerId,
+              stripe_env: STRIPE_ENV,
+            },
+          })
+          return validateFulfilled(result.data)
+        } catch ({ message }) {
+          return validateFailed({ message })
+        }
       } else {
+        // No customer id yet, create the customer
         return createCustomer()
       }
     })
@@ -40,12 +47,16 @@ export const createCustomerEpic = (action$) =>
     ofType("subscription/createCustomer"),
     switchMap(async () => {
       try {
-        const result = await axios.post("/.netlify/functions/customer")
+        const result = await axios.post("/.netlify/functions/customer", null, {
+          params: {
+            stripe_env: STRIPE_ENV,
+          },
+        })
 
-        if (!result.data.customer_id) {
-          throw new Error("No customer_id field on result")
+        if (!result.data.customerId) {
+          throw new Error("No customerId field on result")
         }
-        return createCustomerFulfilled({ customerId: result.data.customer_id })
+        return createCustomerFulfilled(result.data)
       } catch ({ message }) {
         return createCustomerFailed({ error: { message } })
       }
@@ -68,21 +79,24 @@ export const purchaseEpic = (action$, state$) =>
       }
 
       try {
-        let item = { plan: STRIPE_MONTHLY_PLAN }
-        if ("yearly" === payload.variant) {
-          item = { plan: STRIPE_YEARLY_PLAN }
-        } else if ("lifetime" === payload.variant) {
-          item = { sku: STRIPE_LIFETIME_PLAN }
-        }
+        const { data } = await axios.post(
+          "/.netlify/functions/subscription",
+          null,
+          {
+            params: {
+              stripeEnv: STRIPE_ENV,
+              customerId: customerId,
+              planVariant: payload.variant,
+              successUrl: BASE_URL + "/app",
+              cancelUrl: BASE_URL + "/price",
+            },
+          }
+        )
 
         const stripe = window.Stripe(STRIPE_KEY)
         const result = await stripe.redirectToCheckout({
-          items: [{ ...item, quantity: 1 }],
-          clientReferenceId: customerId,
-          successUrl: BASE_URL + "/app?session_id={CHECKOUT_SESSION_ID}",
-          cancelUrl: BASE_URL + "/price",
+          sessionId: data.sessionId,
         })
-
         if (result.error) throw result.error
       } catch ({ message }) {
         return purchaseFailed({ error: { message } })

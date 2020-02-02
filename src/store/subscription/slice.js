@@ -5,7 +5,8 @@ import dataSlice from "../data"
 
 const initialState = {
   customerId: null,
-  isValid: false,
+  subscriptionId: null,
+  isAuthorized: false,
   isPending: true,
   error: null,
 }
@@ -19,12 +20,13 @@ const slice = createSlice({
     },
     validateFulfilled: (state, { payload }) => {
       state.isPending = false
-      state.isValid = payload.valid
+      state.subscriptionId = payload.subscriptionId
+      state.isAuthorized = payload.subscriptionIsValid
     },
     validateFailed: (state, { payload }) => {
       state.isPending = false
       // Set true, so app can be used if Stripe fails etc.
-      state.isValid = true
+      state.isAuthorized = true
       state.error = payload.error
     },
     createCustomer: (state) => {
@@ -53,7 +55,9 @@ const slice = createSlice({
   },
   extraReducers: {
     [dataSlice.actions.fetchFulfilled]: (state, { payload: { data } }) => {
-      state.customerId = state.customerId || data.subscription.customerId
+      if (!state.customerId && data.subscription) {
+        state.customerId = data.subscription.customerId
+      }
     },
     [authSlice.actions.signOut]: () => {
       return initialState

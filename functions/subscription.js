@@ -7,8 +7,15 @@ exports.handler = async ({ httpMethod, queryStringParameters: params }) => {
     let response = {}
 
     if (httpMethod === "POST") {
-      const customer = await stripe.createCustomer()
-      response = customer
+      const session = await stripe.createSubscriptionSession()
+      response = {
+        ...session,
+      }
+    } else if (httpMethod === "GET") {
+      const subscription = await stripe.getSubscriptionForCustomer()
+      response = {
+        ...subscription,
+      }
     } else {
       throw new Error("Unsupported httpMethod", httpMethod)
     }

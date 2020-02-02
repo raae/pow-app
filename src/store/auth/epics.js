@@ -35,7 +35,7 @@ export const initEpic = (action$) =>
     exhaustMap(async () => {
       try {
         const user = await initAuth()
-        return signInFulfilled({ user })
+        return signInFulfilled({ user: user.profile })
       } catch ({ message }) {
         return signInFailed({ error: { message } })
       }
