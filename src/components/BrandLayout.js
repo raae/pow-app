@@ -48,7 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const BrandLayout = ({ isHome = false, children }) => {
+const BrandLayout = ({
+  isHome = false,
+  footer = <BrandFooter />,
+  children,
+}) => {
   const classes = useStyles()
 
   return (
@@ -66,10 +70,12 @@ const BrandLayout = ({ isHome = false, children }) => {
       <Container className={classes.container} component="main">
         {children}
       </Container>
-      <Container className={classes.container} component="footer">
-        <Divider />
-        <BrandFooter></BrandFooter>
-      </Container>
+      {footer && (
+        <Container className={classes.container} component="footer">
+          <Divider />
+          {footer}
+        </Container>
+      )}
     </div>
   )
 }

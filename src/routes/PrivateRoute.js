@@ -6,14 +6,16 @@ import { useSelector } from "react-redux"
 import { selectDataIsInitialized } from "../store/data"
 import { selectCalculationIsInitialized } from "../store/cycle"
 import { selectUser, selectAuthIsPending } from "../store/auth"
+import { selectMenstruationTag } from "../store/settings"
 
 import Loading from "../components/Loading"
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, uri, ...rest }) => {
   const user = useSelector(selectUser)
   const isAuthPending = useSelector(selectAuthIsPending)
   const isDataInitialized = useSelector(selectDataIsInitialized)
   const isCalculationInitialized = useSelector(selectCalculationIsInitialized)
+  const menstruationTag = useSelector(selectMenstruationTag)
 
   if (!user && !isAuthPending) {
     navigate("/")
@@ -22,6 +24,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
   if (isAuthPending || !isDataInitialized || !isCalculationInitialized) {
     return <Loading />
+  }
+
+  if (!menstruationTag && !uri.includes("onboarding")) {
+    navigate("/app/onboarding")
   }
 
   return <Component {...rest} />
