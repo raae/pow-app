@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const BrandLayout = ({ isHome = true, children }) => {
+const BrandLayout = ({ isHome = false, children }) => {
   const classes = useStyles()
 
   return (
