@@ -2,7 +2,6 @@ import React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import { Container, Divider, makeStyles } from "@material-ui/core"
 
-import BrandFooter from "../components/BrandFooter"
 import { SignInButton, SignOutButton } from "./AuthButtons"
 
 const useStyles = makeStyles((theme) => ({
@@ -75,10 +74,12 @@ const BrandLayout = ({ variant, children }) => {
       <Container className={classes.container} component="main">
         {children}
       </Container>
-      <Container className={classes.container} component="footer">
-        <Divider />
-        <BrandFooter></BrandFooter>
-      </Container>
+      {footer && (
+        <Container className={classes.container} component="footer">
+          <Divider />
+          {footer}
+        </Container>
+      )}
     </div>
   )
 }
