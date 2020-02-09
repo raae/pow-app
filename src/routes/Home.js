@@ -1,20 +1,13 @@
 import React, { useState } from "react"
 import TodayIcon from "@material-ui/icons/Today"
 
-import { useSelector } from "react-redux"
-import { selectDataIsInitialized } from "../store/data"
-import { selectCalculationIsInitialized } from "../store/cycle"
-
 import SEO from "../components/Seo"
 import Entries from "../components/Entries"
-import Loading from "../components/Loading"
 import MenstruationNote from "../components/MenstruationNote"
 
 import AppLayout from "../components/AppLayout"
 
 const HomeRoute = () => {
-  const isDataInitialized = useSelector(selectDataIsInitialized)
-  const isCalculationInitialized = useSelector(selectCalculationIsInitialized)
   const [scrollTimestamp, setScrollTimestamp] = useState()
 
   const items = [
@@ -25,16 +18,12 @@ const HomeRoute = () => {
     },
   ]
 
-  const aside = isCalculationInitialized && <MenstruationNote />
+  const aside = <MenstruationNote />
 
   return (
     <AppLayout appBarItems={items} aside={aside}>
       <SEO title="Log" />
-      {isDataInitialized ? (
-        <Entries scrollTimestamp={scrollTimestamp}></Entries>
-      ) : (
-        <Loading></Loading>
-      )}
+      <Entries scrollTimestamp={scrollTimestamp}></Entries>
     </AppLayout>
   )
 }

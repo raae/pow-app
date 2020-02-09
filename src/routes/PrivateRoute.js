@@ -3,14 +3,25 @@ import PropTypes from "prop-types"
 import { navigate } from "gatsby"
 
 import { useSelector } from "react-redux"
+import { selectDataIsInitialized } from "../store/data"
+import { selectCalculationIsInitialized } from "../store/cycle"
 import { selectUser, selectAuthIsPending } from "../store/auth"
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const isPending = useSelector(selectAuthIsPending)
-  const user = useSelector(selectUser)
+import Loading from "../components/Loading"
 
-  if (!user && !isPending) {
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const user = useSelector(selectUser)
+  const isAuthPending = useSelector(selectAuthIsPending)
+  const isDataInitialized = useSelector(selectDataIsInitialized)
+  const isCalculationInitialized = useSelector(selectCalculationIsInitialized)
+
+  if (!user && !isAuthPending) {
     navigate("/")
+    return null
+  }
+
+  if (isAuthPending || !isDataInitialized || !isCalculationInitialized) {
+    return <Loading />
   }
 
   return <Component {...rest} />
