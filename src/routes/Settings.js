@@ -5,7 +5,6 @@ import { selectUser, signOut } from "../store/auth"
 
 import SEO from "../components/Seo"
 import Settings from "../components/Settings"
-import Loading from "../components/Loading"
 
 import AppLayout from "../components/AppLayout"
 
@@ -24,7 +23,7 @@ const SettingsRoute = () => {
   return (
     <AppLayout appBarItems={items}>
       <SEO title="Settings" />
-      {user ? <Settings user={user}></Settings> : <Loading></Loading>}
+      <Settings user={user}></Settings>
     </AppLayout>
   )
 }
