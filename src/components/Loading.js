@@ -1,9 +1,13 @@
 import React from "react"
-import { Container, CircularProgress, makeStyles } from "@material-ui/core"
+import { CircularProgress, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    borderTop: `4px solid ${theme.palette.primary.main}`,
+    padding: theme.spacing(2),
+    background: theme.palette.background.paper,
+    minHeight: "100vh",
+
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -18,9 +22,9 @@ const useStyles = makeStyles((theme) => ({
 const Loading = () => {
   const classes = useStyles()
   return (
-    <Container className={classes.root}>
+    <div className={classes.root}>
       <CircularProgress className={classes.circle} />
-    </Container>
+    </div>
   )
 }
 
