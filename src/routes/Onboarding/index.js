@@ -8,28 +8,36 @@ import TagRoute from "./tag"
 
 import { updateMenstruationTag } from "../../store/settings"
 
+const DEFAULTS = {
+  tag: "period",
+}
+
 const OnboardingRoute = () => {
-  const defaultTag = "period"
-  const [displayTag, setDisplayTag] = useState(defaultTag)
-  const [tag, setTag] = useState()
+  const [state, setState] = useState({})
+  const [settings, setSettings] = useState(DEFAULTS)
   const dispatch = useDispatch()
 
-  const onTagChange = (event) => {
+  const onChange = (name) => (event) => {
     let value = event.target.value
 
-    value = value.replace(/\s/g, "")
-    value = value.replace(/#/g, "")
+    if (name === "tag") {
+      value = value.replace(/\s/g, "")
+      value = value.replace(/#/g, "")
+    }
 
-    setTag(value)
-  }
-
-  const completeOnBoarding = () => {
-    dispatch(updateMenstruationTag({ tag: displayTag }))
+    setState({
+      ...state,
+      [name]: value,
+    })
   }
 
   useEffect(() => {
-    setDisplayTag(tag || defaultTag)
-  }, [tag, defaultTag])
+    setSettings((prev) => ({ ...prev, ...state }))
+  }, [state])
+
+  const completeOnBoarding = () => {
+    dispatch(updateMenstruationTag({ tag: settings.tag }))
+  }
 
   return (
     <div>
@@ -45,14 +53,14 @@ const OnboardingRoute = () => {
         />
         <TagRoute
           path="/tag"
-          tag={tag}
-          onTagChange={onTagChange}
-          placeholderTag={defaultTag}
-          displayTag={displayTag}
-          prev={{ path: "./" }}
+          onChange={onChange}
+          defaults={DEFAULTS}
+          state={state}
+          settings={settings}
+          prev={{ path: "../" }}
           next={{
             path: "/app",
-            label: `Use #${tag || defaultTag}`,
+            label: `Use #${settings.tag}`,
             onClick: completeOnBoarding,
           }}
         />

@@ -7,14 +7,7 @@ import BrandCopy from "../../components/BrandCopy"
 
 import Navigation from "./navigation"
 
-const TagRoute = ({
-  placeholderTag,
-  displayTag,
-  tag,
-  onTagChange,
-  prev,
-  next,
-}) => {
+const TagRoute = ({ defaults, settings, state, onChange, prev, next }) => {
   return (
     <BrandLayout footer={null}>
       <BrandCopy>
@@ -27,20 +20,20 @@ const TagRoute = ({
         <TextField
           label="Your menstruation hashtag"
           variant="outlined"
-          value={tag}
-          onChange={onTagChange}
-          placeholder={placeholderTag}
+          value={state.tag}
+          onChange={onChange("tag")}
+          placeholder={defaults.tag}
           InputProps={{
             startAdornment: <InputAdornment position="start">#</InputAdornment>,
           }}
         />
         <p>
-          On days you menstruate add your hashtag (#{displayTag}) to entries:{" "}
+          On days you menstruate add your hashtag (#{settings.tag}) to entries:{" "}
         </p>
         <ul>
-          <li>Feeling #tired and its got my #{displayTag}.</li>
-          <li>#{displayTag}</li>
-          <li>#{displayTag} #cramps #tired</li>
+          <li>Feeling #tired and its got my #{settings.tag}.</li>
+          <li>#{settings.tag}</li>
+          <li>#{settings.tag} #cramps #tired</li>
         </ul>
         <Navigation prev={prev} next={next} />
       </BrandCopy>
