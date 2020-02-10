@@ -7,7 +7,7 @@ import BrandCopy from "../../components/BrandCopy"
 
 import Navigation from "./navigation"
 
-const TagRoute = ({ defaults, settings, state, onChange, prev, next }) => {
+const TagRoute = ({ defaults, settings, state, handleChange, prev, next }) => {
   return (
     <BrandLayout footer={null}>
       <BrandCopy>
@@ -21,7 +21,7 @@ const TagRoute = ({ defaults, settings, state, onChange, prev, next }) => {
           label="Your menstruation hashtag"
           variant="outlined"
           value={state.tag}
-          onChange={onChange("tag")}
+          onChange={handleChange("tag")}
           placeholder={defaults.tag}
           InputProps={{
             startAdornment: <InputAdornment position="start">#</InputAdornment>,
