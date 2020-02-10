@@ -17,13 +17,14 @@ const Navigation = ({ next = {}, prev = {} }) => {
   return (
     <nav className={classes.root}>
       {prev.path && (
-        <Button
+        <IconButton
           color="default"
           disabled={prev.disabled}
           component={Link}
           to={prev.path}
-          startIcon={<ArrowBackIcon />}
-        />
+        >
+          <ArrowBackIcon />
+        </IconButton>
       )}
       {next.path && (
         <Button
