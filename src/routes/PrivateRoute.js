@@ -28,6 +28,7 @@ const PrivateRoute = ({ component: Component, uri, ...rest }) => {
 
   if (!menstruationTag && !uri.includes("onboarding")) {
     navigate("/app/onboarding")
+    return null
   }
 
   return <Component {...rest} />
