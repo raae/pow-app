@@ -34,6 +34,7 @@
     "gatsby-plugin-stripe": "1.2.3",
     "gatsby-source-filesystem": "2.1.47",
     "gatsby-transformer-remark": "2.6.49",
+    "localforage": "^1.7.3",
     "lodash": "4.17.15",
     "react": "16.12.0",
     "react-dom": "16.12.0",

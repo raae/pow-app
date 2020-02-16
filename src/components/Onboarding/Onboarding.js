@@ -14,6 +14,8 @@ import {
 } from "@material-ui/core"
 import LastDateInput from "./LastDateInput"
 
+import localforage from "localforage"
+
 const useStyles = makeStyles((theme) => ({
   root: {
     "& h3 + p, & h3 + ul": {
@@ -52,39 +54,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const DEFAULTS = {
+const placeholders = {
   tag: "period",
   lastStart: null,
   cycleLength: "28",
   menstruationLength: "4",
+}
+
+const initialValues = {
+  tag: "",
+  lastStart: null,
+  cycleLength: "",
+  menstruationLength: "",
   subscriptionPlan: "yearly",
-  newsletter: false,
 }
 
 const Onboarding = () => {
   const classes = useStyles()
 
-  const [values, setValues] = useState({
-    ...DEFAULTS,
-    ...{ tag: "", cycleLength: "", menstruationLength: "" },
-  })
-  const [settings, setSettings] = useState(DEFAULTS)
+  const [values, setValues] = useState(initialValues)
+  const [tag, setTag] = useState(placeholders.tag)
 
   useEffect(() => {
-    setSettings((prev) => {
-      const updated = {
-        ...prev,
-        ...values,
-      }
-      updated.tag = updated.tag || DEFAULTS.tag
-      return updated
-    })
+    setTag(values.tag || placeholders.tag)
   }, [values])
 
   useEffect(() => {
     const ENTER_CODE = 13
     const handleKeyPress = (event) => {
-      console.log(event.which)
       if (event.which === ENTER_CODE) {
         document.querySelectorAll("input").forEach((item) => item.blur())
       }
@@ -116,10 +113,17 @@ const Onboarding = () => {
     })
   }
 
-  const completeOnBoarding = (event) => {
-    // Save to local storage
-    event.preventDefault()
-    console.log("Save to local storage")
+  const completeOnboarding = () => {
+    localforage
+      .setItem("onboarding", values)
+      .then(function() {
+        console.log("Saved to local storage")
+        // redirect to log in
+      })
+      .catch(function({ message }) {
+        console.log("Error saving to local storage", message)
+        // redirect to log in
+      })
   }
 
   const textFieldProps = {
@@ -144,7 +148,7 @@ const Onboarding = () => {
         <li>Feeling #energized and ready to rule the world.</li>
         <li>Really #bloated and in a #funky mood.</li>
         <li>#sexytime</li>
-        <li>#{settings.tag} started today.</li>
+        <li>#{tag} started today.</li>
         <li>
           Very #upbeat today, hope it stays this way for a couple of more days.
         </li>
@@ -162,7 +166,7 @@ const Onboarding = () => {
         label="Your menstruation tag"
         value={values.tag}
         onChange={handleChange("tag")}
-        placeholder={DEFAULTS.tag}
+        placeholder={placeholders.tag}
         inputProps={{
           autoCorrect: "off",
           autoCapitalize: "none",
@@ -172,11 +176,11 @@ const Onboarding = () => {
         }}
       />
 
-      <p>Some example #{settings.tag} entries:</p>
+      <p>Some example #{tag} entries:</p>
       <ul>
-        <li>Feeling #tired and also #{settings.tag}.</li>
-        <li>#{settings.tag}</li>
-        <li>#{settings.tag} #cramps #tired</li>
+        <li>Feeling #tired and also #{tag}.</li>
+        <li>#{tag}</li>
+        <li>#{tag} #cramps #tired</li>
       </ul>
 
       <h3>Your cycle</h3>
@@ -201,7 +205,7 @@ const Onboarding = () => {
             value={values.cycleLength}
             type="number"
             onChange={handleChange("cycleLength")}
-            placeholder={DEFAULTS.cycleLength}
+            placeholder={placeholders.cycleLength}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">#</InputAdornment>
@@ -214,7 +218,7 @@ const Onboarding = () => {
             value={values.menstruationLength}
             type="number"
             onChange={handleChange("menstruationLength")}
-            placeholder={DEFAULTS.menstruationLength}
+            placeholder={placeholders.menstruationLength}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">#</InputAdornment>
@@ -259,7 +263,7 @@ const Onboarding = () => {
 
       <Divider variant="inset" />
 
-      <Button onClick={completeOnBoarding} variant="contained" color="primary">
+      <Button onClick={completeOnboarding} variant="contained" color="primary">
         Take charge
       </Button>
     </div>
