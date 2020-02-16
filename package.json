@@ -35,6 +35,7 @@
     "gatsby-source-filesystem": "2.1.47",
     "gatsby-transformer-remark": "2.6.49",
     "immer": "^5.3.6",
+    "localforage": "^1.7.3",
     "lodash": "4.17.15",
     "react": "16.12.0",
     "react-dom": "16.12.0",
