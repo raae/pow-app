@@ -59,8 +59,11 @@ const useStyles = makeStyles((theme) => ({
       lineHeight: 1.125,
     },
     "& > ul": {
-      marginLeft: "1rem",
-      paddingLeft: "1.125rem",
+      paddingLeft: "1.5em",
+      listStyleType: "circle",
+      "@media only screen and (max-width: 40rem)": {
+        paddingLeft: "1.225em",
+      },
 
       "& li": {
         margin: "1rem 0",

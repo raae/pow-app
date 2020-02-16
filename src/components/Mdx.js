@@ -8,6 +8,7 @@ import SignInButton from "../components/SignInButton"
 import StripeButton from "../components/StripeButton"
 import AngelsCheckout from "../components/AngelsCheckout"
 import AngelDonation from "../components/AngelDonation"
+import Onboarding from "../components/Onboarding"
 
 const components = {
   a: Link,
@@ -20,6 +21,7 @@ const shortcodes = {
   ButtonLink,
   AngelsCheckout,
   AngelDonation,
+  Onboarding,
 }
 
 const Mdx = ({ children }) => {
