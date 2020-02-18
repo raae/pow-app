@@ -52,8 +52,9 @@ module.exports = {
         icon: "static/icon.png",
       },
     },
-    `gatsby-plugin-stripe`,
     `gatsby-plugin-offline`,
+    `gatsby-plugin-stripe`,
+
     {
       resolve: `gatsby-plugin-netlify`,
       options: {
