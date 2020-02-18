@@ -53,6 +53,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-stripe`,
+    `gatsby-plugin-offline`,
     {
       resolve: `gatsby-plugin-netlify`,
       options: {

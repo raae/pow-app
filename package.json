@@ -29,6 +29,7 @@
     "gatsby-plugin-material-ui": "2.1.6",
     "gatsby-plugin-mdx": "1.0.69",
     "gatsby-plugin-netlify": "2.1.31",
+    "gatsby-plugin-offline": "^3.0.35",
     "gatsby-plugin-page-creator": "2.1.39",
     "gatsby-plugin-react-helmet": "3.1.21",
     "gatsby-plugin-stripe": "1.2.3",
