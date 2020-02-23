@@ -1,9 +1,9 @@
 import React from "react"
+import { Link as GatsbyLink } from "gatsby"
 import { Container, Divider, makeStyles } from "@material-ui/core"
 
 import BrandFooter from "../components/BrandFooter"
-import { Link } from "../components/Link"
-import SignInButton from "./SignInButton"
+import { SignInButton, SignOutButton } from "./AuthButtons"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,20 +48,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const BrandLayout = ({ isHome = true, children }) => {
+const MainNav = ({ variant }) => {
+  switch (variant) {
+    case "home":
+      return <SignInButton variant="outlined" size="small" color="secondary" />
+    case "app":
+      return <SignOutButton variant="outlined" size="small" color="secondary" />
+
+    default:
+      return null
+  }
+}
+
+const BrandLayout = ({ variant, children }) => {
   const classes = useStyles()
+  const logoPath = variant === "app" ? "/app" : "/"
 
   return (
     <div className={classes.root}>
       <Container className={classes.container} component="header">
-        <Link className={classes.logo} href="/">
+        <GatsbyLink className={classes.logo} to={logoPath}>
           !
-        </Link>
-        {isHome && (
-          <SignInButton variant="outlined" size="small" color="secondary">
-            Log in
-          </SignInButton>
-        )}
+        </GatsbyLink>
+        <MainNav variant={variant} />
       </Container>
       <Container className={classes.container} component="main">
         {children}
