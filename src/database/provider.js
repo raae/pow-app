@@ -8,8 +8,8 @@ export const DataStateContext = createContext()
 export const DataActionsContext = createContext()
 
 const DATABASES = [
-  { databaseName: "entries", entity: "entry" },
-  { databaseName: "settings", entity: "setting" },
+  { databaseName: "entries", entity: "Entry" },
+  { databaseName: "settings", entity: "Setting" },
 ]
 
 const DataProvider = ({ children, databases = DATABASES }) => {
@@ -36,37 +36,43 @@ const DataProvider = ({ children, databases = DATABASES }) => {
     })
   }, [user, databases])
 
-  const addItem = async (params) => {
-    return userbase.insertItem(params)
+  const addItem = (params) => {
+    return userbase
+      .insertItem(params)
+      .then(() => {
+        return params.item
+      })
+      .catch((error) => {
+        return { error }
+      })
   }
 
-  const updateItem = async (params) => {
-    return userbase.updateItem(params)
+  const updateItem = (params) => {
+    return userbase
+      .updateItem(params)
+      .then(() => {
+        return params.item
+      })
+      .catch((error) => {
+        return { error }
+      })
   }
 
   const actions = React.useMemo(() => {
-    return databases.reduce((acc, { entity }) => {
+    return databases.reduce((acc, { databaseName, entity }) => {
       acc[`add${entity}`] = (id, item) => {
-        return addItem({ itemId: id, item })
+        return addItem({ itemId: id, item, databaseName })
       }
       acc[`update${entity}`] = (id, item) => {
-        return updateItem({ itemId: id, item })
+        return updateItem({ itemId: id, item, databaseName })
       }
 
       return acc
     }, {})
   }, [databases])
 
-  const dataState = databases.reduce((acc, { databaseName }) => {
-    acc[databaseName] = state[databaseName].byId
-    return acc
-  }, {})
-  dataState.isPending = databases.reduce((acc, { databaseName }) => {
-    return acc && state[databaseName].isPending
-  }, {})
-
   return (
-    <DataStateContext.Provider value={dataState}>
+    <DataStateContext.Provider value={state}>
       <DataActionsContext.Provider value={actions}>
         {children}
       </DataActionsContext.Provider>
