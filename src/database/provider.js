@@ -9,7 +9,7 @@ export const DataActionsContext = createContext()
 
 const DATABASES = [
   { databaseName: "entries", entity: "Entry" },
-  { databaseName: "settings", entity: "Setting" },
+  { databaseName: "cycle", entity: "Cycle" },
 ]
 
 const DataProvider = ({ children, databases = DATABASES }) => {
@@ -24,13 +24,16 @@ const DataProvider = ({ children, databases = DATABASES }) => {
         .openDatabase({
           databaseName,
           changeHandler: (items) => {
+            console.log("Database changed", databaseName)
             dispatch({ type: "changed", databaseName, items })
           },
         })
         .then(() => {
+          console.log("Database opened", databaseName)
           dispatch({ type: "openFulfilled", databaseName })
         })
         .catch((error) => {
+          console.log("Database failed to opened", databaseName, error.message)
           dispatch({ type: "openFailed", databaseName, error })
         })
     })
@@ -40,9 +43,11 @@ const DataProvider = ({ children, databases = DATABASES }) => {
     return userbase
       .insertItem(params)
       .then(() => {
+        console.log("Item added", params.itemId)
         return params.item
       })
       .catch((error) => {
+        console.log("Item not added", params.itemId, error.message)
         return { error }
       })
   }
@@ -51,9 +56,11 @@ const DataProvider = ({ children, databases = DATABASES }) => {
     return userbase
       .updateItem(params)
       .then(() => {
+        console.log("Item updated", params.itemId)
         return params.item
       })
       .catch((error) => {
+        console.log("Item not updated", params.itemId, error.message)
         return { error }
       })
   }
