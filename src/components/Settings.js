@@ -30,7 +30,7 @@ const Profile = ({ user }) => {
     <>
       <Container className={classes.container} maxWidth="sm">
         <Card>
-          <CardHeader title={user.profile.name} subheader={user.username} />
+          <CardHeader title={user.username} />
         </Card>
       </Container>
       <Container className={classes.container} maxWidth="sm">

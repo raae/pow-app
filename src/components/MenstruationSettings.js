@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Card,
   CardContent,
@@ -15,10 +15,7 @@ import EditIcon from "@material-ui/icons/Edit"
 import AddIcon from "@material-ui/icons/Add"
 import CancelIcon from "@material-ui/icons/Cancel"
 import SubmitIcon from "@material-ui/icons/CheckCircle"
-
-import { updateMenstruationTag, selectMenstruationTag } from "../store/settings"
-import { selectAverageCycleLength } from "../store/cycle"
-import { useSelector, useDispatch } from "react-redux"
+import { useDataState, useDataActions } from "../database"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,7 +90,7 @@ const Tag = ({ tag, onEditTag }) => {
   )
 }
 
-const TagForm = ({ tag, onTagChange, onClose }) => {
+const TagForm = ({ tag = "", onTagChange, onClose }) => {
   const classes = useStyles()
   const [value, setValue] = useState(tag)
 
@@ -165,10 +162,25 @@ const TagForm = ({ tag, onTagChange, onClose }) => {
 
 const MenstruationSettings = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const [isEditing, setIsEditing] = useState(false)
-  const menstruationTag = useSelector(selectMenstruationTag)
-  const averageLength = useSelector(selectAverageCycleLength)
+  const [tag, setTag] = useState()
+
+  const { cycle } = useDataState()
+  const { addCycle, updateCycle } = useDataActions()
+
+  useEffect(() => {
+    if (!cycle.byId["tag"]) return
+    setTag(cycle.byId["tag"])
+  }, [cycle])
+
+  const handleTagChange = (value) => {
+    if (tag !== null) {
+      updateCycle("tag", value)
+    } else {
+      addCycle("tag", value)
+    }
+    setTag(value)
+  }
 
   return (
     <>
@@ -181,24 +193,14 @@ const MenstruationSettings = () => {
             POW! uses the menstruation tag to align your cycles and make
             predictions for future cycles.
           </Typography>
-          {!isEditing && (
-            <Tag tag={menstruationTag} onEditTag={() => setIsEditing(true)} />
-          )}
+          {!isEditing && <Tag tag={tag} onEditTag={() => setIsEditing(true)} />}
 
           {isEditing && (
             <TagForm
-              tag={menstruationTag}
-              onTagChange={(value) =>
-                dispatch(updateMenstruationTag({ tag: value }))
-              }
+              tag={tag}
+              onTagChange={handleTagChange}
               onClose={() => setIsEditing(false)}
             />
-          )}
-          {averageLength > 1 && (
-            <Typography gutterBottom variant="body2" color="textSecondary">
-              Your tracked average cycle length is{" "}
-              <strong>{averageLength} days</strong>.
-            </Typography>
           )}
         </CardContent>
       </Card>

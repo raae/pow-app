@@ -5,6 +5,8 @@ import { format } from "date-fns"
 import { Paper, Button, Typography, makeStyles } from "@material-ui/core"
 import { useSelector } from "react-redux"
 
+import { useDataState } from "../database"
+
 import { selectMenstruationTag } from "../store/settings"
 import {
   selectNextStartDate,
@@ -76,7 +78,7 @@ const MenstruationNote = () => {
   const classes = useStyles()
   const cycleDay = useSelector(selectHumanCycleDayForToday)
   const nextStartDate = useSelector(selectNextStartDate)
-  const menstruationTag = useSelector(selectMenstruationTag)
+  const { cycle } = useDataState()
 
   let note = <NotEnoughData />
   if (cycleDay || nextStartDate) {
@@ -85,11 +87,11 @@ const MenstruationNote = () => {
         <CycleDayNote cycleDay={cycleDay}></CycleDayNote>
         <NextNote
           nextStartDate={nextStartDate}
-          tag={menstruationTag}
+          tag={cycle.byId["tag"]}
         ></NextNote>
       </>
     )
-  } else if (!menstruationTag) {
+  } else if (!cycle.byId["tag"]) {
     note = <NoMenstruationTagSetting />
   }
   return (
