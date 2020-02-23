@@ -1,13 +1,10 @@
-import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState, useEffect } from "react"
 import { isFuture, isToday } from "date-fns"
 import classnames from "classnames"
 
-import { selectEntryForDate, updateEntry } from "../store/log"
-import { selectPredictionsForDate } from "../store/cycle"
-import { selectMenstruationTag } from "../store/settings"
-
 import { Container, Paper, makeStyles } from "@material-ui/core"
+
+import { useDataActions } from "../database"
 
 import EntryHeader from "./EntryHeader"
 import EntryNote from "./EntryNote"
@@ -46,27 +43,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const selectIsMenstruation = (state, { tags = [], predictions = [] }) => {
-  const menstruationTag = selectMenstruationTag(state)
-  return tags.includes(menstruationTag) || predictions.includes(menstruationTag)
-}
-
-const Entry = ({ date }) => {
+const Entry = ({ date, entryId, entry }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const entry = useSelector((state) => selectEntryForDate(state, { date }))
-  const predictions = useSelector((state) =>
-    selectPredictionsForDate(state, { date })
-  )
-  const isMenstruation = useSelector((state) =>
-    selectIsMenstruation(state, {
-      tags: entry && entry.tags,
-      predictions,
-    })
-  )
+  const [note, setNote] = useState()
+  const { addEntry, updateEntry } = useDataActions()
+
+  useEffect(() => {
+    if (!entry) return
+
+    setNote(entry.note)
+  }, [entry])
+
+  const predictions = []
+  const isMenstruation = false
 
   const onNoteChange = (note) => {
-    dispatch(updateEntry({ date, note }))
+    setNote(note)
+    if (!entry) {
+      addEntry(entryId, { note })
+    } else {
+      updateEntry(entryId, { note })
+    }
   }
 
   return (
@@ -84,7 +81,7 @@ const Entry = ({ date }) => {
           })}
         >
           <EntryNote
-            note={entry && entry.note}
+            note={note}
             isToday={isToday(date)}
             onNoteChange={onNoteChange}
           ></EntryNote>
