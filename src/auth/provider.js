@@ -23,39 +23,45 @@ const AuthProvider = ({ children }) => {
       })
   }, [])
 
-  const signUp = (params) => {
+  const signUp = async (params) => {
     dispatch({ type: "signUp" })
-    userbase
+    return userbase
       .signUp(params)
       .then((user) => {
         dispatch({ type: "signUpFulfilled", user })
+        return user
       })
       .catch((error) => {
         dispatch({ type: "signUpFailed", error })
+        throw error
       })
   }
 
-  const signIn = (params) => {
+  const signIn = async (params) => {
     dispatch({ type: "signIn" })
-    userbase
+    return userbase
       .signIn(params)
       .then((user) => {
         dispatch({ type: "signInFulfilled", user })
+        return user
       })
       .catch((error) => {
         dispatch({ type: "signInFailed", error })
+        throw error
       })
   }
 
   const signOut = (params) => {
     dispatch({ type: "signOut" })
-    userbase
+    return userbase
       .signOut(params)
       .then(() => {
         dispatch({ type: "signOutFulfilled", user: null })
+        return true
       })
       .catch((error) => {
         dispatch({ type: "signOutFailed", error })
+        throw error
       })
   }
 
