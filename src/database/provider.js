@@ -1,8 +1,10 @@
-import React, { useEffect, createContext, useReducer } from "react"
+import React, { createContext, useReducer } from "react"
 import userbase from "userbase-js"
 
 import { reducer, getDefaultState } from "./reducer"
 import { useAuthState } from "../auth"
+import { useEffect } from "react"
+import initDatabases from "./initDatabases"
 
 export const DataStateContext = createContext()
 export const DataActionsContext = createContext()
@@ -17,26 +19,7 @@ const DataProvider = ({ children, databases = DATABASES }) => {
   const [state, dispatch] = useReducer(reducer, getDefaultState(databases))
 
   useEffect(() => {
-    if (!user) return
-    databases.forEach(({ databaseName }) => {
-      dispatch({ type: "open", databaseName })
-      userbase
-        .openDatabase({
-          databaseName,
-          changeHandler: (items) => {
-            console.log("Database changed", databaseName)
-            dispatch({ type: "changed", databaseName, items })
-          },
-        })
-        .then(() => {
-          console.log("Database opened", databaseName)
-          dispatch({ type: "openFulfilled", databaseName })
-        })
-        .catch((error) => {
-          console.log("Database failed to opened", databaseName, error.message)
-          dispatch({ type: "openFailed", databaseName, error })
-        })
-    })
+    initDatabases({ user, databases, dispatch, userbase })
   }, [user, databases])
 
   const upsertItem = (params) => {
@@ -80,17 +63,31 @@ const DataProvider = ({ children, databases = DATABASES }) => {
   }
 
   const actions = React.useMemo(() => {
+    // Create inset, update and upsert action for each database
+    // ie. updateEntry, insertEntry and upsertEntry
+    // for { databaseName: "entries", entity: "Entry" }
     return databases.reduce((acc, { databaseName, entity }) => {
       acc[`insert${entity}`] = (id, item) => {
-        return insertItem({ itemId: id, item, databaseName })
+        return insertItem({
+          itemId: id,
+          item,
+          databaseName,
+        })
       }
       acc[`update${entity}`] = (id, item) => {
-        return updateItem({ itemId: id, item, databaseName })
+        return updateItem({
+          itemId: id,
+          item,
+          databaseName,
+        })
       }
       acc[`upsert${entity}`] = (id, item) => {
-        return upsertItem({ itemId: id, item, databaseName })
+        return upsertItem({
+          itemId: id,
+          item,
+          databaseName,
+        })
       }
-
       return acc
     }, {})
   }, [databases])
