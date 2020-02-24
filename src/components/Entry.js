@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 const Entry = ({ date, entryId, entry }) => {
   const classes = useStyles()
   const [note, setNote] = useState()
-  const { addEntry, updateEntry } = useDataActions()
+  const { upsertEntry } = useDataActions()
 
   useEffect(() => {
     if (!entry) return
@@ -59,11 +59,7 @@ const Entry = ({ date, entryId, entry }) => {
 
   const onNoteChange = (note) => {
     setNote(note)
-    if (!entry) {
-      addEntry(entryId, { note })
-    } else {
-      updateEntry(entryId, { note })
-    }
+    upsertEntry(entryId, { note })
   }
 
   return (

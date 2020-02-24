@@ -39,39 +39,56 @@ const DataProvider = ({ children, databases = DATABASES }) => {
     })
   }, [user, databases])
 
-  const addItem = (params) => {
+  const upsertItem = (params) => {
+    const { databaseName, itemId } = params
+
+    if (state[databaseName].byId[itemId]) {
+      return updateItem(params)
+    } else {
+      return insertItem(params)
+    }
+  }
+
+  const insertItem = (params) => {
+    const { databaseName, itemId } = params
+
     return userbase
       .insertItem(params)
       .then(() => {
-        console.log("Item added", params.itemId)
+        console.log("Item added", databaseName, itemId)
         return params.item
       })
       .catch((error) => {
-        console.log("Item not added", params.itemId, error.message)
+        console.log("Item not added", databaseName, itemId, error.message)
         return { error }
       })
   }
 
   const updateItem = (params) => {
+    const { databaseName, itemId } = params
+
     return userbase
       .updateItem(params)
       .then(() => {
-        console.log("Item updated", params.itemId)
+        console.log("Item updated", databaseName, itemId)
         return params.item
       })
       .catch((error) => {
-        console.log("Item not updated", params.itemId, error.message)
+        console.log("Item not updated", databaseName, itemId, error.message)
         return { error }
       })
   }
 
   const actions = React.useMemo(() => {
     return databases.reduce((acc, { databaseName, entity }) => {
-      acc[`add${entity}`] = (id, item) => {
-        return addItem({ itemId: id, item, databaseName })
+      acc[`insert${entity}`] = (id, item) => {
+        return insertItem({ itemId: id, item, databaseName })
       }
       acc[`update${entity}`] = (id, item) => {
         return updateItem({ itemId: id, item, databaseName })
+      }
+      acc[`upsert${entity}`] = (id, item) => {
+        return upsertItem({ itemId: id, item, databaseName })
       }
 
       return acc
