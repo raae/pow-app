@@ -9,6 +9,7 @@ import StripeButton from "../components/StripeButton"
 import AngelsCheckout from "../components/AngelsCheckout"
 import AngelDonation from "../components/AngelDonation"
 import SignInForm from "../components/SignInForm"
+import UserForm from "../components/UserForm"
 
 const components = {
   a: Link,
@@ -22,6 +23,7 @@ const shortcodes = {
   AngelsCheckout,
   AngelDonation,
   SignInForm,
+  UserForm,
 }
 
 const Mdx = ({ children }) => {
