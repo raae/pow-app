@@ -69,149 +69,86 @@ const UserForm = ({ variant }) => {
       })
     }
   }
-  if (variant === "signUp") {
-    return (
-      <>
-        <form
-          className={classes.form}
-          variant={signUp}
-          noValidate
-          onSubmit={handleSubmit}
+
+  return (
+    <>
+      <form
+        className={classes.form}
+        variant={signUp}
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="username"
+          label="Username"
+          name="username"
+          autoComplete="username"
+          placeholder="unicorn"
+          value={state.username}
+          onChange={handleChange("username")}
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          placeholder="glitter-rainbow-butterfly-kitty"
+          value={state.password}
+          onChange={handleChange("password")}
+          InputLabelProps={{ shrink: true }}
+        />
+        <FormControlLabel
+          className={classes.checkbox}
+          control={<Checkbox value="local" color="primary" />}
+          label="Remember me"
+          value={state.rememberMe}
+          onChange={handleChange("rememberMe")}
+        />
+        {error && (
+          <Alert className={classes.alert} severity="error">
+            {error.message}
+          </Alert>
+        )}
+
+        <Button
+          className={classes.submit}
+          disabled={isPending}
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
         >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            placeholder="unicorn"
-            value={state.username}
-            onChange={handleChange("username")}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            placeholder="glitter-rainbow-butterfly-kitty"
-            value={state.password}
-            onChange={handleChange("password")}
-            InputLabelProps={{ shrink: true }}
-          />
-          <FormControlLabel
-            className={classes.checkbox}
-            control={<Checkbox value="local" color="primary" />}
-            label="Remember me"
-            value={state.rememberMe}
-            onChange={handleChange("rememberMe")}
-          />
-          {error && (
-            <Alert className={classes.alert} severity="error">
-              {error.message}
-            </Alert>
-          )}
+          {variant === "signUp" ? "Sign Up" : "Log In"}
+        </Button>
 
-          <Button
-            className={classes.submit}
-            disabled={isPending}
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-          >
-            Sign Up
-          </Button>
-
+        {variant === "signUp" ? (
           <Typography variant="body2" align="right">
             Already have an account?&nbsp;
             <Link to="/login" component={GatsbyLink}>
-              Sign Up
+              Log in
             </Link>
           </Typography>
-        </form>
-      </>
-    )
-  } else {
-    return (
-      <>
-        <form
-          className={classes.form}
-          variant={signUp}
-          noValidate
-          onSubmit={handleSubmit}
-        >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            placeholder="unicorn"
-            value={state.username}
-            onChange={handleChange("username")}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            placeholder="glitter-rainbow-butterfly-kitty"
-            value={state.password}
-            onChange={handleChange("password")}
-            InputLabelProps={{ shrink: true }}
-          />
-          <FormControlLabel
-            className={classes.checkbox}
-            control={<Checkbox value="local" color="primary" />}
-            label="Remember me"
-            value={state.rememberMe}
-            onChange={handleChange("rememberMe")}
-          />
-          {error && (
-            <Alert className={classes.alert} severity="error">
-              {error.message}
-            </Alert>
-          )}
-
-          <Button
-            className={classes.submit}
-            disabled={isPending}
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-          >
-            Sign In
-          </Button>
-
+        ) : (
           <Typography variant="body2" align="right">
             Don't have an account?&nbsp;
             <Link to="/signup" component={GatsbyLink}>
               Sign Up
             </Link>
           </Typography>
-        </form>
-      </>
-    )
-  }
+        )}
+      </form>
+    </>
+  )
 }
 
 export default UserForm
