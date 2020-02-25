@@ -6,15 +6,13 @@ import reducer, { defaultState } from "./reducer"
 export const AuthStateContext = createContext()
 export const AuthActionsContext = createContext()
 
-const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children, appId }) => {
   const [state, dispatch] = useReducer(reducer, defaultState)
 
   useEffect(() => {
     dispatch({ type: "init" })
     userbase
-      .init({
-        appId: process.env.GATSBY_USERBASE_APP_ID,
-      })
+      .init({ appId })
       .then(({ user, lastUsedUsername }) => {
         dispatch({ type: "initFulfilled", user, lastUsedUsername })
       })

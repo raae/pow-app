@@ -18,8 +18,8 @@ const useAuthActions = () => {
   return context
 }
 
-const withAuthProvider = ({ element }) => {
-  return <AuthProvider>{element}</AuthProvider>
+const withAuthProvider = ({ element, appId }) => {
+  return <AuthProvider appId={appId}>{element}</AuthProvider>
 }
 
 export { withAuthProvider, useAuthState, useAuthActions }
