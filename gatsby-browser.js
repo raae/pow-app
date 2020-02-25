@@ -1,4 +1,3 @@
-import { withStore } from "./src/store"
 import { withTheme } from "./src/theme"
 import { withAuthProvider } from "./src/auth"
 
@@ -7,7 +6,7 @@ export const wrapPageElement = ({ element }) => {
 }
 
 export const wrapRootElement = ({ element }) => {
-  return withStore({ element: withAuthProvider({ element }) })
+  return withAuthProvider({ element })
 }
 
 export const shouldUpdateScroll = ({ routerProps: { location } }) => {
