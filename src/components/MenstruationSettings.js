@@ -164,18 +164,13 @@ const TagForm = ({ tag = "", onTagChange, onClose }) => {
 const MenstruationSettings = () => {
   const classes = useStyles()
   const [isEditing, setIsEditing] = useState(false)
-  const [tag, setTag] = useState()
 
   const { settings } = useDataState()
   const { upsertSetting } = useDataActions()
 
-  useEffect(() => {
-    if (!settings.tag) return
-    setTag(settings.tag)
-  }, [settings])
+  const tag = settings.tag
 
   const handleTagChange = (value) => {
-    setTag(value)
     upsertSetting("tag", value)
   }
 

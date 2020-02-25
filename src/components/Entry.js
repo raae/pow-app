@@ -60,7 +60,6 @@ const Entry = ({ date, entryId, entry }) => {
   }, [entry])
 
   const onNoteChange = (note) => {
-    setNote(note)
     upsertEntry(entryId, { note })
   }
 

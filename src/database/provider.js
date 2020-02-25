@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react"
+import { mapValues } from "lodash"
 import userbase from "userbase-js"
 
 import reducer, { getDefaultState } from "./reducer"
@@ -32,32 +33,32 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
   }
 
   const insertItem = (params) => {
-    const { databaseName, itemId } = params
+    dispatch({ type: "insert", ...params })
 
     return userbase
       .insertItem(params)
       .then(() => {
-        console.log("Item added", databaseName, itemId)
-        return params.item
+        dispatch({ type: "insertFulfilled", ...params })
+        return true
       })
       .catch((error) => {
-        console.log("Item not added", databaseName, itemId, error.message)
-        return { error }
+        dispatch({ type: "insertFailed", ...params })
+        return false
       })
   }
 
   const updateItem = (params) => {
-    const { databaseName, itemId } = params
+    dispatch({ type: "update", ...params })
 
     return userbase
       .updateItem(params)
       .then(() => {
-        console.log("Item updated", databaseName, itemId)
-        return params.item
+        dispatch({ type: "updateFulfilled", ...params })
+        return true
       })
       .catch((error) => {
-        console.log("Item not updated", databaseName, itemId, error.message)
-        return { error }
+        dispatch({ type: "updateFailed", error, ...params })
+        return false
       })
   }
 
@@ -80,6 +81,7 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
       })
     }
     acc[`upsert${entity}`] = (id, item) => {
+      console.log(`upsert${entity}`, item)
       return upsertItem({
         itemId: id,
         item,
@@ -90,7 +92,7 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
   }, {})
 
   const consumerState = databases.reduce((acc, { databaseName }) => {
-    acc[databaseName] = state[databaseName].byId
+    acc[databaseName] = mapValues(state[databaseName].byId, "item")
     acc.isPending = acc.isPending || state[databaseName].isPending
     return acc
   }, {})

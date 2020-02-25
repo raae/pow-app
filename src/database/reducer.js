@@ -28,8 +28,30 @@ const reducer = (draft, action) => {
       draft[action.databaseName].isPending = false
       draft[action.databaseName].error = action.error
       return
+    case "insert":
+    case "update":
+      if (!draft[action.databaseName].byId[action.itemId]) {
+        draft[action.databaseName].byId[action.itemId] = {}
+      }
+      const item = draft[action.databaseName].byId[action.itemId].item
+      draft[action.databaseName].byId[action.itemId].item = action.item
+      draft[action.databaseName].byId[action.itemId].original = item
+      draft[action.databaseName].byId[action.itemId].isPending = true
+      return
+    case "insertFulfilled":
+    case "updateFulfilled":
+      draft[action.databaseName].byId[action.itemId].isPending = false
+      return
+    case "insertFailed":
+    case "updateFailed":
+      const original = draft[action.databaseName].byId[action.itemId].original
+      draft[action.databaseName].byId[action.itemId].item = original
+      draft[action.databaseName].byId[action.itemId].original = null
+      draft[action.databaseName].byId[action.itemId].isPending = false
+      draft[action.databaseName].byId[action.itemId].error = action.error
+      return
     case "changed":
-      const byId = mapValues(keyBy(action.items, "itemId"), "item")
+      const byId = keyBy(action.items, "itemId")
       draft[action.databaseName].isPending = false
       draft[action.databaseName].byId = byId
       return
