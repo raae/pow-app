@@ -1,4 +1,5 @@
 import { keyBy, mapValues } from "lodash"
+import produce from "immer"
 
 const defaultState = {
   byId: {},
@@ -13,47 +14,30 @@ export const getDefaultState = (databases) => {
   }, {})
 }
 
-export const reducer = (state, action) => {
+const reducer = (draft, action) => {
   if (!action.databaseName) throw new Error(`Missing action databaseName`)
 
   switch (action.type) {
     case "open":
-      return {
-        ...state,
-        [action.databaseName]: {
-          ...state[action.databaseName],
-          isPending: true,
-        },
-      }
+      draft[action.databaseName].isPending = true
+      return
     case "openFulfilled":
-      return {
-        ...state,
-        [action.databaseName]: {
-          ...state[action.databaseName],
-          isPending: false,
-        },
-      }
+      draft[action.databaseName].isPending = false
+      return
     case "openFailed":
-      return {
-        ...state,
-        [action.databaseName]: {
-          ...state[action.databaseName],
-          isPending: false,
-          error: action.error,
-        },
-      }
+      draft[action.databaseName].isPending = false
+      draft[action.databaseName].error = action.error
+      return
     case "changed":
-      return {
-        ...state,
-        [action.databaseName]: {
-          ...state[action.databaseName],
-          isPending: false,
-          byId: mapValues(keyBy(action.items, "itemId"), "item"),
-        },
-      }
+      const byId = mapValues(keyBy(action.items, "itemId"), "item")
+      draft[action.databaseName].isPending = false
+      draft[action.databaseName].byId = byId
+      return
 
     default: {
       throw new Error(`Unhandled action type: ${action.type}`)
     }
   }
 }
+
+export default produce(reducer)

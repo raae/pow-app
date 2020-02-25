@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from "react"
 import userbase from "userbase-js"
 
-import { reducer, getDefaultState } from "./reducer"
+import reducer, { getDefaultState } from "./reducer"
 import { useEffect } from "react"
 import initDatabases from "./initDatabases"
 
