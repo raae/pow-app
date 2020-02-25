@@ -28,7 +28,7 @@ const LastDateInput = ({ onChange, value, inputProps = {} }) => {
         variant="inline"
         inputVariant={inputProps.variant}
         autoOk={true}
-        format="eeee MMMM do"
+        format="MMMM do"
         id="date-picker-inline"
         value={value}
         label="First day of your last period"
