@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = () => {
+const UserForm = ({ variant }) => {
   const classes = useStyles()
   // Where are signup, signin props coming from?
   // signin prop must be coming from SignInForm
@@ -55,77 +55,163 @@ const UserForm = () => {
       }
     })
   }
+  // if else
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    signUp(state).then(() => {
-      navigate("/app")
-    })
+    if (variant === "signUp") {
+      signUp(state).then(() => {
+        navigate("/app")
+      })
+    } else {
+      signIn(state).then(() => {
+        navigate("/app")
+      })
+    }
   }
-
-  return (
-    <>
-      <form className={classes.form} noValidate onSubmit={handleSubmit}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="username"
-          label="Username"
-          name="username"
-          autoComplete="username"
-          placeholder="unicorn"
-          value={state.username}
-          onChange={handleChange("username")}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          placeholder="glitter-rainbow-butterfly-kitty"
-          value={state.password}
-          onChange={handleChange("password")}
-          InputLabelProps={{ shrink: true }}
-        />
-        <FormControlLabel
-          className={classes.checkbox}
-          control={<Checkbox value="local" color="primary" />}
-          label="Remember me"
-          value={state.rememberMe}
-          onChange={handleChange("rememberMe")}
-        />
-        {error && (
-          <Alert className={classes.alert} severity="error">
-            {error.message}
-          </Alert>
-        )}
-        <Button
-          className={classes.submit}
-          disabled={isPending}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
+  if (variant === "signUp") {
+    return (
+      <>
+        <form
+          className={classes.form}
+          variant={signUp}
+          noValidate
+          onSubmit={handleSubmit}
         >
-          Sign Up
-        </Button>
-        <Typography variant="body2" align="right">
-          Already have an account?&nbsp;
-          <Link to="/login" component={GatsbyLink}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            placeholder="unicorn"
+            value={state.username}
+            onChange={handleChange("username")}
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            placeholder="glitter-rainbow-butterfly-kitty"
+            value={state.password}
+            onChange={handleChange("password")}
+            InputLabelProps={{ shrink: true }}
+          />
+          <FormControlLabel
+            className={classes.checkbox}
+            control={<Checkbox value="local" color="primary" />}
+            label="Remember me"
+            value={state.rememberMe}
+            onChange={handleChange("rememberMe")}
+          />
+          {error && (
+            <Alert className={classes.alert} severity="error">
+              {error.message}
+            </Alert>
+          )}
+
+          <Button
+            className={classes.submit}
+            disabled={isPending}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            Sign Up
+          </Button>
+
+          <Typography variant="body2" align="right">
+            Already have an account?&nbsp;
+            <Link to="/login" component={GatsbyLink}>
+              Sign Up
+            </Link>
+          </Typography>
+        </form>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <form
+          className={classes.form}
+          variant={signUp}
+          noValidate
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            placeholder="unicorn"
+            value={state.username}
+            onChange={handleChange("username")}
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            placeholder="glitter-rainbow-butterfly-kitty"
+            value={state.password}
+            onChange={handleChange("password")}
+            InputLabelProps={{ shrink: true }}
+          />
+          <FormControlLabel
+            className={classes.checkbox}
+            control={<Checkbox value="local" color="primary" />}
+            label="Remember me"
+            value={state.rememberMe}
+            onChange={handleChange("rememberMe")}
+          />
+          {error && (
+            <Alert className={classes.alert} severity="error">
+              {error.message}
+            </Alert>
+          )}
+
+          <Button
+            className={classes.submit}
+            disabled={isPending}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
             Sign In
-          </Link>
-        </Typography>
-      </form>
-    </>
-  )
+          </Button>
+
+          <Typography variant="body2" align="right">
+            Don't have an account?&nbsp;
+            <Link to="/signup" component={GatsbyLink}>
+              Sign Up
+            </Link>
+          </Typography>
+        </form>
+      </>
+    )
+  }
 }
 
 export default UserForm
