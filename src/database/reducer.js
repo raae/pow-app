@@ -1,4 +1,4 @@
-import { keyBy, mapValues } from "lodash"
+import { keyBy } from "lodash"
 import produce from "immer"
 
 const defaultState = {
