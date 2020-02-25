@@ -1,5 +1,4 @@
 const initDatabases = ({ user, databases, dispatch, userbase }) => {
-  if (!user) return
   databases.forEach(({ databaseName }) => {
     dispatch({ type: "open", databaseName })
     userbase

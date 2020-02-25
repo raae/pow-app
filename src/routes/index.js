@@ -26,7 +26,7 @@ const Index = () => {
 
   if (user) {
     return (
-      <DataProvider>
+      <DataProvider user={user}>
         <Router basepath="/app">
           <Home path="/" />
           <Settings path="/settings" />

@@ -9,10 +9,11 @@ import MenstruationNote from "../components/MenstruationNote"
 import Loading from "../components/Loading"
 
 import AppLayout from "../components/AppLayout"
+import { CycleProvider } from "../cycle"
 
 const HomeRoute = () => {
   const [scrollTimestamp, setScrollTimestamp] = useState()
-  const { isPending } = useDataState()
+  const { isPending, entries, settings } = useDataState()
 
   const items = [
     {
@@ -22,17 +23,17 @@ const HomeRoute = () => {
     },
   ]
 
-  const aside = <MenstruationNote />
-
   if (isPending) {
     return <Loading />
   }
 
   return (
-    <AppLayout appBarItems={items} aside={aside}>
-      <SEO title="Log" />
-      <Entries scrollTimestamp={scrollTimestamp}></Entries>
-    </AppLayout>
+    <CycleProvider entries={entries} settings={settings}>
+      <AppLayout appBarItems={items} aside={<MenstruationNote />}>
+        <SEO title="Log" />
+        <Entries scrollTimestamp={scrollTimestamp}></Entries>
+      </AppLayout>
+    </CycleProvider>
   )
 }
 

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EntryHeader = ({ date, isToday, isMenstruation }) => {
+const EntryHeader = ({ date, isToday, isMenstruation, cycleDay }) => {
   const classes = useStyles()
   return (
     <header className={classes.root}>
@@ -26,10 +26,14 @@ const EntryHeader = ({ date, isToday, isMenstruation }) => {
         </Typography>
       )}
       <Typography component="h1" className={classes.day} variant="overline">
-        {isToday ? "today" : format(date, "EEEE")}{" "}
+        {isToday ? "today" : format(date, "EEEE")}
       </Typography>
       <Typography className={classes.date} variant="overline">
-        {format(date, "LLLL do")}
+        {" "}
+        {format(date, "LLLL do")}{" "}
+      </Typography>
+      <Typography className={classes.date} variant="overline">
+        Day {cycleDay}
       </Typography>
     </header>
   )

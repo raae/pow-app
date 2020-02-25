@@ -11,6 +11,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 
+import { tagsFromText } from "../utils/tags"
+
 import EditIcon from "@material-ui/icons/Edit"
 import AddIcon from "@material-ui/icons/Add"
 import CancelIcon from "@material-ui/icons/Cancel"
@@ -107,10 +109,9 @@ const TagForm = ({ tag = "", onTagChange, onClose }) => {
   const onChange = (event) => {
     let value = event.target.value
 
-    value = value.replace(/\s/g, "")
-    value = value.replace(/#/g, "")
+    value = tagsFromText("#" + value)[0]
 
-    setValue(value)
+    setValue(value || "")
   }
 
   return (
@@ -165,17 +166,17 @@ const MenstruationSettings = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [tag, setTag] = useState()
 
-  const { cycle } = useDataState()
-  const { upsertCycle } = useDataActions()
+  const { settings } = useDataState()
+  const { upsertSetting } = useDataActions()
 
   useEffect(() => {
-    if (!cycle.tag) return
-    setTag(cycle.tag)
-  }, [cycle])
+    if (!settings.tag) return
+    setTag(settings.tag)
+  }, [settings])
 
   const handleTagChange = (value) => {
     setTag(value)
-    upsertCycle("tag", value)
+    upsertSetting("tag", value)
   }
 
   return (

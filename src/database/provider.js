@@ -2,7 +2,6 @@ import React, { createContext, useReducer } from "react"
 import userbase from "userbase-js"
 
 import { reducer, getDefaultState } from "./reducer"
-import { useAuthState } from "../auth"
 import { useEffect } from "react"
 import initDatabases from "./initDatabases"
 
@@ -11,21 +10,21 @@ export const DataActionsContext = createContext()
 
 const DATABASES = [
   { databaseName: "entries", entity: "Entry" },
-  { databaseName: "cycle", entity: "Cycle" },
+  { databaseName: "settings", entity: "Setting" },
 ]
 
-const DataProvider = ({ children, databases = DATABASES }) => {
-  const { user } = useAuthState()
+const DataProvider = ({ children, user, databases = DATABASES }) => {
   const [state, dispatch] = useReducer(reducer, getDefaultState(databases))
 
   useEffect(() => {
+    if (!user) return
     initDatabases({ user, databases, dispatch, userbase })
   }, [user, databases])
 
   const upsertItem = (params) => {
     const { databaseName, itemId } = params
 
-    if (state[databaseName].byId[itemId]) {
+    if (state[databaseName].byId[itemId] !== undefined) {
       return updateItem(params)
     } else {
       return insertItem(params)
@@ -92,7 +91,7 @@ const DataProvider = ({ children, databases = DATABASES }) => {
 
   const consumerState = databases.reduce((acc, { databaseName }) => {
     acc[databaseName] = state[databaseName].byId
-    acc.isPending = acc.isPending && state[databaseName].isPending
+    acc.isPending = acc.isPending || state[databaseName].isPending
     return acc
   }, {})
 

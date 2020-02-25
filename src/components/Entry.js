@@ -4,6 +4,7 @@ import classnames from "classnames"
 
 import { Container, Paper, makeStyles } from "@material-ui/core"
 
+import { useCycleDayState } from "../cycle"
 import { useDataActions } from "../database"
 
 import EntryHeader from "./EntryHeader"
@@ -47,15 +48,16 @@ const Entry = ({ date, entryId, entry }) => {
   const classes = useStyles()
   const [note, setNote] = useState()
   const { upsertEntry } = useDataActions()
+  const { cycleDay, predictions, isMenstruation } = useCycleDayState({
+    date: entryId,
+    note,
+  })
 
   useEffect(() => {
     if (!entry) return
 
     setNote(entry.note)
   }, [entry])
-
-  const predictions = []
-  const isMenstruation = false
 
   const onNoteChange = (note) => {
     setNote(note)
@@ -67,7 +69,8 @@ const Entry = ({ date, entryId, entry }) => {
       <EntryHeader
         date={date}
         isToday={isToday(date)}
-        isMenstruation={isMenstruation}
+        isMenstruation={isMenstruation || predictions.isMenstruation}
+        cycleDay={cycleDay}
       ></EntryHeader>
       {!isFuture(date) && (
         <Paper
@@ -83,7 +86,7 @@ const Entry = ({ date, entryId, entry }) => {
           ></EntryNote>
         </Paper>
       )}
-      <EntryPredictions predictions={predictions}></EntryPredictions>
+      <EntryPredictions predictions={predictions.tags}></EntryPredictions>
     </Container>
   )
 }
