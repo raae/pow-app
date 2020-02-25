@@ -5,9 +5,15 @@ import { Button } from "@material-ui/core"
 import { useAuthState, useAuthActions } from "../auth"
 
 export const SignInButton = ({ children = "Log in", ...props }) => {
-  const { user } = useAuthState()
+  const { user, isPending } = useAuthState()
+  const sendToApp = user || isPending
+
   return (
-    <Button component={GatsbyLink} to={user ? "/app" : "/login"} {...props}>
+    <Button
+      component={GatsbyLink}
+      to={sendToApp ? "/app" : "/login"}
+      {...props}
+    >
       {children}
     </Button>
   )
