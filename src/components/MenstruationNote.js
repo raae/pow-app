@@ -85,13 +85,10 @@ const MenstruationNote = () => {
     note = (
       <>
         <CycleDayNote cycleDay={cycleDay}></CycleDayNote>
-        <NextNote
-          nextStartDate={nextStartDate}
-          tag={cycle.byId["tag"]}
-        ></NextNote>
+        <NextNote nextStartDate={nextStartDate} tag={cycle.tag}></NextNote>
       </>
     )
-  } else if (!cycle.byId["tag"]) {
+  } else if (cycle.tag) {
     note = <NoMenstruationTagSetting />
   }
   return (

@@ -12,7 +12,7 @@ import AppLayout from "../components/AppLayout"
 
 const HomeRoute = () => {
   const [scrollTimestamp, setScrollTimestamp] = useState()
-  const { entries } = useDataState()
+  const { isPending } = useDataState()
 
   const items = [
     {
@@ -24,7 +24,7 @@ const HomeRoute = () => {
 
   const aside = <MenstruationNote />
 
-  if (entries.isPending) {
+  if (isPending) {
     return <Loading />
   }
 

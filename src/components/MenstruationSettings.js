@@ -169,8 +169,8 @@ const MenstruationSettings = () => {
   const { upsertCycle } = useDataActions()
 
   useEffect(() => {
-    if (!cycle.byId["tag"]) return
-    setTag(cycle.byId["tag"])
+    if (!cycle.tag) return
+    setTag(cycle.tag)
   }, [cycle])
 
   const handleTagChange = (value) => {

@@ -13,7 +13,7 @@ import Loading from "../components/Loading"
 const SettingsRoute = () => {
   const { user } = useAuthState()
   const { signOut } = useAuthActions()
-  const { cycle } = useDataState()
+  const { isPending, cycle } = useDataState()
 
   const items = [
     {
@@ -26,7 +26,7 @@ const SettingsRoute = () => {
     },
   ]
 
-  if (cycle.isPending) {
+  if (isPending) {
     return <Loading />
   }
 

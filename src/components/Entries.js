@@ -24,7 +24,7 @@ const Entries = ({ scrollTimestamp }) => {
 
   return range.map((date) => {
     const key = keyFromDate(date)
-    const entry = entries.byId[key]
+    const entry = entries[key]
     return (
       <Element key={key} name={key}>
         <Entry date={date} entryId={key} entry={entry}></Entry>

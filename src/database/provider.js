@@ -62,38 +62,42 @@ const DataProvider = ({ children, databases = DATABASES }) => {
       })
   }
 
-  const actions = React.useMemo(() => {
-    // Create inset, update and upsert action for each database
-    // ie. updateEntry, insertEntry and upsertEntry
-    // for { databaseName: "entries", entity: "Entry" }
-    return databases.reduce((acc, { databaseName, entity }) => {
-      acc[`insert${entity}`] = (id, item) => {
-        return insertItem({
-          itemId: id,
-          item,
-          databaseName,
-        })
-      }
-      acc[`update${entity}`] = (id, item) => {
-        return updateItem({
-          itemId: id,
-          item,
-          databaseName,
-        })
-      }
-      acc[`upsert${entity}`] = (id, item) => {
-        return upsertItem({
-          itemId: id,
-          item,
-          databaseName,
-        })
-      }
-      return acc
-    }, {})
-  }, [databases])
+  // Create inset, update and upsert action for each database
+  // ie. updateEntry, insertEntry and upsertEntry
+  // for { databaseName: "entries", entity: "Entry" }
+  const actions = databases.reduce((acc, { databaseName, entity }) => {
+    acc[`insert${entity}`] = (id, item) => {
+      return insertItem({
+        itemId: id,
+        item,
+        databaseName,
+      })
+    }
+    acc[`update${entity}`] = (id, item) => {
+      return updateItem({
+        itemId: id,
+        item,
+        databaseName,
+      })
+    }
+    acc[`upsert${entity}`] = (id, item) => {
+      return upsertItem({
+        itemId: id,
+        item,
+        databaseName,
+      })
+    }
+    return acc
+  }, {})
+
+  const consumerState = databases.reduce((acc, { databaseName }) => {
+    acc[databaseName] = state[databaseName].byId
+    acc.isPending = acc.isPending && state[databaseName].isPending
+    return acc
+  }, {})
 
   return (
-    <DataStateContext.Provider value={state}>
+    <DataStateContext.Provider value={consumerState}>
       <DataActionsContext.Provider value={actions}>
         {children}
       </DataActionsContext.Provider>
