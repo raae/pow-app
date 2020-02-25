@@ -1,7 +1,7 @@
 import React, { useEffect, createContext, useReducer } from "react"
 import userbase from "userbase-js"
 
-import { reducer, defaultState } from "./reducer"
+import reducer, { defaultState } from "./reducer"
 
 export const AuthStateContext = createContext()
 export const AuthActionsContext = createContext()
