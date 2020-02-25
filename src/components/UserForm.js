@@ -31,9 +31,11 @@ const useStyles = makeStyles((theme) => ({
 
 const UserForm = () => {
   const classes = useStyles()
-
+  // Where are signup, signin props coming from?
+  // signin prop must be coming from SignInForm
+  // const { signUp, signIn } = this.props;
   const { isPending, error } = useAuthState()
-  const { signIn } = useAuthActions()
+  const { signIn, signUp } = useAuthActions()
 
   const [state, setState] = useState({
     username: "",
@@ -56,7 +58,7 @@ const UserForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    signIn(state).then(() => {
+    signUp(state).then(() => {
       navigate("/app")
     })
   }
@@ -113,12 +115,12 @@ const UserForm = () => {
           variant="contained"
           color="primary"
         >
-          Sign In
+          Sign Up
         </Button>
         <Typography variant="body2" align="right">
           Already have an account?&nbsp;
           <Link to="/login" component={GatsbyLink}>
-            Sign Up
+            Sign In
           </Link>
         </Typography>
       </form>
