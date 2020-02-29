@@ -18,12 +18,7 @@ const components = {
 const shortcodes = {
   Logo,
   SignInButton,
-  StripeButton,
   ButtonLink,
-  AngelsCheckout,
-  AngelDonation,
-  SignInForm,
-  UserForm,
 }
 
 const Mdx = ({ children }) => {
