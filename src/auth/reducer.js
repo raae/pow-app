@@ -12,6 +12,7 @@ const reducer = (draft, action) => {
     case "signUp":
     case "signIn":
     case "signOut":
+    case "updateUser":
       draft.isPending = true
       return
     case "initFulfilled":
@@ -22,10 +23,15 @@ const reducer = (draft, action) => {
       draft.user = action.user
       draft.error = null
       return
+    case "updateUserFulfilled":
+      draft.isPending = false
+      draft.error = null
+      return
     case "initFailed":
     case "signUpFailed":
     case "signInFailed":
     case "signOutFailed":
+    case "updateUserFailed":
       draft.isPending = false
       draft.error = action.error
       return

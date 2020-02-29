@@ -63,11 +63,26 @@ const AuthProvider = ({ children, appId }) => {
       })
   }
 
+  const updateUser = (params) => {
+    dispatch({ type: "updateUser" })
+    return userbase
+      .updateUser(params)
+      .then(() => {
+        dispatch({ type: "updateUserFulfilled", user: null })
+        return true
+      })
+      .catch((error) => {
+        dispatch({ type: "updateUserFailed", error })
+        return { error }
+      })
+  }
+
   const actions = React.useMemo(
     () => ({
       signUp,
       signIn,
       signOut,
+      updateUser,
     }),
     []
   )
