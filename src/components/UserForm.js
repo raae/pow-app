@@ -29,12 +29,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = ({ variant }) => {
+const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
   const classes = useStyles()
+  variant = variant.toLowerCase()
 
-  const { isPending } = useAuthState()
+  const { isPending: isAuthPending } = useAuthState()
   const { signIn, signUp } = useAuthActions()
+
   const [error, setError] = useState()
+  const [isPending, setIsPending] = useState()
 
   const [state, setState] = useState({
     username: "",
@@ -44,9 +47,12 @@ const UserForm = ({ variant }) => {
 
   const handleChange = (name) => (event) => {
     let value = event.target.value
+    setError()
+
     if (name === "rememberMe") {
       value = event.target.checked ? "local" : "session"
     }
+
     setState((prevState) => {
       return {
         ...prevState,
@@ -57,9 +63,10 @@ const UserForm = ({ variant }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    setIsPending(true)
 
     let result = null
-    if (variant === "signUp") {
+    if (variant === "signup") {
       result = await signUp(state)
     } else {
       result = await signIn(state)
@@ -67,8 +74,9 @@ const UserForm = ({ variant }) => {
 
     if (result.error && result.error.name !== "UserAlreadySignedIn") {
       setError(result.error)
+      setIsPending(false)
     } else {
-      navigate("/app")
+      onSubmitFulfilled()
     }
   }
 
@@ -119,16 +127,16 @@ const UserForm = ({ variant }) => {
 
         <Button
           className={classes.submit}
-          disabled={isPending}
+          disabled={isAuthPending || isPending}
           type="submit"
           fullWidth
           variant="contained"
           color="primary"
         >
-          {variant === "signUp" ? "Sign Up" : "Log In"}
+          {variant === "signup" ? "Create account" : "Log In"}
         </Button>
 
-        {variant === "signUp" ? (
+        {variant === "signup" ? (
           <Typography variant="body2" align="right">
             Already have an account?&nbsp;
             <Link to="/login" component={GatsbyLink}>
