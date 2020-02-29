@@ -31,9 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const UserForm = ({ variant }) => {
   const classes = useStyles()
-  // Where are signup, signin props coming from?
-  // signin prop must be coming from SignInForm
-  // const { signUp, signIn } = this.props;
+
   const { isPending, error } = useAuthState()
   const { signIn, signUp } = useAuthActions()
 
@@ -55,7 +53,6 @@ const UserForm = ({ variant }) => {
       }
     })
   }
-  // if else
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -72,12 +69,7 @@ const UserForm = ({ variant }) => {
 
   return (
     <>
-      <form
-        className={classes.form}
-        variant={signUp}
-        noValidate
-        onSubmit={handleSubmit}
-      >
+      <form className={classes.form} noValidate onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
           margin="normal"
