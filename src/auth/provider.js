@@ -19,7 +19,7 @@ const AuthProvider = ({ children, appId }) => {
       .catch((error) => {
         dispatch({ type: "initFailed", error })
       })
-  }, [])
+  }, [appId])
 
   const signUp = async (params) => {
     dispatch({ type: "signUp" })
