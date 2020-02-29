@@ -4,7 +4,8 @@ import { MDXProvider } from "@mdx-js/react"
 import BrandCopy from "../components/BrandCopy"
 import { Link, ButtonLink } from "../components/Link"
 import Logo from "../components/Logo"
-import SignInButton from "../components/SignInButton"
+import { SignInButton } from "../components/AuthButtons"
+import UserForm from "../components/UserForm"
 
 const components = {
   a: Link,
@@ -14,6 +15,7 @@ const shortcodes = {
   Logo,
   SignInButton,
   ButtonLink,
+  UserForm,
 }
 
 const Mdx = ({ children }) => {

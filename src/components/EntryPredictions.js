@@ -27,17 +27,21 @@ const EntryPredictions = ({ predictions, onAddTag, ...props }) => {
     <aside className={classes.root}>
       {hasPredictions ? (
         <Typography variant="caption">
-          In the past, on this day in your cycle:
+          Common tags for you on this day:
         </Typography>
       ) : (
         <Typography variant="caption">
-          In the past, on this day in your cycle, you have no tags.
+          No common tags for you on this day.
         </Typography>
       )}
-      {predictions.map((pred, key) => {
+      {predictions.map(({ tag, frequency }) => {
         return (
-          <Typography key={key} variant="caption">
-            #{pred}
+          <Typography
+            key={tag}
+            variant="caption"
+            style={{ opacity: frequency + 0.3 }}
+          >
+            #{tag}
           </Typography>
         )
       })}

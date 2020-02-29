@@ -15,9 +15,9 @@
   "dependencies": {
     "@material-ui/core": "4.9.0",
     "@material-ui/icons": "4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.44",
     "@mdx-js/mdx": "1.5.5",
     "@mdx-js/react": "1.5.5",
-    "@reduxjs/toolkit": "1.2.3",
     "axios": "0.19.2",
     "blockstack": "19.3.0",
     "classnames": "2.2.6",
@@ -32,6 +32,7 @@
     "gatsby-plugin-stripe": "1.2.3",
     "gatsby-source-filesystem": "2.1.47",
     "gatsby-transformer-remark": "2.6.49",
+    "immer": "^5.3.6",
     "lodash": "4.17.15",
     "react": "16.12.0",
     "react-dom": "16.12.0",
@@ -41,7 +42,8 @@
     "redux": "4.0.5",
     "redux-observable": "1.2.0",
     "stripe": "8.8.0",
-    "typeface-seymour-one": "0.0.71"
+    "typeface-seymour-one": "0.0.71",
+    "userbase-js": "^1.1.2"
   },
   "devDependencies": {
     "babel-jest": "25.1.0",

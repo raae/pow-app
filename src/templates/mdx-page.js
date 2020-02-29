@@ -5,8 +5,9 @@ import SEO from "../components/Seo"
 import Mdx from "../components/Mdx"
 
 const PageTemplate = ({ location, children }) => {
+  const variant = location.pathname === "/" ? "home" : ""
   return (
-    <BrandLayout isHome={location.pathname === "/"}>
+    <BrandLayout variant={variant}>
       <SEO />
       <Mdx>{children}</Mdx>
     </BrandLayout>

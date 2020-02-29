@@ -1,13 +1,11 @@
-import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState, useEffect } from "react"
 import { isFuture, isToday } from "date-fns"
 import classnames from "classnames"
 
-import { selectEntryForDate, updateEntry } from "../store/log"
-import { selectPredictionsForDate } from "../store/cycle"
-import { selectMenstruationTag } from "../store/settings"
-
 import { Container, Paper, makeStyles } from "@material-ui/core"
+
+import { useCycleDayState } from "../cycle"
+import { useDataActions } from "../database"
 
 import EntryHeader from "./EntryHeader"
 import EntryNote from "./EntryNote"
@@ -46,27 +44,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const selectIsMenstruation = (state, { tags = [], predictions = [] }) => {
-  const menstruationTag = selectMenstruationTag(state)
-  return tags.includes(menstruationTag) || predictions.includes(menstruationTag)
-}
-
-const Entry = ({ date }) => {
+const Entry = ({ date, entryId, entry }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const entry = useSelector((state) => selectEntryForDate(state, { date }))
-  const predictions = useSelector((state) =>
-    selectPredictionsForDate(state, { date })
-  )
-  const isMenstruation = useSelector((state) =>
-    selectIsMenstruation(state, {
-      tags: entry && entry.tags,
-      predictions,
-    })
-  )
+  const [note, setNote] = useState()
+  const { upsertEntry } = useDataActions()
+  const { cycleDay, predictions, isMenstruation } = useCycleDayState({
+    date: entryId,
+    note,
+  })
+
+  useEffect(() => {
+    if (!entry) return
+
+    setNote(entry.note)
+  }, [entry])
 
   const onNoteChange = (note) => {
-    dispatch(updateEntry({ date, note }))
+    upsertEntry(entryId, { note })
   }
 
   return (
@@ -74,7 +68,8 @@ const Entry = ({ date }) => {
       <EntryHeader
         date={date}
         isToday={isToday(date)}
-        isMenstruation={isMenstruation}
+        isMenstruation={isMenstruation || predictions.isMenstruation}
+        cycleDay={cycleDay}
       ></EntryHeader>
       {!isFuture(date) && (
         <Paper
@@ -84,13 +79,13 @@ const Entry = ({ date }) => {
           })}
         >
           <EntryNote
-            note={entry && entry.note}
+            note={note}
             isToday={isToday(date)}
             onNoteChange={onNoteChange}
           ></EntryNote>
         </Paper>
       )}
-      <EntryPredictions predictions={predictions}></EntryPredictions>
+      <EntryPredictions predictions={predictions.tags}></EntryPredictions>
     </Container>
   )
 }
