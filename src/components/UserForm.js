@@ -32,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
 const UserForm = ({ variant }) => {
   const classes = useStyles()
 
-  const { isPending, error } = useAuthState()
+  const { isPending } = useAuthState()
   const { signIn, signUp } = useAuthActions()
+  const [error, setError] = useState()
 
   const [state, setState] = useState({
     username: "",
@@ -54,16 +55,20 @@ const UserForm = ({ variant }) => {
     })
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+
+    let result = null
     if (variant === "signUp") {
-      signUp(state).then(() => {
-        navigate("/app")
-      })
+      result = await signUp(state)
     } else {
-      signIn(state).then(() => {
-        navigate("/app")
-      })
+      result = await signIn(state)
+    }
+
+    if (result.error && result.error.name !== "UserAlreadySignedIn") {
+      setError(result.error)
+    } else {
+      navigate("/app")
     }
   }
 

@@ -31,7 +31,7 @@ const AuthProvider = ({ children, appId }) => {
       })
       .catch((error) => {
         dispatch({ type: "signUpFailed", error })
-        throw error
+        return { error }
       })
   }
 
@@ -45,7 +45,7 @@ const AuthProvider = ({ children, appId }) => {
       })
       .catch((error) => {
         dispatch({ type: "signInFailed", error })
-        throw error
+        return { error }
       })
   }
 
@@ -59,7 +59,7 @@ const AuthProvider = ({ children, appId }) => {
       })
       .catch((error) => {
         dispatch({ type: "signOutFailed", error })
-        throw error
+        return { error }
       })
   }
 
