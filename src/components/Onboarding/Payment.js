@@ -24,7 +24,7 @@ const Payment = ({ values, onChange }) => {
             control={<Radio />}
             label={
               <Typography>
-                USD <strong>4.00</strong> per month
+                USD <strong>4.50</strong> per month
               </Typography>
             }
           />
@@ -34,7 +34,7 @@ const Payment = ({ values, onChange }) => {
             label={
               <>
                 <Typography component="span">
-                  USD <strong>40.00</strong> per year
+                  USD <strong>45.00</strong> per year
                 </Typography>
                 <Typography color="textSecondary" component="span">
                   {" "}
@@ -50,8 +50,7 @@ const Payment = ({ values, onChange }) => {
           If you for any reason is not happy with POW! let me know and I'll
           refund your money (within 60 days of purchase). <br />
           <cite>
-            — Benedicte <Link href="https://twitter.com/raae">@raae</Link>, the
-            maker
+            — <Link href="https://twitter.com/raae">@raae</Link>
           </cite>
         </p>
       </Typography>

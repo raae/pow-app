@@ -1,21 +1,13 @@
 import React, { useState } from "react"
+import { navigate } from "gatsby"
 
-import {
-  Stepper,
-  Step,
-  StepContent,
-  StepLabel,
-  Button,
-  Paper,
-  Typography,
-  makeStyles,
-  IconButton,
-} from "@material-ui/core"
-import BackIcon from "@material-ui/icons/KeyboardBackspace"
-import DoneIcon from "@material-ui/icons/FiberManualRecord"
+import { useAuthActions } from "../../auth"
+import { useDataActions } from "../../database"
+import { entryIdFromDate } from "../../utils/days"
 
-import Logo from "../Logo"
+import UserForm from "../UserForm"
 
+import Layout from "./Layout"
 import Tag from "./Tag"
 import Cycle from "./Cycle"
 import Payment from "./Payment"
@@ -27,57 +19,20 @@ const initialValues = {
   subscriptionPlan: "yearly",
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& p + ul": {
-      marginTop: "-1em",
-    },
-    "& ul": {
-      paddingLeft: "1.5em",
-      listStyleType: "circle",
-      "@media only screen and (max-width: 40rem)": {
-        paddingLeft: "1.225em",
-      },
-    },
-  },
-  stepper: {
-    marginLeft: theme.spacing(4) * -1,
-  },
-  form: {
-    padding: theme.spacing(3, 2),
-    "& > div + .MuiTypography-root": {
-      marginTop: theme.spacing(2),
-    },
-    "& > fieldset + .MuiTypography-root": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  actions: {
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(2) * -1,
-    "& > *": {
-      marginRight: theme.spacing(1),
-    },
-  },
-}))
-
 const textFieldProps = {
   color: "secondary",
   variant: "outlined",
   margin: "normal",
 }
 
-const LastIcon = () => {
-  return <DoneIcon color="disabled" />
-}
-
 const Onboarding = () => {
-  const classes = useStyles()
-
+  const { insertSetting, insertEntry } = useDataActions()
+  const { updateUser } = useAuthActions()
   const [values, setValues] = useState(initialValues)
   const [activeStep, setActiveStep] = React.useState(0)
+  const [isPending, setIsPending] = useState()
 
-  const handleChange = (name) => (event) => {
+  const handleSettingsChange = (name) => (event) => {
     let value = null
 
     if (name === "tag") {
@@ -98,87 +53,108 @@ const Onboarding = () => {
     })
   }
 
-  const handleNext = (event) => {
-    event.preventDefault()
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-  }
-
   const handleBack = (event) => {
-    event.preventDefault()
+    if (event && event.preventDefault) {
+      event.preventDefault()
+    }
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
-  const handleAccount = (event) => {
-    event.preventDefault()
-    console.log("create account")
-    handleNext(event)
+  const handleNext = async (event) => {
+    if (event && event.preventDefault) {
+      event.preventDefault()
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
 
-  const handleComplete = (event) => {
-    event.preventDefault()
-    console.log("completed")
+  const handleSaveOnboarding = async (event) => {
+    setIsPending(true)
+
+    if (event && event.preventDefault) {
+      event.preventDefault()
+    }
+
+    await insertSetting("tag", values.tag)
+
+    if (values.daysBetween) {
+      await insertSetting("daysBetween", values.daysBetween)
+    }
+
+    if (values.lastStart) {
+      const entryId = entryIdFromDate(values.lastStart)
+      await insertEntry(entryId, {
+        note: `#${values.tag}`,
+      })
+    }
+
+    handleNext()
+    setIsPending(false)
+  }
+
+  const handleComplete = async (event) => {
+    if (event && event.preventDefault) {
+      event.preventDefault()
+    }
+
+    setIsPending(true)
+
+    await updateUser({ profile: { plan: values.subscriptionPlan } })
+    // TODO: update to payment redirect
+    navigate("/app")
+    setIsPending(false)
   }
 
   const steps = [
-    { label: "Create account", Component: "div", handleSubmit: handleAccount },
-    { label: "Personalize", Component: Tag, handleSubmit: handleNext },
+    {
+      label: "Create account",
+      content: <UserForm variant="signup" onSubmitFulfilled={handleNext} />,
+    },
     {
       label: "Personalize",
-      Component: Cycle,
-      optional: true,
+      content: (
+        <Tag
+          values={values}
+          onChange={handleSettingsChange}
+          textFieldProps={textFieldProps}
+        />
+      ),
+      submitOnly: true,
       handleSubmit: handleNext,
+      submitLabel: "Next",
     },
-    { label: "Pay", Component: Payment, handleSubmit: handleComplete },
+    {
+      label: "Personalize",
+      content: (
+        <Cycle
+          values={values}
+          onChange={handleSettingsChange}
+          textFieldProps={textFieldProps}
+        />
+      ),
+      optional: true,
+      disabled: isPending,
+      handleSubmit: handleSaveOnboarding,
+      submitLabel: "Next",
+    },
+    {
+      label: "Pay",
+      content: (
+        <Payment
+          values={values}
+          onChange={handleSettingsChange}
+          textFieldProps={textFieldProps}
+        />
+      ),
+      disabled: isPending,
+      submitOnly: true,
+      handleSubmit: handleComplete,
+      submitLabel: "Take charge",
+    },
   ]
 
   return (
-    <Paper elevation={0} className={classes.root}>
-      <Stepper
-        className={classes.stepper}
-        activeStep={activeStep}
-        orientation="vertical"
-      >
-        {steps.map(({ label, optional, Component, handleSubmit }, index) => (
-          <Step key={index}>
-            <StepLabel>
-              {label}
-              {optional && <Typography variant="caption"> Optional</Typography>}
-            </StepLabel>
-            <StepContent>
-              <form className={classes.form} onSubmit={handleSubmit}>
-                <Component
-                  values={values}
-                  onChange={handleChange}
-                  textFieldProps={textFieldProps}
-                />
-                <div className={classes.actions}>
-                  <IconButton
-                    aria-label="back"
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    <BackIcon />
-                  </IconButton>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    size="small"
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Take charge" : "Next"}
-                  </Button>
-                </div>
-              </form>
-            </StepContent>
-          </Step>
-        ))}
-        <Step key={steps.length}>
-          <StepLabel StepIconComponent={LastIcon}></StepLabel>
-        </Step>
-      </Stepper>
-    </Paper>
+    <Layout steps={steps} activeStep={activeStep} handleBack={handleBack} />
   )
 }
 
