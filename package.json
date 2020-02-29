@@ -23,7 +23,7 @@
     "axios": "0.19.2",
     "blockstack": "19.3.0",
     "classnames": "2.2.6",
-    "date-fns": "2.9.0",
+    "date-fns": "^2.10.0",
     "gatsby": "2.19.10",
     "gatsby-plugin-manifest": "2.2.40",
     "gatsby-plugin-material-ui": "2.1.6",
