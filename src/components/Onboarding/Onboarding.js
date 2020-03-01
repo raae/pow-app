@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-import { useQueryParam } from "gatsby-query-params"
 
 import { useDataActions } from "../../database"
+import { useQueryParam } from "../../utils/useQueryParam"
 import { entryIdFromDate } from "../../utils/days"
 
 import UserForm from "../UserForm"

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react"
 import { loadStripe } from "@stripe/stripe-js"
-import { useQueryParam } from "gatsby-query-params"
 
 import { STRIPE_KEY, BASE_URL } from "../constants"
 
+import { useQueryParam } from "../utils/useQueryParam"
 import { useAuthState, useAuthActions } from "../auth"
 
 import {
