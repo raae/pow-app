@@ -21,6 +21,11 @@ const Index = () => {
   useEffect(() => {
     if (!user && !isPending) {
       navigate("/login")
+    } else if (user) {
+      const { protectedProfile } = user
+      if (!protectedProfile || !protectedProfile.stripeCustomerId) {
+        navigate("/payment?stripe=failed")
+      }
     }
   }, [user, isPending])
 
