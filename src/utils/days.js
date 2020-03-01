@@ -7,14 +7,14 @@ import {
   format,
 } from "date-fns"
 
-const entryIdFromDate = (date) => format(date, "yyyy-MM-dd")
-
 const makeDate = (date) => {
   if (!(date instanceof Date)) {
     date = new Date(date)
   }
   return date
 }
+
+export const entryIdFromDate = (date) => format(date, "yyyy-MM-dd")
 
 export const formatDate = (date, formatting, options) => {
   date = makeDate(date)

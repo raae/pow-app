@@ -43,7 +43,7 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
       })
       .catch((error) => {
         dispatch({ type: "insertFailed", ...params })
-        return false
+        return { error }
       })
   }
 
@@ -58,7 +58,7 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
       })
       .catch((error) => {
         dispatch({ type: "updateFailed", error, ...params })
-        return false
+        return { error }
       })
   }
 

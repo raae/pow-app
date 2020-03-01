@@ -29,12 +29,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = ({ variant }) => {
+const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
   const classes = useStyles()
+  variant = variant.toLowerCase()
 
-  const { isPending } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const { isPending: isAuthPending, user } = useAuthState()
+  const { signIn, signUp, signOut } = useAuthActions()
+
   const [error, setError] = useState()
+  const [isPending, setIsPending] = useState()
 
   const [state, setState] = useState({
     username: "",
@@ -44,9 +47,12 @@ const UserForm = ({ variant }) => {
 
   const handleChange = (name) => (event) => {
     let value = event.target.value
+    setError()
+
     if (name === "rememberMe") {
       value = event.target.checked ? "local" : "session"
     }
+
     setState((prevState) => {
       return {
         ...prevState,
@@ -55,20 +61,30 @@ const UserForm = ({ variant }) => {
     })
   }
 
+  const handleSignOut = async (event) => {
+    event.preventDefault()
+    setIsPending(true)
+    const result = await signOut()
+    setError(result.error)
+    setIsPending(false)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
+    setIsPending(true)
 
     let result = null
-    if (variant === "signUp") {
+    if (variant === "signup") {
       result = await signUp(state)
     } else {
       result = await signIn(state)
     }
 
-    if (result.error && result.error.name !== "UserAlreadySignedIn") {
+    if (result.error) {
       setError(result.error)
+      setIsPending(false)
     } else {
-      navigate("/app")
+      onSubmitFulfilled()
     }
   }
 
@@ -113,22 +129,35 @@ const UserForm = ({ variant }) => {
         />
         {error && (
           <Alert className={classes.alert} severity="error">
-            {error.message}
+            {error.name === "UserAlreadySignedIn" && user ? (
+              <div>
+                Already signed in as <strong>{user.username}</strong>:{" "}
+                <Link component={GatsbyLink} to="/app">
+                  go to app
+                </Link>{" "}
+                or{" "}
+                <Link component="button" onClick={handleSignOut}>
+                  sign out
+                </Link>
+              </div>
+            ) : (
+              error.message
+            )}
           </Alert>
         )}
 
         <Button
           className={classes.submit}
-          disabled={isPending}
+          disabled={isAuthPending || isPending}
           type="submit"
           fullWidth
           variant="contained"
           color="primary"
         >
-          {variant === "signUp" ? "Sign Up" : "Log In"}
+          {variant === "signup" ? "Create account" : "Log In"}
         </Button>
 
-        {variant === "signUp" ? (
+        {variant === "signup" ? (
           <Typography variant="body2" align="right">
             Already have an account?&nbsp;
             <Link to="/login" component={GatsbyLink}>

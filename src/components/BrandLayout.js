@@ -2,7 +2,7 @@ import React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import { Container, Divider, makeStyles } from "@material-ui/core"
 
-import BrandFooter from "../components/BrandFooter"
+import BrandFooter from "./BrandFooter"
 import { SignInButton, SignOutButton } from "./AuthButtons"
 
 const useStyles = makeStyles((theme) => ({
@@ -60,7 +60,7 @@ const MainNav = ({ variant }) => {
   }
 }
 
-const BrandLayout = ({ variant, children }) => {
+const BrandLayout = ({ variant, footer, children }) => {
   const classes = useStyles()
   const logoPath = variant === "app" ? "/app" : "/"
 
