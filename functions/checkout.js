@@ -34,9 +34,6 @@ exports.handler = async (req) => {
             stripeEmail: customer.email,
             stripePlanId: planId,
             stripeCustomerId: customer.id,
-            test: {
-              test: "bla",
-            },
           },
         },
       }).promise()
