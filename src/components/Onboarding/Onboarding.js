@@ -102,7 +102,6 @@ const Onboarding = () => {
     await updateUser({ profile: { plan: values.subscriptionPlan } })
     // TODO: update to payment redirect
     navigate("/app")
-    setIsPending(false)
   }
 
   const steps = [

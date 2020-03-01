@@ -64,11 +64,11 @@ const AuthProvider = ({ children, appId }) => {
   }
 
   const updateUser = (params) => {
-    dispatch({ type: "updateUser" })
+    dispatch({ type: "updateUser", user: params })
     return userbase
       .updateUser(params)
       .then(() => {
-        dispatch({ type: "updateUserFulfilled", user: null })
+        dispatch({ type: "updateUserFulfilled" })
         return true
       })
       .catch((error) => {

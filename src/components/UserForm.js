@@ -33,8 +33,8 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
 
-  const { isPending: isAuthPending } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const { isPending: isAuthPending, user } = useAuthState()
+  const { signIn, signUp, signOut } = useAuthActions()
 
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
@@ -61,6 +61,14 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
     })
   }
 
+  const handleSignOut = async (event) => {
+    event.preventDefault()
+    setIsPending(true)
+    const result = await signOut()
+    setError(result.error)
+    setIsPending(false)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsPending(true)
@@ -72,7 +80,7 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
       result = await signIn(state)
     }
 
-    if (result.error && result.error.name !== "UserAlreadySignedIn") {
+    if (result.error) {
       setError(result.error)
       setIsPending(false)
     } else {
@@ -121,7 +129,20 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
         />
         {error && (
           <Alert className={classes.alert} severity="error">
-            {error.message}
+            {error.name === "UserAlreadySignedIn" && user ? (
+              <div>
+                Already signed in as <strong>{user.username}</strong>:{" "}
+                <Link component={GatsbyLink} to="/app">
+                  go to app
+                </Link>{" "}
+                or{" "}
+                <Link component="button" onClick={handleSignOut}>
+                  sign out
+                </Link>
+              </div>
+            ) : (
+              error.message
+            )}
           </Alert>
         )}
 
