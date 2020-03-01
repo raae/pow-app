@@ -6,6 +6,7 @@ import { Link, ButtonLink } from "../components/Link"
 import Logo from "../components/Logo"
 import { SignInButton } from "../components/AuthButtons"
 import UserForm from "../components/UserForm"
+import PaymentForm from "../components/PaymentForm"
 import Onboarding from "../components/Onboarding"
 
 const components = {
@@ -18,6 +19,7 @@ const shortcodes = {
   ButtonLink,
   UserForm,
   Onboarding,
+  PaymentForm,
 }
 
 const Mdx = ({ children }) => {

@@ -1,16 +1,15 @@
-import React, { useState } from "react"
-import { navigate } from "gatsby"
+import React, { useState, useEffect } from "react"
 
-import { useAuthActions } from "../../auth"
 import { useDataActions } from "../../database"
+import { useQueryParam } from "../../utils/useQueryParam"
 import { entryIdFromDate } from "../../utils/days"
 
 import UserForm from "../UserForm"
+import PaymentForm from "../PaymentForm"
 
 import Layout from "./Layout"
 import Tag from "./Tag"
 import Cycle from "./Cycle"
-import Payment from "./Payment"
 
 const initialValues = {
   tag: "",
@@ -26,11 +25,19 @@ const textFieldProps = {
 }
 
 const Onboarding = () => {
+  const step = useQueryParam("step")
+
   const { insertSetting, insertEntry } = useDataActions()
-  const { updateUser } = useAuthActions()
   const [values, setValues] = useState(initialValues)
-  const [activeStep, setActiveStep] = React.useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+
   const [isPending, setIsPending] = useState()
+
+  useEffect(() => {
+    if (step) {
+      setActiveStep(parseInt(step, 10))
+    }
+  }, [step])
 
   const handleSettingsChange = (name) => (event) => {
     let value = null
@@ -92,18 +99,6 @@ const Onboarding = () => {
     setIsPending(false)
   }
 
-  const handleComplete = async (event) => {
-    if (event && event.preventDefault) {
-      event.preventDefault()
-    }
-
-    setIsPending(true)
-
-    await updateUser({ profile: { plan: values.subscriptionPlan } })
-    // TODO: update to payment redirect
-    navigate("/app")
-  }
-
   const steps = [
     {
       label: "Create account",
@@ -138,17 +133,7 @@ const Onboarding = () => {
     },
     {
       label: "Pay",
-      content: (
-        <Payment
-          values={values}
-          onChange={handleSettingsChange}
-          textFieldProps={textFieldProps}
-        />
-      ),
-      disabled: isPending,
-      submitOnly: true,
-      handleSubmit: handleComplete,
-      submitLabel: "Take charge",
+      content: <PaymentForm submitLabel="Take charge" />,
     },
   ]
 

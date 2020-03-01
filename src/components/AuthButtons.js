@@ -20,15 +20,17 @@ export const SignInButton = ({ children = "Log in", ...props }) => {
 }
 
 export const SignOutButton = ({ children = "Log out", ...props }) => {
-  const { signOut } = useAuthActions()
+  const { signOut, isPending } = useAuthActions()
 
-  const handleSignOut = () => {
-    signOut()
-    navigate("/")
+  const handleSignOut = async () => {
+    const result = await signOut()
+    if (!result.error) {
+      navigate("/login")
+    }
   }
 
   return (
-    <Button onClick={handleSignOut} {...props}>
+    <Button onClick={handleSignOut} disable={isPending} {...props}>
       {children}
     </Button>
   )

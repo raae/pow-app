@@ -19,9 +19,11 @@ const SettingsRoute = () => {
     {
       label: "Sign out",
       variant: "outlined",
-      onClick: () => {
-        signOut()
-        navigate("/")
+      onClick: async () => {
+        const result = await signOut()
+        if (!result.error) {
+          navigate("/")
+        }
       },
     },
   ]
