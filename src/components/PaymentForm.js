@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js"
 import { STRIPE_KEY, BASE_URL } from "../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import { useAuthState, useAuthActions } from "../auth"
+import { useAuthState } from "../auth"
 
 import {
   FormControl,
@@ -24,10 +24,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
-  alert: {
-    margin: theme.spacing(3, 0, 1),
-  },
-  submit: {
+  space: {
     margin: theme.spacing(3, 0, 3),
   },
 }))
@@ -38,7 +35,6 @@ const PaymentForm = ({ submitLabel }) => {
   const stripeStatus = useQueryParam("stripe")
 
   const { user } = useAuthState()
-  const { updateUser } = useAuthActions()
 
   const [values, setValues] = useState({
     subscriptionPlan: "yearly",
@@ -62,8 +58,6 @@ const PaymentForm = ({ submitLabel }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    await updateUser({ profile: { plan: values.subscriptionPlan } })
-
     stripe
       .redirectToCheckout({
         items: [
@@ -84,6 +78,12 @@ const PaymentForm = ({ submitLabel }) => {
 
   return (
     <form noValidate onSubmit={handleSubmit}>
+      {stripeStatus === "failed" && (
+        <Alert className={classes.space} severity="warning">
+          Payment either failed, or we never got there while signing you up for
+          POW!.
+        </Alert>
+      )}
       <FormControl component="fieldset">
         <RadioGroup
           aria-label="Subscription Plan"
@@ -130,11 +130,8 @@ const PaymentForm = ({ submitLabel }) => {
       {stripeStatus === "canceled" && (
         <Alert severity="error">Payment was canceled, please try again.</Alert>
       )}
-      {stripeStatus === "failed" && (
-        <Alert severity="error">Payment failed, please try again.</Alert>
-      )}
       <Button
-        className={classes.submit}
+        className={classes.space}
         disabled={!user || !stripe}
         type="submit"
         fullWidth
