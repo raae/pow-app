@@ -1,37 +1,59 @@
-let STRIPE_API_KEY = process.env.STRIPE_SECRET_KEY
+const constants = require("./constants")
+const stripe = require("stripe")(constants.STRIPE_SECRET_KEY)
+const request = require("request-promise-native")
 
-if (process.env.CONTEXT !== "production") {
-  STRIPE_API_KEY = process.env.STRIPE_SECRET_TEST_KEY
-}
-
-const stripe = require("stripe")(STRIPE_API_KEY)
-
-exports.handler = async ({ body }) => {
-  const params = JSON.parse(body)
+exports.handler = async (req) => {
   try {
-    const lineItems = params.line_items ? params.line_items : [params.line_item]
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      line_items: lineItems,
-      success_url: params.success_url,
-      cancel_url: params.cancel_url,
-    })
-    const body = {
-      session_id: session.id,
+    const event = stripe.webhooks.constructEvent(
+      req.body,
+      req.headers["stripe-signature"],
+      constants.STRIPE_WEBHOOK_SECRET
+    )
+
+    if (event.type === "checkout.session.completed") {
+      const userbaseId = event.data.object.client_reference_id
+      const customerId = event.data.object.customer
+      const planId = event.data.object.display_items[0].plan.id
+
+      const customer = await stripe.customers.update(customerId, {
+        metadata: { userbaseId: userbaseId },
+      })
+
+      console.log(JSON.stringify(customer, null, 2))
+
+      // set payment flag on user's protected profile
+      await request({
+        method: "POST",
+        uri: "https://v1.userbase.com/v1/admin/users/" + userbaseId,
+        auth: {
+          bearer: constants.USERBASE_ADMIN_API_ACCESS_TOKEN,
+        },
+        json: true,
+        body: {
+          protectedProfile: {
+            stripeEmail: customer.email,
+            stripePlanId: planId,
+            stripeCustomerId: customer.id,
+            test: {
+              test: "bla",
+            },
+          },
+        },
+      }).promise()
     }
-    console.info(body)
+
+    console.log(`Stripe webhook succeeded`)
+
     return {
       statusCode: 200,
-      body: JSON.stringify(body, null, 2),
+      body: JSON.stringify({ received: true }),
     }
-  } catch (error) {
-    console.warn(error)
-    const body = {
-      error: error.message,
-    }
+  } catch (err) {
+    console.log(`Stripe webhook failed with ${err}`)
+
     return {
-      statusCode: 500,
-      body: JSON.stringify(body, null, 2),
+      statusCode: 400,
+      body: `Webhook Error: ${err.message}`,
     }
   }
 }
