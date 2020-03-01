@@ -13472,10 +13472,10 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
-userbase-js@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/userbase-js/-/userbase-js-1.1.2.tgz#182f5d1f2dc0ce0d63910e89bc6d65e76b9ce50a"
-  integrity sha512-MaTKuSMML+Pi6WddISl1AOnmD0+T0GCGU4BlA2luXjEdF0wwjgkIzp466Ru9zPHdfaWS6AMzaAG95ybHqEZoNw==
+userbase-js@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/userbase-js/-/userbase-js-1.2.0.tgz#e93827c6aa7f2513dbcd46ae26b0b29cc99a68f2"
+  integrity sha512-UDTYT/UBsChKXzE3nWkKOQveijPJLN2DmRRkMVo+5fsEOwBTLuPmK6pvhHZDPSiPhyZN1AhYhKCI+6cBD6XZPA==
   dependencies:
     "@babel/runtime-corejs3" "^7.7.6"
     axios "^0.19.0"
