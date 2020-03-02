@@ -5,18 +5,33 @@ import {
   isAfter,
   isEqual,
   format,
+  isValid,
+  eachDayOfInterval,
+  addDays,
 } from "date-fns"
 
-const makeDate = (date) => {
+export const makeDate = (date) => {
   if (!(date instanceof Date)) {
     date = new Date(date)
   }
   return date
 }
 
-export const entryIdFromDate = (date) => format(date, "yyyy-MM-dd")
+export const entryIdFromDate = (date) => {
+  if (!date) {
+    date = new Date()
+  } else {
+    date = makeDate(date)
+  }
 
-export const formatDate = (date, formatting, options) => {
+  if (!isValid(date)) {
+    date = new Date()
+  }
+
+  return format(date, "yyyy-MM-dd")
+}
+
+export const formatDate = (date, formatting = "yyyy-MM-dd", options) => {
   date = makeDate(date)
   return format(date, formatting, options)
 }
@@ -55,4 +70,13 @@ export const isDateEqual = (date, dateToCompare) => {
   dateToCompare = makeDate(dateToCompare)
 
   return isEqual(date, dateToCompare)
+}
+
+export const forecastInterval = (date, daysBetween = 28) => {
+  date = makeDate(date)
+
+  return eachDayOfInterval({
+    start: addDays(date, 0),
+    end: addDays(date, daysBetween + 3),
+  })
 }

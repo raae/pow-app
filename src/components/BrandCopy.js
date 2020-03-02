@@ -7,7 +7,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.25rem",
     fontWeight: theme.typography.fontWeightRegular,
     lineHeight: 1.5,
-    maxWidth: "40rem",
 
     "& > *": {
       marginTop: "1rem",

@@ -18,16 +18,17 @@ const useCycleDayState = ({ date, note }) => {
     throw new Error("useCycleState must be used within a CycleProvider")
   }
 
-  if (!context.nextStartDate)
+  if (!context.nextStartDate) {
     return {
       cycleDay: undefined,
       tags: [],
       isMenstruation: false,
-      predictions: {
+      prediction: {
         tags: [],
         isMenstruation: false,
       },
     }
+  }
 
   const cycleDay = cycleDayForDate(date, context)
   const noteTags = tagsFromText(note)
@@ -49,7 +50,7 @@ const useCycleDayState = ({ date, note }) => {
     isMenstruation: tagsIncludeMenstruation(noteTags, context),
     nextStartDate: context.nextStartDate,
     daysBetween: context.daysBetween,
-    predictions: {
+    prediction: {
       tags: tags,
       isMenstruation: tagsIncludeMenstruation(cycleTags, context),
     },

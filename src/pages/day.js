@@ -10,10 +10,16 @@ import BrandLayout from "../components/BrandLayout"
 import { CycleProvider } from "../cycle"
 import { useAuthState } from "../auth"
 import { useEffect } from "react"
+import { entryIdFromDate, makeDate } from "../utils/days"
+import { useQueryParam } from "../utils/useQueryParam"
+import DaySummary from "../components/DaySummary"
+import Forecast from "../components/Forecast"
 
 const HomeRoute = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
+  const queryDate = useQueryParam("date")
+  const entryId = entryIdFromDate(queryDate)
 
   useEffect(() => {
     if (!user && !authIsPending) {
@@ -27,14 +33,15 @@ const HomeRoute = () => {
   }, [user, authIsPending])
 
   if (authIsPending || dataIsPending) {
-    return <Loading />
+    return <Loading fullScreen />
   }
 
   return (
     <CycleProvider entries={entries} settings={settings}>
       <BrandLayout variant="app">
         <SEO title="Log" />
-        <>Day </>
+        <DaySummary entryId={entryId} />
+        <Forecast entryId={entryId} />
       </BrandLayout>
     </CycleProvider>
   )

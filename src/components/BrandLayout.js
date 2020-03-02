@@ -1,4 +1,5 @@
 import React from "react"
+import classNames from "classnames"
 import { Link as GatsbyLink } from "gatsby"
 import {
   Container,
@@ -15,21 +16,28 @@ import { SignInButton, SignOutButton } from "./AuthButtons"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: "calc(64px + 8em)",
+    "& header": {
+      maxWidth: "55rem",
+      margin: "0 auto",
+    },
+    "& main": {
+      maxWidth: "50rem",
+    },
     "& footer": {
-      "& hr": {
-        display: "inline-block",
-        marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(2),
-        width: theme.spacing(5),
-        border: `2px solid ${theme.palette.primary.main}`,
-      },
+      maxWidth: "50rem",
+    },
+  },
+  app: {
+    "& main": {
+      marginTop: "2rem",
+      padding: theme.spacing(0, 3),
     },
   },
   appBar: {
     borderTop: `4px solid ${theme.palette.primary.main}`,
     borderBottom: `1px solid ${theme.palette.grey[200]}`,
   },
+  offset: theme.mixins.toolbar,
   toolbar: {
     alignItems: "center",
     "& > *:nth-child(2)": {
@@ -40,11 +48,12 @@ const useStyles = makeStyles((theme) => ({
     },
     fontSize: "2rem",
     width: "100%",
-    maxWidth: "52rem",
-    margin: "0 auto",
   },
-  container: {
-    maxWidth: "50rem",
+  content: {
+    maxWidth: "40rem",
+    "&$app": {
+      maxWidth: "32rem",
+    },
   },
   logo: {
     display: "inline-block",
@@ -56,6 +65,15 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: "none",
       transform: "scale(1.2)",
       color: theme.palette.primary.main,
+    },
+  },
+  footer: {
+    "& hr": {
+      display: "inline-block",
+      marginTop: theme.spacing(8),
+      marginBottom: theme.spacing(2),
+      width: theme.spacing(5),
+      border: `2px solid ${theme.palette.primary.main}`,
     },
   },
 }))
@@ -95,20 +113,32 @@ const BrandLayout = ({ variant, children }) => {
   const logoPath = variant === "app" ? "/day" : "/"
 
   return (
-    <div className={classes.root}>
-      <AppBar className={classes.appBar} elevation={0} color="inherit">
-        <Toolbar className={classes.toolbar}>
+    <div className={classNames(classes.root, classes[variant])}>
+      <AppBar
+        component="div"
+        className={classes.appBar}
+        elevation={0}
+        position="sticky"
+        color="inherit"
+      >
+        <Toolbar component="header" className={classes.toolbar}>
           <Logo component={GatsbyLink} to={logoPath}>
             !
           </Logo>
           <MainNav variant={variant} />
         </Toolbar>
       </AppBar>
-      <Container className={classes.container} component="main">
-        {children}
+      <Container component="main">
+        <div
+          className={classNames(classes.content, {
+            [classes.app]: variant === "app",
+          })}
+        >
+          {children}
+        </div>
       </Container>
       {variant !== "app" && (
-        <Container className={classes.container} component="footer">
+        <Container component="footer" className={classes.footer}>
           <Divider />
           <BrandFooter></BrandFooter>
         </Container>
