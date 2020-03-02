@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import { Link as GatsbyLink, navigate } from "gatsby"
+import { Link as GatsbyLink } from "gatsby"
+import classNames from "classnames"
 import {
   Button,
   TextField,
@@ -8,15 +9,19 @@ import {
   FormControlLabel,
   makeStyles,
   Typography,
+  Paper,
 } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
 import { useAuthState, useAuthActions } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
-  form: {
+  root: {
     width: "100%", // Fix IE 11 issue.
+  },
+  standalone: {
     marginTop: theme.spacing(3),
+    padding: theme.spacing(4),
   },
   checkbox: {
     marginLeft: 0,
@@ -29,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
+const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
 
@@ -64,7 +69,7 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
   const handleSignOut = async (event) => {
     event.preventDefault()
     setIsPending(true)
-    const result = await signOut()
+    const result = await signOut({ redirect: false })
     setError(result.error)
     setIsPending(false)
   }
@@ -75,22 +80,30 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
 
     let result = null
     if (variant === "signup") {
-      result = await signUp(state)
+      result = await signUp(state, { redirect: !onSubmitFulfilled })
     } else {
-      result = await signIn(state)
+      result = await signIn(state, { redirect: !onSubmitFulfilled })
     }
 
     if (result.error) {
       setError(result.error)
       setIsPending(false)
-    } else {
+    } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
     }
   }
 
   return (
     <>
-      <form className={classes.form} noValidate onSubmit={handleSubmit}>
+      <Paper
+        component="form"
+        className={classNames(classes.root, {
+          [classes.standalone]: standalone,
+        })}
+        elevation={standalone ? 1 : 0}
+        noValidate
+        onSubmit={handleSubmit}
+      >
         <TextField
           variant="outlined"
           margin="normal"
@@ -127,28 +140,31 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
           value={state.rememberMe}
           onChange={handleChange("rememberMe")}
         />
+
         {error && (
           <Alert className={classes.alert} severity="error">
-            {error.name === "UserAlreadySignedIn" && user ? (
-              <div>
-                Already signed in as <strong>{user.username}</strong>:{" "}
-                <Link component={GatsbyLink} to="/app">
-                  go to app
-                </Link>{" "}
-                or{" "}
-                <Link component="button" onClick={handleSignOut}>
-                  sign out
-                </Link>
-              </div>
-            ) : (
-              error.message
-            )}
+            {error.message}
+          </Alert>
+        )}
+
+        {user && !isPending && (
+          <Alert className={classes.alert} severity="warning">
+            <div>
+              Already signed in as <strong>{user.username}</strong>:{" "}
+              <Link component={GatsbyLink} to="/day">
+                go to app
+              </Link>{" "}
+              or{" "}
+              <Link type="button" component="button" onClick={handleSignOut}>
+                sign out
+              </Link>
+            </div>
           </Alert>
         )}
 
         <Button
           className={classes.submit}
-          disabled={isAuthPending || isPending}
+          disabled={isAuthPending || isPending || user}
           type="submit"
           fullWidth
           variant="contained"
@@ -172,7 +188,7 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
             </Link>
           </Typography>
         )}
-      </form>
+      </Paper>
     </>
   )
 }

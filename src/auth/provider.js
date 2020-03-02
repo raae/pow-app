@@ -1,4 +1,6 @@
 import React, { useEffect, createContext, useReducer } from "react"
+import { navigate } from "gatsby"
+
 import userbase from "userbase-js"
 
 import reducer, { defaultState } from "./reducer"
@@ -6,7 +8,7 @@ import reducer, { defaultState } from "./reducer"
 export const AuthStateContext = createContext()
 export const AuthActionsContext = createContext()
 
-const AuthProvider = ({ children, appId }) => {
+const AuthProvider = ({ children, appId, redirects = {} }) => {
   const [state, dispatch] = useReducer(reducer, defaultState)
 
   useEffect(() => {
@@ -21,12 +23,15 @@ const AuthProvider = ({ children, appId }) => {
       })
   }, [appId])
 
-  const signUp = async (params) => {
+  const signUp = async (params, { redirect = true } = {}) => {
     dispatch({ type: "signUp" })
     return userbase
       .signUp(params)
       .then((user) => {
         dispatch({ type: "signUpFulfilled", user })
+        if (redirect && redirects.signUp) {
+          navigate(redirects.signUp)
+        }
         return user
       })
       .catch((error) => {
@@ -35,12 +40,15 @@ const AuthProvider = ({ children, appId }) => {
       })
   }
 
-  const signIn = async (params) => {
+  const signIn = async (params, { redirect = true } = {}) => {
     dispatch({ type: "signIn" })
     return userbase
       .signIn(params)
       .then((user) => {
         dispatch({ type: "signInFulfilled", user })
+        if (redirect && redirects.signIn) {
+          navigate(redirects.signIn)
+        }
         return user
       })
       .catch((error) => {
@@ -49,12 +57,15 @@ const AuthProvider = ({ children, appId }) => {
       })
   }
 
-  const signOut = (params) => {
+  const signOut = ({ redirect = true } = {}) => {
     dispatch({ type: "signOut" })
     return userbase
-      .signOut(params)
+      .signOut()
       .then(() => {
         dispatch({ type: "signOutFulfilled", user: null })
+        if (redirect && redirects.signOut) {
+          navigate(redirects.signOut)
+        }
         return true
       })
       .catch((error) => {

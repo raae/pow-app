@@ -1,10 +1,10 @@
 import { withTheme } from "./src/theme"
-import { withAuthProvider } from "./src/auth"
+import { withRoot } from "./src/rootElement"
 
 export const wrapPageElement = ({ element }) => {
   return withTheme({ element })
 }
 
 export const wrapRootElement = ({ element }) => {
-  return withAuthProvider({ element })
+  return withRoot({ element })
 }

@@ -2,6 +2,8 @@ import React, { createContext, useReducer } from "react"
 import { mapValues } from "lodash"
 import userbase from "userbase-js"
 
+import { useAuthState } from "../auth"
+
 import reducer, { getDefaultState } from "./reducer"
 import { useEffect } from "react"
 import initDatabases from "./initDatabases"
@@ -9,13 +11,9 @@ import initDatabases from "./initDatabases"
 export const DataStateContext = createContext()
 export const DataActionsContext = createContext()
 
-const DATABASES = [
-  { databaseName: "entries", entity: "Entry" },
-  { databaseName: "settings", entity: "Setting" },
-]
-
-const DataProvider = ({ children, user, databases = DATABASES }) => {
+const DataProvider = ({ children, databases = [] }) => {
   const [state, dispatch] = useReducer(reducer, getDefaultState(databases))
+  const { user } = useAuthState()
 
   useEffect(() => {
     if (!user) return

@@ -102,7 +102,13 @@ const Onboarding = () => {
   const steps = [
     {
       label: "Create account",
-      content: <UserForm variant="signup" onSubmitFulfilled={handleNext} />,
+      content: (
+        <UserForm
+          variant="signup"
+          onSubmitFulfilled={handleNext}
+          standalone={false}
+        />
+      ),
     },
     {
       label: "Personalize",
@@ -133,7 +139,7 @@ const Onboarding = () => {
     },
     {
       label: "Pay",
-      content: <PaymentForm submitLabel="Take charge" />,
+      content: <PaymentForm submitLabel="Take charge" standalone={false} />,
     },
   ]
 

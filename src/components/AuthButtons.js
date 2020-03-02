@@ -11,7 +11,7 @@ export const SignInButton = ({ children = "Log in", ...props }) => {
   return (
     <Button
       component={GatsbyLink}
-      to={sendToApp ? "/app" : "/login"}
+      to={sendToApp ? "/day" : "/login"}
       {...props}
     >
       {children}
@@ -22,15 +22,8 @@ export const SignInButton = ({ children = "Log in", ...props }) => {
 export const SignOutButton = ({ children = "Log out", ...props }) => {
   const { signOut, isPending } = useAuthActions()
 
-  const handleSignOut = async () => {
-    const result = await signOut()
-    if (!result.error) {
-      navigate("/login")
-    }
-  }
-
   return (
-    <Button onClick={handleSignOut} disable={isPending} {...props}>
+    <Button onClick={signOut} disable={isPending} {...props}>
       {children}
     </Button>
   )

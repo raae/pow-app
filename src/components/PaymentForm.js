@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
+import { Link as GatsbyLink } from "gatsby"
 import { loadStripe } from "@stripe/stripe-js"
+import classNames from "classnames"
 
 import { STRIPE_KEY, BASE_URL } from "../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import { useAuthState } from "../auth"
+import { useAuthState, useAuthActions } from "../auth"
 
 import {
   FormControl,
@@ -14,33 +16,39 @@ import {
   Typography,
   Link,
   Button,
+  Paper,
   makeStyles,
 } from "@material-ui/core"
 
 import Alert from "@material-ui/lab/Alert"
 
 const useStyles = makeStyles((theme) => ({
-  form: {
+  root: {
     width: "100%", // Fix IE 11 issue.
+  },
+  standalone: {
     marginTop: theme.spacing(3),
+    padding: theme.spacing(4),
   },
   space: {
     margin: theme.spacing(3, 0, 3),
   },
 }))
 
-const PaymentForm = ({ submitLabel }) => {
+const PaymentForm = ({ standalone = true, submitLabel }) => {
   const classes = useStyles()
 
   const stripeStatus = useQueryParam("stripe")
 
-  const { user } = useAuthState()
+  const { user, isPending: isAuthIsPending } = useAuthState()
+  const { signOut } = useAuthActions()
 
   const [values, setValues] = useState({
     subscriptionPlan: "yearly",
   })
   const [error, setError] = useState()
   const [stripe, setStripe] = useState()
+  const [isPending, setIsPending] = useState()
 
   useEffect(() => {
     loadStripe(STRIPE_KEY).then((stripe) => {
@@ -55,16 +63,24 @@ const PaymentForm = ({ submitLabel }) => {
     })
   }
 
+  const handleSignOut = async (event) => {
+    event.preventDefault()
+    setIsPending(true)
+    const result = await signOut()
+    setError(result.error)
+    setIsPending(false)
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-
+    setIsPending(true)
     stripe
       .redirectToCheckout({
         items: [
           { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
         ],
         clientReferenceId: user.userId,
-        successUrl: BASE_URL + "/app",
+        successUrl: BASE_URL + "/day",
         cancelUrl: BASE_URL + "/payment?stripe=canceled",
       })
       .then(function(result) {
@@ -73,15 +89,31 @@ const PaymentForm = ({ submitLabel }) => {
         } else {
           setError()
         }
+        setIsPending(false)
       })
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit}>
+    <Paper
+      component="form"
+      className={classNames(classes.root, {
+        [classes.standalone]: standalone,
+      })}
+      elevation={standalone ? 1 : 0}
+      noValidate
+      onSubmit={handleSubmit}
+    >
       {stripeStatus === "failed" && (
         <Alert className={classes.space} severity="warning">
           Payment either failed, or we never got there while signing you up for
           POW!.
+        </Alert>
+      )}
+      {!user && !isAuthIsPending && (
+        <Alert className={classes.space} severity="warning">
+          <div>
+            You must be <GatsbyLink to="/login">logged in</GatsbyLink> to pay.
+          </div>
         </Alert>
       )}
       <FormControl component="fieldset">
@@ -132,15 +164,23 @@ const PaymentForm = ({ submitLabel }) => {
       )}
       <Button
         className={classes.space}
-        disabled={!user || !stripe}
+        disabled={!user || !stripe || isPending}
         type="submit"
         fullWidth
         variant="contained"
         color="primary"
       >
-        {submitLabel ? submitLabel : "Go to payment"}
+        {submitLabel ? submitLabel : "Subscribe"}
       </Button>
-    </form>
+      {user && (
+        <Typography variant="body2" align="right">
+          Or{" "}
+          <Link type="button" component="button" onClick={handleSignOut}>
+            sign out
+          </Link>
+        </Typography>
+      )}
+    </Paper>
   )
 }
 

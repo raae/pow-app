@@ -1,17 +1,19 @@
 import React from "react"
+import classNames from "classnames"
 import { CircularProgress, makeStyles } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    borderTop: `4px solid ${theme.palette.primary.main}`,
     padding: theme.spacing(2),
-    background: theme.palette.background.paper,
-    minHeight: "100vh",
-
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     paddingBottom: theme.spacing(3),
+  },
+  fullScreen: {
+    borderTop: `4px solid ${theme.palette.primary.main}`,
+    width: "100vw",
+    height: "100vh",
   },
   circle: {
     height: "10vh !important",
@@ -19,10 +21,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Loading = () => {
+const Loading = ({ fullScreen = false }) => {
   const classes = useStyles()
   return (
-    <div className={classes.root}>
+    <div
+      className={classNames(classes.root, { [classes.fullScreen]: fullScreen })}
+    >
       <CircularProgress className={classes.circle} />
     </div>
   )
