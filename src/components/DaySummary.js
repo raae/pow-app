@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 
 import {
   Card,
@@ -6,32 +6,46 @@ import {
   Paper,
   Typography,
   Fab,
+  Button,
   makeStyles,
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
+import DoneIcon from "@material-ui/icons/Done"
+import CancelIcon from "@material-ui/icons/Cancel"
 
 import { useDataState } from "../database"
 import { useCycleDayState } from "../cycle"
 import { makeDate, formatDate } from "../utils/days"
 
 import Logo from "./Logo"
+import EntryForm from "./EntryForm"
 
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
     overflow: "initial",
+    marginRight: theme.spacing(1),
   },
   title: {
     fontSize: 14,
+  },
+  noWrap: {
+    whiteSpace: "nowrap",
   },
   note: {
     margin: theme.spacing(3, 0, 1),
     padding: theme.spacing(2),
     background: theme.palette.background.default,
   },
-  fab: {
+  submit: {
     position: "absolute",
     right: 0,
+    bottom: 0,
+    transform: "translate(30%, 30%)",
+  },
+  reset: {
+    position: "absolute",
+    right: 60,
     bottom: 0,
     transform: "translate(30%, 30%)",
   },
@@ -42,15 +56,14 @@ const useStyles = makeStyles((theme) => ({
 
 const DaySummary = ({ entryId }) => {
   const classes = useStyles()
+  const [isEditing, setIsEditing] = useState(null)
   const { settings, entries } = useDataState()
   const entry = entries[entryId] || {}
 
-  const { cycleDay, daysBetween, nextStartDate, prediction } = useCycleDayState(
-    {
-      date: makeDate(entryId),
-      note: entry.note,
-    }
-  )
+  const { cycleDay, daysBetween, nextStartDate } = useCycleDayState({
+    date: makeDate(entryId),
+    note: entry.note,
+  })
 
   if (!settings.tag) {
     return null
@@ -71,27 +84,57 @@ const DaySummary = ({ entryId }) => {
           </Typography>
           {nextStartDate && (
             <Typography color="textSecondary" gutterBottom>
-              Next <strong>#{settings.tag}</strong> due to arrive{" "}
-              {formatDate(nextStartDate, "EEEE, MMMM do")}
+              Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
+              <span className={classes.noWrap}>
+                {formatDate(nextStartDate, "EEEE, MMMM do")}
+              </span>
             </Typography>
           )}
 
-          {entry.note && (
+          {entry.note && !isEditing && (
             <Paper elevation={0} className={classes.note}>
               <Typography variant="body1" component="p">
                 {entry.note}
               </Typography>
             </Paper>
           )}
+
+          {isEditing && (
+            <div className={classes.note}>
+              <EntryForm entryId={entryId} onDone={() => setIsEditing(false)}>
+                <Fab
+                  color="primary"
+                  size="small"
+                  aria-label="Cancel not change"
+                  type="reset"
+                  className={classes.reset}
+                >
+                  <CancelIcon />
+                </Fab>
+                <Fab
+                  color="secondary"
+                  size="large"
+                  aria-label="Save note"
+                  type="submit"
+                  className={classes.submit}
+                >
+                  <DoneIcon />
+                </Fab>
+              </EntryForm>
+            </div>
+          )}
         </CardContent>
-        <Fab
-          color="secondary"
-          size="medium"
-          aria-label="Edit note"
-          className={classes.fab}
-        >
-          <EditNoteIcon />
-        </Fab>
+        {!isEditing && (
+          <Fab
+            color="secondary"
+            size="large"
+            aria-label="Edit note"
+            onClick={() => setIsEditing(true)}
+            className={classes.submit}
+          >
+            <EditNoteIcon />
+          </Fab>
+        )}
       </Card>
     </>
   )

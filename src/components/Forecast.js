@@ -19,8 +19,7 @@ import {
   entryIdFromDate,
   makeDate,
 } from "../utils/days"
-
-import PredictionTagsText from "./PredictionTagsText"
+import { useDataState } from "../database"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,7 +55,7 @@ const ForecastText = ({ tags }) => {
     return (
       <Typography
         key={tag}
-        display="inline"
+        component="span"
         variant="body1"
         style={{ opacity: frequency + 0.3 }}
       >
@@ -69,8 +68,12 @@ const ForecastText = ({ tags }) => {
 const ForecastListItem = ({ entryId }) => {
   const classes = useStyles()
 
+  const { entries } = useDataState()
+  const entryNote = entries[entryId] ? entries[entryId].note : ""
+
   const { cycleDay, isMensturation, prediction } = useCycleDayState({
     date: makeDate(entryId),
+    note: entryNote,
   })
 
   return (
