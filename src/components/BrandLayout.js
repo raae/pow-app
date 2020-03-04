@@ -40,11 +40,14 @@ const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
   toolbar: {
     alignItems: "center",
-    "& > *:nth-child(2)": {
+    "& > *:last-child": {
       marginLeft: "auto",
     },
-    "& > *": {
-      marginRight: "0.5em",
+    "& > nav > *": {
+      marginRight: theme.spacing(1),
+    },
+    "& > div": {
+      margin: theme.spacing(0, 4),
     },
     fontSize: "2rem",
     width: "100%",
@@ -108,7 +111,7 @@ const MainNav = ({ variant }) => {
   }
 }
 
-const BrandLayout = ({ variant, children }) => {
+const BrandLayout = ({ variant, toolbar, children }) => {
   const classes = useStyles()
   const logoPath = variant === "app" ? "/day" : "/"
 
@@ -125,7 +128,10 @@ const BrandLayout = ({ variant, children }) => {
           <Logo component={GatsbyLink} to={logoPath}>
             !
           </Logo>
-          <MainNav variant={variant} />
+          {toolbar}
+          <nav>
+            <MainNav variant={variant} />
+          </nav>
         </Toolbar>
       </AppBar>
       <Container component="main">

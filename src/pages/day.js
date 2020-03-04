@@ -1,5 +1,6 @@
 import React from "react"
 import { navigate } from "gatsby"
+import { Router } from "@reach/router"
 
 import { useDataState } from "../database"
 
@@ -11,15 +12,24 @@ import { CycleProvider } from "../cycle"
 import { useAuthState } from "../auth"
 import { useEffect } from "react"
 import { entryIdFromDate, makeDate } from "../utils/days"
-import { useQueryParam } from "../utils/useQueryParam"
 import DaySummary from "../components/DaySummary"
 import Forecast from "../components/Forecast"
+import DatePicker from "../components/DatePicker"
+
+const Day = ({ date }) => {
+  date = makeDate(date)
+  const entryId = entryIdFromDate(date)
+  return (
+    <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
+      <DaySummary entryId={entryId} />
+      <Forecast entryId={entryId} />
+    </BrandLayout>
+  )
+}
 
 const HomeRoute = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
-  const queryDate = useQueryParam("date")
-  const entryId = entryIdFromDate(queryDate)
 
   useEffect(() => {
     if (!user && !authIsPending) {
@@ -38,11 +48,11 @@ const HomeRoute = () => {
 
   return (
     <CycleProvider entries={entries} settings={settings}>
-      <BrandLayout variant="app">
-        <SEO title="Log" />
-        <DaySummary entryId={entryId} />
-        <Forecast entryId={entryId} />
-      </BrandLayout>
+      <SEO title="Log" />
+      <Router basepath="/day">
+        <Day path="/" />
+        <Day path=":date" />
+      </Router>
     </CycleProvider>
   )
 }

@@ -1,4 +1,6 @@
 import React from "react"
+import { MuiPickersUtilsProvider } from "@material-ui/pickers"
+import DateFnsUtils from "@date-io/date-fns"
 
 import { USERBASE_APP_ID, DATABASES } from "./constants"
 
@@ -7,12 +9,14 @@ import AuthProvider from "./auth"
 
 export const RootElement = ({ children }) => {
   return (
-    <AuthProvider
-      appId={USERBASE_APP_ID}
-      redirects={{ signIn: "/day", signUp: "/day", signOut: "/login" }}
-    >
-      <DataProvider databases={DATABASES}>{children}</DataProvider>
-    </AuthProvider>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <AuthProvider
+        appId={USERBASE_APP_ID}
+        redirects={{ signIn: "/day", signUp: "/day", signOut: "/login" }}
+      >
+        <DataProvider databases={DATABASES}>{children}</DataProvider>
+      </AuthProvider>
+    </MuiPickersUtilsProvider>
   )
 }
 
