@@ -72,11 +72,28 @@ export const isDateEqual = (date, dateToCompare) => {
   return isEqual(date, dateToCompare)
 }
 
-export const forecastInterval = (date, daysBetween = 28) => {
+export const intervalAfterDate = (date, daysAfter) => {
   date = makeDate(date)
+
+  if (!daysAfter) {
+    daysAfter = 1
+  }
 
   return eachDayOfInterval({
     start: addDays(date, 1),
-    end: addDays(date, daysBetween + 3),
+    end: addDays(date, daysAfter),
+  })
+}
+
+export const intervalBeforeDate = (date, daysBefore) => {
+  date = makeDate(date)
+
+  if (!daysBefore) {
+    daysBefore = 1
+  }
+
+  return eachDayOfInterval({
+    start: addDays(date, -daysBefore),
+    end: addDays(date, -1),
   })
 }

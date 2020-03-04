@@ -8,10 +8,10 @@ import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 
 import BrandLayout from "../components/BrandLayout"
-import { CycleProvider } from "../cycle"
+import { CycleProvider, useCycleDayState } from "../cycle"
 import { useAuthState } from "../auth"
 import { useEffect } from "react"
-import { entryIdFromDate, makeDate } from "../utils/days"
+import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 import DaySummary from "../components/DaySummary"
 import Forecast from "../components/Forecast"
 import DatePicker from "../components/DatePicker"
@@ -19,10 +19,17 @@ import DatePicker from "../components/DatePicker"
 const Day = ({ date }) => {
   date = makeDate(date)
   const entryId = entryIdFromDate(date)
+
+  const { daysBetween } = useCycleDayState({
+    date: makeDate(entryId),
+  })
+
+  const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
+
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
       <DaySummary entryId={entryId} />
-      <Forecast entryId={entryId} />
+      <Forecast entryId={entryId} interval={afterInterval} />
     </BrandLayout>
   )
 }

@@ -2,10 +2,9 @@ import React, { useState } from "react"
 import { navigate } from "gatsby"
 import { Popover, Button } from "@material-ui/core"
 import DropDownIcon from "@material-ui/icons/ArrowDropDownRounded"
-import DropUpIcon from "@material-ui/icons/ArrowDropUpRounded"
 
 import { DatePicker as MuiDatePicker } from "@material-ui/pickers"
-import { makeDate, entryIdFromDate } from "../utils/days"
+import { makeDate, entryIdFromDate, formatDate } from "../utils/days"
 
 const DatePicker = ({ entryId }) => {
   const [anchorEl, setAnchorEl] = useState()
@@ -16,7 +15,7 @@ const DatePicker = ({ entryId }) => {
   return (
     <div>
       <Button onClick={(event) => setAnchorEl(event.currentTarget)}>
-        March <DropDownIcon />
+        {formatDate(entryId, "MMMM")} <DropDownIcon />
       </Button>
       <Popover
         anchorEl={anchorEl}

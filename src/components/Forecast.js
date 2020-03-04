@@ -13,12 +13,7 @@ import {
 import classNames from "classnames"
 
 import { useCycleDayState } from "../cycle"
-import {
-  forecastInterval,
-  formatDate,
-  entryIdFromDate,
-  makeDate,
-} from "../utils/days"
+import { formatDate, entryIdFromDate, makeDate } from "../utils/days"
 import { useDataState } from "../database"
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   note: {
-    margin: theme.spacing(1.5, 0),
+    margin: theme.spacing(1, 0),
     padding: theme.spacing(1),
     background: theme.palette.background.paper,
   },
@@ -140,12 +135,9 @@ const ForecastListItem = ({ entryId }) => {
   )
 }
 
-const Forecast = ({ entryId }) => {
+const Forecast = ({ interval }) => {
   const classes = useStyles()
-  const { daysBetween } = useCycleDayState({
-    date: makeDate(entryId),
-  })
-  const interval = forecastInterval(entryId, daysBetween)
+
   return (
     <>
       <List className={classes.root}>

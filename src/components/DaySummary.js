@@ -112,7 +112,7 @@ const DaySummary = ({ entryId }) => {
           )}
 
           {isEditing && (
-            <div className={classes.note}>
+            <Paper elevation={0} className={classes.note}>
               <EntryForm entryId={entryId} onDone={() => setIsEditing(false)}>
                 <Fab
                   color="primary"
@@ -133,7 +133,7 @@ const DaySummary = ({ entryId }) => {
                   <DoneIcon />
                 </Fab>
               </EntryForm>
-            </div>
+            </Paper>
           )}
           {hasTags && (
             <div className={classes.tags}>
