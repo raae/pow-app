@@ -1,5 +1,5 @@
 import React from "react"
-import { Link as GatsbyLink, navigate } from "gatsby"
+import { Link as GatsbyLink } from "gatsby"
 
 import { Button } from "@material-ui/core"
 import { useAuthState, useAuthActions } from "../auth"

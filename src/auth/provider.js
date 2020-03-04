@@ -88,15 +88,12 @@ const AuthProvider = ({ children, appId, redirects = {} }) => {
       })
   }
 
-  const actions = React.useMemo(
-    () => ({
-      signUp,
-      signIn,
-      signOut,
-      updateUser,
-    }),
-    []
-  )
+  const actions = {
+    signUp,
+    signIn,
+    signOut,
+    updateUser,
+  }
 
   return (
     <AuthStateContext.Provider value={state}>

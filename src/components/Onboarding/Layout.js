@@ -6,7 +6,6 @@ import {
   StepContent,
   StepLabel,
   Button,
-  Paper,
   Typography,
   IconButton,
   makeStyles,

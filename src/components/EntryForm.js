@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Paper, TextField, makeStyles, Button } from "@material-ui/core"
+import { Paper, TextField, makeStyles } from "@material-ui/core"
 import classNames from "classnames"
 
 import { useDataState, useDataActions } from "../database"

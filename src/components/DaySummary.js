@@ -6,7 +6,6 @@ import {
   Paper,
   Typography,
   Fab,
-  Button,
   makeStyles,
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
