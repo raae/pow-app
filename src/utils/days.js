@@ -76,7 +76,7 @@ export const forecastInterval = (date, daysBetween = 28) => {
   date = makeDate(date)
 
   return eachDayOfInterval({
-    start: addDays(date, 0),
+    start: addDays(date, 1),
     end: addDays(date, daysBetween + 3),
   })
 }

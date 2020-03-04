@@ -19,6 +19,7 @@ import { makeDate, formatDate } from "../utils/days"
 
 import Logo from "./Logo"
 import EntryForm from "./EntryForm"
+import { ForecastText } from "./Forecast"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,9 +34,16 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: "nowrap",
   },
   note: {
-    margin: theme.spacing(3, 0, 1),
+    display: "block",
+    margin: theme.spacing(3, 0, 3),
     padding: theme.spacing(2),
     background: theme.palette.background.default,
+    "&:last-child": {
+      marginBottom: theme.spacing(1),
+    },
+  },
+  tags: {
+    margin: theme.spacing(2, 0, 0),
   },
   submit: {
     position: "absolute",
@@ -58,12 +66,16 @@ const DaySummary = ({ entryId }) => {
   const classes = useStyles()
   const [isEditing, setIsEditing] = useState(null)
   const { settings, entries } = useDataState()
-  const entry = entries[entryId] || {}
+  const entryNote = entries[entryId] ? entries[entryId].note : ""
 
-  const { cycleDay, daysBetween, nextStartDate } = useCycleDayState({
-    date: makeDate(entryId),
-    note: entry.note,
-  })
+  const { cycleDay, daysBetween, nextStartDate, prediction } = useCycleDayState(
+    {
+      date: makeDate(entryId),
+      note: entryNote,
+    }
+  )
+
+  const hasTags = prediction.tags.length > 0
 
   if (!settings.tag) {
     return null
@@ -86,15 +98,15 @@ const DaySummary = ({ entryId }) => {
             <Typography color="textSecondary" gutterBottom>
               Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
               <span className={classes.noWrap}>
-                {formatDate(nextStartDate, "EEEE, MMMM do")}
+                {formatDate(nextStartDate, "EEEE, MMMM do")}.
               </span>
             </Typography>
           )}
 
-          {entry.note && !isEditing && (
+          {entryNote && !isEditing && (
             <Paper elevation={0} className={classes.note}>
               <Typography variant="body1" component="p">
-                {entry.note}
+                {entryNote}
               </Typography>
             </Paper>
           )}
@@ -121,6 +133,11 @@ const DaySummary = ({ entryId }) => {
                   <DoneIcon />
                 </Fab>
               </EntryForm>
+            </div>
+          )}
+          {hasTags && (
+            <div className={classes.tags}>
+              <ForecastText tags={prediction.tags} />
             </div>
           )}
         </CardContent>

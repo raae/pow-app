@@ -6,8 +6,8 @@ import {
   ListItemText,
   Avatar,
   Typography,
-  ListSubheader,
   makeStyles,
+  Chip,
 } from "@material-ui/core"
 
 import classNames from "classnames"
@@ -24,7 +24,7 @@ import { useDataState } from "../database"
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "30rem",
-    padding: theme.spacing(0, 2),
+    margin: theme.spacing(2, 0, 4),
   },
   avatar: {
     fontSize: "inherit",
@@ -48,19 +48,25 @@ const useStyles = makeStyles((theme) => ({
   predictedMensturation: {
     backgroundColor: theme.palette.primary.main,
   },
+  note: {
+    margin: theme.spacing(1.5, 0),
+    padding: theme.spacing(1),
+    background: theme.palette.background.paper,
+  },
 }))
 
-const ForecastText = ({ tags }) => {
+export const ForecastText = ({ tags }) => {
   return tags.map(({ tag, frequency }) => {
     return (
-      <Typography
-        key={tag}
-        component="span"
-        variant="body1"
-        style={{ opacity: frequency + 0.3 }}
-      >
-        #{tag}{" "}
-      </Typography>
+      <>
+        <Chip
+          variant="outlined"
+          size="small"
+          label={`#${tag}`}
+          key={tag}
+          style={{ opacity: frequency + 0.3 }}
+        />{" "}
+      </>
     )
   })
 }
@@ -76,18 +82,20 @@ const ForecastListItem = ({ entryId }) => {
     note: entryNote,
   })
 
+  const hasContent = prediction.tags.length !== 0 || entryNote
+
   return (
     <>
       <ListItem>
         <ListItemAvatar>
           <Avatar
             className={classNames(classes.avatar, {
-              [classes.small]: prediction.tags.length === 0,
+              [classes.small]: !hasContent,
               [classes.isMensturation]: isMensturation,
               [classes.predictedMensturation]: prediction.isMenstruation,
             })}
           >
-            {prediction.tags.length !== 0 && (
+            {hasContent && (
               <>
                 <span>DAY</span>
                 <span>{cycleDay}</span>
@@ -95,12 +103,11 @@ const ForecastListItem = ({ entryId }) => {
             )}
           </Avatar>
         </ListItemAvatar>
-        {prediction.tags.length !== 0 && (
+        {hasContent && (
           <ListItemText
             primary={
               <Typography
-                component="span"
-                display="block"
+                component="p"
                 variant="body2"
                 color="textSecondary"
                 gutterBottom
@@ -108,7 +115,24 @@ const ForecastListItem = ({ entryId }) => {
                 {formatDate(entryId, "EEEE, MMMM do")}
               </Typography>
             }
-            secondary={<ForecastText tags={prediction.tags} />}
+            secondary={
+              <>
+                {entryNote && (
+                  <Typography
+                    gutterBottom
+                    component="p"
+                    display="block"
+                    variant="body1"
+                    className={classes.note}
+                  >
+                    {entryNote}
+                  </Typography>
+                )}
+                <Typography component="p" variant="body1" color="textSecondary">
+                  <ForecastText tags={prediction.tags} />
+                </Typography>
+              </>
+            }
           />
         )}
       </ListItem>
@@ -122,18 +146,10 @@ const Forecast = ({ entryId }) => {
     date: makeDate(entryId),
   })
   const interval = forecastInterval(entryId, daysBetween)
-
   return (
     <>
-      <List
-        subheader={
-          <ListSubheader component="h3" id="nested-list-subheader">
-            Forecast
-          </ListSubheader>
-        }
-        className={classes.root}
-      >
-        {interval.map((date, index) => {
+      <List className={classes.root}>
+        {interval.map((date) => {
           const id = entryIdFromDate(date)
           return <ForecastListItem key={id} entryId={id} />
         })}
