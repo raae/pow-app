@@ -84,6 +84,7 @@ const AuthProvider = ({ children, appId, redirects = {} }) => {
       })
       .catch((error) => {
         dispatch({ type: "updateUserFailed", error })
+        console.log(error)
         return { error }
       })
   }

@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "../components/Link"
+import { BASE_URL } from "../constants"
 
-const BrandFooter = () => {
+const BrandFooter = ({ variant }) => {
   return (
     <>
       <p>
@@ -15,8 +16,20 @@ const BrandFooter = () => {
         </Link>
         .
         <br />
-        Follow along by signing up for the{" "}
-        <Link href="https://lillylabs.ck.page/a5f42d2b44">newsletter</Link>.
+        {variant === "app" ? (
+          <>
+            Go to to homepage{" "}
+            <Link target="_blank" rel="noopener" href={BASE_URL}>
+              usepow.app
+            </Link>
+            .
+          </>
+        ) : (
+          <>
+            Not ready to sign up? Subscribe to the POW!{" "}
+            <Link href="https://lillylabs.ck.page/a5f42d2b44">Newsletter</Link>.
+          </>
+        )}
       </p>
     </>
   )

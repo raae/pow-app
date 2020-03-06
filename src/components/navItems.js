@@ -31,24 +31,24 @@ export const useSignOutNavItem = () => {
     type: "button",
     onClick: (event) => {
       event.preventDefault()
-      signOut()
+      signOut(event)
     },
     disabled: !user || isPending,
   }
 }
 
-export const useAccountNavItem = () => {
+export const useProfileNavItem = () => {
   return {
-    label: "Account",
+    label: "Profile",
     component: GatsbyLink,
-    to: "/account",
+    to: "/profile",
   }
 }
 
-export const useBillingNavItem = () => {
+export const useHomeNavItem = () => {
   return {
-    label: "Billing",
+    label: "Home",
     component: GatsbyLink,
-    to: "/billing",
+    to: "/day",
   }
 }

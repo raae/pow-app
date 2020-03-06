@@ -6,7 +6,6 @@ import {
   Divider,
   AppBar,
   Toolbar,
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -14,7 +13,11 @@ import {
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 
-import { useSignOutNavItem } from "./navItems"
+import {
+  useSignOutNavItem,
+  useHomeNavItem,
+  useProfileNavItem,
+} from "./navItems"
 
 import BrandFooter from "./BrandFooter"
 import Logo from "./Logo"
@@ -90,7 +93,9 @@ const useStyles = makeStyles((theme) => ({
 const MainNav = ({ variant }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
-  const signOutAction = useSignOutNavItem()
+  const signOutNavItem = useSignOutNavItem()
+  const homeNavItem = useHomeNavItem()
+  const profileNavItem = useProfileNavItem()
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -137,17 +142,21 @@ const MainNav = ({ variant }) => {
             open={isMenuOpen}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Billing</MenuItem>
+            <MenuItem {...homeNavItem} onClick={handleMenuClose}>
+              {homeNavItem.label}
+            </MenuItem>
+            <MenuItem {...profileNavItem} onClick={handleMenuClose}>
+              {profileNavItem.label}
+            </MenuItem>
             <Divider />
             <MenuItem
-              {...signOutAction}
-              onClick={() => {
-                signOutAction.onClick()
+              {...signOutNavItem}
+              onClick={(event) => {
+                signOutNavItem.onClick(event)
                 handleMenuClose()
               }}
             >
-              {signOutAction.label}
+              {signOutNavItem.label}
             </MenuItem>
           </Menu>
         </>
@@ -190,12 +199,11 @@ const BrandLayout = ({ variant, toolbar, children }) => {
           {children}
         </div>
       </Container>
-      {variant !== "app" && (
-        <Container component="footer" className={classes.footer}>
-          <Divider />
-          <BrandFooter></BrandFooter>
-        </Container>
-      )}
+
+      <Container component="footer" className={classes.footer}>
+        <Divider />
+        <BrandFooter variant={variant} />
+      </Container>
     </div>
   )
 }

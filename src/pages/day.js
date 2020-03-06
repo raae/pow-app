@@ -5,7 +5,6 @@ import { Router } from "@reach/router"
 import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider, useCycleDayState } from "../cycle"
-import { useBillingAction } from "../components/navItems"
 
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
@@ -37,19 +36,18 @@ const Day = ({ date }) => {
 const HomeRoute = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
+  const hasPaid =
+    user && user.protectedProfile && user.protectedProfile.stripeCustomerId
 
   useEffect(() => {
     if (!user && !authIsPending) {
       navigate("/login")
-    } else if (user) {
-      const { protectedProfile } = user
-      if (!protectedProfile || !protectedProfile.stripeCustomerId) {
-        navigate("/account")
-      }
+    } else if (!hasPaid && !authIsPending) {
+      navigate("/payment?status=unfinished")
     }
   }, [user, authIsPending])
 
-  if (authIsPending || dataIsPending) {
+  if (!user || !hasPaid || dataIsPending) {
     return <Loading fullScreen />
   }
 
