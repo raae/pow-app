@@ -2,7 +2,7 @@ import { useAuthActions, useAuthState } from "../auth"
 
 import { Link as GatsbyLink } from "gatsby"
 
-export const useSignUpAction = () => {
+export const useSignUpNavItem = () => {
   return {
     label: "Sign up",
     component: GatsbyLink,
@@ -10,7 +10,7 @@ export const useSignUpAction = () => {
   }
 }
 
-export const useSignInAction = () => {
+export const useSignInNavItem = () => {
   const { user, isPending } = useAuthState()
   const sendToApp = user || isPending
 
@@ -22,7 +22,7 @@ export const useSignInAction = () => {
   }
 }
 
-export const useSignOutAction = () => {
+export const useSignOutNavItem = () => {
   const { signOut } = useAuthActions()
   const { user, isPending } = useAuthState()
   return {
@@ -34,5 +34,21 @@ export const useSignOutAction = () => {
       signOut()
     },
     disabled: !user || isPending,
+  }
+}
+
+export const useAccountNavItem = () => {
+  return {
+    label: "Account",
+    component: GatsbyLink,
+    to: "/account",
+  }
+}
+
+export const useBillingNavItem = () => {
+  return {
+    label: "Billing",
+    component: GatsbyLink,
+    to: "/billing",
   }
 }

@@ -14,10 +14,11 @@ import {
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 
+import { useSignOutNavItem } from "./navItems"
+
 import BrandFooter from "./BrandFooter"
 import Logo from "./Logo"
 import { SignInButton, SignUpButton } from "./AuthButtons"
-import { useSignOutAction } from "./navItems"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 const MainNav = ({ variant }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
-  const signOutAction = useSignOutAction()
+  const signOutAction = useSignOutNavItem()
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)

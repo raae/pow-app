@@ -1,17 +1,17 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
+import { useAuthState } from "../auth"
 import { useDataState } from "../database"
+import { CycleProvider, useCycleDayState } from "../cycle"
+import { useBillingAction } from "../components/navItems"
+
+import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
-
 import BrandLayout from "../components/BrandLayout"
-import { CycleProvider, useCycleDayState } from "../cycle"
-import { useAuthState } from "../auth"
-import { useEffect } from "react"
-import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 import DaySummary from "../components/DaySummary"
 import Forecast from "../components/Forecast"
 import DatePicker from "../components/DatePicker"
@@ -44,7 +44,7 @@ const HomeRoute = () => {
     } else if (user) {
       const { protectedProfile } = user
       if (!protectedProfile || !protectedProfile.stripeCustomerId) {
-        navigate("/payment?stripe=failed")
+        navigate("/account")
       }
     }
   }, [user, authIsPending])

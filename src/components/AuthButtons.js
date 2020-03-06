@@ -2,24 +2,24 @@ import React from "react"
 
 import { Button } from "@material-ui/core"
 
-import { useSignUpAction, useSignInAction } from "./navItems"
+import { useSignUpNavItem, useSignInNavItem } from "./navItems"
 
 export const SignInButton = ({ children, ...props }) => {
-  const actionItem = useSignInAction()
+  const navItem = useSignInNavItem()
 
   return (
-    <Button {...actionItem} {...props}>
-      {children ? children : actionItem.label}
+    <Button {...navItem} {...props}>
+      {children ? children : navItem.label}
     </Button>
   )
 }
 
 export const SignUpButton = ({ children, ...props }) => {
-  const actionItem = useSignUpAction()
+  const navItem = useSignUpNavItem()
 
   return (
-    <Button {...actionItem} {...props}>
-      {children ? children : actionItem.label}
+    <Button {...navItem} {...props}>
+      {children ? children : navItem.label}
     </Button>
   )
 }
