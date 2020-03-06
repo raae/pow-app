@@ -87,13 +87,18 @@ const DaySummary = ({ entryId }) => {
           <Typography variant="body2" color="textSecondary" gutterBottom>
             {formatDate(entryId, "EEEE, MMMM do")}
           </Typography>
-          <Typography variant="h4" component="h2">
-            <Logo>Day {cycleDay || "?"}</Logo>
-          </Typography>
-          <Typography color="textSecondary" gutterBottom>
-            of your average {daysBetween || "?"} day cycle
-          </Typography>
-          {nextStartDate && (
+          {!isEditing && (
+            <Typography variant="h4" component="h2">
+              <Logo>Day {cycleDay || "?"}</Logo>
+            </Typography>
+          )}
+
+          {!isEditing && (
+            <Typography color="textSecondary" gutterBottom>
+              of your average {daysBetween || "?"} day cycle
+            </Typography>
+          )}
+          {nextStartDate && !isEditing && (
             <Typography color="textSecondary" gutterBottom>
               Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
               <span className={classes.noWrap}>
@@ -139,18 +144,18 @@ const DaySummary = ({ entryId }) => {
               <ForecastText tags={prediction.tags} />
             </div>
           )}
+          {!isEditing && (
+            <Fab
+              color="secondary"
+              size="large"
+              aria-label="Edit note"
+              onClick={() => setIsEditing(true)}
+              className={classes.submit}
+            >
+              <EditNoteIcon />
+            </Fab>
+          )}
         </CardContent>
-        {!isEditing && (
-          <Fab
-            color="secondary"
-            size="large"
-            aria-label="Edit note"
-            onClick={() => setIsEditing(true)}
-            className={classes.submit}
-          >
-            <EditNoteIcon />
-          </Fab>
-        )}
       </Card>
     </>
   )
