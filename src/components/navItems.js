@@ -16,7 +16,7 @@ export const useSignInNavItem = () => {
   const sendToApp = user || isPending
 
   return {
-    label: "Sign in",
+    label: "Log in",
     component: Link,
     to: sendToApp ? "/cycle" : "/login",
     disabled: isPending,

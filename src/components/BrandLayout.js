@@ -114,12 +114,7 @@ const MainNav = ({ variant }) => {
       return (
         <>
           <SignUpButton variant="outlined" size="small" color="secondary" />
-          <SignInButton
-            variant="contained"
-            size="small"
-            color="primary"
-            disableElevation
-          />
+          <SignInButton variant="contained" size="small" color="primary" />
         </>
       )
     case "app":
