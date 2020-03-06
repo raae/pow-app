@@ -48,20 +48,25 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     background: theme.palette.background.paper,
   },
+  tag: {
+    marginRight: theme.spacing(0.5),
+  },
 }))
 
 export const ForecastText = ({ tags }) => {
+  const classes = useStyles()
+
   return tags.map(({ tag, frequency }) => {
     return (
-      <>
-        <Chip
-          variant="outlined"
-          size="small"
-          label={`#${tag}`}
-          key={tag}
-          style={{ opacity: frequency + 0.3 }}
-        />{" "}
-      </>
+      <Chip
+        className={classes.tag}
+        variant="outlined"
+        size="small"
+        key={tag}
+        label={`#${tag}`}
+        component="span"
+        style={{ opacity: frequency + 0.3 }}
+      />
     )
   })
 }
@@ -115,7 +120,7 @@ const ForecastListItem = ({ entryId }) => {
                 {entryNote && (
                   <Typography
                     gutterBottom
-                    component="p"
+                    component="span"
                     display="block"
                     variant="body1"
                     className={classes.note}
@@ -123,7 +128,11 @@ const ForecastListItem = ({ entryId }) => {
                     {entryNote}
                   </Typography>
                 )}
-                <Typography component="p" variant="body1" color="textSecondary">
+                <Typography
+                  component="span"
+                  variant="body1"
+                  color="textSecondary"
+                >
                   <ForecastText tags={prediction.tags} />
                 </Typography>
               </>

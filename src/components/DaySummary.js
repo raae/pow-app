@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   note: {
     display: "block",
+    whiteSpace: "pre-line",
     margin: theme.spacing(3, 0, 3),
     padding: theme.spacing(2),
     background: theme.palette.background.default,

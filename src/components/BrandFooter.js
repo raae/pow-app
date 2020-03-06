@@ -1,6 +1,5 @@
 import React from "react"
 import { Link } from "../components/Link"
-import { BASE_URL } from "../constants"
 
 const BrandFooter = ({ variant }) => {
   return (
