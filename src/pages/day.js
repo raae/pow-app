@@ -45,15 +45,20 @@ const HomeRoute = () => {
     } else if (!hasPaid && !authIsPending) {
       navigate("/payment?status=unfinished")
     }
-  }, [user, authIsPending])
+  }, [user, authIsPending, hasPaid])
 
   if (!user || !hasPaid || dataIsPending) {
-    return <Loading fullScreen />
+    return (
+      <>
+        <SEO title="Loading..." />
+        <Loading fullScreen />
+      </>
+    )
   }
 
   return (
     <CycleProvider entries={entries} settings={settings}>
-      <SEO title="Log" />
+      <SEO title="Cycle" />
       <Router basepath="/day">
         <Day path="/" />
         <Day path=":date" />

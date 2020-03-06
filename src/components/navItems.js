@@ -1,11 +1,12 @@
-import { useAuthActions, useAuthState } from "../auth"
+import { BASE_URL } from "../constants"
+import { useAuthState } from "../auth"
 
-import { Link as GatsbyLink } from "gatsby"
+import { Link } from "gatsby"
 
 export const useSignUpNavItem = () => {
   return {
     label: "Sign up",
-    component: GatsbyLink,
+    component: Link,
     to: "signup",
   }
 }
@@ -16,23 +17,18 @@ export const useSignInNavItem = () => {
 
   return {
     label: "Sign in",
-    component: GatsbyLink,
+    component: Link,
     to: sendToApp ? "/day" : "/login",
     disabled: isPending,
   }
 }
 
 export const useSignOutNavItem = () => {
-  const { signOut } = useAuthActions()
   const { user, isPending } = useAuthState()
   return {
     label: "Sign out",
-    component: "button",
-    type: "button",
-    onClick: (event) => {
-      event.preventDefault()
-      signOut(event)
-    },
+    component: Link,
+    to: "/signout",
     disabled: !user || isPending,
   }
 }
@@ -40,15 +36,25 @@ export const useSignOutNavItem = () => {
 export const useProfileNavItem = () => {
   return {
     label: "Profile",
-    component: GatsbyLink,
+    component: Link,
     to: "/profile",
   }
 }
 
-export const useHomeNavItem = () => {
+export const useAppNavItem = () => {
   return {
-    label: "Home",
-    component: GatsbyLink,
+    label: "Cycle",
+    component: Link,
     to: "/day",
+  }
+}
+
+export const useWebsiteNavItem = () => {
+  return {
+    label: "POW! Website",
+    component: "a",
+    target: "_blank",
+    rel: "noopener",
+    href: BASE_URL,
   }
 }

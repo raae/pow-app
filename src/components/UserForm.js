@@ -1,11 +1,10 @@
 import React, { useState } from "react"
-import { Link as GatsbyLink } from "gatsby"
 import classNames from "classnames"
 import {
   Button,
   TextField,
   Checkbox,
-  Link,
+  Link as MuiLink,
   FormControlLabel,
   makeStyles,
   Typography,
@@ -14,6 +13,12 @@ import {
 import Alert from "@material-ui/lab/Alert"
 
 import { useAuthState, useAuthActions } from "../auth"
+import {
+  useSignOutNavItem,
+  useAppNavItem,
+  useSignInNavItem,
+  useSignUpNavItem,
+} from "./navItems"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +44,11 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   variant = variant.toLowerCase()
 
   const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp, signOut } = useAuthActions()
+  const { signIn, signUp } = useAuthActions()
+  const signOutNavItem = useSignOutNavItem()
+  const appNavItem = useAppNavItem()
+  const signInNavItem = useSignInNavItem()
+  const signUpNavItem = useSignUpNavItem()
 
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
@@ -64,14 +73,6 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
         [name]: value,
       }
     })
-  }
-
-  const handleSignOut = async (event) => {
-    event.preventDefault()
-    setIsPending(true)
-    const result = await signOut({ redirect: false })
-    setError(result.error)
-    setIsPending(false)
   }
 
   const handleSubmit = async (event) => {
@@ -151,13 +152,8 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           <Alert className={classes.alert} severity="warning">
             <div>
               Already signed in as <strong>{user.username}</strong>:{" "}
-              <Link component={GatsbyLink} to="/day">
-                go to app
-              </Link>{" "}
-              or{" "}
-              <Link type="button" component="button" onClick={handleSignOut}>
-                sign out
-              </Link>
+              <MuiLink {...appNavItem}>go to app</MuiLink> or{" "}
+              <MuiLink {...signOutNavItem}>{signOutNavItem.label}</MuiLink>
             </div>
           </Alert>
         )}
@@ -176,16 +172,12 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
         {variant === "signup" ? (
           <Typography variant="body2" align="right">
             Already have an account?&nbsp;
-            <Link to="/login" component={GatsbyLink}>
-              Log in
-            </Link>
+            <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
           </Typography>
         ) : (
           <Typography variant="body2" align="right">
             Don't have an account?&nbsp;
-            <Link to="/signup" component={GatsbyLink}>
-              Sign Up
-            </Link>
+            <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
           </Typography>
         )}
       </Paper>

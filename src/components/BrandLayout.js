@@ -11,11 +11,12 @@ import {
   MenuItem,
   makeStyles,
 } from "@material-ui/core"
-import AccountCircle from "@material-ui/icons/AccountCircle"
+import MenuIcon from "@material-ui/icons/Menu"
 
 import {
   useSignOutNavItem,
-  useHomeNavItem,
+  useAppNavItem,
+  useWebsiteNavItem,
   useProfileNavItem,
 } from "./navItems"
 
@@ -94,8 +95,9 @@ const MainNav = ({ variant }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
   const signOutNavItem = useSignOutNavItem()
-  const homeNavItem = useHomeNavItem()
+  const appNavItem = useAppNavItem()
   const profileNavItem = useProfileNavItem()
+  const websiteNavItem = useWebsiteNavItem()
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget)
@@ -131,7 +133,7 @@ const MainNav = ({ variant }) => {
             onClick={handleProfileMenuOpen}
             color="inherit"
           >
-            <AccountCircle />
+            <MenuIcon />
           </IconButton>
           <Menu
             anchorEl={anchorEl}
@@ -142,21 +144,19 @@ const MainNav = ({ variant }) => {
             open={isMenuOpen}
             onClose={handleMenuClose}
           >
-            <MenuItem {...homeNavItem} onClick={handleMenuClose}>
-              {homeNavItem.label}
+            <MenuItem {...appNavItem} onClick={handleMenuClose}>
+              {appNavItem.label}
             </MenuItem>
             <MenuItem {...profileNavItem} onClick={handleMenuClose}>
               {profileNavItem.label}
             </MenuItem>
             <Divider />
-            <MenuItem
-              {...signOutNavItem}
-              onClick={(event) => {
-                signOutNavItem.onClick(event)
-                handleMenuClose()
-              }}
-            >
+            <MenuItem {...signOutNavItem} onClick={handleMenuClose}>
               {signOutNavItem.label}
+            </MenuItem>
+            <Divider />
+            <MenuItem {...websiteNavItem} onClick={handleMenuClose}>
+              {websiteNavItem.label}
             </MenuItem>
           </Menu>
         </>

@@ -11,7 +11,7 @@ import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 import PaymentForm from "../components/PaymentForm"
 
-const HomeRoute = () => {
+const PaymentPage = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
 
@@ -22,12 +22,17 @@ const HomeRoute = () => {
   }, [user, authIsPending])
 
   if (!user || dataIsPending) {
-    return <Loading fullScreen />
+    return (
+      <>
+        <SEO title="Loading..." />
+        <Loading fullScreen />
+      </>
+    )
   }
 
   return (
     <CycleProvider entries={entries} settings={settings}>
-      <SEO title="Log" />
+      <SEO title="Payment" />
       <BrandLayout variant="app">
         <h1>Payment</h1>
         <PaymentForm standalone />
@@ -36,4 +41,4 @@ const HomeRoute = () => {
   )
 }
 
-export default HomeRoute
+export default PaymentPage

@@ -13,7 +13,7 @@ import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
 import { Box } from "@material-ui/core"
 
-const HomeRoute = () => {
+const ProfilePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
 
@@ -24,12 +24,17 @@ const HomeRoute = () => {
   }, [user, authIsPending])
 
   if (!user || dataIsPending) {
-    return <Loading fullScreen />
+    return (
+      <>
+        <SEO title="Loading..." />
+        <Loading fullScreen />
+      </>
+    )
   }
 
   return (
     <CycleProvider entries={entries} settings={settings}>
-      <SEO title="Log" />
+      <SEO title="Profile" />
       <BrandLayout variant="app">
         <Box>
           <h1>Profile</h1>
@@ -44,4 +49,4 @@ const HomeRoute = () => {
   )
 }
 
-export default HomeRoute
+export default ProfilePage

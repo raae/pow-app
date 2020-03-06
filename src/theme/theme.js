@@ -23,6 +23,11 @@ let theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiMenuItem: {
+      root: {
+        minHeight: "48px !important",
+      },
+    },
     MuiLink: {
       root: {
         fontWeight: 500,
