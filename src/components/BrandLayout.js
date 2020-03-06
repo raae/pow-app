@@ -169,7 +169,7 @@ const MainNav = ({ variant }) => {
 
 const BrandLayout = ({ variant, toolbar, children }) => {
   const classes = useStyles()
-  const logoPath = variant === "app" ? "/day" : "/"
+  const logoPath = variant === "app" ? "/cycle" : "/"
 
   return (
     <div className={classNames(classes.root, classes[variant])}>

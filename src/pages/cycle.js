@@ -59,7 +59,7 @@ const HomeRoute = () => {
   return (
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Cycle" />
-      <Router basepath="/day">
+      <Router basepath="/cycle">
         <Day path="/" />
         <Day path=":date" />
       </Router>

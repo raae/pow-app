@@ -18,7 +18,7 @@ export const useSignInNavItem = () => {
   return {
     label: "Sign in",
     component: Link,
-    to: sendToApp ? "/day" : "/login",
+    to: sendToApp ? "/cycle" : "/login",
     disabled: isPending,
   }
 }
@@ -45,7 +45,7 @@ export const useAppNavItem = () => {
   return {
     label: "Cycle",
     component: Link,
-    to: "/day",
+    to: "/cycle",
   }
 }
 

@@ -9,7 +9,7 @@ import { makeDate, entryIdFromDate, formatDate } from "../utils/days"
 const DatePicker = ({ entryId }) => {
   const [anchorEl, setAnchorEl] = useState()
   const handleChangeDate = (date) => {
-    navigate(`/day/${entryIdFromDate(date)}`)
+    navigate(`/cycle/${entryIdFromDate(date)}`)
     setAnchorEl(null)
   }
   return (

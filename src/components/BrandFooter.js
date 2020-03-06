@@ -16,15 +16,7 @@ const BrandFooter = ({ variant }) => {
         </Link>
         .
         <br />
-        {variant === "app" ? (
-          <>
-            Go to to homepage{" "}
-            <Link target="_blank" rel="noopener" href={BASE_URL}>
-              usepow.app
-            </Link>
-            .
-          </>
-        ) : (
+        {variant !== "app" && (
           <>
             Not ready to sign up? Subscribe to the POW!{" "}
             <Link href="https://lillylabs.ck.page/a5f42d2b44">Newsletter</Link>.

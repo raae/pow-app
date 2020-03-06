@@ -12,7 +12,7 @@ export const RootElement = ({ children }) => {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <AuthProvider
         appId={USERBASE_APP_ID}
-        redirects={{ signIn: "/day", signUp: "/day", signOut: "/login" }}
+        redirects={{ signIn: "/cycle", signUp: "/cycle", signOut: "/login" }}
       >
         <DataProvider databases={DATABASES}>{children}</DataProvider>
       </AuthProvider>

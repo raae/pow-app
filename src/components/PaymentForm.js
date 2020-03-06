@@ -74,7 +74,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
           { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
         ],
         clientReferenceId: user.userId,
-        successUrl: BASE_URL + "/day",
+        successUrl: BASE_URL + "/cycle",
         cancelUrl: BASE_URL + "/payment?status=canceled",
       })
       .then(function(result) {

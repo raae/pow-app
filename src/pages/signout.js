@@ -20,7 +20,7 @@ const SignOutPage = () => {
   if (!error) {
     return (
       <>
-        <SEO title="Signing out.." />
+        <SEO title="Signing out..." />
         <Loading fullScreen />
       </>
     )
