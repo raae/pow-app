@@ -61,7 +61,7 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
     >
       <TextField
         label={entryNote ? "Edit note" : "Add a note"}
-        autoFocus={!entryNote}
+        autoFocus
         multiline
         fullWidth
         color="secondary"
