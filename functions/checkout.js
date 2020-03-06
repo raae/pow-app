@@ -31,6 +31,7 @@ exports.handler = async (req) => {
       await axios.post(
         "https://v1.userbase.com/v1/admin/users/" + userbaseId,
         {
+          email: customer.email,
           protectedProfile: {
             stripeEmail: customer.email,
             stripePlanId: planId,

@@ -41,22 +41,24 @@ const Profile = () => {
         title={<strong>{user.username}</strong>}
         subheader={user.email}
       />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          POW! is a very young app. To stay updated on its life and advances
-          sign up for the newsletter. You may cancel at any time.
-        </Typography>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={userProfile.newsletter === "1" ? true : false}
-              onChange={handleChange("newsletter")}
-              value="newsletter"
-            />
-          }
-          label="I would like to receive the POW! Newsletter"
-        />
-      </CardContent>
+      {user.email && (
+        <CardContent>
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            POW! is a very young app. To stay updated on its life and advances
+            sign up for the newsletter. You may cancel at any time.
+          </Typography>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={userProfile.newsletter === "1" ? true : false}
+                onChange={handleChange("newsletter")}
+                value="newsletter"
+              />
+            }
+            label="I would like to receive the POW! Newsletter"
+          />
+        </CardContent>
+      )}
     </Card>
   )
 }
