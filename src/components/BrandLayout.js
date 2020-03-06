@@ -7,12 +7,17 @@ import {
   AppBar,
   Toolbar,
   Button,
+  IconButton,
+  Menu,
+  MenuItem,
   makeStyles,
 } from "@material-ui/core"
+import AccountCircle from "@material-ui/icons/AccountCircle"
 
 import BrandFooter from "./BrandFooter"
 import Logo from "./Logo"
-import { SignInButton, SignOutButton } from "./AuthButtons"
+import { SignInButton, SignUpButton } from "./AuthButtons"
+import { useSignOutAction } from "./navItems"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,19 +87,25 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const MainNav = ({ variant }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const isMenuOpen = Boolean(anchorEl)
+  const signOutAction = useSignOutAction()
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
+
+  const menuId = "primary-search-account-menu"
+
   switch (variant) {
     case "home":
       return (
         <>
-          <Button
-            variant="outlined"
-            size="small"
-            component={GatsbyLink}
-            to="signup"
-            color="secondary"
-          >
-            Sign Up
-          </Button>
+          <SignUpButton variant="outlined" size="small" color="secondary" />
           <SignInButton
             variant="contained"
             size="small"
@@ -104,7 +115,42 @@ const MainNav = ({ variant }) => {
         </>
       )
     case "app":
-      return <SignOutButton variant="outlined" size="small" color="secondary" />
+      return (
+        <>
+          <IconButton
+            edge="end"
+            aria-label="account of current user"
+            aria-controls={menuId}
+            aria-haspopup="true"
+            onClick={handleProfileMenuOpen}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            id={menuId}
+            keepMounted
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+            open={isMenuOpen}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Billing</MenuItem>
+            <Divider />
+            <MenuItem
+              {...signOutAction}
+              onClick={() => {
+                signOutAction.onClick()
+                handleMenuClose()
+              }}
+            >
+              {signOutAction.label}
+            </MenuItem>
+          </Menu>
+        </>
+      )
 
     default:
       return null

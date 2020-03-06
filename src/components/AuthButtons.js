@@ -1,30 +1,25 @@
 import React from "react"
-import { Link as GatsbyLink } from "gatsby"
 
 import { Button } from "@material-ui/core"
-import { useAuthState, useAuthActions } from "../auth"
 
-export const SignInButton = ({ children = "Log in", ...props }) => {
-  const { user, isPending } = useAuthState()
-  const sendToApp = user || isPending
+import { useSignUpAction, useSignInAction } from "./navItems"
+
+export const SignInButton = ({ children, ...props }) => {
+  const actionItem = useSignInAction()
 
   return (
-    <Button
-      component={GatsbyLink}
-      to={sendToApp ? "/day" : "/login"}
-      {...props}
-    >
-      {children}
+    <Button {...actionItem} {...props}>
+      {children ? children : actionItem.label}
     </Button>
   )
 }
 
-export const SignOutButton = ({ children = "Log out", ...props }) => {
-  const { signOut, isPending } = useAuthActions()
+export const SignUpButton = ({ children, ...props }) => {
+  const actionItem = useSignUpAction()
 
   return (
-    <Button onClick={signOut} disable={isPending} {...props}>
-      {children}
+    <Button {...actionItem} {...props}>
+      {children ? children : actionItem.label}
     </Button>
   )
 }
