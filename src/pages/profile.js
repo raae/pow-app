@@ -11,7 +11,11 @@ import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
+import SettingsForm from "../components/SettingsForm"
+
 import { Box } from "@material-ui/core"
+
+import { useQueryParam } from "../utils/useQueryParam"
 
 const ProfilePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
@@ -39,6 +43,10 @@ const ProfilePage = () => {
         <Box>
           <h1>Profile</h1>
           <Profile />
+        </Box>
+        <Box my={6}>
+          <h1>Settings</h1>
+          <SettingsForm />
         </Box>
         <Box my={6}>
           <h1>Payment</h1>

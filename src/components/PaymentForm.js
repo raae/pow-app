@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const PaymentForm = ({ standalone = true, submitLabel }) => {
   const classes = useStyles()
 
-  const stripeStatus = useQueryParam("status")
+  const paymentStatus = useQueryParam("payment")
 
   const { user } = useAuthState()
 
@@ -75,7 +75,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
         ],
         clientReferenceId: user.userId,
         successUrl: BASE_URL + "/cycle",
-        cancelUrl: BASE_URL + "/payment?status=canceled",
+        cancelUrl: BASE_URL + "/profile?payment=canceled",
       })
       .then(function(result) {
         if (result.error) {
@@ -108,9 +108,14 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
   } else {
     return (
       <>
-        {stripeStatus === "unfinished" && (
+        {paymentStatus === "unfinished" && (
           <Alert className={classes.space} severity="info">
             Payment is required before starting to use POW!
+          </Alert>
+        )}
+        {paymentStatus === "canceled" && (
+          <Alert className={classes.space} severity="error">
+            Payment was canceled, please try again.
           </Alert>
         )}
         <Paper
@@ -168,11 +173,6 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
             </p>
           </Typography>
           {error && <Alert severity="warning">{error.message}</Alert>}
-          {stripeStatus === "canceled" && (
-            <Alert className={classes.space} severity="error">
-              Payment was canceled, please try again.
-            </Alert>
-          )}
           <Button
             className={classes.space}
             disabled={!user || !stripe || isPending}

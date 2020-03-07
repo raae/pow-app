@@ -77,10 +77,6 @@ const DaySummary = ({ entryId }) => {
 
   const hasTags = prediction.tags.length > 0
 
-  if (!settings.tag) {
-    return null
-  }
-
   return (
     <>
       <Card className={classes.root}>

@@ -113,7 +113,6 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           id="username"
           label="Username"
           name="username"
-          autoComplete="username"
           placeholder="unicorn"
           value={state.username}
           onChange={handleChange("username")}
@@ -128,7 +127,6 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           label="Password"
           type="password"
           id="password"
-          autoComplete="current-password"
           placeholder="glitter-rainbow-butterfly-kitty"
           value={state.password}
           onChange={handleChange("password")}
@@ -141,13 +139,11 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           value={state.rememberMe}
           onChange={handleChange("rememberMe")}
         />
-
         {error && (
           <Alert className={classes.alert} severity="error">
             {error.message}
           </Alert>
         )}
-
         {user && !isPending && (
           <Alert className={classes.alert} severity="warning">
             <div>
@@ -157,10 +153,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             </div>
           </Alert>
         )}
-
         <Button
           className={classes.submit}
-          disabled={isAuthPending || isPending || user}
+          disabled={isAuthPending || isPending || !!user}
           type="submit"
           fullWidth
           variant="contained"
@@ -168,7 +163,6 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
         >
           {variant === "signup" ? "Create account" : "Log In"}
         </Button>
-
         {variant === "signup" ? (
           <Typography variant="body2" align="right">
             Already have an account?&nbsp;

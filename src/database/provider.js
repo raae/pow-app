@@ -22,6 +22,7 @@ const DataProvider = ({ children, databases = [] }) => {
 
   const upsertItem = (params) => {
     const { databaseName, itemId } = params
+    console.log(`upsert${databaseName}`, itemId)
 
     if (state[databaseName].byId[itemId] !== undefined) {
       return updateItem(params)
@@ -31,31 +32,41 @@ const DataProvider = ({ children, databases = [] }) => {
   }
 
   const insertItem = (params) => {
+    const { databaseName, itemId } = params
+    console.log(`insert${databaseName}`, itemId)
+
     dispatch({ type: "insert", ...params })
 
     return userbase
       .insertItem(params)
       .then(() => {
         dispatch({ type: "insertFulfilled", ...params })
+        console.log(`insert${databaseName} fulfilled`, itemId)
         return true
       })
       .catch((error) => {
         dispatch({ type: "insertFailed", ...params })
+        console.log(`insert${databaseName} failed`, itemId, error.message)
         return { error }
       })
   }
 
   const updateItem = (params) => {
+    const { databaseName, itemId } = params
+    console.log(`update${databaseName}`, itemId)
+
     dispatch({ type: "update", ...params })
 
     return userbase
       .updateItem(params)
       .then(() => {
         dispatch({ type: "updateFulfilled", ...params })
+        console.log(`update${databaseName} fulfilled`, itemId)
         return true
       })
       .catch((error) => {
         dispatch({ type: "updateFailed", error, ...params })
+        console.log(`update${databaseName} failed`, error.message, itemId)
         return { error }
       })
   }
@@ -79,7 +90,6 @@ const DataProvider = ({ children, databases = [] }) => {
       })
     }
     acc[`upsert${entity}`] = (id, item) => {
-      console.log(`upsert${entity}`, item)
       return upsertItem({
         itemId: id,
         item,
