@@ -10,6 +10,7 @@ import {
 } from "../utils/days"
 
 import { CycleSateContext } from "./provider"
+import { isAfter } from "date-fns"
 
 const useCycleDayState = ({ date, note }) => {
   const context = useContext(CycleSateContext)
@@ -57,6 +58,7 @@ const useCycleDayState = ({ date, note }) => {
       tags: tags,
       isMenstruation: tagsIncludeMenstruation(cycleTags, context),
     },
+    isCurrentCycle: isCurrentCycle(date, context),
   }
 }
 
@@ -97,4 +99,12 @@ const tagsForCycleDay = (day, { tags }) => {
 
 const tagsIncludeMenstruation = (tags = [], { tag }) => {
   return tags.includes(tag)
+}
+
+const isCurrentCycle = (date, { daysBetween, startDates }) => {
+  const latestStartDate = last(startDates)
+  return (
+    isDateAfter(date, latestStartDate) &&
+    daysBetweenDates(date, latestStartDate) < daysBetween
+  )
 }

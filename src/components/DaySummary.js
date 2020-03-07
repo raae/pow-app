@@ -74,6 +74,7 @@ const DaySummary = ({ entryId }) => {
     daysBetweenCalculated,
     nextStartDate,
     prediction,
+    isCurrentCycle,
   } = useCycleDayState({
     date: makeDate(entryId),
     note: entryNote,
@@ -102,7 +103,7 @@ const DaySummary = ({ entryId }) => {
               </Typography>
             </>
           )}
-          {nextStartDate && !isEditing && (
+          {nextStartDate && isCurrentCycle && !isEditing && (
             <Typography color="textSecondary" gutterBottom>
               Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
               <span className={classes.noWrap}>
