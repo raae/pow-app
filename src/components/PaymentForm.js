@@ -173,7 +173,11 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
           <Alert className={classes.alert} severity="info">
             60 days money back guaranty.
           </Alert>
-          {error && <Alert severity="warning">{error.message}</Alert>}
+          {error && (
+            <Alert className={classes.alert} severity="warning">
+              {error.message}
+            </Alert>
+          )}
           <Button
             className={classes.space}
             disabled={!user || !stripe || isPending}
