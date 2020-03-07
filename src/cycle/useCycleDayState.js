@@ -23,6 +23,8 @@ const useCycleDayState = ({ date, note }) => {
       cycleDay: undefined,
       tags: [],
       isMenstruation: false,
+      daysBetweenCalculated: true,
+      daysBetween: 28,
       prediction: {
         tags: [],
         isMenstruation: false,
@@ -50,6 +52,7 @@ const useCycleDayState = ({ date, note }) => {
     isMenstruation: tagsIncludeMenstruation(noteTags, context),
     nextStartDate: context.nextStartDate,
     daysBetween: context.daysBetween,
+    daysBetweenCalculated: context.daysBetweenCalculated,
     prediction: {
       tags: tags,
       isMenstruation: tagsIncludeMenstruation(cycleTags, context),

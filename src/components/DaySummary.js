@@ -68,12 +68,16 @@ const DaySummary = ({ entryId }) => {
   const { settings, entries } = useDataState()
   const entryNote = entries[entryId] ? entries[entryId].note : ""
 
-  const { cycleDay, daysBetween, nextStartDate, prediction } = useCycleDayState(
-    {
-      date: makeDate(entryId),
-      note: entryNote,
-    }
-  )
+  const {
+    cycleDay,
+    daysBetween,
+    daysBetweenCalculated,
+    nextStartDate,
+    prediction,
+  } = useCycleDayState({
+    date: makeDate(entryId),
+    note: entryNote,
+  })
 
   const hasTags = prediction.tags.length > 0
 
@@ -91,9 +95,12 @@ const DaySummary = ({ entryId }) => {
           )}
 
           {!isEditing && (
-            <Typography color="textSecondary" gutterBottom>
-              of your average {daysBetween || "?"} day cycle
-            </Typography>
+            <>
+              <Typography color="textSecondary" gutterBottom>
+                of {daysBetweenCalculated ? "your average" : "a default"}{" "}
+                {daysBetween || "?"} day cycle.{" "}
+              </Typography>
+            </>
           )}
           {nextStartDate && !isEditing && (
             <Typography color="textSecondary" gutterBottom>
