@@ -49,7 +49,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
 
   const { isPending: isAuthPending, user } = useAuthState()
   const { signIn, signUp } = useAuthActions()
-  const signOutNavItem = useSignOutNavItem()
+
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
   const signUpNavItem = useSignUpNavItem()
@@ -165,8 +165,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           <Alert className={classes.alert} severity="warning">
             <div>
               Already signed in as <strong>{user.username}</strong>:{" "}
-              <MuiLink {...appNavItem}>go to app</MuiLink> or{" "}
-              <MuiLink {...signOutNavItem}>sign out</MuiLink>.
+              <MuiLink {...appNavItem}>go to app</MuiLink>.
             </div>
           </Alert>
         )}
