@@ -15,7 +15,18 @@ const BrandFooter = ({ variant }) => {
         </Link>
         .
         <br />
-        {variant !== "app" && (
+        {variant === "app" ? (
+          <>
+            Support:{" "}
+            <Link
+              target="_blank"
+              rel="noopener"
+              href="mailto://support@usepow.app"
+            >
+              support@usepow.app
+            </Link>
+          </>
+        ) : (
           <>
             Not ready to sign up? Subscribe to the POW!{" "}
             <Link href="https://lillylabs.ck.page/a5f42d2b44">Newsletter</Link>.

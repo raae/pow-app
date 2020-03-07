@@ -1,6 +1,6 @@
 const isSSG = typeof window === `undefined`
 const liveUrl = "usepow.app"
-const isLive = !isSSG && window.location.origin === liveUrl
+const isLive = !isSSG && window.location.origin.endsWith(liveUrl)
 
 export const BASE_URL = !isSSG ? window.location.origin : ""
 
@@ -18,5 +18,3 @@ export const DATABASES = [
   { databaseName: "entries", entity: "Entry" },
   { databaseName: "settings", entity: "Setting" },
 ]
-
-console.log({ isLive, USERBASE_APP_ID })
