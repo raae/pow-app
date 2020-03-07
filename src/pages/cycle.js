@@ -14,6 +14,7 @@ import BrandLayout from "../components/BrandLayout"
 import DaySummary from "../components/DaySummary"
 import Forecast from "../components/Forecast"
 import DatePicker from "../components/DatePicker"
+import Welcome from "../components/Welcome"
 
 const Day = ({ date }) => {
   date = makeDate(date)
@@ -28,6 +29,7 @@ const Day = ({ date }) => {
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
       <DaySummary entryId={entryId} />
+      <Welcome />
       <Forecast entryId={entryId} interval={afterInterval} />
     </BrandLayout>
   )
