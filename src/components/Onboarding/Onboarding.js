@@ -1,3 +1,5 @@
+/* globals fathom */
+
 import React, { useState } from "react"
 
 import { useDataActions } from "../../database"
@@ -103,13 +105,24 @@ const Onboarding = () => {
     setIsPending(false)
   }
 
+  const trackGoal = (goalId) => {
+    try {
+      fathom("trackGoal", goalId, 0)
+    } catch (error) {
+      console.log("No fathom, cannot track goal")
+    }
+  }
+
   const steps = [
     {
       label: "Create account",
       content: (
         <UserForm
           variant="signup"
-          onSubmitFulfilled={handleNext}
+          onSubmitFulfilled={(event) => {
+            handleNext(event)
+            trackGoal("HGGOZCXZ")
+          }}
           standalone={false}
         />
       ),
@@ -124,7 +137,10 @@ const Onboarding = () => {
         />
       ),
       submitOnly: true,
-      handleSubmit: handleSaveOnboardingTag,
+      handleSubmit: (event) => {
+        handleSaveOnboardingTag(event)
+        trackGoal("2JMQXAFB")
+      },
       submitLabel: "Next",
     },
     {
@@ -139,12 +155,23 @@ const Onboarding = () => {
       optional: true,
       submitOnly: true,
       disabled: isPending,
-      handleSubmit: handleSaveOnboardingInitData,
+      handleSubmit: (event) => {
+        handleSaveOnboardingInitData(event)
+        trackGoal("OSGGXYF1")
+      },
       submitLabel: "Next",
     },
     {
       label: "Pay",
-      content: <PaymentForm submitLabel="Take charge" standalone={false} />,
+      content: (
+        <PaymentForm
+          submitLabel="Take charge"
+          standalone={false}
+          onDone={(event) => {
+            trackGoal("BLBWSO16")
+          }}
+        />
+      ),
     },
   ]
 

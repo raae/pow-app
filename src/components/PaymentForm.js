@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const PaymentForm = ({ standalone = true, submitLabel }) => {
+const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const classes = useStyles()
 
   const paymentStatus = useQueryParam("payment")
@@ -70,6 +70,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    onDone()
     setIsPending(true)
     stripe
       .redirectToCheckout({
