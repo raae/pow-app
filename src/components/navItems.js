@@ -49,6 +49,14 @@ export const useAppNavItem = () => {
   }
 }
 
+export const useBetaNavItem = () => {
+  return {
+    label: "Beta",
+    component: Link,
+    to: "/beta",
+  }
+}
+
 export const useWebsiteNavItem = () => {
   return {
     label: "POW! Website",

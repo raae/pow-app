@@ -9,6 +9,7 @@ import {
   makeStyles,
   Typography,
   Paper,
+  Grid,
 } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
@@ -18,6 +19,7 @@ import {
   useAppNavItem,
   useSignInNavItem,
   useSignUpNavItem,
+  useBetaNavItem,
 } from "./navItems"
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +51,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
   const signUpNavItem = useSignUpNavItem()
+  const betaNavItem = useBetaNavItem()
 
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
@@ -163,17 +166,26 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
         >
           {variant === "signup" ? "Create account" : "Log In"}
         </Button>
-        {variant === "signup" ? (
-          <Typography variant="body2" align="right">
-            Already have an account?&nbsp;
-            <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
-          </Typography>
-        ) : (
-          <Typography variant="body2" align="right">
-            Don't have an account?&nbsp;
-            <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
-          </Typography>
-        )}
+        <Grid justify="space-between" container>
+          <Grid item>
+            <Typography variant="body2" align="left">
+              Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
+            </Typography>
+          </Grid>
+          <Grid item>
+            {variant === "signup" ? (
+              <Typography variant="body2" align="right">
+                Already have an account?&nbsp;
+                <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+              </Typography>
+            ) : (
+              <Typography variant="body2" align="right">
+                Don't have an account?&nbsp;
+                <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
       </Paper>
     </>
   )
