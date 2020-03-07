@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   space: {
     marginBottom: theme.spacing(2),
   },
+  alert: {
+    margin: theme.spacing(2, 0),
+  },
 }))
 
 const PaymentForm = ({ standalone = true, submitLabel }) => {
@@ -77,12 +80,16 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
         successUrl: BASE_URL + "/cycle",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
       })
-      .then(function(result) {
+      .then((result) => {
         if (result.error) {
           setError(result.error)
         } else {
           setError()
         }
+        setIsPending(false)
+      })
+      .catch((error) => {
+        setError(error)
         setIsPending(false)
       })
   }
@@ -163,9 +170,9 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
               />
             </RadioGroup>
           </FormControl>
-          <Typography component="div" color="textSecondary">
+          <Alert className={classes.alert} severity="info">
             60 days money back guaranty.
-          </Typography>
+          </Alert>
           {error && <Alert severity="warning">{error.message}</Alert>}
           <Button
             className={classes.space}
