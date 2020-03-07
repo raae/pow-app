@@ -23,6 +23,7 @@ module.exports = {
         disabled: process.env.NETLIFY_DEV,
       },
     },
+    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-material-ui`,
     },
