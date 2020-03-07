@@ -18,3 +18,5 @@ export const DATABASES = [
   { databaseName: "entries", entity: "Entry" },
   { databaseName: "settings", entity: "Setting" },
 ]
+
+console.log({ isLive, USERBASE_APP_ID })
