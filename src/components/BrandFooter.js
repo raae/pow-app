@@ -28,7 +28,7 @@ const BrandFooter = ({ variant }) => {
           </>
         ) : (
           <>
-            Not ready to sign up? Subscribe to the POW!{" "}
+            Subscribe to the POW!{" "}
             <Link href="https://lillylabs.ck.page/a5f42d2b44">Newsletter</Link>.
           </>
         )}
