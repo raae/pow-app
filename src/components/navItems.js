@@ -7,7 +7,7 @@ export const useSignUpNavItem = () => {
   return {
     label: "Sign up",
     component: Link,
-    to: "signup",
+    to: "/signup",
   }
 }
 

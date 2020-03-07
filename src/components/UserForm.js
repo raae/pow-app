@@ -118,6 +118,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           name="username"
           placeholder="unicorn"
           value={state.username}
+          autoComplete="username"
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
@@ -130,6 +131,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           label="Password"
           type="password"
           id="password"
+          autoComplete={
+            variant === "signup" ? "new-password" : "current-password"
+          }
           placeholder="glitter-rainbow-butterfly-kitty"
           value={state.password}
           onChange={handleChange("password")}
