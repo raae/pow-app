@@ -1,22 +1,34 @@
 import React, { useState } from "react"
-import { Link as GatsbyLink, navigate } from "gatsby"
+import classNames from "classnames"
 import {
   Button,
   TextField,
   Checkbox,
-  Link,
+  Link as MuiLink,
   FormControlLabel,
   makeStyles,
   Typography,
+  Paper,
+  Grid,
 } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
 import { useAuthState, useAuthActions } from "../auth"
+import {
+  useSignOutNavItem,
+  useAppNavItem,
+  useSignInNavItem,
+  useSignUpNavItem,
+  useBetaNavItem,
+} from "./navItems"
 
 const useStyles = makeStyles((theme) => ({
-  form: {
+  root: {
     width: "100%", // Fix IE 11 issue.
+  },
+  standalone: {
     marginTop: theme.spacing(3),
+    padding: theme.spacing(4),
   },
   checkbox: {
     marginLeft: 0,
@@ -29,12 +41,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
+const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
 
   const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp, signOut } = useAuthActions()
+  const { signIn, signUp } = useAuthActions()
+  const signOutNavItem = useSignOutNavItem()
+  const appNavItem = useAppNavItem()
+  const signInNavItem = useSignInNavItem()
+  const signUpNavItem = useSignUpNavItem()
+  const betaNavItem = useBetaNavItem()
 
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
@@ -61,36 +78,36 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
     })
   }
 
-  const handleSignOut = async (event) => {
-    event.preventDefault()
-    setIsPending(true)
-    const result = await signOut()
-    setError(result.error)
-    setIsPending(false)
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsPending(true)
 
     let result = null
     if (variant === "signup") {
-      result = await signUp(state)
+      result = await signUp(state, { redirect: !onSubmitFulfilled })
     } else {
-      result = await signIn(state)
+      result = await signIn(state, { redirect: !onSubmitFulfilled })
     }
 
     if (result.error) {
       setError(result.error)
       setIsPending(false)
-    } else {
+    } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
     }
   }
 
   return (
     <>
-      <form className={classes.form} noValidate onSubmit={handleSubmit}>
+      <Paper
+        component="form"
+        className={classNames(classes.root, {
+          [classes.standalone]: standalone,
+        })}
+        elevation={standalone ? 1 : 0}
+        noValidate
+        onSubmit={handleSubmit}
+      >
         <TextField
           variant="outlined"
           margin="normal"
@@ -99,9 +116,9 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
           id="username"
           label="Username"
           name="username"
-          autoComplete="username"
           placeholder="unicorn"
           value={state.username}
+          autoComplete="username"
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
@@ -114,7 +131,9 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
           label="Password"
           type="password"
           id="password"
-          autoComplete="current-password"
+          autoComplete={
+            variant === "signup" ? "new-password" : "current-password"
+          }
           placeholder="glitter-rainbow-butterfly-kitty"
           value={state.password}
           onChange={handleChange("password")}
@@ -129,26 +148,21 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
         />
         {error && (
           <Alert className={classes.alert} severity="error">
-            {error.name === "UserAlreadySignedIn" && user ? (
-              <div>
-                Already signed in as <strong>{user.username}</strong>:{" "}
-                <Link component={GatsbyLink} to="/app">
-                  go to app
-                </Link>{" "}
-                or{" "}
-                <Link component="button" onClick={handleSignOut}>
-                  sign out
-                </Link>
-              </div>
-            ) : (
-              error.message
-            )}
+            {error.message}
           </Alert>
         )}
-
+        {user && !isPending && (
+          <Alert className={classes.alert} severity="warning">
+            <div>
+              Already signed in as <strong>{user.username}</strong>:{" "}
+              <MuiLink {...appNavItem}>go to app</MuiLink> or{" "}
+              <MuiLink {...signOutNavItem}>{signOutNavItem.label}</MuiLink>
+            </div>
+          </Alert>
+        )}
         <Button
           className={classes.submit}
-          disabled={isAuthPending || isPending}
+          disabled={isAuthPending || isPending || !!user}
           type="submit"
           fullWidth
           variant="contained"
@@ -156,23 +170,27 @@ const UserForm = ({ variant, onSubmitFulfilled = () => navigate("/app") }) => {
         >
           {variant === "signup" ? "Create account" : "Log In"}
         </Button>
-
-        {variant === "signup" ? (
-          <Typography variant="body2" align="right">
-            Already have an account?&nbsp;
-            <Link to="/login" component={GatsbyLink}>
-              Log in
-            </Link>
-          </Typography>
-        ) : (
-          <Typography variant="body2" align="right">
-            Don't have an account?&nbsp;
-            <Link to="/signup" component={GatsbyLink}>
-              Sign Up
-            </Link>
-          </Typography>
-        )}
-      </form>
+        <Grid justify="space-between" container>
+          <Grid item>
+            <Typography variant="body2" align="left">
+              Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
+            </Typography>
+          </Grid>
+          <Grid item>
+            {variant === "signup" ? (
+              <Typography variant="body2" align="right">
+                Already have an account?&nbsp;
+                <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+              </Typography>
+            ) : (
+              <Typography variant="body2" align="right">
+                Don't have an account?&nbsp;
+                <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
+      </Paper>
     </>
   )
 }

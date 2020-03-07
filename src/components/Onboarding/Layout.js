@@ -6,7 +6,6 @@ import {
   StepContent,
   StepLabel,
   Button,
-  Paper,
   Typography,
   IconButton,
   makeStyles,
@@ -16,6 +15,7 @@ import DoneIcon from "@material-ui/icons/FiberManualRecord"
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    marginLeft: theme.spacing(4) * -1,
     "& p + ul": {
       marginTop: "-1em",
     },
@@ -26,9 +26,6 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: "1.225em",
       },
     },
-  },
-  stepper: {
-    marginLeft: theme.spacing(4) * -1,
   },
   form: {
     padding: theme.spacing(3, 2),
@@ -56,58 +53,58 @@ const Onboarding = ({ steps, activeStep, handleBack }) => {
   const classes = useStyles()
 
   return (
-    <Paper elevation={0} className={classes.root}>
-      <Stepper
-        className={classes.stepper}
-        activeStep={activeStep}
-        orientation="vertical"
-      >
-        {steps.map((step, index) => (
-          <Step key={index}>
-            <StepLabel>
-              {step.label}
-              {step.optional && (
-                <Typography variant="caption"> Optional</Typography>
-              )}
-            </StepLabel>
-            <StepContent>
-              {step.handleSubmit ? (
-                <form className={classes.form} onSubmit={step.handleSubmit}>
-                  {step.content}
-                  <div className={classes.actions}>
-                    {!step.submitOnly && (
-                      <IconButton
-                        aria-label="back"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.button}
-                      >
-                        <BackIcon />
-                      </IconButton>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                      size="small"
-                      disabled={step.disabled}
+    <Stepper
+      className={classes.root}
+      activeStep={activeStep}
+      orientation="vertical"
+      elevation={1}
+      square={false}
+    >
+      {steps.map((step, index) => (
+        <Step key={index}>
+          <StepLabel>
+            {step.label}
+            {step.optional && (
+              <Typography variant="caption"> Optional</Typography>
+            )}
+          </StepLabel>
+          <StepContent>
+            {step.handleSubmit ? (
+              <form className={classes.form} onSubmit={step.handleSubmit}>
+                {step.content}
+                <div className={classes.actions}>
+                  {!step.submitOnly && (
+                    <IconButton
+                      aria-label="back"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
                       className={classes.button}
                     >
-                      {step.submitLabel}
-                    </Button>
-                  </div>
-                </form>
-              ) : (
-                <>{step.content}</>
-              )}
-            </StepContent>
-          </Step>
-        ))}
-        <Step key={steps.length}>
-          <StepLabel StepIconComponent={LastIcon}></StepLabel>
+                      <BackIcon />
+                    </IconButton>
+                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    size="small"
+                    disabled={step.disabled}
+                    className={classes.button}
+                  >
+                    {step.submitLabel}
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <>{step.content}</>
+            )}
+          </StepContent>
         </Step>
-      </Stepper>
-    </Paper>
+      ))}
+      <Step key={steps.length}>
+        <StepLabel StepIconComponent={LastIcon}></StepLabel>
+      </Step>
+    </Stepper>
   )
 }
 

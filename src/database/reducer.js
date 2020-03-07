@@ -19,7 +19,8 @@ const reducer = (draft, action) => {
 
   switch (action.type) {
     case "open":
-      draft[action.databaseName].isPending = true
+      // This happens on all changed to user,
+      // draft[action.databaseName].isPending = true
       return
     case "openFulfilled":
       draft[action.databaseName].isPending = false

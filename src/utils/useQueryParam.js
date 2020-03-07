@@ -19,11 +19,12 @@ const useSearchParams = () => {
 
 const useQueryParam = (key, defaultState) => {
   const searchParams = useSearchParams()
-  return searchParams[key]
-    ? searchParams[key]
-    : defaultState
-    ? defaultState
-    : null
+
+  if (searchParams[key]) {
+    return searchParams[key]
+  } else {
+    return defaultState
+  }
 }
 
 export { useSearchParams, useQueryParam }

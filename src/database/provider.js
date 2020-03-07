@@ -2,6 +2,8 @@ import React, { createContext, useReducer } from "react"
 import { mapValues } from "lodash"
 import userbase from "userbase-js"
 
+import { useAuthState } from "../auth"
+
 import reducer, { getDefaultState } from "./reducer"
 import { useEffect } from "react"
 import initDatabases from "./initDatabases"
@@ -9,13 +11,9 @@ import initDatabases from "./initDatabases"
 export const DataStateContext = createContext()
 export const DataActionsContext = createContext()
 
-const DATABASES = [
-  { databaseName: "entries", entity: "Entry" },
-  { databaseName: "settings", entity: "Setting" },
-]
-
-const DataProvider = ({ children, user, databases = DATABASES }) => {
+const DataProvider = ({ children, databases = [] }) => {
   const [state, dispatch] = useReducer(reducer, getDefaultState(databases))
+  const { user } = useAuthState()
 
   useEffect(() => {
     if (!user) return
@@ -24,6 +22,7 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
 
   const upsertItem = (params) => {
     const { databaseName, itemId } = params
+    console.log(`upsert${databaseName}`, itemId)
 
     if (state[databaseName].byId[itemId] !== undefined) {
       return updateItem(params)
@@ -33,31 +32,41 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
   }
 
   const insertItem = (params) => {
+    const { databaseName, itemId } = params
+    console.log(`insert${databaseName}`, itemId)
+
     dispatch({ type: "insert", ...params })
 
     return userbase
       .insertItem(params)
       .then(() => {
         dispatch({ type: "insertFulfilled", ...params })
+        console.log(`insert${databaseName} fulfilled`, itemId)
         return true
       })
       .catch((error) => {
         dispatch({ type: "insertFailed", ...params })
+        console.log(`insert${databaseName} failed`, itemId, error.message)
         return { error }
       })
   }
 
   const updateItem = (params) => {
+    const { databaseName, itemId } = params
+    console.log(`update${databaseName}`, itemId)
+
     dispatch({ type: "update", ...params })
 
     return userbase
       .updateItem(params)
       .then(() => {
         dispatch({ type: "updateFulfilled", ...params })
+        console.log(`update${databaseName} fulfilled`, itemId)
         return true
       })
       .catch((error) => {
         dispatch({ type: "updateFailed", error, ...params })
+        console.log(`update${databaseName} failed`, error.message, itemId)
         return { error }
       })
   }
@@ -81,7 +90,6 @@ const DataProvider = ({ children, user, databases = DATABASES }) => {
       })
     }
     acc[`upsert${entity}`] = (id, item) => {
-      console.log(`upsert${entity}`, item)
       return upsertItem({
         itemId: id,
         item,

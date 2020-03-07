@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 
 import { useDataActions } from "../../database"
-import { useQueryParam } from "../../utils/useQueryParam"
 import { entryIdFromDate } from "../../utils/days"
+
+import { tagsFromText } from "../../utils/tags"
 
 import UserForm from "../UserForm"
 import PaymentForm from "../PaymentForm"
@@ -25,27 +26,19 @@ const textFieldProps = {
 }
 
 const Onboarding = () => {
-  const step = useQueryParam("step")
-
   const { insertSetting, insertEntry } = useDataActions()
+
   const [values, setValues] = useState(initialValues)
   const [activeStep, setActiveStep] = useState(0)
 
   const [isPending, setIsPending] = useState()
-
-  useEffect(() => {
-    if (step) {
-      setActiveStep(parseInt(step, 10))
-    }
-  }, [step])
 
   const handleSettingsChange = (name) => (event) => {
     let value = null
 
     if (name === "tag") {
       value = event.target.value
-      value = value.replace(/\s/g, "")
-      value = value.replace(/#/g, "")
+      value = tagsFromText("#" + value)[0] || ""
     } else if (name === "newsletter") {
       value = event.target.checked
     } else if (name === "lastStart") {
@@ -75,7 +68,7 @@ const Onboarding = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1)
   }
 
-  const handleSaveOnboarding = async (event) => {
+  const handleSaveOnboardingTag = async (event) => {
     setIsPending(true)
 
     if (event && event.preventDefault) {
@@ -83,6 +76,17 @@ const Onboarding = () => {
     }
 
     await insertSetting("tag", values.tag)
+
+    handleNext()
+    setIsPending(false)
+  }
+
+  const handleSaveOnboardingInitData = async (event) => {
+    setIsPending(true)
+
+    if (event && event.preventDefault) {
+      event.preventDefault()
+    }
 
     if (values.daysBetween) {
       await insertSetting("daysBetween", values.daysBetween)
@@ -102,7 +106,13 @@ const Onboarding = () => {
   const steps = [
     {
       label: "Create account",
-      content: <UserForm variant="signup" onSubmitFulfilled={handleNext} />,
+      content: (
+        <UserForm
+          variant="signup"
+          onSubmitFulfilled={handleNext}
+          standalone={false}
+        />
+      ),
     },
     {
       label: "Personalize",
@@ -114,7 +124,7 @@ const Onboarding = () => {
         />
       ),
       submitOnly: true,
-      handleSubmit: handleNext,
+      handleSubmit: handleSaveOnboardingTag,
       submitLabel: "Next",
     },
     {
@@ -127,13 +137,14 @@ const Onboarding = () => {
         />
       ),
       optional: true,
+      submitOnly: true,
       disabled: isPending,
-      handleSubmit: handleSaveOnboarding,
+      handleSubmit: handleSaveOnboardingInitData,
       submitLabel: "Next",
     },
     {
       label: "Pay",
-      content: <PaymentForm submitLabel="Take charge" />,
+      content: <PaymentForm submitLabel="Take charge" standalone={false} />,
     },
   ]
 

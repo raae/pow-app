@@ -23,6 +23,18 @@ let theme = createMuiTheme({
     },
   },
   overrides: {
+    MuiMenuItem: {
+      root: {
+        minHeight: "48px !important",
+      },
+    },
+    MuiAlert: {
+      action: {
+        marginTop: "8px",
+        marginRight: 0,
+        alignItems: "flex-start",
+      },
+    },
     MuiLink: {
       root: {
         fontWeight: 500,

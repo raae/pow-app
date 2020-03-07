@@ -57,8 +57,10 @@ export default ({ entries, settings }) => {
 
   const compactDaysBetweens = compact(cycle.daysBetweens)
   let daysBetween = sum(compactDaysBetweens) / compactDaysBetweens.length
+  let daysBetweenCalculated = true
   if (!daysBetween) {
     daysBetween = 28
+    daysBetweenCalculated = false
   }
 
   let nextStartDate = undefined
@@ -71,6 +73,7 @@ export default ({ entries, settings }) => {
     ...cycle,
     tag: settings.tag,
     daysBetween: round(daysBetween),
-    nextStartDate: nextStartDate,
+    nextStartDate,
+    daysBetweenCalculated,
   }
 }

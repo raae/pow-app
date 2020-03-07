@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react"
 
-import {
-  TextField,
-  InputAdornment,
-  Typography,
-  makeStyles,
-} from "@material-ui/core"
+import { TextField, InputAdornment, Typography } from "@material-ui/core"
 
 const placeholders = {
   tag: "period",
