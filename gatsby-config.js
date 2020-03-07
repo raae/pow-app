@@ -13,7 +13,7 @@ module.exports = {
     title: `POW! — Take charge of your menstrual cycle`,
     description: `Get to know your cycle, using your own words without worrying that the data will end up in the hands of Facebook.`,
     twitter: "@raae",
-    image: "https://www.usepow.app/static/some.png",
+    image: "https://www.usepow.app/some.png",
   },
   plugins: [
     {
