@@ -20,12 +20,14 @@ const Profile = () => {
   const { user } = useAuthState()
   const { updateUser } = useAuthActions()
   const userProfile = user.profile || {}
+  const userProfileProtected = user.protectedProfile || {}
+  const userEmail = user.email || userProfileProtected.stripeEmail
 
   const handleChange = (name) => (event) => {
     const profile = {
       [name]: event.target.checked ? "1" : "0",
     }
-    updateUser({ profile: { ...userProfile, ...profile } })
+    updateUser({ email: userEmail, profile: { ...userProfile, ...profile } })
   }
 
   if (!user) return null
@@ -39,9 +41,9 @@ const Profile = () => {
           </Avatar>
         }
         title={<strong>{user.username}</strong>}
-        subheader={user.email}
+        subheader={userEmail}
       />
-      {user.email && (
+      {userEmail && (
         <CardContent>
           <Typography variant="body2" color="textSecondary" gutterBottom>
             POW! is a very young app. To stay updated on its life and advances
