@@ -80,14 +80,16 @@ const Welcome = () => {
       )}
       {userProfile.welcomeCompleted && (
         <Alert onClose={handleClose("newsletterOff")}>
-          <AlertTitle>Newsletter</AlertTitle>
+          <AlertTitle severity="info">Newsletter</AlertTitle>
           <Typography component="div">
             <p>
               POW! is still a young app, and will get lots of love this spring.
               Would you like to keep up by signing up for the newsletter?
             </p>
           </Typography>
-          <Button onClick={handleClose("newsletterOn")}>Yes, please</Button>
+          <Button variant="outlined" onClick={handleClose("newsletterOn")}>
+            Yes, please
+          </Button>
         </Alert>
       )}
     </aside>
