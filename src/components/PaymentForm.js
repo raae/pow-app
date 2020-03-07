@@ -164,13 +164,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
             </RadioGroup>
           </FormControl>
           <Typography component="div" color="textSecondary">
-            <p>
-              If you for any reason is not happy with POW! let me know and I'll
-              refund your money (within 60 days of purchase). <br />
-              <cite>
-                — <Link href="https://twitter.com/raae">@raae</Link>
-              </cite>
-            </p>
+            60 days money back guaranty.
           </Typography>
           {error && <Alert severity="warning">{error.message}</Alert>}
           <Button

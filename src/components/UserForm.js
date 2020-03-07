@@ -22,6 +22,8 @@ import {
   useBetaNavItem,
 } from "./navItems"
 
+import { Link } from "./Link"
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%", // Fix IE 11 issue.
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
   alert: {
-    margin: theme.spacing(3, 0, 1),
+    margin: theme.spacing(2, 0, 2),
   },
   submit: {
     margin: theme.spacing(3, 0, 3),
@@ -114,7 +116,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           required
           fullWidth
           id="username"
-          label="Username"
+          label="Username (not email)"
           name="username"
           placeholder="unicorn"
           value={state.username}
@@ -139,6 +141,14 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("password")}
           InputLabelProps={{ shrink: true }}
         />
+        <Alert className={classes.alert} severity="info">
+          <Typography component="div">
+            There is no password recovery in apps securing your data with
+            encryption. So please <strong>do</strong> write down this password
+            somewhere safe. I recommend using a password manager and my favorite
+            is <Link href="https://1password.com/">1Password</Link>.
+          </Typography>
+        </Alert>
         <FormControlLabel
           className={classes.checkbox}
           control={<Checkbox value="local" color="primary" />}
@@ -156,7 +166,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             <div>
               Already signed in as <strong>{user.username}</strong>:{" "}
               <MuiLink {...appNavItem}>go to app</MuiLink> or{" "}
-              <MuiLink {...signOutNavItem}>{signOutNavItem.label}</MuiLink>
+              <MuiLink {...signOutNavItem}>sign out</MuiLink>.
             </div>
           </Alert>
         )}
