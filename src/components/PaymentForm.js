@@ -116,7 +116,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
     return (
       <>
         {paymentStatus === "unfinished" && (
-          <Alert className={classes.space} severity="info">
+          <Alert className={classes.space} severity="warning">
             Payment is required before starting to use POW!
           </Alert>
         )}
