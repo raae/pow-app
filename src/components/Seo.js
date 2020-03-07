@@ -25,7 +25,7 @@ const SEO = ({ title }) => {
   const pageTitle = title || siteMeta.title
   const pageTitleTemplate = title && `${siteMeta.title} %s`
   const pageDescription = siteMeta.description
-  // const image = siteMeta.image
+  const image = siteMeta.image
 
   return (
     <Helmet
@@ -47,10 +47,10 @@ const SEO = ({ title }) => {
           property: `og:description`,
           content: pageDescription,
         },
-        // {
-        //   property: `og:image`,
-        //   content: image,
-        // },
+        {
+          property: `og:image`,
+          content: image,
+        },
         {
           name: `twitter:card`,
           content: `summary`,

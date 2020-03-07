@@ -10,9 +10,9 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `POW!`,
-    description: `Take charge of your menstrual cycle. POW! is an adaptable privacy-first menstrual tracker app.`,
-    twitter: "@usepowapp",
+    title: `POW! — Take charge of your menstrual cycle`,
+    description: `Get to know your cycle, using your own words without worrying that the data will end up in the hands of Facebook.`,
+    twitter: "@raae",
     image: "https://www.usepow.app/static/some.png",
   },
   plugins: [
