@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Paper, TextField, FormHelperText, makeStyles } from "@material-ui/core"
+import React, { useState, useEffect } from "react"
+import { Paper, TextField, makeStyles } from "@material-ui/core"
 import classNames from "classnames"
 
 import { useDataState, useDataActions } from "../database"
@@ -16,13 +16,47 @@ const useStyles = makeStyles((theme) => ({
 
 const EntryForm = ({ entryId, standalone, onDone, children }) => {
   const classes = useStyles()
-  const { entries } = useDataState()
+  const { entries, settings } = useDataState()
   const { upsertEntry } = useDataActions()
+
   const entryNote = entries[entryId] ? entries[entryId].note : ""
 
   const [values, setValues] = useState({ note: entryNote })
+  const [placeholder, setPlaceholder] = useState()
 
   const RootComponent = standalone ? Paper : "form"
+
+  useEffect(() => {
+    const placeholders = [
+      `My #${settings.tag || "period"} just started.`,
+      `#energetic`,
+      `So so #tired`,
+      `Feeling #sexy!`,
+      `I am #sad and #angry.`,
+      `#${settings.tag || "period"} #heavyflow`,
+      `Today I am #happy#happy#happy :D`,
+      `#PMS maybe`,
+      `Such a #great day and so much happened. There was #this and #that and the other #thing.`,
+    ]
+
+    let index = Math.floor(Math.random() * placeholders.length)
+
+    const tick = () => {
+      setPlaceholder(placeholders[index])
+      if (index === placeholders.length - 1) {
+        index = 0
+      } else {
+        index++
+      }
+    }
+
+    const interval = setInterval(tick, 3500)
+    tick()
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [settings.tag])
 
   const handleChange = (name) => (event) => {
     setValues({
@@ -63,6 +97,8 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
         autoFocus
         multiline
         fullWidth
+        rows="3"
+        placeholder={placeholder}
         color="secondary"
         variant="outlined"
         value={values["note"]}
