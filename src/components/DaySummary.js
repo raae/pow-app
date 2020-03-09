@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
     "&:last-child": {
       marginBottom: theme.spacing(1),
     },
+    "& .MuiInputBase-root": {
+      background: theme.palette.background.paper,
+    },
   },
   tags: {
     margin: theme.spacing(2, 0, 0),
@@ -144,7 +147,7 @@ const DaySummary = ({ entryId }) => {
               </EntryForm>
             </Paper>
           )}
-          {hasTags && (
+          {hasTags && !isEditing && (
             <div className={classes.tags}>
               <ForecastText tags={prediction.tags} />
             </div>
