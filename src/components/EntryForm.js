@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Paper, TextField, makeStyles } from "@material-ui/core"
+import { Paper, TextField, FormHelperText, makeStyles } from "@material-ui/core"
 import classNames from "classnames"
 
 import { useDataState, useDataActions } from "../database"
@@ -12,9 +12,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     padding: theme.spacing(4),
   },
-  space: {
-    margin: theme.spacing(3, 0, 3),
-  },
 }))
 
 const EntryForm = ({ entryId, standalone, onDone, children }) => {
@@ -24,6 +21,8 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
   const entryNote = entries[entryId] ? entries[entryId].note : ""
 
   const [values, setValues] = useState({ note: entryNote })
+
+  const RootComponent = standalone ? Paper : "form"
 
   const handleChange = (name) => (event) => {
     setValues({
@@ -49,7 +48,7 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
   }
 
   return (
-    <Paper
+    <RootComponent
       component="form"
       className={classNames(classes.root, {
         [classes.standalone]: standalone,
@@ -68,10 +67,11 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
         variant="outlined"
         value={values["note"]}
         onChange={handleChange("note")}
+        helperText=" Use hashtags for things you would like to keep a close eye on."
       />
 
       {children}
-    </Paper>
+    </RootComponent>
   )
 }
 
