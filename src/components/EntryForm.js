@@ -93,7 +93,7 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
       onSubmit={handleSubmit}
     >
       <TextField
-        label={entryNote ? "Edit note" : "Add a note"}
+        label={entryNote ? "Edit note" : "Add a note in your logbook"}
         autoFocus
         multiline
         fullWidth

@@ -69,8 +69,8 @@ const Welcome = () => {
           <AlertTitle>Welcome</AlertTitle>
           <Typography component="div">
             <p>
-              It might not look so interesting now, but keep tracking and your
-              personal cycle feed will fill up!
+              It might not look so interesting now, but keep logging and your
+              personal cycle logbook will fill up!
             </p>
             <p>
               You can also go back in time and add notes to get a head start.

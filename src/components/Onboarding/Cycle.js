@@ -55,7 +55,7 @@ const Cycle = ({ values, onChange, textFieldProps }) => {
       </div>
       <Typography component="div" color="textSecondary">
         <p>
-          To get you of to a good start it helps to know a little about your
+          To get you off to a good start it helps to know a little about your
           cycle.
         </p>
         <ul>
