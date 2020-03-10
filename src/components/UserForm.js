@@ -125,20 +125,24 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email"
-          name="email"
-          placeholder="unicorn@usepow.app"
-          value={state.email}
-          autoComplete="email"
-          onChange={handleChange("email")}
-          InputLabelProps={{ shrink: true }}
-        />
+        {variant === "signup" ? (
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            placeholder="unicorn@usepow.app"
+            value={state.email}
+            autoComplete="email"
+            onChange={handleChange("email")}
+            InputLabelProps={{ shrink: true }}
+          />
+        ) : (
+          "current-email"
+        )}
         <TextField
           variant="outlined"
           margin="normal"
@@ -151,7 +155,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           autoComplete={
             variant === "signup" ? "new-password" : "current-password"
           }
-          placeholder="glitter-rainbow-butterfly-kitty"
+          placeholder="glittery-kitty-rainbowy-butterfly"
           value={state.password}
           onChange={handleChange("password")}
           InputLabelProps={{ shrink: true }}
