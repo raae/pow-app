@@ -21,7 +21,7 @@ export default ({ entries, settings }) => {
 
   const cycle = {
     startDates: [],
-    daysBetweens: [settings.daysBetween],
+    daysBetweens: [parseInt(settings.daysBetween, 10)],
     tags: {},
   }
 

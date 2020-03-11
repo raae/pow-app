@@ -9,7 +9,8 @@ describe("#analyzeEntries", () => {
       startDates: [],
       nextStartDate: undefined,
       tag: "period",
-      daysBetweens: [undefined],
+      daysBetweens: [NaN],
+      daysBetweenCalculated: false,
       daysBetween: 28,
       tags: {},
     }
@@ -44,6 +45,7 @@ describe("#analyzeEntries", () => {
       tag: "flo",
       daysBetweens: [23],
       daysBetween: 23,
+      daysBetweenCalculated: true,
       tags: {
         0: ["flo"],
         1: ["flo"],
@@ -78,8 +80,9 @@ describe("#analyzeEntries", () => {
       startDates: ["2019-08-02", "2019-08-25"],
       nextStartDate: "2019-09-17",
       tag: "menstruation",
-      daysBetweens: [undefined, 23],
+      daysBetweens: [NaN, 23],
       daysBetween: 23,
+      daysBetweenCalculated: true,
       tags: {
         0: ["menstruation", "menstruation"],
         1: ["hungry", "happy", "happy"],
@@ -118,6 +121,7 @@ describe("#analyzeEntries", () => {
       tag: "period",
       daysBetweens: [23, 21, 21],
       daysBetween: 22,
+      daysBetweenCalculated: true,
       tags: {
         0: ["period", "period", "period"],
         1: ["period", "hungry", "period", "hungry", "angry"],
@@ -170,8 +174,9 @@ describe("#analyzeEntries", () => {
       startDates: ["2019-06-01", "2019-06-20", "2019-07-10"],
       nextStartDate: "2019-07-29",
       tag: "period",
-      daysBetweens: [undefined, 19, 20],
+      daysBetweens: [NaN, 19, 20],
       daysBetween: 20,
+      daysBetweenCalculated: true,
       tags: {
         0: ["period", "angry", "period", "angry", "period", "tired"],
         1: ["period"],
@@ -183,6 +188,34 @@ describe("#analyzeEntries", () => {
         14: ["exhausted"],
       },
     }
+    expect(analyzeEntries({ entries, settings })).toEqual(result)
+  })
+
+  test("settings.daysBetween can be a string", () => {
+    const entries = {
+      "2020-02-15": {
+        date: "2020-02-15",
+        note: "#period",
+      },
+      "2020-03-11": {
+        date: "2020-03-11",
+        note: "#period",
+      },
+    }
+    const settings = { tag: "period", daysBetween: "27" }
+
+    const result = {
+      startDates: ["2020-02-15", "2020-03-11"],
+      nextStartDate: "2020-04-06",
+      tag: "period",
+      daysBetweens: [27, 25],
+      daysBetween: 26,
+      daysBetweenCalculated: true,
+      tags: {
+        0: ["period", "period"],
+      },
+    }
+
     expect(analyzeEntries({ entries, settings })).toEqual(result)
   })
 })
