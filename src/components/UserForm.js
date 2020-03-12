@@ -60,11 +60,12 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
 
   const [state, setState] = useState({
     username: "",
+    email: "",
     password: "",
     rememberMe: "session",
   })
 
-  const handleChange = (name) => (event) => {
+  const handleChange = (name, email) => (event) => {
     let value = event.target.value
     setError()
 
@@ -124,6 +125,22 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
+        {variant === "signup" && (
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            placeholder="unicorn@usepow.app"
+            value={state.email}
+            autoComplete="email"
+            onChange={handleChange("email")}
+            InputLabelProps={{ shrink: true }}
+          />
+        )}
         <TextField
           variant="outlined"
           margin="normal"

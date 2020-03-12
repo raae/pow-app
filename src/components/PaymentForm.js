@@ -80,6 +80,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
         clientReferenceId: user.userId,
         successUrl: BASE_URL + "/cycle",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
+        // email: "rart",
       })
       .then((result) => {
         if (result.error) {
