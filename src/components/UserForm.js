@@ -153,7 +153,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           autoComplete={
             variant === "signup" ? "new-password" : "current-password"
           }
-          placeholder="glittery-kitty-rainbowy-butterfly"
+          placeholder="glitter-rainbow-butterfly-kitty"
           value={state.password}
           onChange={handleChange("password")}
           InputLabelProps={{ shrink: true }}
