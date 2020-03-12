@@ -21,6 +21,9 @@ let theme = createMuiTheme({
     MuiLink: {
       color: "secondary",
     },
+    MuiTextField: {
+      InputLabelProps: { shrink: true },
+    },
   },
   overrides: {
     MuiMenuItem: {
