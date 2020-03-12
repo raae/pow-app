@@ -65,7 +65,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
     rememberMe: "session",
   })
 
-  const handleChange = (name) => (event) => {
+  const handleChange = (name, email) => (event) => {
     let value = event.target.value
     setError()
 
@@ -125,7 +125,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
-        {variant === "signup" ? (
+        {variant === "signup" && (
           <TextField
             variant="outlined"
             margin="normal"
@@ -140,8 +140,6 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             onChange={handleChange("email")}
             InputLabelProps={{ shrink: true }}
           />
-        ) : (
-          "current-email"
         )}
         <TextField
           variant="outlined"
