@@ -172,13 +172,17 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             favorite is <Link href="https://1password.com/">1Password</Link>.
           </Typography>
         </Alert>
-        <FormControlLabel
-          className={classes.checkbox}
-          control={<Checkbox value="local" color="primary" />}
-          label="Remember me"
-          value={state.rememberMe}
-          onChange={handleChange("rememberMe")}
-        />
+        {variant === "update" ? (
+          ""
+        ) : (
+          <FormControlLabel
+            className={classes.checkbox}
+            control={<Checkbox value="local" color="primary" />}
+            label="Remember me"
+            value={state.rememberMe}
+            onChange={handleChange("rememberMe")}
+          />
+        )}
         {error && (
           <Alert className={classes.alert} severity="error">
             {error.message}
