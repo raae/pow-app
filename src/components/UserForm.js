@@ -167,9 +167,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
         <Alert className={classes.alert} severity="info">
           <Typography component="div">
             There is no password recovery in apps securing your data with
-            encryption. So please <strong>do</strong> write down this password
-            somewhere safe. I recommend using a password manager and my favorite
-            is <Link href="https://1password.com/">1Password</Link>.
+            encryption. So please <strong>do</strong> write down your POW!
+            password somewhere safe. I recommend using a password manager and my
+            favorite is <Link href="https://1password.com/">1Password</Link>.
           </Typography>
         </Alert>
         <FormControlLabel
