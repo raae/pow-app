@@ -48,6 +48,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   variant = variant.toLowerCase()
   const showEmail = variant === "signup" || variant === "update"
   // const hidePassword = variant === "update"
+  const updateProfile = variant === "update"
 
   const { isPending: isAuthPending, user } = useAuthState()
   const { signIn, signUp } = useAuthActions()
@@ -143,27 +144,25 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             InputLabelProps={{ shrink: true }}
           />
         )}
-        {variant === "update" ? (
-          ""
-        ) : (
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete={
-              variant === "signup" ? "new-password" : "current-password"
-            }
-            placeholder="glitter-rainbow-butterfly-kitty"
-            value={state.password}
-            onChange={handleChange("password")}
-            InputLabelProps={{ shrink: true }}
-          />
-        )}
+
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          autoComplete={
+            variant === "signup" ? "new-password" : "current-password"
+          }
+          placeholder="glitter-rainbow-butterfly-kitty"
+          value={state.password}
+          onChange={handleChange("password")}
+          InputLabelProps={{ shrink: true }}
+        />
+
         <Alert className={classes.alert} severity="info">
           <Typography component="div">
             There is no password recovery in apps securing your data with
@@ -204,28 +203,33 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           variant="contained"
           color="primary"
         >
+          {updateProfile && "Update profile"}
           {variant === "signup" ? "Create account" : "Log In"}
         </Button>
-        <Grid justify="space-between" container>
-          <Grid item>
-            <Typography variant="body2" align="left">
-              Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
-            </Typography>
-          </Grid>
-          <Grid item>
-            {variant === "signup" ? (
-              <Typography variant="body2" align="right">
-                Already have an account?&nbsp;
-                <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+        {variant === "update" ? (
+          ""
+        ) : (
+          <Grid justify="space-between" container>
+            <Grid item>
+              <Typography variant="body2" align="left">
+                Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
               </Typography>
-            ) : (
-              <Typography variant="body2" align="right">
-                Don't have an account?&nbsp;
-                <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
-              </Typography>
-            )}
+            </Grid>
+            <Grid item>
+              {variant === "signup" ? (
+                <Typography variant="body2" align="right">
+                  Already have an account?&nbsp;
+                  <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+                </Typography>
+              ) : (
+                <Typography variant="body2" align="right">
+                  Don't have an account?&nbsp;
+                  <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
+                </Typography>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </Paper>
     </>
   )

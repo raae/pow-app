@@ -82,7 +82,7 @@ const ProfilePage = () => {
           <PaymentForm standalone />
         </Box>
         <Box>
-          <h1>Edit Profile</h1>
+          <h1>Change Your Username or Email not Password</h1>
           <UserForm variant="update" />
         </Box>
       </BrandLayout>
