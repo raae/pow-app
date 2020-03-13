@@ -47,6 +47,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
   const showEmail = variant === "signup" || variant === "update"
+  // const hidePassword = variant === "update"
 
   const { isPending: isAuthPending, user } = useAuthState()
   const { signIn, signUp } = useAuthActions()
@@ -142,23 +143,27 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             InputLabelProps={{ shrink: true }}
           />
         )}
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Password"
-          type="password"
-          id="password"
-          autoComplete={
-            variant === "signup" ? "new-password" : "current-password"
-          }
-          placeholder="glitter-rainbow-butterfly-kitty"
-          value={state.password}
-          onChange={handleChange("password")}
-          InputLabelProps={{ shrink: true }}
-        />
+        {variant === "update" ? (
+          ""
+        ) : (
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete={
+              variant === "signup" ? "new-password" : "current-password"
+            }
+            placeholder="glitter-rainbow-butterfly-kitty"
+            value={state.password}
+            onChange={handleChange("password")}
+            InputLabelProps={{ shrink: true }}
+          />
+        )}
         <Alert className={classes.alert} severity="info">
           <Typography component="div">
             There is no password recovery in apps securing your data with
