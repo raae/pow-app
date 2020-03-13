@@ -188,7 +188,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             {error.message}
           </Alert>
         )}
-        {user && !isPending && (
+        {user && !isPending && variant === !"update" && (
           <Alert className={classes.alert} severity="warning">
             <div>
               Already signed in as <strong>{user.username}</strong>:{" "}
