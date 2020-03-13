@@ -195,17 +195,28 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             </div>
           </Alert>
         )}
-        <Button
-          className={classes.submit}
-          disabled={isAuthPending || isPending || !!user}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          {updateProfile && "Update profile"}
-          {variant === "signup" ? "Create account" : "Log In"}
-        </Button>
+        {variant === "update" ? (
+          <Button
+            className={classes.submit}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            {updateProfile && "Update profile"}
+          </Button>
+        ) : (
+          <Button
+            className={classes.submit}
+            disabled={isAuthPending || isPending || !!user}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            {variant === "signup" ? "Create account" : "Log In"}
+          </Button>
+        )}
         {variant === "update" ? (
           ""
         ) : (
