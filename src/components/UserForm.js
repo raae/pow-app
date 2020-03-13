@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
+  const showEmail = variant === "signup" || variant === "update"
 
   const { isPending: isAuthPending, user } = useAuthState()
   const { signIn, signUp } = useAuthActions()
@@ -125,7 +126,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
-        {variant === "signup" && (
+        {showEmail && (
           <TextField
             variant="outlined"
             margin="normal"

@@ -17,6 +17,7 @@ import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
+import UserForm from "../components/UserForm"
 
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
@@ -79,6 +80,10 @@ const ProfilePage = () => {
         <Box my={6}>
           <h1>Payment</h1>
           <PaymentForm standalone />
+        </Box>
+        <Box>
+          <h1>Edit Profile</h1>
+          <UserForm variant="update" />
         </Box>
       </BrandLayout>
     </CycleProvider>
