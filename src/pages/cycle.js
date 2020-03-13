@@ -45,7 +45,7 @@ const HomeRoute = () => {
     if (!user && !authIsPending) {
       navigate("/login")
     } else if (!hasPaid && !authIsPending) {
-      navigate("/profile?payment=unfinished")
+      // navigate("/profile?payment=unfinished")
     }
   }, [user, authIsPending, hasPaid])
 

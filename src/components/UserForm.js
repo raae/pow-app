@@ -165,10 +165,10 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
 
         <Alert className={classes.alert} severity="info">
           <Typography component="div">
-            There is no password recovery in apps securing your data with
-            encryption. So please <strong>do</strong> write down your POW!
-            password somewhere safe. I recommend using a password manager and my
-            favorite is <Link href="https://1password.com/">1Password</Link>.
+            We have no password recovery here at POW! So please{" "}
+            <strong>do</strong> write down your POW! password somewhere safe. I
+            recommend using a password manager and my favorite is{" "}
+            <Link href="https://1password.com/">1Password</Link>.
           </Typography>
         </Alert>
         {variant === "update" ? (
