@@ -92,23 +92,23 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
       onReset={handleReset}
       onSubmit={handleSubmit}
     >
-      <TextField
-        label={entryNote ? "Edit note" : "Add a note"}
-        autoFocus
-        multiline
-        fullWidth
-        rows="3"
-        placeholder={placeholder}
-        color="secondary"
-        variant="outlined"
-        value={values["note"]}
-        onChange={handleChange("note")}
-        helperText=" Use hashtags for things you would like to keep a close eye on."
-      />
-
       {children}
     </RootComponent>
   )
 }
 
 export default EntryForm
+
+//       <SimpleModal
+//         label={entryNote ? "Edit note" : "Add a note"}
+//         autoFocus
+//         multiline
+//         fullWidth
+//         rows="3"
+//         placeholder={placeholder}
+//         color="secondary"
+//         variant="outlined"
+//         value={values["note"]}
+//         onChange={handleChange("note")}
+//         helperText=" Use hashtags for things you would like to keep a close eye on."
+//       />

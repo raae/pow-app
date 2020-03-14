@@ -19,6 +19,7 @@ import { makeDate, formatDate } from "../utils/days"
 import Logo from "./Logo"
 import EntryForm from "./EntryForm"
 import { ForecastText } from "./Forecast"
+import SimpleModal from "../components/ModalPageInCaptainsLogBook"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -125,7 +126,7 @@ const DaySummary = ({ entryId }) => {
 
           {isEditing && (
             <Paper elevation={0} className={classes.note}>
-              <EntryForm entryId={entryId} onDone={() => setIsEditing(false)}>
+              <SimpleModal entryId={entryId} onDone={() => setIsEditing(false)}>
                 <Fab
                   color="primary"
                   size="small"
@@ -144,7 +145,7 @@ const DaySummary = ({ entryId }) => {
                 >
                   <DoneIcon />
                 </Fab>
-              </EntryForm>
+              </SimpleModal>
             </Paper>
           )}
           {hasTags && !isEditing && (
