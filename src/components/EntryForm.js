@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { TextField, makeStyles } from "@material-ui/core"
+import { TextField } from "@material-ui/core"
 
 import { useDataState, useDataActions } from "../database"
 
-const useStyles = makeStyles(() => ({
-  textArea: {
-    minHeight: "25vh",
-  },
-}))
-
 const EntryForm = ({ entryId, onDone, children, variant, className }) => {
-  const classes = useStyles()
-
   const { entries, settings } = useDataState()
   const { upsertEntry } = useDataActions()
 
@@ -83,7 +75,8 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
       onSubmit={handleSubmit}
     >
       <TextField
-        // label={entryNote ? "Edit note" : "Add a note"}
+        label={entryNote ? "Edit note" : "Add a note"}
+        autoFocus
         multiline
         fullWidth
         placeholder={placeholder}
@@ -91,9 +84,6 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
         variant={variant}
         value={values["note"]}
         onChange={handleChange("note")}
-        inputProps={{
-          className: classes.textArea,
-        }}
         helperText="Use hashtags for things you would like to keep a close eye on."
       />
 

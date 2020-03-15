@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   content: {
     maxWidth: "50rem",
     margin: "0 auto",
+    display: "flex",
+    alignContent: "stretch",
+    flexDirection: "column",
+    height: "100vh",
   },
   appBar: {
     top: 0,
@@ -35,6 +39,18 @@ const useStyles = makeStyles((theme) => ({
   form: {
     padding: theme.spacing(3, 2),
     maxWidth: "32rem",
+    flexGrow: 1,
+    height: "10rem", // must be set for safari to allow flex grow
+    maxHeight: "20rem",
+    "& > div": {
+      height: "100%",
+      "& > div": {
+        height: "100%",
+        "& > textarea": {
+          height: "100% !important",
+        },
+      },
+    },
   },
 }))
 
