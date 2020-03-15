@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3, 2),
     maxWidth: "32rem",
     height: "10rem", // must be set for safari to allow flex grow
-    maxHeight: "20rem",
-    flexGrow: 1,
+    // maxHeight: "20rem",
+    // flexGrow: 1,
     "& > div": {
       height: "90%",
       "& > div": {
