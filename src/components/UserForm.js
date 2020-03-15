@@ -48,10 +48,10 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   variant = variant.toLowerCase()
   const showEmail = variant === "signup" || variant === "update"
   // const hidePassword = variant === "update"
-  const updateProfile = variant === "update"
+  const updateVariant = variant === "update"
 
   const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const { signIn, signUp, updateUser } = useAuthActions()
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -87,10 +87,14 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsPending(true)
-
+    // if (variant === "update") {
+    // result = await updateProfile(state, { redirect: !onSubmitFulfilled} )
     let result = null
+
     if (variant === "signup") {
       result = await signUp(state, { redirect: !onSubmitFulfilled })
+    } else if (variant === "update") {
+      result = await updateUser(state, { redirect: !onSubmitFulfilled })
     } else {
       result = await signIn(state, { redirect: !onSubmitFulfilled })
     }
@@ -203,7 +207,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             variant="contained"
             color="primary"
           >
-            {updateProfile && "Update profile"}
+            {updateVariant && "Update profile"}
           </Button>
         ) : (
           <Button
