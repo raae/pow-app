@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { Paper, TextField, makeStyles } from "@material-ui/core"
-import classNames from "classnames"
+import { TextField } from "@material-ui/core"
 
 import { useDataState, useDataActions } from "../database"
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%", // Fix IE 11 issue.
-  },
-  standalone: {
-    marginTop: theme.spacing(3),
-    padding: theme.spacing(4),
-  },
-}))
-
-const EntryForm = ({ entryId, standalone, onDone, children }) => {
-  const classes = useStyles()
+const EntryForm = ({ entryId, onDone, children, className }) => {
   const { entries, settings } = useDataState()
   const { upsertEntry } = useDataActions()
 
@@ -23,8 +11,6 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
 
   const [values, setValues] = useState({ note: entryNote })
   const [placeholder, setPlaceholder] = useState()
-
-  const RootComponent = standalone ? Paper : "form"
 
   useEffect(() => {
     const placeholders = [
@@ -69,7 +55,7 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
     event.preventDefault()
     setValues({ note: entryNote })
     if (onDone) {
-      onDone(event, "cancel")
+      onDone(event, "reset")
     }
   }
 
@@ -82,13 +68,9 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
   }
 
   return (
-    <RootComponent
-      component="form"
-      className={classNames(classes.root, {
-        [classes.standalone]: standalone,
-      })}
-      elevation={standalone ? 1 : 0}
+    <form
       noValidate
+      className={className}
       onReset={handleReset}
       onSubmit={handleSubmit}
     >
@@ -107,7 +89,7 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
       />
 
       {children}
-    </RootComponent>
+    </form>
   )
 }
 

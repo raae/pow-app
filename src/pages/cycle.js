@@ -1,6 +1,15 @@
 import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
+import {
+  AppBar,
+  Button,
+  Toolbar,
+  IconButton,
+  Typography,
+  makeStyles,
+} from "@material-ui/core"
+import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
 import { useAuthState } from "../auth"
 import { useDataState } from "../database"
@@ -15,6 +24,7 @@ import DaySummary from "../components/DaySummary"
 import Forecast from "../components/Forecast"
 import DatePicker from "../components/DatePicker"
 import Welcome from "../components/Welcome"
+import EntryForm from "../components/EntryForm"
 
 const Day = ({ date }) => {
   date = makeDate(date)
@@ -35,8 +45,51 @@ const Day = ({ date }) => {
   )
 }
 
+const useStyles = makeStyles((theme) => ({
+  offset: theme.mixins.toolbar,
+  appBar: {
+    top: 0,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  form: {
+    padding: theme.spacing(3, 2),
+  },
+}))
+
 const Edit = ({ date }) => {
-  return <>Edit: {date}</>
+  const classes = useStyles()
+
+  const handleDone = () => {
+    navigate(`/cycle/${date}`)
+  }
+
+  return (
+    <>
+      <div className={classes.offset} />
+      <EntryForm entryId={date} onDone={handleDone} className={classes.form}>
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              type="reset"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h6" align="center" className={classes.title}>
+              {date}
+            </Typography>
+            <Button type="submit" edge="end" variant="outlined" color="inherit">
+              Save
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </EntryForm>
+    </>
+  )
 }
 
 const HomeRoute = () => {
