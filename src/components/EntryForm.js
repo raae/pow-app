@@ -83,7 +83,7 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
       onSubmit={handleSubmit}
     >
       <TextField
-        label={entryNote ? "Edit entry for" : "Add an entry"}
+        label={entryNote ? "Edit entry" : "Add an entry"}
         multiline
         fullWidth
         inputRef={inputRef}

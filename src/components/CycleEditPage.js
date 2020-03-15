@@ -63,7 +63,7 @@ const CycleEditPage = ({ date }) => {
     <div className={classes.content}>
       <div className={classes.offset} />
       <EntryForm entryId={date} onDone={handleDone} className={classes.form}>
-        <AppBar position="fixed" className={classes.appBar}>
+        <AppBar position="absolute" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton
               type="reset"
