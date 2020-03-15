@@ -35,6 +35,10 @@ const Day = ({ date }) => {
   )
 }
 
+const Edit = ({ date }) => {
+  return <>Edit: {date}</>
+}
+
 const HomeRoute = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
@@ -64,6 +68,7 @@ const HomeRoute = () => {
       <Router basepath="/cycle">
         <Day path="/" />
         <Day path=":date" />
+        <Edit path=":date/edit" />
       </Router>
     </CycleProvider>
   )
