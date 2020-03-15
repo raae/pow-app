@@ -39,11 +39,11 @@ const useStyles = makeStyles((theme) => ({
   form: {
     padding: theme.spacing(3, 2),
     maxWidth: "32rem",
-    flexGrow: 1,
     height: "10rem", // must be set for safari to allow flex grow
     maxHeight: "20rem",
+    flexGrow: 1,
     "& > div": {
-      height: "100%",
+      height: "90%",
       "& > div": {
         height: "100%",
         "& > textarea": {
