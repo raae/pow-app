@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     top: 0,
+    flexGrow: 0,
   },
   toolbar: {
     width: "100%",
