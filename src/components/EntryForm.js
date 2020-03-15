@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { TextField } from "@material-ui/core"
 
 import { useDataState, useDataActions } from "../database"
@@ -11,6 +11,14 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
 
   const [values, setValues] = useState({ note: entryNote })
   const [placeholder, setPlaceholder] = useState()
+
+  const inputRef = useRef()
+
+  useEffect(() => {
+    if (inputRef) {
+      inputRef.current.focus()
+    }
+  }, [inputRef])
 
   useEffect(() => {
     const placeholders = [
@@ -75,10 +83,10 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
       onSubmit={handleSubmit}
     >
       <TextField
-        label={entryNote ? "Edit note" : "Add a note"}
-        autoFocus
+        label={entryNote ? "Edit entry for" : "Add an entry"}
         multiline
         fullWidth
+        inputRef={inputRef}
         placeholder={placeholder}
         color="secondary"
         variant={variant}
