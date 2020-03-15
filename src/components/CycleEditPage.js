@@ -11,9 +11,9 @@ import {
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
-import { formatDate } from "../../utils/days"
+import { formatDate } from "../utils/days"
 
-import EntryForm from "../../components/EntryForm"
+import EntryForm from "./EntryForm"
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,

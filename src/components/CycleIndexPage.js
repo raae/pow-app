@@ -1,15 +1,15 @@
 import React from "react"
 
-import { useCycleDayState } from "../../cycle"
-import { entryIdFromDate, makeDate, intervalAfterDate } from "../../utils/days"
+import { useCycleDayState } from "../cycle"
+import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
-import BrandLayout from "../../components/BrandLayout"
-import DaySummary from "../../components/DaySummary"
-import Forecast from "../../components/Forecast"
-import DatePicker from "../../components/DatePicker"
-import Welcome from "../../components/Welcome"
+import BrandLayout from "./BrandLayout"
+import DaySummary from "./DaySummary"
+import Forecast from "./Forecast"
+import DatePicker from "./DatePicker"
+import Welcome from "./Welcome"
 
-const CyclePage = ({ date }) => {
+const CycleIndexPage = ({ date }) => {
   date = makeDate(date)
   const entryId = entryIdFromDate(date)
 
@@ -28,4 +28,4 @@ const CyclePage = ({ date }) => {
   )
 }
 
-export default CyclePage
+export default CycleIndexPage

@@ -2,17 +2,17 @@ import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { useAuthState } from "../../auth"
-import { useDataState } from "../../database"
-import { CycleProvider } from "../../cycle"
+import { useAuthState } from "../auth"
+import { useDataState } from "../database"
+import { CycleProvider } from "../cycle"
 
-import SEO from "../../components/Seo"
-import Loading from "../../components/Loading"
+import SEO from "../components/Seo"
+import Loading from "../components/Loading"
 
-import CyclePage from "./Cycle"
-import CycleEditPage from "./CycleEdit"
+import CycleIndexPage from "../components/CycleIndexPage"
+import CycleEditPage from "../components/CycleEditPage"
 
-const CycleIndexPage = () => {
+const CyclePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
   const hasPaid =
@@ -39,12 +39,12 @@ const CycleIndexPage = () => {
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Cycle" />
       <Router basepath="/cycle">
-        <CyclePage path="/" />
-        <CyclePage path=":date" />
+        <CycleIndexPage path="/" />
+        <CycleIndexPage path=":date" />
         <CycleEditPage path=":date/edit" />
       </Router>
     </CycleProvider>
   )
 }
 
-export default CycleIndexPage
+export default CyclePage
