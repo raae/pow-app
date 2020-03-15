@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React from "react"
+import { Link as GatsbyLink } from "gatsby"
 
 import {
   Card,
@@ -9,15 +10,12 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
-import DoneIcon from "@material-ui/icons/Done"
-import CancelIcon from "@material-ui/icons/Cancel"
 
 import { useDataState } from "../database"
 import { useCycleDayState } from "../cycle"
 import { makeDate, formatDate } from "../utils/days"
 
 import Logo from "./Logo"
-import EntryForm from "./EntryForm"
 import { ForecastText } from "./Forecast"
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 
 const DaySummary = ({ entryId }) => {
   const classes = useStyles()
-  const [isEditing, setIsEditing] = useState(null)
   const { settings, entries } = useDataState()
   const entryNote = entries[entryId] ? entries[entryId].note : ""
 
@@ -92,21 +89,17 @@ const DaySummary = ({ entryId }) => {
           <Typography variant="body2" color="textSecondary" gutterBottom>
             {formatDate(entryId, "EEEE, MMMM do")}
           </Typography>
-          {!isEditing && (
-            <Typography variant="h4" component="h2">
-              <Logo>Day {cycleDay || "?"}</Logo>
-            </Typography>
-          )}
 
-          {!isEditing && (
-            <>
-              <Typography color="textSecondary" gutterBottom>
-                of {daysBetweenCalculated ? "your average" : "a default"}{" "}
-                {daysBetween || "?"} day cycle.{" "}
-              </Typography>
-            </>
-          )}
-          {nextStartDate && isCurrentCycle && !isEditing && (
+          <Typography variant="h4" component="h2">
+            <Logo>Day {cycleDay || "?"}</Logo>
+          </Typography>
+
+          <Typography color="textSecondary" gutterBottom>
+            of {daysBetweenCalculated ? "your average" : "a default"}{" "}
+            {daysBetween || "?"} day cycle.{" "}
+          </Typography>
+
+          {nextStartDate && isCurrentCycle && (
             <Typography color="textSecondary" gutterBottom>
               Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
               <span className={classes.noWrap}>
@@ -115,7 +108,7 @@ const DaySummary = ({ entryId }) => {
             </Typography>
           )}
 
-          {entryNote && !isEditing && (
+          {entryNote && (
             <Paper elevation={0} className={classes.note}>
               <Typography variant="body1" component="p">
                 {entryNote}
@@ -123,46 +116,22 @@ const DaySummary = ({ entryId }) => {
             </Paper>
           )}
 
-          {isEditing && (
-            <Paper elevation={0} className={classes.note}>
-              <EntryForm entryId={entryId} onDone={() => setIsEditing(false)}>
-                <Fab
-                  color="primary"
-                  size="small"
-                  aria-label="Cancel not change"
-                  type="reset"
-                  className={classes.reset}
-                >
-                  <CancelIcon />
-                </Fab>
-                <Fab
-                  color="secondary"
-                  size="large"
-                  aria-label="Save note"
-                  type="submit"
-                  className={classes.submit}
-                >
-                  <DoneIcon />
-                </Fab>
-              </EntryForm>
-            </Paper>
-          )}
-          {hasTags && !isEditing && (
+          {hasTags && (
             <div className={classes.tags}>
               <ForecastText tags={prediction.tags} />
             </div>
           )}
-          {!isEditing && (
-            <Fab
-              color="secondary"
-              size="large"
-              aria-label="Edit note"
-              onClick={() => setIsEditing(true)}
-              className={classes.submit}
-            >
-              <EditNoteIcon />
-            </Fab>
-          )}
+
+          <Fab
+            color="secondary"
+            size="large"
+            aria-label="Edit note"
+            component={GatsbyLink}
+            to={`/cycle/${entryId}/edit`}
+            className={classes.submit}
+          >
+            <EditNoteIcon />
+          </Fab>
         </CardContent>
       </Card>
     </>
