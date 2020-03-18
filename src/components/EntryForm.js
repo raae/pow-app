@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EntryForm = ({ entryId, standalone, onDone, children }) => {
+const EntryForm = ({ entryId, standalone, onDone, children, clas }) => {
   const classes = useStyles()
   const { entries, settings } = useDataState()
   const { upsertEntry } = useDataActions()

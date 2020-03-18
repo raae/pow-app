@@ -42,12 +42,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Edit = ({ date }) => {
+const EditProfile = ({ date }) => {
   const classes = useStyles()
   return (
     <div>
+      <div className={classes.offset} />
       <EntryForm entryId={date}>
-        <AppBar>
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
               type="reset"
@@ -58,10 +59,11 @@ const Edit = ({ date }) => {
               <ArrowBackIcon />
             </IconButton>
             <Typography variant="h6" align="center" className={classes.title}>
-              {date}
+              Profile {date}
             </Typography>
+
             <Button type="submit" edge="end" variant="outlined" color="inherit">
-              Save
+              Update
             </Button>
           </Toolbar>
         </AppBar>
@@ -95,7 +97,7 @@ const ProfilePage = () => {
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
 
-      <Edit />
+      <EditProfile />
 
       <BrandLayout variant="app">
         {paymentStatus && (
