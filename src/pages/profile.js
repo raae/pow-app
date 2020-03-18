@@ -1,7 +1,17 @@
 import React, { useEffect } from "react"
 import { navigate } from "gatsby"
-import { Box, Typography } from "@material-ui/core"
+import {
+  AppBar,
+  Box,
+  Button,
+  Toolbar,
+  IconButton,
+  Typography,
+  makeStyles,
+} from "@material-ui/core"
+import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 import { Alert } from "@material-ui/lab"
+import { Router } from "@reach/router"
 
 import { useAuthState } from "../auth"
 import { useDataState } from "../database"
@@ -17,6 +27,48 @@ import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
+import EntryForm from "../components/EntryForm"
+
+const useStyles = makeStyles((theme) => ({
+  offset: theme.mixins.toolbar,
+  appBar: {
+    top: 0,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  form: {
+    padding: theme.spacing(3, 2),
+  },
+}))
+
+const Edit = ({ date }) => {
+  const classes = useStyles()
+  return (
+    <div>
+      <EntryForm entryId={date}>
+        <AppBar>
+          <Toolbar>
+            <IconButton
+              type="reset"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h6" align="center" className={classes.title}>
+              {date}
+            </Typography>
+            <Button type="submit" edge="end" variant="outlined" color="inherit">
+              Save
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </EntryForm>
+    </div>
+  )
+}
 
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
@@ -32,16 +84,19 @@ const ProfilePage = () => {
 
   if (!user || dataIsPending) {
     return (
-      <>
+      <div>
         <SEO title="Loading..." />
         <Loading fullScreen />
-      </>
+      </div>
     )
   }
 
   return (
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
+
+      <Edit />
+
       <BrandLayout variant="app">
         {paymentStatus && (
           <Alert severity="warning">
