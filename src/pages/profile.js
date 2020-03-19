@@ -97,8 +97,9 @@ const ProfilePage = () => {
   return (
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
-
-      <EditProfile />
+      <Router basepath="/cycle">
+        <EditProfile path=":date/edit" />
+      </Router>
 
       <BrandLayout variant="app">
         {paymentStatus && (

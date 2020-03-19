@@ -90,7 +90,7 @@ const UserForm = ({
   }
   const handleReset = (event) => {
     event.preventDefault()
-    console.log("reset is good!")
+    console.log("reset is good! find rest in userbase docs")
 
     // setValues({ note: entryNote })
     // if (onDone) {
