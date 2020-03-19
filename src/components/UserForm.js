@@ -43,9 +43,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
+const UserForm = ({
+  variant,
+  standalone = true,
+  onSubmitFulfilled,
+  children,
+}) => {
   const classes = useStyles()
-  variant = variant.toLowerCase()
+  // variant = variant.toLowerCase()
 
   const { isPending: isAuthPending, user } = useAuthState()
   const { signIn, signUp } = useAuthActions()
@@ -158,64 +163,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("password")}
           InputLabelProps={{ shrink: true }}
         />
-        <Alert className={classes.alert} severity="info">
-          <Typography component="div">
-            There is no password recovery in apps securing your data with
-            encryption. So please <strong>do</strong> write down this password
-            somewhere safe. I recommend using a password manager and my favorite
-            is <Link href="https://1password.com/">1Password</Link>.
-          </Typography>
-        </Alert>
-        <FormControlLabel
-          className={classes.checkbox}
-          control={<Checkbox value="local" color="primary" />}
-          label="Remember me"
-          value={state.rememberMe}
-          onChange={handleChange("rememberMe")}
-        />
-        {error && (
-          <Alert className={classes.alert} severity="error">
-            {error.message}
-          </Alert>
-        )}
-        {user && !isPending && (
-          <Alert className={classes.alert} severity="warning">
-            <div>
-              Already signed in as <strong>{user.username}</strong>:{" "}
-              <MuiLink {...appNavItem}>go to app</MuiLink>.
-            </div>
-          </Alert>
-        )}
-        <Button
-          className={classes.submit}
-          disabled={isAuthPending || isPending || !!user}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          {variant === "signup" ? "Create account" : "Log In"}
-        </Button>
-        <Grid justify="space-between" container>
-          <Grid item>
-            <Typography variant="body2" align="left">
-              Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
-            </Typography>
-          </Grid>
-          <Grid item>
-            {variant === "signup" ? (
-              <Typography variant="body2" align="right">
-                Already have an account?&nbsp;
-                <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
-              </Typography>
-            ) : (
-              <Typography variant="body2" align="right">
-                Don't have an account?&nbsp;
-                <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
-              </Typography>
-            )}
-          </Grid>
-        </Grid>
+        {children}
       </Paper>
     </>
   )

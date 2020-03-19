@@ -28,6 +28,7 @@ import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 import EntryForm from "../components/EntryForm"
+import UserForm from "../components/UserForm"
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -47,7 +48,7 @@ const EditProfile = ({ date }) => {
   return (
     <div>
       <div className={classes.offset} />
-      <EntryForm entryId={date}>
+      <UserForm entryId={date}>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
@@ -67,7 +68,7 @@ const EditProfile = ({ date }) => {
             </Button>
           </Toolbar>
         </AppBar>
-      </EntryForm>
+      </UserForm>
     </div>
   )
 }
