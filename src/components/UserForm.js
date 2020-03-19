@@ -51,9 +51,12 @@ const UserForm = ({
 }) => {
   const classes = useStyles()
   // variant = variant.toLowerCase()
+  // const updateVariant = variant === "update"
+  const showEmail = variant === "signup" || variant === "update"
+  const hideButtons = variant === "signup"
 
   const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const { signIn, signUp, updateUser } = useAuthActions()
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -85,6 +88,15 @@ const UserForm = ({
       }
     })
   }
+  const handleReset = (event) => {
+    event.preventDefault()
+    console.log("reset is good!")
+
+    // setValues({ note: entryNote })
+    // if (onDone) {
+    //   onDone(event, "cancel")
+    //   }
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -93,6 +105,8 @@ const UserForm = ({
     let result = null
     if (variant === "signup") {
       result = await signUp(state, { redirect: !onSubmitFulfilled })
+    } else if (variant === "update") {
+      result = await updateUser(state, { redirect: !onSubmitFulfilled })
     } else {
       result = await signIn(state, { redirect: !onSubmitFulfilled })
     }
@@ -114,6 +128,7 @@ const UserForm = ({
         })}
         elevation={standalone ? 1 : 0}
         noValidate
+        onReset={handleReset}
         onSubmit={handleSubmit}
       >
         <TextField
@@ -130,7 +145,7 @@ const UserForm = ({
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
-        {variant === "signup" && (
+        {showEmail && (
           <TextField
             variant="outlined"
             margin="normal"
@@ -164,6 +179,74 @@ const UserForm = ({
           InputLabelProps={{ shrink: true }}
         />
         {children}
+
+        <Alert className={classes.alert} severity="info">
+          <Typography component="div">
+            There is no password recovery in apps securing your data with
+            encryption. So please <strong>do</strong> write down this password
+            somewhere safe. I recommend using a password manager and my favorite
+            is <Link href="https://1password.com/">1Password</Link>.
+          </Typography>
+        </Alert>
+
+        {hideButtons && (
+          <FormControlLabel
+            className={classes.checkbox}
+            control={<Checkbox value="local" color="primary" />}
+            label="Remember me"
+            value={state.rememberMe}
+            onChange={handleChange("rememberMe")}
+          />
+        )}
+        {error && (
+          <Alert className={classes.alert} severity="error">
+            {error.message}
+          </Alert>
+        )}
+
+        {hideButtons && user && !isPending && (
+          <Alert className={classes.alert} severity="warning">
+            <div>
+              Already signed in as <strong>{user.username}</strong>:{" "}
+              <MuiLink {...appNavItem}>go to app</MuiLink>.
+            </div>
+          </Alert>
+        )}
+
+        {hideButtons && (
+          <Button
+            className={classes.submit}
+            disabled={isAuthPending || isPending || !!user}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            {variant === "signup" ? "Create account" : "Log In"}
+          </Button>
+        )}
+        {hideButtons && (
+          <Grid justify="space-between" container>
+            <Grid item>
+              <Typography variant="body2" align="left">
+                Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
+              </Typography>
+            </Grid>
+            <Grid item>
+              {variant === "signup" ? (
+                <Typography variant="body2" align="right">
+                  Already have an account?&nbsp;
+                  <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+                </Typography>
+              ) : (
+                <Typography variant="body2" align="right">
+                  Don't have an account?&nbsp;
+                  <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
+        )}
       </Paper>
     </>
   )

@@ -48,7 +48,7 @@ const EditProfile = ({ date }) => {
   return (
     <div>
       <div className={classes.offset} />
-      <UserForm entryId={date}>
+      <UserForm variant="update">
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
