@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Box, Typography } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
+import { Router } from "@reach/router"
 
 import { useAuthState } from "../auth"
 import { useDataState } from "../database"
@@ -18,6 +19,10 @@ import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 
+const EditProfile = ({}) => {
+  return <p>EditProfile</p>
+}
+
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
 
@@ -32,16 +37,19 @@ const ProfilePage = () => {
 
   if (!user || dataIsPending) {
     return (
-      <>
+      <div>
         <SEO title="Loading..." />
         <Loading fullScreen />
-      </>
+      </div>
     )
   }
 
   return (
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
+      <Router basepath="/profile">
+        <EditProfile path="/edit" />
+      </Router>
       <BrandLayout variant="app">
         {paymentStatus && (
           <Alert severity="warning">
