@@ -1,6 +1,16 @@
 import React, { useEffect } from "react"
 import { navigate } from "gatsby"
-import { Box, Typography } from "@material-ui/core"
+import {
+  Box,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  makeStyles,
+} from "@material-ui/core"
+import ArrowBackIcon from "@material-ui/icons/ArrowBack"
+
 import { Alert } from "@material-ui/lab"
 import { Router } from "@reach/router"
 
@@ -18,9 +28,78 @@ import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
+import UserForm from "../components/UserForm"
+
+const useStyles = makeStyles((theme) => ({
+  offset: theme.mixins.toolbar,
+  content: {
+    maxWidth: "50rem",
+    margin: "0 auto",
+    alignContent: "stretch",
+  },
+  appBar: {
+    top: 0,
+  },
+  toolbar: {
+    width: "100%",
+    maxWidth: "55rem",
+    margin: "0 auto",
+  },
+
+  title: {
+    flexGrow: 1,
+  },
+  form: {
+    padding: theme.spacing(3, 2),
+    maxWidth: "32rem",
+    minHeight: "10rem",
+    height: "80vh",
+    maxHeight: "25rem",
+
+    "& > div": {
+      height: "90%",
+      "& > div": {
+        height: "100%",
+        "& > textarea": {
+          height: "100% !important",
+        },
+      },
+    },
+  },
+}))
 
 const EditProfile = ({}) => {
-  return <p>EditProfile</p>
+  const classes = useStyles() // calling down on you
+  return (
+    <div className={classes.content}>
+      <div className={classes.offset} />
+      <UserForm variant="update" className={classes.form}>
+        <AppBar position="absoulte" className={classes.appBar}>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              type="reset"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              Profile {}{" "}
+            </Typography>
+            <Button
+              type="submit"
+              edge="end"
+              variant="contained"
+              color="primary"
+            >
+              Update
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </UserForm>
+    </div>
+  )
 }
 
 const ProfilePage = () => {
