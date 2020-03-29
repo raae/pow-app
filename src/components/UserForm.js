@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
+// , useEffect, useRef
 import classNames from "classnames"
 import {
   Button,
@@ -45,15 +46,18 @@ const useStyles = makeStyles((theme) => ({
 
 const UserForm = ({
   variant,
+  onDone,
   standalone = true,
   onSubmitFulfilled,
   children,
+  className,
 }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
+  const showEmail = variant === "signup" || variant === "update"
 
   const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const { signIn, signUp, updateUser } = useAuthActions()
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -86,6 +90,25 @@ const UserForm = ({
     })
   }
 
+  const inputRef = useRef()
+
+  useEffect(() => {
+    if (inputRef) {
+      inputRef.current.focus()
+    }
+  }, [inputRef])
+  // something else than  note: entryNote
+  //const [values, setValues] = useState({ note: entryNote })
+
+  // something else than  note: entryNote
+  const handleReset = (event) => {
+    event.preventDefault()
+    //setValues({ note: entryNote })
+    if (onDone) {
+      onDone(event, "reset")
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsPending(true)
@@ -93,6 +116,8 @@ const UserForm = ({
     let result = null
     if (variant === "signup") {
       result = await signUp(state, { redirect: !onSubmitFulfilled })
+    } else if (variant === "update") {
+      result = await updateUser(state, { redirect: !onSubmitFulfilled })
     } else {
       result = await signIn(state, { redirect: !onSubmitFulfilled })
     }
@@ -107,20 +132,19 @@ const UserForm = ({
 
   return (
     <>
-      <Paper
-        component="form"
-        className={classNames(classes.root, {
-          [classes.standalone]: standalone,
-        })}
-        elevation={standalone ? 1 : 0}
+      <form
         noValidate
+        //className={className}
+        onReset={handleReset}
         onSubmit={handleSubmit}
       >
         <TextField
-          variant="outlined"
+          //variant="outlined"
+          //variant={variant}
           margin="normal"
           required
           fullWidth
+          inputRef={inputRef}
           id="username"
           label="Username (not email)"
           name="username"
@@ -130,12 +154,13 @@ const UserForm = ({
           onChange={handleChange("username")}
           InputLabelProps={{ shrink: true }}
         />
-        {variant === "signup" && (
+        {showEmail && (
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
+            inputRef={inputRef}
             id="email"
             label="Email"
             name="email"
@@ -151,6 +176,7 @@ const UserForm = ({
           margin="normal"
           required
           fullWidth
+          inputRef={inputRef}
           name="password"
           label="Password"
           type="password"
@@ -222,7 +248,7 @@ const UserForm = ({
             )}
           </Grid>
         </Grid>
-      </Paper>
+      </form>
     </>
   )
 }

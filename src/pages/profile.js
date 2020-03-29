@@ -70,6 +70,10 @@ const useStyles = makeStyles((theme) => ({
 
 const EditProfile = ({}) => {
   const classes = useStyles() // calling down on you
+
+  // const handleDone = () => {
+  //   navigate(`/profile/`)
+  // }
   return (
     <div className={classes.content}>
       <div className={classes.offset} />
@@ -122,6 +126,10 @@ const ProfilePage = () => {
       </div>
     )
   }
+  // const handleDone = () => {
+  //   navigate(`/profile/`)
+  // }
+  // onDone={handleDone}
 
   return (
     <CycleProvider entries={entries} settings={settings}>
