@@ -71,9 +71,12 @@ const useStyles = makeStyles((theme) => ({
 const EditProfile = ({}) => {
   const classes = useStyles() // calling down on you
 
-  // const handleDone = () => {
-  //   navigate(`/profile/`)
-  // }
+  const handleDone = (event) => {
+    event.preventDefault()
+    console.log("handleDone")
+    navigate(`/profile/`)
+  }
+
   return (
     <div className={classes.content}>
       <div className={classes.offset} />
@@ -96,6 +99,7 @@ const EditProfile = ({}) => {
               edge="end"
               variant="contained"
               color="primary"
+              onClick={handleDone}
             >
               Update
             </Button>
