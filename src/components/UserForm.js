@@ -55,6 +55,7 @@ const UserForm = ({
   const classes = useStyles()
   variant = variant.toLowerCase()
   const showEmail = variant === "signup" || variant === "update"
+  const editProfile = variant === "update"
 
   const { isPending: isAuthPending, user } = useAuthState()
   const { signIn, signUp, updateUser } = useAuthActions()
@@ -202,13 +203,17 @@ const UserForm = ({
             is <Link href="https://1password.com/">1Password</Link>.
           </Typography>
         </Alert>
-        <FormControlLabel
-          className={classes.checkbox}
-          control={<Checkbox value="local" color="primary" />}
-          label="Remember me"
-          value={state.rememberMe}
-          onChange={handleChange("rememberMe")}
-        />
+
+        {editProfile || (
+          <FormControlLabel
+            className={classes.checkbox}
+            control={<Checkbox value="local" color="primary" />}
+            label="Remember me"
+            value={state.rememberMe}
+            onChange={handleChange("rememberMe")}
+          />
+        )}
+
         {error && (
           <Alert className={classes.alert} severity="error">
             {error.message}
