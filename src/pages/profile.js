@@ -29,6 +29,7 @@ import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 import UserForm from "../components/UserForm"
+import ProfileEditPage from "../components/ProfileEditPage"
 
 const useStyles = makeStyles((theme) => ({
   offset: theme.mixins.toolbar,
@@ -135,7 +136,7 @@ const ProfilePage = () => {
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
       <Router basepath="/profile">
-        <EditProfile path="/edit" />
+        <ProfileEditPage path="/edit" />
       </Router>
       <BrandLayout variant="app">
         {paymentStatus && (
