@@ -195,14 +195,17 @@ const UserForm = ({
           InputLabelProps={{ shrink: true }}
         />
         {children}
-        <Alert className={classes.alert} severity="info">
-          <Typography component="div">
-            There is no password recovery in apps securing your data with
-            encryption. So please <strong>do</strong> write down this password
-            somewhere safe. I recommend using a password manager and my favorite
-            is <Link href="https://1password.com/">1Password</Link>.
-          </Typography>
-        </Alert>
+
+        {editProfile || (
+          <Alert className={classes.alert} severity="info">
+            <Typography component="div">
+              There is no password recovery in apps securing your data with
+              encryption. So please <strong>do</strong> write down this password
+              somewhere safe. I recommend using a password manager and my
+              favorite is <Link href="https://1password.com/">1Password</Link>.
+            </Typography>
+          </Alert>
+        )}
 
         {editProfile || (
           <FormControlLabel
@@ -227,36 +230,42 @@ const UserForm = ({
             </div>
           </Alert>
         )}
-        <Button
-          className={classes.submit}
-          disabled={isAuthPending || isPending || !!user}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          {variant === "signup" ? "Create account" : "Log In"}
-        </Button>
-        <Grid justify="space-between" container>
-          <Grid item>
-            <Typography variant="body2" align="left">
-              Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
-            </Typography>
-          </Grid>
-          <Grid item>
-            {variant === "signup" ? (
-              <Typography variant="body2" align="right">
-                Already have an account?&nbsp;
-                <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+
+        {editProfile || (
+          <Button
+            className={classes.submit}
+            disabled={isAuthPending || isPending || !!user}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            {variant === "signup" ? "Create account" : "Log In"}
+          </Button>
+        )}
+
+        {editProfile || (
+          <Grid justify="space-between" container>
+            <Grid item>
+              <Typography variant="body2" align="left">
+                Information for <MuiLink {...betaNavItem}>beta users</MuiLink>.
               </Typography>
-            ) : (
-              <Typography variant="body2" align="right">
-                Don't have an account?&nbsp;
-                <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
-              </Typography>
-            )}
+            </Grid>
+            <Grid item>
+              {variant === "signup" ? (
+                <Typography variant="body2" align="right">
+                  Already have an account?&nbsp;
+                  <MuiLink {...signInNavItem}>{signInNavItem.label}</MuiLink>
+                </Typography>
+              ) : (
+                <Typography variant="body2" align="right">
+                  Don't have an account?&nbsp;
+                  <MuiLink {...signUpNavItem}>{signUpNavItem.label}</MuiLink>
+                </Typography>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
+        )}
       </form>
     </>
   )
