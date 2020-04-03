@@ -128,6 +128,10 @@ const UserForm = ({
     } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
     }
+
+    if (onDone) {
+      onDone(event, "submit")
+    }
   }
 
   return (
