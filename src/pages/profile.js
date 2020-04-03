@@ -69,19 +69,20 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const EditProfile = ({}) => {
-  const classes = useStyles() // calling down on you
+  const classes = useStyles()
 
-  const handleDone = (event) => {
-    event.preventDefault()
-    console.log("handleDone")
+  const handleDone = () => {
+    // event.preventDefault()
+
     navigate(`/profile/`)
+    console.log("handleDone")
   }
 
   return (
     <div className={classes.content}>
       <div className={classes.offset} />
-      <UserForm variant="update" className={classes.form}>
-        <AppBar position="absoulte" className={classes.appBar}>
+      <UserForm variant="update" onDone={handleDone} className={classes.form}>
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton
               type="reset"
@@ -99,7 +100,6 @@ const EditProfile = ({}) => {
               edge="end"
               variant="contained"
               color="primary"
-              onClick={handleDone}
             >
               Update
             </Button>
@@ -130,10 +130,6 @@ const ProfilePage = () => {
       </div>
     )
   }
-  // const handleDone = () => {
-  //   navigate(`/profile/`)
-  // }
-  // onDone={handleDone}
 
   return (
     <CycleProvider entries={entries} settings={settings}>

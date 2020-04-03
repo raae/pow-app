@@ -86,10 +86,21 @@ const Profile = () => {
             <AccountCircle />
           </Avatar>
         }
+        action={
+          <Fab
+            color="secondary"
+            size="large"
+            aria-label="Edit note"
+            component={GatsbyLink}
+            to={`/profile/edit`}
+            // className={classes.submit}
+          >
+            <EditNoteIcon />
+          </Fab>
+        }
         title={<strong>{user.username}</strong>}
         subheader={userEmail}
       />
-
       <CardContent>
         {userEmail && (
           <Typography variant="body2" color="textSecondary" gutterBottom>
@@ -109,16 +120,6 @@ const Profile = () => {
             label="I would like to receive the POW! Newsletter"
           />
         )}
-        <Fab
-          color="secondary"
-          size="large"
-          aria-label="Edit note"
-          component={GatsbyLink}
-          to={`/profile/edit`}
-          // className={classes.submit}
-        >
-          <EditNoteIcon />
-        </Fab>
       </CardContent>
     </Card>
   )
