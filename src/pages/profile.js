@@ -18,10 +18,11 @@ import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
+import ProfileEditPage from "../components/ProfileEditPage"
 
-const ProfileEditPage = () => {
-  return <p>ProfileEditPage is WORKING 😺👍</p>
-}
+// const ProfileEditPage = () => {
+//   return <p>ProfileEditPage is WORKING 😺👍</p>
+// }
 
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")

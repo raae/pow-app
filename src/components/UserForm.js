@@ -43,7 +43,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
+const UserForm = ({
+  variant,
+  standalone = true,
+  onSubmitFulfilled,
+  children,
+}) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
 
@@ -158,6 +163,7 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
           onChange={handleChange("password")}
           InputLabelProps={{ shrink: true }}
         />
+        {children}
         <Alert className={classes.alert} severity="info">
           <Typography component="div">
             There is no password recovery in apps securing your data with
