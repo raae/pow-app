@@ -20,7 +20,7 @@ import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 
 const ProfileEditPage = () => {
-  return <p>ProfileEditPage</p>
+  return <p>ProfileEditPage is WORKING 😺👍</p>
 }
 
 const ProfilePage = () => {
