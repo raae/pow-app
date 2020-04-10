@@ -52,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+const ProfileEmailEditForm = () => {
+  return <p>A New ProfileEmailEditForm</p>
+}
+
 const ProfileEditPage = ({ variant }) => {
   const classes = useStyles()
 
@@ -65,6 +69,7 @@ const ProfileEditPage = ({ variant }) => {
   return (
     <div className={classes.content}>
       <div className={classes.offset} />
+      <ProfileEmailEditForm>Yo!</ProfileEmailEditForm>
       <UserForm variant="update" onDone={handleDone} className={classes.form}>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>

@@ -48,6 +48,7 @@ const UserForm = ({
   standalone = true,
   onSubmitFulfilled,
   children,
+  onDone,
 }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
@@ -86,6 +87,25 @@ const UserForm = ({
     })
   }
 
+  // const inputRef = useRef()
+
+  // useEffect(() => {
+  //   if (inputRef) {
+  //     inputRef.current.focus()
+  //   }
+  // }, [inputRef])
+  // // something else than  note: entryNote
+  // //const [values, setValues] = useState({ note: entryNote })
+
+  // // something else than  note: entryNote
+  // const handleReset = (event) => {
+  //   event.preventDefault()
+  //   //setValues({ note: entryNote })
+  //   if (onDone) {
+  //     onDone(event, "reset")
+  //   }
+  // }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     setIsPending(true)
@@ -102,6 +122,10 @@ const UserForm = ({
       setIsPending(false)
     } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
+    }
+
+    if (onDone) {
+      onDone(event, "submit")
     }
   }
 
