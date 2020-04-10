@@ -53,7 +53,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ProfileEmailEditForm = () => {
-  return <p>A New ProfileEmailEditForm</p>
+  return (
+    <form className="profile-email-edit-form">
+      <h2>Change your ProfileEmailEditForm</h2>
+      <input type="text" required placeholder="unicorn@usepow.app" />
+      <button type="submit">Update</button>
+    </form>
+  )
 }
 
 const ProfileEditPage = ({ variant }) => {
