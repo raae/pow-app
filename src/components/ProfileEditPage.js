@@ -53,9 +53,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ProfileEmailEditForm = () => {
+  const goToYear = () => {
+    alert("Hi!")
+  }
+
   return (
     <form className="profile-email-edit-form">
-      <h2>Change your ProfileEmailEditForm</h2>
+      <h2>Change Your Email</h2>
+      <button onClick={this.goToYear}>goToYear</button>
       <input type="text" required placeholder="unicorn@usepow.app" />
       <button type="submit">Update</button>
     </form>
@@ -71,12 +76,12 @@ const ProfileEditPage = ({ variant }) => {
     navigate(`/profile/`)
     console.log("handleDone")
   }
+  //   <UserForm variant="update" onDone={handleDone} className={classes.form}></UserForm>
 
   return (
     <div className={classes.content}>
       <div className={classes.offset} />
-      <ProfileEmailEditForm>Yo!</ProfileEmailEditForm>
-      <UserForm variant="update" onDone={handleDone} className={classes.form}>
+      <ProfileEmailEditForm>
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <IconButton
@@ -100,7 +105,7 @@ const ProfileEditPage = ({ variant }) => {
             </Button>
           </Toolbar>
         </AppBar>
-      </UserForm>
+      </ProfileEmailEditForm>
     </div>
   )
 }
