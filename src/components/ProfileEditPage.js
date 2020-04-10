@@ -53,15 +53,26 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ProfileEmailEditForm = () => {
-  const goToYear = () => {
-    alert("Hi!")
+  const iPickedAYear = React.createRef
+  const goToYear = (event) => {
+    // 1. Stop the form from submitting
+    event.preventDefault()
+    // 2. Get the txt from that input
+    //const pickedYear = this.iPickedAYear.value.value
+    // 3. Change back to the profile page
+    //this.props.history.push(`/year/${pickedYear})
   }
 
   return (
-    <form className="profile-email-edit-form">
+    <form onSubmit={goToYear} className="profile-email-edit-form">
       <h2>Change Your Email</h2>
-      <button onClick={this.goToYear}>goToYear</button>
-      <input type="text" required placeholder="unicorn@usepow.app" />
+
+      <input
+        ref={iPickedAYear}
+        type="text"
+        required
+        placeholder="unicorn@usepow.app"
+      />
       <button type="submit">Update</button>
     </form>
   )
@@ -111,39 +122,3 @@ const ProfileEditPage = ({ variant }) => {
 }
 
 export default ProfileEditPage
-
-// import React from "react"
-
-// class YearPicker extends React.Component {
-//   iPickedAYear = React.createRef()
-//   //   changeMyEmail = event => {
-//   goToYear = (event) => {
-//     //console.log("changeMyEmail");
-//     //     // 1. stop
-//     event.preventDefault()
-//     //     // 2. get the year from form
-//     //const email=
-//     const pickedYear = this.iPickedAYear.current.value
-//     //     // 3. Change the year in userbase = timeShip API
-//     this.props.history.push(`/year/${pickedYear}`)
-//   }
-
-//   render() {
-//     return (
-//       <form onSubmit={this.goToYear}>
-//         <h2>YearPicker</h2>
-
-//         <input
-//           ref={this.iPickedAYear}
-//           type="text"
-//           id="email"
-//           required
-//           placeholder="1554"
-//         />
-//         <button type="submit">Update Year -></button>
-//       </form>
-//     )
-//   }
-// }
-
-// export default YearPicker
