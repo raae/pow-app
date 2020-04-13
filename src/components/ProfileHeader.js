@@ -6,7 +6,7 @@ class ProfileHeader extends React.Component {
       <header classname="top">
         <h1>Email of the Day</h1>
         <h3 classname="tagline">
-          <span>Fresh Daily</span>
+          <span>{this.props.tagline}</span>
         </h3>
       </header>
     )

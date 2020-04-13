@@ -10,7 +10,7 @@ class ProfileEditPage extends React.Component {
       <form className="email-edit">
         <input type="text" required placeholder="🦄@usepow.app" />
         <button type="submit">Update</button>
-        <ProfileHeader />
+        <ProfileHeader tagline="The TimeShip lives inside POW!" />
         <ProfileOrder />
         <ProfileInventory />
       </form>
