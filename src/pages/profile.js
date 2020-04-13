@@ -18,12 +18,7 @@ import Profile from "../components/Profile"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
-
-class ProfileEditPage extends React.Component {
-  render() {
-    return <p>ProfileEditPages</p>
-  }
-}
+import ProfileEditPage from "../components/ProfileEditPage"
 
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
