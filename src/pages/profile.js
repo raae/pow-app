@@ -19,8 +19,10 @@ import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 
-const ProfileEditPage = () => {
-  return <p>ProfileEditPage</p>
+class ProfileEditPage extends React.Component {
+  render() {
+    return <p>ProfileEditPages</p>
+  }
 }
 
 const ProfilePage = () => {
