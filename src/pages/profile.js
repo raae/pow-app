@@ -20,7 +20,7 @@ import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 import ProfileIndexPage from "../components/ProfileIndexPage"
 import ProfileRouter from "../components/ProfileRouter"
-
+import ProfileEditPage from "../components/ProfileEditPage"
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
 
@@ -47,7 +47,8 @@ const ProfilePage = () => {
       <SEO title="Profile" />
       <ProfileRouter />
       <Router basepath="/profile">
-        <ProfileIndexPage path="/edit" />
+        <ProfileIndexPage path="/" />
+        <ProfileEditPage path="/edit" />
       </Router>
 
       <BrandLayout variant="app">
