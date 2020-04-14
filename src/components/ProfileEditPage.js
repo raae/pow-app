@@ -9,6 +9,21 @@ import ProfileAddYearForm from "./ProfileAddYearForm"
 // <ProfileInventory />
 // <ProfileHeader tagline="The TimeShip lives inside POW!" />
 class ProfileEditPage extends React.Component {
+  //    const [email, setEmail] = useState("")
+  state = {
+    emails: {},
+  }
+
+  addEmail = (email) => {
+    // 1. Ta
+    const emails = { ...this.state.emails }
+    // 2. Add our new emails to that emails variable
+    emails[`email${Date.now()}`] = email
+    // 3. Set the new emails object to state
+    this.setState({
+      emails,
+    })
+  }
   emailRef = React.createRef()
 
   createEmail = (event) => {
@@ -19,6 +34,7 @@ class ProfileEditPage extends React.Component {
     // console.log(this.emailRef.current.value)
     console.log(email)
     this.props.navigate(`/profile`)
+    event.currentTarget.reset()
   }
   render() {
     return (
