@@ -6,14 +6,16 @@ class ProfileYearPicker extends React.Component {
   iPickedAYear = React.createRef()
   // a property set to an arrow function
   // property goToYear is bound to the instance
-  goToStore = (event) => {
+  goToYear = (event) => {
     // 1. stop
     event.preventDefault()
     // 2. get the year from form
+    console.log(this.iPickedAYear.current.value)
     //    const email=
-    //    const pickedYear = this.iPickedAYear.current.value;
+    const pickedYear = this.iPickedAYear.current.value
     // 3. Change the year in userbase = timeShip API
-    //    this.props.history.push(`/year/${pickedYear}`);
+    this.props.navigate.push(`/year/${pickedYear}`)
+    console.log(this.props.navigate)
 
     console.log("picker")
   }
