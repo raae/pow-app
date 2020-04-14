@@ -40,7 +40,7 @@ const ProfilePage = () => {
   return (
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
-      <ProfileRouter />
+
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
         <ProfileEditPage path="/edit" />

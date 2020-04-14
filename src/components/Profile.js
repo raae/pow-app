@@ -1,4 +1,5 @@
 import React from "react"
+import { Link as GatsbyLink } from "gatsby"
 import {
   Avatar,
   Card,
@@ -7,10 +8,11 @@ import {
   Typography,
   FormControlLabel,
   Switch,
+  Fab,
   makeStyles,
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
-
+import EditNoteIcon from "@material-ui/icons/Edit"
 import { useAuthState, useAuthActions } from "../auth"
 
 const useStyles = makeStyles((theme) => ({}))
@@ -39,6 +41,18 @@ const Profile = () => {
           <Avatar aria-label="recipe" className={classes.avatar}>
             <AccountCircle />
           </Avatar>
+        }
+        action={
+          <Fab
+            color="secondary"
+            size="large"
+            aria-label="Edit note"
+            component={GatsbyLink}
+            to={`/profile/edit`}
+            // className={classes.submit}
+          >
+            <EditNoteIcon />
+          </Fab>
         }
         title={<strong>{user.username}</strong>}
         subheader={userEmail}

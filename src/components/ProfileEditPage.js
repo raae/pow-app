@@ -9,16 +9,29 @@ import ProfileAddYearForm from "./ProfileAddYearForm"
 // <ProfileInventory />
 // <ProfileHeader tagline="The TimeShip lives inside POW!" />
 class ProfileEditPage extends React.Component {
+  emailRef = React.createRef()
+
+  createEmail = (event) => {
+    event.preventDefault()
+    const email = {
+      email: this.emailRef.current.value,
+    }
+    // console.log(this.emailRef.current.value)
+    console.log(email)
+    this.props.navigate(`/profile`)
+  }
   render() {
     return (
       <div>
-        <form className="email-edit">
-          <input type="text" required placeholder="🦄@usepow.app" />
+        <form className="email-edit" onSubmit={this.createEmail}>
+          <input
+            type="text"
+            ref={this.emailRef}
+            required
+            placeholder="unicorn@usepow.app"
+          />
           <button type="submit">Update</button>
         </form>
-        <button type="button" component={GatsbyLink} to={`/profile/`}>
-          Profile
-        </button>
       </div>
     )
   }
