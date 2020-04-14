@@ -19,6 +19,7 @@ import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 import ProfileIndexPage from "../components/ProfileIndexPage"
+import ProfileRouter from "../components/ProfileRouter"
 
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
@@ -44,6 +45,7 @@ const ProfilePage = () => {
   return (
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Profile" />
+      <ProfileRouter />
       <Router basepath="/profile">
         <ProfileIndexPage path="/edit" />
       </Router>
