@@ -14,7 +14,7 @@ class ProfileYearPicker extends React.Component {
     //    const email=
     const pickedYear = this.iPickedAYear.current.value
     // 3. Change the year in userbase = timeShip API
-    this.props.navigate.push(`/year/${pickedYear}`)
+    this.props.navigate(`/year/${pickedYear}`)
     console.log(this.props.navigate)
 
     console.log("picker")
