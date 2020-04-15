@@ -48,6 +48,9 @@ class ProfileEditPage extends React.Component {
           />
           <button type="submit">Update</button>
         </form>
+        <div>
+          <GatsbyLink to="/profile/">profile</GatsbyLink>
+        </div>
       </div>
     )
   }
