@@ -1,13 +1,15 @@
 import React, { useState } from "react"
-import { Link as GatsbyLink } from "gatsby"
 import { useAuthActions } from "../auth"
 
 const ProfileEditPage3 = () => {
+  const { updateUser } = useAuthActions()
   function createEmail(event) {
+    // 1. Prevent that form from naughtyly ____ auto
     event.preventDefault()
-    console.dir(event.target.elements.emailInput.value)
+    // 2. Get that text from the input
     const email = event.target.elements.emailInput.value
-    alert(`You ${email}`)
+    // 2. Send that input to Daniel V.'s Userbase
+    updateUser({ email: email })
   }
   return (
     <form onSubmit={createEmail}>
@@ -21,16 +23,3 @@ const ProfileEditPage3 = () => {
 }
 
 export default ProfileEditPage3
-
-// emailRef = React.createRef()
-
-// createEmail = (event) => {
-//   event.preventDefault()
-//   const email = {
-//     email: this.emailRef.current.value,
-//   }
-//   // console.log(this.emailRef.current.value)
-//   console.log(email)
-//   this.props.navigate(`/profile`)
-//   event.currentTarget.reset()
-// }
