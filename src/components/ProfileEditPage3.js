@@ -8,6 +8,7 @@ import {
   IconButton,
   Typography,
   makeStyles,
+  TextField,
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
@@ -32,20 +33,52 @@ const ProfileEditPage3 = () => {
     navigate(`/profile`)
   }
   return (
-    <form onSubmit={createEmail}>
+    <div>
       <div>
-        <label htmlFor="emailInput">Email:</label>
-        <input id="emailInput" type="text" />
+        <form onSubmit={createEmail}>
+          <div>
+            <label htmlFor="emailInput"></label>
+            <TextField
+              id="emailInput"
+              type="text"
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              // inputRef={inputRef}
+              //id="email"
+              label="Email"
+              name="email"
+              placeholder="unicorn@usepow.app"
+              // value={state.email}
+              autoComplete="email"
+              // onChange={handleChange("email")}
+              //  InputLabelProps={{ shrink: true }}
+            />
+          </div>
+
+          <Toolbar>
+            <IconButton
+              type="reset"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+
+            <Button
+              type="submit"
+              edge="end"
+              variant="contained"
+              color="primary"
+            >
+              Update
+            </Button>
+          </Toolbar>
+        </form>
       </div>
-
-      <IconButton type="reset" edge="start" color="inherit" aria-label="menu">
-        <ArrowBackIcon />
-      </IconButton>
-
-      <Button type="submit" edge="end" variant="contained" color="primary">
-        Update
-      </Button>
-    </form>
+    </div>
   )
 }
 
