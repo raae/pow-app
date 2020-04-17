@@ -1,15 +1,25 @@
 import React, { useState } from "react"
 import { useAuthActions } from "../auth"
+import { navigate } from "gatsby"
 
 const ProfileEditPage3 = () => {
   const { updateUser } = useAuthActions()
   function createEmail(event) {
-    // 1. Prevent that form from naughtyly ____ auto
+    // 1. Prevent that form from naughtily self-submitting
+
     event.preventDefault()
-    // 2. Get that text from the input
+
+    // 2. Get that email from the input
+
     const email = event.target.elements.emailInput.value
-    // 2. Send that input to Daniel V.'s Userbase
+
+    // 3. Send that email to Daniel V.'s Userbase
+
     updateUser({ email: email })
+
+    // 4. Send that customer back to /profile
+
+    navigate(`/profile`)
   }
   return (
     <form onSubmit={createEmail}>
