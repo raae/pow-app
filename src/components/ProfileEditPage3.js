@@ -1,15 +1,7 @@
-import React, { useState } from "react"
+import React from "react"
 import { useAuthActions } from "../auth"
 import { navigate } from "gatsby"
-import {
-  AppBar,
-  Button,
-  Toolbar,
-  IconButton,
-  Typography,
-  makeStyles,
-  TextField,
-} from "@material-ui/core"
+import { Button, Toolbar, IconButton, TextField } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
 const ProfileEditPage3 = () => {
@@ -22,7 +14,6 @@ const ProfileEditPage3 = () => {
     // 2. Get that email from the input
 
     const email = event.target.elements.emailInput.value
-    console.log(event.target.elements.emailInput.value)
 
     // 3. Send that email to Daniel V.'s Userbase
 
@@ -37,24 +28,25 @@ const ProfileEditPage3 = () => {
       <div>
         <form onSubmit={createEmail}>
           <div>
-            <label htmlFor="emailInput"></label>
-            <TextField
-              id="emailInput"
-              type="text"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              // inputRef={inputRef}
-              //id="email"
-              label="Email"
-              name="email"
-              placeholder="unicorn@usepow.app"
-              // value={state.email}
-              autoComplete="email"
-              // onChange={handleChange("email")}
-              //  InputLabelProps={{ shrink: true }}
-            />
+            <label htmlFor="emailInput">
+              <TextField
+                id="emailInput"
+                type="text"
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                // inputRef={inputRef}
+                //id="email"
+                label="Email"
+                name="email"
+                placeholder="unicorn@usepow.app"
+                // value={state.email}
+                autoComplete="email"
+                // onChange={handleChange("email")}
+                //  InputLabelProps={{ shrink: true }}
+              />
+            </label>
           </div>
 
           <Toolbar>

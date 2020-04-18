@@ -7,25 +7,8 @@ import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 import { useQueryParam } from "../utils/useQueryParam"
-//FAb below
-import ProfileRouter from "../components/ProfileRouter"
-import { Link as GatsbyLink } from "gatsby"
-import {
-  Avatar,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  FormControlLabel,
-  Switch,
-  Fab,
-  makeStyles,
-} from "@material-ui/core"
-// import AccountCircle from "@material-ui/icons/AccountCircle"
-import EditNoteIcon from "@material-ui/icons/Edit"
+import { Typography } from "@material-ui/core"
 
-// <Card>
-//       <CardHeader
 const ProfileIndexPage = () => {
   const paymentStatus = useQueryParam("payment")
   return (

@@ -15,7 +15,6 @@ import Alert from "@material-ui/lab/Alert"
 
 import { useAuthState, useAuthActions } from "../auth"
 import {
-  useSignOutNavItem,
   useAppNavItem,
   useSignInNavItem,
   useSignUpNavItem,
