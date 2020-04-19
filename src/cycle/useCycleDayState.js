@@ -10,7 +10,6 @@ import {
 } from "../utils/days"
 
 import { CycleSateContext } from "./provider"
-import { isAfter } from "date-fns"
 
 const useCycleDayState = ({ date, note }) => {
   const context = useContext(CycleSateContext)
