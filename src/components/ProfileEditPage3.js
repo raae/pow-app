@@ -23,10 +23,14 @@ const ProfileEditPage3 = () => {
 
     navigate(`/profile`)
   }
+  function createReset(event) {
+    event.preventDefault()
+    navigate(`/profile`)
+  }
   return (
     <div>
       <div>
-        <form onSubmit={createEmail}>
+        <form onSubmit={createEmail} onReset={createReset}>
           <div>
             <label htmlFor="emailInput">
               <TextField
