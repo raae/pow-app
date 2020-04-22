@@ -17,7 +17,7 @@ import { useAuthState, useAuthActions } from "../auth"
 
 const useStyles = makeStyles((theme) => ({}))
 
-const Profile = () => {
+const ProfileCard = () => {
   const classes = useStyles()
   const { user } = useAuthState()
   const { updateUser } = useAuthActions()
@@ -79,4 +79,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProfileCard

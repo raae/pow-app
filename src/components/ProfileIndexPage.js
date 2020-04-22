@@ -2,7 +2,7 @@ import React from "react"
 import { Box } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import BrandLayout from "../components/BrandLayout"
-import Profile from "../components/Profile"
+import ProfileCard from "./ProfileCard"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
@@ -20,7 +20,7 @@ const ProfileIndexPage = () => {
       )}
       <Box>
         <h1>Profile</h1>
-        <Profile />
+        <ProfileCard />
       </Box>
       <Box my={6}>
         <h1>Help make POW! better</h1>
