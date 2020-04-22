@@ -71,25 +71,18 @@ const ProfileEditPage = () => {
         onReset={createReset}
         className={classes.form}
       >
-        <label htmlFor="emailInput">
-          <TextField
-            id="emailInput"
-            type="text"
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            // inputRef={inputRef}
-            //id="email"
-            label="Email"
-            name="email"
-            placeholder="unicorn@usepow.app"
-            // value={state.email}
-            autoComplete="email"
-            // onChange={handleChange("email")}
-            //  InputLabelProps={{ shrink: true }}
-          />
-        </label>
+        <TextField
+          id="emailInput"
+          type="text"
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Email"
+          name="email"
+          placeholder="unicorn@usepow.app"
+          autoComplete="email"
+        />
 
         <AppBar
           position="absolute"
