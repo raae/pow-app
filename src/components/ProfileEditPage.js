@@ -8,6 +8,7 @@ import {
   IconButton,
   TextField,
   Paper,
+  Typography,
   makeStyles,
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
@@ -27,10 +28,12 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.grey[200]}`,
   },
   toolbar: {
-    justifyContent: "space-between",
     width: "100%",
     maxWidth: "55rem",
     margin: "0 auto",
+  },
+  title: {
+    flexGrow: 1,
   },
 }))
 
@@ -100,6 +103,10 @@ const ProfileEditPage = () => {
             >
               <ArrowBackIcon />
             </IconButton>
+
+            <Typography variant="h6" className={classes.title}>
+              Change email
+            </Typography>
 
             <Button type="submit" variant="outlined" color="primary">
               Update
