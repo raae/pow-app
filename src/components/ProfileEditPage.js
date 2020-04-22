@@ -1,10 +1,41 @@
 import React from "react"
 import { useAuthActions } from "../auth"
 import { navigate } from "gatsby"
-import { Button, Toolbar, IconButton, TextField } from "@material-ui/core"
+import {
+  AppBar,
+  Button,
+  Toolbar,
+  IconButton,
+  TextField,
+  makeStyles,
+} from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: "50rem",
+    margin: "0 auto",
+  },
+  form: {
+    padding: theme.spacing(3),
+    maxWidth: "35em",
+    margin: "0 auto",
+  },
+  appBar: {
+    borderTop: `4px solid ${theme.palette.primary.main}`,
+    borderBottom: `1px solid ${theme.palette.grey[200]}`,
+  },
+  toolbar: {
+    justifyContent: "space-between",
+    width: "100%",
+    maxWidth: "50rem",
+    margin: "0 auto",
+  },
+}))
+
 const ProfileEditPage = () => {
+  const classes = useStyles()
+
   const { updateUser } = useAuthActions()
   function createEmail(event) {
     // 1. Prevent that form from naughtily self-submitting
@@ -28,32 +59,41 @@ const ProfileEditPage = () => {
     navigate(`/profile`)
   }
   return (
-    <div>
-      <div>
-        <form onSubmit={createEmail} onReset={createReset}>
-          <div>
-            <label htmlFor="emailInput">
-              <TextField
-                id="emailInput"
-                type="text"
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                // inputRef={inputRef}
-                //id="email"
-                label="Email"
-                name="email"
-                placeholder="unicorn@usepow.app"
-                // value={state.email}
-                autoComplete="email"
-                // onChange={handleChange("email")}
-                //  InputLabelProps={{ shrink: true }}
-              />
-            </label>
-          </div>
+    <div className={classes.root}>
+      <form
+        onSubmit={createEmail}
+        onReset={createReset}
+        className={classes.form}
+      >
+        <Toolbar />
 
-          <Toolbar>
+        <label htmlFor="emailInput">
+          <TextField
+            id="emailInput"
+            type="text"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            // inputRef={inputRef}
+            //id="email"
+            label="Email"
+            name="email"
+            placeholder="unicorn@usepow.app"
+            // value={state.email}
+            autoComplete="email"
+            // onChange={handleChange("email")}
+            //  InputLabelProps={{ shrink: true }}
+          />
+        </label>
+
+        <AppBar
+          position="absolute"
+          color="white"
+          elevation={0}
+          className={classes.appBar}
+        >
+          <Toolbar className={classes.toolbar}>
             <IconButton
               type="reset"
               edge="start"
@@ -63,17 +103,12 @@ const ProfileEditPage = () => {
               <ArrowBackIcon />
             </IconButton>
 
-            <Button
-              type="submit"
-              edge="end"
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" variant="outlined" color="primary">
               Update
             </Button>
           </Toolbar>
-        </form>
-      </div>
+        </AppBar>
+      </form>
     </div>
   )
 }
