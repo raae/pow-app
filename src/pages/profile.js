@@ -6,8 +6,6 @@ import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider } from "../cycle"
 
-import { useQueryParam } from "../utils/useQueryParam"
-
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 
@@ -15,8 +13,6 @@ import ProfileIndexPage from "../components/ProfileIndexPage"
 import ProfileEditPage from "../components/ProfileEditPage"
 
 const ProfilePage = () => {
-  const paymentStatus = useQueryParam("payment")
-
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
 
