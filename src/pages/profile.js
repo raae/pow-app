@@ -12,7 +12,7 @@ import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 
 import ProfileIndexPage from "../components/ProfileIndexPage"
-import ProfileEditPage3 from "../components/ProfileEditPage3"
+import ProfileEditPage from "../components/ProfileEditPage"
 
 const ProfilePage = () => {
   const paymentStatus = useQueryParam("payment")
@@ -41,7 +41,7 @@ const ProfilePage = () => {
 
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
-        <ProfileEditPage3 path="/edit" />
+        <ProfileEditPage path="/edit" />
       </Router>
     </CycleProvider>
   )

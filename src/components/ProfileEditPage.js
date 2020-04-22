@@ -4,7 +4,7 @@ import { navigate } from "gatsby"
 import { Button, Toolbar, IconButton, TextField } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
-const ProfileEditPage3 = () => {
+const ProfileEditPage = () => {
   const { updateUser } = useAuthActions()
   function createEmail(event) {
     // 1. Prevent that form from naughtily self-submitting
@@ -78,4 +78,4 @@ const ProfileEditPage3 = () => {
   )
 }
 
-export default ProfileEditPage3
+export default ProfileEditPage
