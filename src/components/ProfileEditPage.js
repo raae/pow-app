@@ -7,6 +7,7 @@ import {
   Toolbar,
   IconButton,
   TextField,
+  Paper,
   makeStyles,
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
@@ -17,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 auto",
   },
   form: {
+    margin: theme.spacing(3),
     padding: theme.spacing(3),
     maxWidth: "35em",
-    margin: "0 auto",
   },
   appBar: {
     borderTop: `4px solid ${theme.palette.primary.main}`,
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     justifyContent: "space-between",
     width: "100%",
-    maxWidth: "50rem",
+    maxWidth: "55rem",
     margin: "0 auto",
   },
 }))
@@ -60,13 +61,14 @@ const ProfileEditPage = () => {
   }
   return (
     <div className={classes.root}>
-      <form
+      <Toolbar />
+
+      <Paper
+        component="form"
         onSubmit={createEmail}
         onReset={createReset}
         className={classes.form}
       >
-        <Toolbar />
-
         <label htmlFor="emailInput">
           <TextField
             id="emailInput"
@@ -89,6 +91,7 @@ const ProfileEditPage = () => {
 
         <AppBar
           position="absolute"
+          component="div"
           color="white"
           elevation={0}
           className={classes.appBar}
@@ -108,7 +111,7 @@ const ProfileEditPage = () => {
             </Button>
           </Toolbar>
         </AppBar>
-      </form>
+      </Paper>
     </div>
   )
 }
