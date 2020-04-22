@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     maxWidth: "35em",
   },
+  helperText: {
+    padding: `0 ${theme.spacing(1)}`,
+  },
   appBar: {
     borderTop: `4px solid ${theme.palette.primary.main}`,
     borderBottom: `1px solid ${theme.palette.grey[200]}`,
@@ -81,10 +84,15 @@ const ProfileEditPage = () => {
           margin="normal"
           required
           fullWidth
-          label="Email"
+          label="New email"
           name="email"
           placeholder="unicorn@usepow.app"
           autoComplete="email"
+          helperText={
+            <>
+              You current email address is <strong>test@test.com</strong>.
+            </>
+          }
         />
 
         <AppBar
