@@ -2,17 +2,20 @@ import React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import {
   Avatar,
+  IconButton,
   Card,
   CardHeader,
   CardContent,
   Typography,
+  Menu,
+  MenuItem,
   FormControlLabel,
   Switch,
-  Fab,
   makeStyles,
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
-import EditNoteIcon from "@material-ui/icons/Edit"
+import MoreVertIcon from "@material-ui/icons/MoreVert"
+
 import { useAuthState, useAuthActions } from "../auth"
 
 const useStyles = makeStyles((theme) => ({}))
@@ -20,6 +23,9 @@ const useStyles = makeStyles((theme) => ({}))
 const ProfileCard = () => {
   const classes = useStyles()
   const { user } = useAuthState()
+
+  // Handle newsletter subscription change
+
   const { updateUser } = useAuthActions()
   const userProfile = user.profile || {}
   const userProfileProtected = user.protectedProfile || {}
@@ -30,6 +36,18 @@ const ProfileCard = () => {
       [name]: event.target.checked ? "1" : "0",
     }
     updateUser({ email: userEmail, profile: { ...userProfile, ...profile } })
+  }
+
+  // Open / close menu
+
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null)
+
+  const handleOpenMenu = (event) => {
+    setMenuAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setMenuAnchorEl(null)
   }
 
   if (!user) return null
@@ -43,16 +61,27 @@ const ProfileCard = () => {
           </Avatar>
         }
         action={
-          <Fab
-            color="secondary"
-            size="large"
-            aria-label="Edit note"
-            component={GatsbyLink}
-            to={`/profile/edit`}
-            // className={classes.submit}
-          >
-            <EditNoteIcon />
-          </Fab>
+          <>
+            <IconButton
+              aria-label="settings"
+              aria-controls="simple-menu"
+              onClick={handleOpenMenu}
+            >
+              <MoreVertIcon />
+            </IconButton>
+
+            <Menu
+              id="simple-menu"
+              anchorEl={menuAnchorEl}
+              keepMounted
+              open={Boolean(menuAnchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem component={GatsbyLink} to={`/profile/edit`}>
+                Edit email address
+              </MenuItem>
+            </Menu>
+          </>
         }
         title={<strong>{user.username}</strong>}
         subheader={userEmail}
