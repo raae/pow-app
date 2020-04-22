@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ProfileEditPage = () => {
+const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
 
@@ -126,4 +126,4 @@ const ProfileEditPage = () => {
   )
 }
 
-export default ProfileEditPage
+export default ProfileEditEmailPage

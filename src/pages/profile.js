@@ -10,7 +10,7 @@ import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 
 import ProfileIndexPage from "../components/ProfileIndexPage"
-import ProfileEditPage from "../components/ProfileEditPage"
+import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
 
 const ProfilePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
@@ -37,7 +37,7 @@ const ProfilePage = () => {
 
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
-        <ProfileEditPage path="/edit" />
+        <ProfileEditEmailPage path="/edit" />
       </Router>
     </CycleProvider>
   )
