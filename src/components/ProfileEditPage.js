@@ -36,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEditPage = () => {
   const classes = useStyles()
-
   const { updateUser } = useAuthActions()
-  function createEmail(event) {
+
+  const createEmail = (event) => {
     // 1. Prevent that form from naughtily self-submitting
 
     event.preventDefault()
@@ -55,10 +55,12 @@ const ProfileEditPage = () => {
 
     navigate(`/profile`)
   }
-  function createReset(event) {
+
+  const createReset = (event) => {
     event.preventDefault()
     navigate(`/profile`)
   }
+
   return (
     <div className={classes.root}>
       <Toolbar />
