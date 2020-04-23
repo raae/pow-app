@@ -1,23 +1,31 @@
 import React from "react"
+import { Link as GatsbyLink } from "gatsby"
 import {
   Avatar,
+  IconButton,
   Card,
   CardHeader,
   CardContent,
   Typography,
+  Menu,
+  MenuItem,
   FormControlLabel,
   Switch,
   makeStyles,
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
+import MoreVertIcon from "@material-ui/icons/MoreVert"
 
 import { useAuthState, useAuthActions } from "../auth"
 
 const useStyles = makeStyles((theme) => ({}))
 
-const Profile = () => {
+const ProfileCard = () => {
   const classes = useStyles()
   const { user } = useAuthState()
+
+  // Handle newsletter subscription change
+
   const { updateUser } = useAuthActions()
   const userProfile = user.profile || {}
   const userProfileProtected = user.protectedProfile || {}
@@ -30,6 +38,18 @@ const Profile = () => {
     updateUser({ email: userEmail, profile: { ...userProfile, ...profile } })
   }
 
+  // Open / close menu
+
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null)
+
+  const handleOpenMenu = (event) => {
+    setMenuAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setMenuAnchorEl(null)
+  }
+
   if (!user) return null
 
   return (
@@ -39,6 +59,29 @@ const Profile = () => {
           <Avatar aria-label="recipe" className={classes.avatar}>
             <AccountCircle />
           </Avatar>
+        }
+        action={
+          <>
+            <IconButton
+              aria-label="settings"
+              aria-controls="simple-menu"
+              onClick={handleOpenMenu}
+            >
+              <MoreVertIcon />
+            </IconButton>
+
+            <Menu
+              id="simple-menu"
+              anchorEl={menuAnchorEl}
+              keepMounted
+              open={Boolean(menuAnchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem component={GatsbyLink} to={`/profile/edit`}>
+                Edit email address
+              </MenuItem>
+            </Menu>
+          </>
         }
         title={<strong>{user.username}</strong>}
         subheader={userEmail}
@@ -65,4 +108,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProfileCard
