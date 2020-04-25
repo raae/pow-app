@@ -11,6 +11,7 @@ import Loading from "../components/Loading"
 
 import ProfileIndexPage from "../components/ProfileIndexPage"
 import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
+import ProfileEditPOWnamePage from "../components/ProfileEditPOWnamePage"
 
 const ProfilePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
@@ -38,6 +39,7 @@ const ProfilePage = () => {
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
         <ProfileEditEmailPage path="/edit" />
+        <ProfileEditPOWnamePage path="/newpowname" />
       </Router>
     </CycleProvider>
   )
