@@ -13,14 +13,48 @@ import {
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
+// Is this CSS?
+// Is this using classes in the DOM?
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: "50rem",
+    margin: "0 auto",
+  },
+  form: {
+    margin: theme.spacing(3),
+    padding: theme.spacing(3),
+    maxWidth: "35em",
+  },
+  helperText: {
+    padding: `0 ${theme.spacing(1)}`,
+  },
+  appBar: {
+    borderTop: `4px solid ${theme.palette.primary.main}`,
+    borderBottom: `1px solid ${theme.palette.grey[200]}`,
+  },
+  toolbar: {
+    width: "100%",
+    maxWidth: "55rem",
+    margin: "0 auto",
+  },
+  title: {
+    flexGrow: 1,
+  },
+}))
+
 const ProfileEditPOWnamePage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
 
   const createNewPOWname = (event) => {
+    // Go GET that event and stop it from naughtily submitting
     event.preventDefault()
+    // LISTEN for CustomerName
     const myNewPOWname = event.target.elements.POWnameInput.value
+    // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
     updateUser({ username: myNewPOWname })
+    // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
   }
 
@@ -35,7 +69,7 @@ const ProfileEditPOWnamePage = () => {
         component="form"
         onSubmit={createNewPOWname}
         onReset={createReset}
-        className={}
+        //className={}
       >
         <label htmlFor="POWnameInput">
           You Pick A Year{" "}
@@ -62,9 +96,10 @@ const ProfileEditPOWnamePage = () => {
           component="div"
           color="white"
           elevation={0}
-          className={}
+          //className={}
         >
-          <Toolbar className={}>
+          <Toolbar //className={}
+          >
             <IconButton
               type="reset"
               edge="start"
@@ -73,7 +108,10 @@ const ProfileEditPOWnamePage = () => {
             >
               <ArrowBackIcon />
             </IconButton>
-            <Typography variant="h6" className={}>
+            <Typography
+              variant="h6"
+              //className={}
+            >
               Change Your POW Name
             </Typography>
 
