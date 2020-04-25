@@ -63,15 +63,13 @@ const ProfileEditPOWnamePage = () => {
     navigate(`/profile`)
   }
   return (
-    <div
-    //className={}
-    >
+    <div className={classes.root}>
       <Toolbar />
       <Paper
         component="form"
         onSubmit={createNewPOWname}
         onReset={createReset}
-        //className={}
+        className={classes.form}
       >
         <label htmlFor="POWnameInput">
           <TextField
@@ -97,10 +95,9 @@ const ProfileEditPOWnamePage = () => {
           component="div"
           color="white"
           elevation={0}
-          //className={}
+          className={classes.appBar}
         >
-          <Toolbar //className={}
-          >
+          <Toolbar className={classes.toolbar}>
             <IconButton
               type="reset"
               edge="start"
@@ -109,10 +106,7 @@ const ProfileEditPOWnamePage = () => {
             >
               <ArrowBackIcon />
             </IconButton>
-            <Typography
-              variant="h6"
-              //className={}
-            >
+            <Typography variant="h6" className={classes.title}>
               POW Name{" "}
             </Typography>
 
