@@ -63,7 +63,9 @@ const ProfileEditPOWnamePage = () => {
     navigate(`/profile`)
   }
   return (
-    <div className={}>
+    <div
+    //className={}
+    >
       <Toolbar />
       <Paper
         component="form"
@@ -72,7 +74,6 @@ const ProfileEditPOWnamePage = () => {
         //className={}
       >
         <label htmlFor="POWnameInput">
-          You Pick A Year{" "}
           <TextField
             id="POWnameInput"
             type="text"
@@ -112,7 +113,7 @@ const ProfileEditPOWnamePage = () => {
               variant="h6"
               //className={}
             >
-              Change Your POW Name
+              POW Name{" "}
             </Typography>
 
             <Button type="submit" variant="outlined" color="primary">
