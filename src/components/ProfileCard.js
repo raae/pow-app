@@ -80,6 +80,9 @@ const ProfileCard = () => {
               <MenuItem component={GatsbyLink} to={`/profile/edit`}>
                 Edit email address
               </MenuItem>
+              <MenuItem component={GatsbyLink} to={`/profile/newpowname`}>
+                Edit your POW! name
+              </MenuItem>
             </Menu>
           </>
         }
