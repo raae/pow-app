@@ -1,5 +1,5 @@
 import React from "react"
-import { useAuthActions } from "../auth"
+import { useAuthActions, useAuthState } from "../auth"
 import { navigate } from "gatsby"
 import {
   AppBar,
@@ -46,12 +46,15 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditPOWnamePage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
+  const { user } = useAuthState()
+  const yourCurrentPOWname = user.username
 
   const createNewPOWname = (event) => {
     // Go GET that event and stop it from naughtily submitting
     event.preventDefault()
     // LISTEN for CustomerName
     const myNewPOWname = event.target.elements.POWnameInput.value
+
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
     updateUser({ username: myNewPOWname })
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
@@ -81,11 +84,11 @@ const ProfileEditPOWnamePage = () => {
             fullWidth
             label="New POW name"
             name="POW name"
-            placeholder="1554@london.uk"
+            placeholder="Unicorny"
             autoComplete="username"
             helperText={
               <>
-                Your current POW name is <strong>Unicorny</strong>.
+                Your current POW name is <strong>{yourCurrentPOWname}</strong>.
               </>
             }
           />
@@ -107,7 +110,7 @@ const ProfileEditPOWnamePage = () => {
               <ArrowBackIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              POW Name{" "}
+              POW Name
             </Typography>
 
             <Button type="submit" variant="outlined" color="primary">
