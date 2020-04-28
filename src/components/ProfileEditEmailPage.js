@@ -1,5 +1,5 @@
 import React from "react"
-import { useAuthActions } from "../auth"
+import { useAuthActions, useAuthState } from "../auth"
 import { navigate } from "gatsby"
 import {
   AppBar,
@@ -43,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
+  const { user } = useAuthState()
+  const yourCurrentPOWemail = user.email
 
   const createEmail = (event) => {
     // 1. Prevent that form from naughtily self-submitting
@@ -90,7 +92,7 @@ const ProfileEditEmailPage = () => {
           autoComplete="email"
           helperText={
             <>
-              Your current email address is <strong>test@test.com</strong>.
+              Your current POW! email is <strong>{yourCurrentPOWemail}</strong>.
             </>
           }
         />
