@@ -88,7 +88,6 @@ const ProfileEditEmailPage = () => {
           fullWidth
           label="New email"
           name="email"
-          placeholder="unicorn@usepow.app"
           autoComplete="email"
           helperText={
             <>

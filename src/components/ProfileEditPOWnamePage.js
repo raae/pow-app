@@ -84,7 +84,6 @@ const ProfileEditPOWnamePage = () => {
             fullWidth
             label="New POW name"
             name="POW name"
-            placeholder="Unicorny"
             autoComplete="username"
             helperText={
               <>
