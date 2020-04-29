@@ -78,7 +78,7 @@ const ProfileCard = () => {
               onClose={handleClose}
             >
               <MenuItem component={GatsbyLink} to={`/profile/edit`}>
-                Edit email address
+                Change email address
               </MenuItem>
               <MenuItem component={GatsbyLink} to={`/profile/newpowname`}>
                 Change username

@@ -38,7 +38,7 @@ const ProfilePage = () => {
 
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
-        <ProfileEditEmailPage path="/edit" />
+        <ProfileEditEmailPage path="/email" />
         <ProfileEditnamePage path="/username" />
       </Router>
     </CycleProvider>

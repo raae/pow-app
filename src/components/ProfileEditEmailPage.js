@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
-  const { user } = useAuthState()
-  const yourCurrentPOWemail = user.email
+  //const { user } = useAuthState()
+  //const currentEmail = user.email
 
   const createEmail = (event) => {
     // 1. Prevent that form from naughtily self-submitting
@@ -91,7 +91,7 @@ const ProfileEditEmailPage = () => {
           autoComplete="email"
           helperText={
             <>
-              Your current POW! email is <strong>{yourCurrentPOWemail}</strong>.
+              Your current POW! email is <strong>yo@POW.app</strong>.
             </>
           }
         />
