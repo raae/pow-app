@@ -81,7 +81,7 @@ const ProfileCard = () => {
                 Edit email address
               </MenuItem>
               <MenuItem component={GatsbyLink} to={`/profile/newpowname`}>
-                Edit your POW! name
+                Change username
               </MenuItem>
             </Menu>
           </>
