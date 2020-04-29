@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const ProfileEditPOWnamePage = () => {
+const ProfileEditnamePage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const yourCurrentPOWname = user.username
 
   const createNewPOWname = (event) => {
-    // Go GET that event and stop it from naughtily submitting
+    // Go GET that event and stop the page from fully and naughtily refreshing
     event.preventDefault()
     // LISTEN for CustomerName
     const myNewPOWname = event.target.elements.POWnameInput.value
@@ -121,4 +121,4 @@ const ProfileEditPOWnamePage = () => {
     </div>
   )
 }
-export default ProfileEditPOWnamePage
+export default ProfileEditnamePage
