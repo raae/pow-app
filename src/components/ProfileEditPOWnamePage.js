@@ -82,12 +82,12 @@ const ProfileEditnamePage = () => {
             margin="normal"
             required
             fullWidth
-            label="New POW name"
+            label="New Userame"
             name="POW name"
             autoComplete="username"
             helperText={
               <>
-                Your current POW name is <strong>{yourCurrentPOWname}</strong>.
+                Your current Username is <strong>{yourCurrentPOWname}</strong>.
               </>
             }
           />
@@ -109,7 +109,7 @@ const ProfileEditnamePage = () => {
               <ArrowBackIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              POW Name
+              Username
             </Typography>
 
             <Button type="submit" variant="outlined" color="primary">
