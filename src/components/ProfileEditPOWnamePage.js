@@ -47,7 +47,7 @@ const ProfileEditnamePage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
-  const yourCurrentPOWname = user.username
+  const currentUsername = user.username
 
   const createNewPOWname = (event) => {
     // Go GET that event and stop the page from fully and naughtily refreshing
@@ -87,7 +87,7 @@ const ProfileEditnamePage = () => {
             autoComplete="username"
             helperText={
               <>
-                Your current Username is <strong>{yourCurrentPOWname}</strong>.
+                Your current Username is <strong>{currentUsername}</strong>.
               </>
             }
           />
