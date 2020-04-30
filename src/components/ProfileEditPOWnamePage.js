@@ -53,10 +53,10 @@ const ProfileEditnamePage = () => {
     // Go GET that event and stop the page from fully and naughtily refreshing
     event.preventDefault()
     // LISTEN for CustomerName
-    const myNewPOWname = event.target.elements.POWnameInput.value
+    const newUsername = event.target.elements.POWnameInput.value
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
-    updateUser({ username: myNewPOWname })
+    updateUser({ username: newUsername })
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
   }
