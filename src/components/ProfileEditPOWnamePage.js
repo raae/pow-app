@@ -87,7 +87,7 @@ const ProfileEditnamePage = () => {
             autoComplete="username"
             helperText={
               <>
-                Your current Username is <strong>{currentUsername}</strong>.
+                Your current username is <strong>{currentUsername}</strong>.
               </>
             }
           />
