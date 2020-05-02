@@ -12,7 +12,9 @@ import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 import DaySummary from "../components/DaySummary"
+import DaySummary2 from "../components/DaySummary2"
 import Forecast from "../components/Forecast"
+import ForeOrBackcast2 from "../components/ForeOrBackcast2"
 import DatePicker from "../components/DatePicker"
 import Welcome from "../components/Welcome"
 
@@ -25,9 +27,10 @@ const Day = ({ date }) => {
   })
 
   const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
-
+  const beforeInterval = intervalAfterDate(entryId, daysBetween - 3)
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
+      <Forecast entryId={entryId} interval={beforeInterval} />
       <DaySummary entryId={entryId} />
       <Welcome />
       <Forecast entryId={entryId} interval={afterInterval} />
@@ -45,11 +48,11 @@ const HomeRoute = () => {
     if (!user && !authIsPending) {
       navigate("/login")
     } else if (!hasPaid && !authIsPending) {
-      navigate("/profile?payment=unfinished")
+      // navigate("/profile?payment=unfinished")
     }
   }, [user, authIsPending, hasPaid])
-
-  if (!user || !hasPaid || dataIsPending) {
+  // || !hasPaid
+  if (!user || dataIsPending) {
     return (
       <>
         <SEO title="Loading..." />
