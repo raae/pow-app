@@ -26,8 +26,16 @@ const Day = ({ date }) => {
     date: makeDate(entryId),
   })
 
-  const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
+  // I added a Forecast component
+  // Trying to get the interval set to the day before minus 3 days
   const beforeInterval = intervalAfterDate(entryId, daysBetween - 3)
+
+  // Not yet put in the Forecast component to replace DaySummary
+  // Not yet tried to get the interval set to the selected day
+
+  //The original interval
+  const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
+
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
       <Forecast entryId={entryId} interval={beforeInterval} />
@@ -48,11 +56,11 @@ const HomeRoute = () => {
     if (!user && !authIsPending) {
       navigate("/login")
     } else if (!hasPaid && !authIsPending) {
-      // navigate("/profile?payment=unfinished")
+      navigate("/profile?payment=unfinished")
     }
   }, [user, authIsPending, hasPaid])
-  // || !hasPaid
-  if (!user || dataIsPending) {
+
+  if (!user || !hasPaid || dataIsPending) {
     return (
       <>
         <SEO title="Loading..." />
