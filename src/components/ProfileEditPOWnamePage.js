@@ -43,7 +43,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-//async somewhere here
+//async somewhere here look at
+// Line 83 in UserForm.js
 
 const ProfileEditnamePage = () => {
   const classes = useStyles()
@@ -60,7 +61,7 @@ const ProfileEditnamePage = () => {
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
     updateUser({ username: newUsername })
-
+    await result =
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
   }
