@@ -43,11 +43,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+//async somewhere here
+
 const ProfileEditnamePage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const currentUsername = user.username
+  const error = 1 // from userbase
 
   const createNewPOWname = (event) => {
     // Go GET that event and stop the page from fully and naughtily refreshing
@@ -57,6 +60,7 @@ const ProfileEditnamePage = () => {
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
     updateUser({ username: newUsername })
+
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
   }
