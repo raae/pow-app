@@ -12,9 +12,9 @@ import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 import DaySummary from "../components/DaySummary"
-import DaySummary2 from "../components/DaySummary2"
+
 import Forecast from "../components/Forecast"
-import ForeOrBackcast2 from "../components/ForeOrBackcast2"
+
 import DatePicker from "../components/DatePicker"
 import Welcome from "../components/Welcome"
 
@@ -59,7 +59,7 @@ const HomeRoute = () => {
       navigate("/profile?payment=unfinished")
     }
   }, [user, authIsPending, hasPaid])
-
+  //
   if (!user || !hasPaid || dataIsPending) {
     return (
       <>
