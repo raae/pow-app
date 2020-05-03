@@ -6,7 +6,13 @@ import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider, useCycleDayState } from "../cycle"
 
-import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
+import {
+  entryIdFromDate,
+  makeDate,
+  intervalAfterDate,
+  eachDayOfInterval,
+  intervalBeforeDate,
+} from "../utils/days"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -27,11 +33,9 @@ const Day = ({ date }) => {
   })
 
   // I added a Forecast component
-  // Trying to get the interval set to the day before minus 3 days
-  const beforeInterval = intervalAfterDate(entryId, daysBetween - 3)
 
-  // Not yet put in the Forecast component to replace DaySummary
-  // Not yet tried to get the interval set to the selected day
+  const beforeInterval = intervalBeforeDate(entryId, 3)
+  const oneDay = intervalBeforeDate(entryId, 1)
 
   //The original interval
   const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
@@ -39,7 +43,7 @@ const Day = ({ date }) => {
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
       <Forecast entryId={entryId} interval={beforeInterval} />
-      <Forecast entryId={entryId} interval={beforeInterval} />
+      <Forecast entryId={entryId} interval={oneDay} />
       <Welcome />
       <Forecast entryId={entryId} interval={afterInterval} />
     </BrandLayout>
