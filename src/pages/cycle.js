@@ -39,7 +39,7 @@ const Day = ({ date }) => {
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
       <Forecast entryId={entryId} interval={beforeInterval} />
-      <DaySummary entryId={entryId} />
+      <Forecast entryId={entryId} interval={beforeInterval} />
       <Welcome />
       <Forecast entryId={entryId} interval={afterInterval} />
     </BrandLayout>
