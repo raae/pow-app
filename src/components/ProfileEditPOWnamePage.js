@@ -86,6 +86,7 @@ const ProfileEditnamePage = () => {
       >
         <label htmlFor="POWnameInput">
           <TextField
+            disabled={Boolean(error)}
             id="POWnameInput"
             type="text"
             variant="outlined"
@@ -103,6 +104,7 @@ const ProfileEditnamePage = () => {
             onChange={handleChange}
           />
         </label>
+
         <AppBar
           position="absolute"
           component="div"
@@ -112,6 +114,7 @@ const ProfileEditnamePage = () => {
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
+              disabled={Boolean(error)}
               type="reset"
               edge="start"
               color="inherit"
