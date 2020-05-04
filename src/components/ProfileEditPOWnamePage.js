@@ -51,7 +51,9 @@ const ProfileEditnamePage = () => {
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const currentUsername = user.username
-  const error = 1 // from userbase
+  const [ussername, setUssername] = React.useState("")
+  const isLowerCase = ussername === ussername.toLowerCase()
+  const error = isLowerCase ? null : "Your username must be lowecase" // from userbase
 
   const createNewPOWname = (event) => {
     // Go GET that event and stop the page from fully and naughtily refreshing
@@ -61,7 +63,7 @@ const ProfileEditnamePage = () => {
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
     updateUser({ username: newUsername })
-    await result =
+    //result = "await yo"
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
   }
@@ -69,6 +71,9 @@ const ProfileEditnamePage = () => {
   const createReset = (event) => {
     event.preventDefault()
     navigate(`/profile`)
+  }
+  function handleChange(event) {
+    setUssername(event.target.value)
   }
   return (
     <div className={classes.root}>
@@ -95,6 +100,7 @@ const ProfileEditnamePage = () => {
                 Your current username is <strong>{currentUsername}</strong>.
               </>
             }
+            onChange={handleChange}
           />
         </label>
         <AppBar
@@ -117,7 +123,12 @@ const ProfileEditnamePage = () => {
               Username
             </Typography>
 
-            <Button type="submit" variant="outlined" color="primary">
+            <Button
+              disabled={Boolean(error)}
+              type="submit"
+              variant="outlined"
+              color="primary"
+            >
               Update
             </Button>
           </Toolbar>
