@@ -104,7 +104,7 @@ const ProfileEditnamePage = () => {
             onChange={handleChange}
           />
         </label>
-
+        <div style={{ color: "red" }}>{error}</div>
         <AppBar
           position="absolute"
           component="div"
