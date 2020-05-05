@@ -1,4 +1,5 @@
 import React from "react"
+import { useState } from "react"
 import { useAuthActions, useAuthState } from "../auth"
 import { navigate } from "gatsby"
 import {
@@ -53,7 +54,8 @@ const ProfileEditnamePage = () => {
   const currentUsername = user.username
   const [ussername, setUssername] = React.useState("")
   const isLowerCase = ussername === ussername.toLowerCase()
-  const error = isLowerCase ? null : "Your username must be lowecase" // from userbase
+  const errorDodd = isLowerCase ? null : "Your username must be lowecase" // from userbase
+  const [error, setError] = useState(false)
 
   const createNewPOWname = (event) => {
     // Go GET that event and stop the page from fully and naughtily refreshing
