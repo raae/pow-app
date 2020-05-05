@@ -57,14 +57,15 @@ const ProfileEditnamePage = () => {
   const errorDodd = isLowerCase ? null : "Your username must be lowecase" // from userbase
   const [error, setError] = useState(false)
 
-  const createNewPOWname = (event) => {
+  const createNewPOWname = async (event) => {
     // Go GET that event and stop the page from fully and naughtily refreshing
     event.preventDefault()
+
     // LISTEN for CustomerName
     const newUsername = event.target.elements.POWnameInput.value
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
-    updateUser({ username: newUsername })
+    await updateUser({ username: newUsername })
     //result = "await yo"
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
