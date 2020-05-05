@@ -65,8 +65,15 @@ const ProfileEditnamePage = () => {
     const newUsername = event.target.elements.POWnameInput.value
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
-    await updateUser({ username: newUsername })
-    //result = "await yo"
+
+    const result = await updateUser({ username: newUsername })
+
+    if (result.error) {
+      setError(result.error)
+    } else {
+      setError(false)
+    }
+
     // EVADE back to (`/profile`) by calling the navigate from Gatsby
     navigate(`/profile`)
   }
