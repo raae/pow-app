@@ -92,10 +92,10 @@ const ProfileEditnamePage = () => {
         onReset={createReset}
         className={classes.form}
       >
-        <label htmlFor="POWnameInput">
+        <label htmlFor="UsernameInput">
           <TextField
             disabled={Boolean(error)}
-            id="POWnameInput"
+            id="UsernameInput"
             type="text"
             variant="outlined"
             margin="normal"
