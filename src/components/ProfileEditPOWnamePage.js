@@ -101,7 +101,7 @@ const ProfileEditnamePage = () => {
             margin="normal"
             required
             fullWidth
-            label="New Userame"
+            label="Username"
             name="POW name"
             autoComplete="username"
             helperText={
