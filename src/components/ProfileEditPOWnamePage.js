@@ -53,8 +53,6 @@ const ProfileEditnamePage = () => {
   const { user } = useAuthState()
   const currentUsername = user.username
   const [ussername, setUssername] = React.useState("")
-  const isLowerCase = ussername === ussername.toLowerCase()
-  const errorDodd = isLowerCase ? null : "Your username must be lowecase" // from userbase
   const [error, setError] = useState(false)
 
   const createNewPOWname = async (event) => {
