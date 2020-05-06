@@ -102,7 +102,6 @@ const ProfileEditnamePage = () => {
             required
             fullWidth
             label="Username"
-            name="POW name"
             autoComplete="username"
             helperText={
               <>
