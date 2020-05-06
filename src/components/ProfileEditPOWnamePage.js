@@ -52,7 +52,7 @@ const ProfileEditnamePage = () => {
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const currentUsername = user.username
-  const [ussername, setUssername] = React.useState("")
+  //const [username, setUssername] = React.useState("")
   const [error, setError] = useState(false)
 
   const createNewPOWname = async (event) => {
@@ -80,9 +80,9 @@ const ProfileEditnamePage = () => {
     event.preventDefault()
     navigate(`/profile`)
   }
-  function handleChange(event) {
-    setUssername(event.target.value)
-  }
+  // function handleChange(event) {
+  //   setUssername(event.target.value)
+  // }
   return (
     <div className={classes.root}>
       <Toolbar />
@@ -109,7 +109,7 @@ const ProfileEditnamePage = () => {
                 Your current username is <strong>{currentUsername}</strong>.
               </>
             }
-            onChange={handleChange}
+            // onChange={handleChange}
           />
         </label>
         <div style={{ color: "red" }}>{error}</div>
