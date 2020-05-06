@@ -72,10 +72,10 @@ const ProfileEditnamePage = () => {
       setError(result.error)
     } else {
       setError(false)
+      // if there is no error inside the incoming result from the userbase backenf
+      // EVADE back to (`/profile`) by calling the navigate from Gatsby
+      navigate(`/profile`)
     }
-
-    // EVADE back to (`/profile`) by calling the navigate from Gatsby
-    navigate(`/profile`)
   }
 
   const createReset = (event) => {
