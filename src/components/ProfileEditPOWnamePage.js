@@ -14,9 +14,6 @@ import {
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
-// Is this CSS?
-// Is this using classes in the DOM?
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "50rem",
@@ -52,7 +49,7 @@ const ProfileEditnamePage = () => {
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const currentUsername = user.username
-  //const [username, setUssername] = React.useState("")
+  const [status, setStatus] = React.useState
   const [error, setError] = useState(false)
 
   const createNewPOWname = async (event) => {
