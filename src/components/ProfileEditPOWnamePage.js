@@ -49,7 +49,7 @@ const ProfileEditnamePage = () => {
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const currentUsername = user.username
-  const [status, setStatus] = React.useState
+  const [status, setStatus] = React.useState("idle")
   const [error, setError] = useState(false)
 
   const createNewPOWname = async (event) => {
