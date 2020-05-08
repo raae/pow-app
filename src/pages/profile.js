@@ -12,6 +12,7 @@ import Loading from "../components/Loading"
 import ProfileIndexPage from "../components/ProfileIndexPage"
 import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
 import ProfileEditnamePage from "../components/ProfileEditPOWnamePage"
+import PokePony from "../components/PokePony"
 
 const ProfilePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
@@ -40,6 +41,7 @@ const ProfilePage = () => {
         <ProfileIndexPage path="/" />
         <ProfileEditEmailPage path="/email" />
         <ProfileEditnamePage path="/username" />
+        <PokePony path="/pokepony" />
       </Router>
     </CycleProvider>
   )
