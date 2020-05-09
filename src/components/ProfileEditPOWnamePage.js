@@ -1,5 +1,4 @@
-import React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { useAuthActions, useAuthState } from "../auth"
 import { navigate } from "gatsby"
 import {
@@ -49,7 +48,7 @@ const ProfileEditnamePage = () => {
   const { updateUser } = useAuthActions()
   const { user } = useAuthState()
   const currentUsername = user.username
-  const [status, setStatus] = React.useState("idle")
+  const [status, setStatus] = useState("idle")
   const [error, setError] = useState(false)
 
   const createNewPOWname = async (event) => {
@@ -57,17 +56,23 @@ const ProfileEditnamePage = () => {
     event.preventDefault()
 
     // LISTEN for CustomerName
-    const newUsername = event.target.elements.POWnameInput.value
+    const newUsername = event.target.elements.usernameInput.value
 
     // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
-
+    setStatus("pending")
+    setError(false)
     const result = await updateUser({ username: newUsername })
 
     if (result.error) {
       setError(result.error)
+      setStatus("idle")
     } else {
       setError(false)
-      // if there is no error inside the incoming result from the userbase backenf
+      setStatus("idle")
+      // if there is an error inside the incoming result from the userbase backen
+
+      // if there is no error inside the incoming result from the userbase backen
+      // "idele" and navigate back to /profile
       // EVADE back to (`/profile`) by calling the navigate from Gatsby
       navigate(`/profile`)
     }
@@ -91,8 +96,9 @@ const ProfileEditnamePage = () => {
       >
         <label htmlFor="UsernameInput">
           <TextField
-            disabled={Boolean(error)}
-            id="UsernameInput"
+            disabled={status === "pending"}
+            error={Boolean(error)}
+            id="usernameInput"
             type="text"
             variant="outlined"
             margin="normal"
@@ -103,12 +109,13 @@ const ProfileEditnamePage = () => {
             helperText={
               <>
                 Your current username is <strong>{currentUsername}</strong>.
+                {error && error.message}
               </>
             }
             // onChange={handleChange}
           />
         </label>
-        <div style={{ color: "red" }}>{error}</div>
+
         <AppBar
           position="absolute"
           component="div"
@@ -118,7 +125,7 @@ const ProfileEditnamePage = () => {
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
-              disabled={Boolean(error)}
+              disabled={status === "pending"}
               type="reset"
               edge="start"
               color="inherit"
@@ -131,7 +138,7 @@ const ProfileEditnamePage = () => {
             </Typography>
 
             <Button
-              disabled={Boolean(error)}
+              disabled={status === "pending"}
               type="submit"
               variant="outlined"
               color="primary"
