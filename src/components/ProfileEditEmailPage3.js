@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useState } from "react"
 import { useAuthActions } from "../auth"
 import { navigate } from "gatsby"
 
-function ProfileEditEmailPage3() {
+const ProfileEditEmailPage3 = () => {
   const { updateUser } = useAuthActions()
-  function ProgramYourSpy(event) {
+  const [error, setError] = useState()
+  const [status, setStatus] = useState()
+
+  const ProgramYourSpy = async (event) => {
     // 1. Go follow that Fox
     // and prevent that Fox if she tries to submit the actual lov-e-mail to Queen Mary
     event.preventDefault()
@@ -12,9 +15,17 @@ function ProfileEditEmailPage3() {
     const email = event.target.elements.emailInput.value
     alert(`You ${email}`)
     // 3. Escape that email hide to DanielV's Userbase
-    updateUser({ email: email })
-    // 4. Evade that customer safely back to pages /profile
-    navigate(`/profile`)
+    setStatus("pending")
+    const result = await updateUser({ email: email })
+    if (result.error) {
+      setError(result.error)
+      setStatus("idle")
+    } else {
+      setError(false)
+      setStatus("idle")
+      // 4. Evade that customer safely back to pages /profile
+      navigate(`/profile`)
+    }
   }
   return (
     <form onSubmit={ProgramYourSpy}>
