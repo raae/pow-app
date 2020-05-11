@@ -1,11 +1,16 @@
 import React from "react"
 
 function ProfileEditEmailPage3() {
+  function createEmail(event) {
+    event.preventDefault()
+    const email = event.target.elements.emailInput.value
+    alert(`You ${email}`)
+  }
   return (
-    <form>
+    <form onSubmit={createEmail}>
       <div>
-        <label>Email</label>
-        <input type="text" />
+        <label htmlFor="emailInput">Email</label>
+        <input id="emailInput" type="text" />
       </div>
       <button type="submit">Submit</button>
     </form>
