@@ -71,7 +71,7 @@ const ProfileEditEmailPage = () => {
       setError(false)
       setStatus("idle")
 
-      // 3. Navigate Princess Lizabeth safely to the future navigate(`/future`) if correct email adress.
+      // 3. Navigate Princess Lizabeth safely to the future navigate(`/future`) if correct email adress
       navigate(`/profile`)
     }
   }
@@ -92,6 +92,8 @@ const ProfileEditEmailPage = () => {
         className={classes.form}
       >
         <TextField
+          disabled={status === "pending"}
+          error={Boolean(error)}
           id="emailInput"
           type="text"
           variant="outlined"
@@ -118,6 +120,7 @@ const ProfileEditEmailPage = () => {
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
+              disabled={status === "pending"}
               type="reset"
               edge="start"
               color="inherit"
@@ -130,7 +133,12 @@ const ProfileEditEmailPage = () => {
               Change email
             </Typography>
 
-            <Button type="submit" variant="outlined" color="primary">
+            <Button
+              disabled={status === "pending"}
+              type="submit"
+              variant="outlined"
+              color="primary"
+            >
               Update
             </Button>
           </Toolbar>
