@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useAuthActions } from "../auth"
+import { useAuthActions, useAuthState } from "../auth"
 import { navigate } from "gatsby"
 import {
   AppBar,
@@ -45,6 +45,8 @@ const ProfileEditEmailPage = () => {
   const { updateUser } = useAuthActions()
   const [error, setError] = useState()
   const [status, setStatus] = useState()
+  const { user } = useAuthState()
+  const currentEmail = user.email
 
   const createEmail = async (event) => {
     // Escape eventhandling
@@ -106,7 +108,8 @@ const ProfileEditEmailPage = () => {
           autoComplete="email"
           helperText={
             <>
-              You current email address is <strong>test@test.com</strong>.
+              You current email address is <strong>{currentEmail}</strong>.
+              {error && error.message}
             </>
           }
         />
