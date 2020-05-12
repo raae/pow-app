@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useAuthActions } from "../auth"
 import { navigate } from "gatsby"
 import {
@@ -43,23 +43,37 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
+  const [error, setError] = useState()
+  const [status, setStatus] = useState()
 
-  const createEmail = (event) => {
-    // 1. Prevent that form from naughtily self-submitting
+  const createEmail = async (event) => {
+    // Escape eventhandling
+    // 1. Plan & Prevent
+    //  Plan with an idea for a good location for Princess Lizabeth to escape to
+    //  Prevent Lizabeth (form) from defaultly self-submitting to Mary 1.'s house arrest
 
     event.preventDefault()
 
-    // 2. Get that email from the input
+    // 2. Listen for that adress from Ruby's input
 
     const email = event.target.elements.emailInput.value
+    setStatus("pending")
+    // 3. Await & Navigate
 
-    // 3. Send that email to Daniel V.'s Userbase
+    // 3.2 await the result to the question "is that a correct email adress?" from Daniel V.'s Userbase
 
-    updateUser({ email: email })
+    const result = await updateUser({ email: email })
+    // 3.3 if not a correct email adress, try again
+    if (result.error) {
+      setError(result.error)
+      setStatus("idle")
+    } else {
+      setError(false)
+      setStatus("idle")
 
-    // 4. Send that customer back to /profile
-
-    navigate(`/profile`)
+      // 3. Navigate Princess Lizabeth safely to the future navigate(`/future`) if correct email adress.
+      navigate(`/profile`)
+    }
   }
 
   const createReset = (event) => {
