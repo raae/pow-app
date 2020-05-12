@@ -108,8 +108,8 @@ const ProfileEditEmailPage = () => {
           autoComplete="email"
           helperText={
             <>
-              You current email address is <strong>{currentEmail}</strong>.
               {error && error.message}
+              You current email address is <strong>{currentEmail}</strong>.
             </>
           }
         />
