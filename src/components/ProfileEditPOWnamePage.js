@@ -122,7 +122,7 @@ const ProfileEditnamePage = () => {
         <AppBar
           position="absolute"
           component="div"
-          color="white"
+          color="inherit"
           elevation={0}
           className={classes.appBar}
         >
