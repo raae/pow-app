@@ -49,23 +49,22 @@ const ProfileEditEmailPage = () => {
   const currentEmail = user.email
 
   const createEmail = async (event) => {
-    // Escape eventhandling
-    // 1. Plan & Prevent
-    //  Plan with an idea for a good location for Princess Lizabeth to escape to
-    //  Prevent Lizabeth (form) from defaultly self-submitting to Mary 1.'s house arrest
+    // P.L.A.N. your eventhandling
+    // PREVENT & LISTEN
+    // AWAIT & NAVIGATE
+    // Plan with an idea for a good location for Princess Lizabeth to escape to
 
+    // 1. PREVENT Princess Princess Lizabeth (form) from defaultly submitting to Mary 1.'s house arrest
     event.preventDefault()
 
-    // 2. Listen for that adress from Ruby's input
+    // 2. LISTEN for that email adress from Ruby's input
 
     const email = event.target.elements.emailInput.value
     setStatus("pending")
-    // 3. Await & Navigate
 
-    // 3.2 await the result to the question "is that a correct email adress?" from Daniel V.'s Userbase
-
+    // 3.1 AWAIT the result to the question "is that a correct email adress?" from Daniel V.'s Userbase
     const result = await updateUser({ email: email })
-    // 3.3 if not a correct email adress, try again
+    // 3.2 if not a valid email adress, try again
     if (result.error) {
       setError(result.error)
       setStatus("idle")
@@ -73,7 +72,7 @@ const ProfileEditEmailPage = () => {
       setError(false)
       setStatus("idle")
 
-      // 3. Navigate Princess Lizabeth safely to the future navigate(`/future`) if correct email adress
+      // 4. NAVIGATE Princess Lizabeth safely to the future navigate(`/future`) if a valid email adress
       navigate(`/profile`)
     }
   }
