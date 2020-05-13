@@ -109,7 +109,7 @@ const ProfileEditEmailPage = () => {
           helperText={
             <>
               {error && error.message}
-              You current email address is <strong>{currentEmail}</strong>.
+              Your current email address is <strong>{currentEmail}</strong>.
             </>
           }
         />
