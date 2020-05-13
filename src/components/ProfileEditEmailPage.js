@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
-  const [error, setError] = useState()
-  const [status, setStatus] = useState()
+  const [error, setError] = useState(false)
+  const [status, setStatus] = useState("idle")
   const { user } = useAuthState()
   const currentEmail = user.email
 
