@@ -52,28 +52,30 @@ const ProfileEditnamePage = () => {
   const [error, setError] = useState(false)
 
   const createNewPOWname = async (event) => {
-    // Go GET that event and stop the page from fully and naughtily refreshing
+    // P.L.A.N. your eventhandling
+    // PREVENT & LISTEN
+    // AWAIT & NAVIGATE
+
+    // 1. PREVENT Princess Lizabeth (form) from defaultly submitting to Mary 1.'s house arrest
     event.preventDefault()
 
-    // LISTEN for CustomerName
+    // 2. LISTEN for that email adress from Ruby's input
     const newUsername = event.target.elements.usernameInput.value
 
-    // ESCAPE that ({username: myNewPOWname}) to DanielV's Userbase.com
     setStatus("pending")
     setError(false)
+    // 3.1 AWAIT the result to the question "is that newUsername already in use?" from Daniel V.'s Userbase
     const result = await updateUser({ username: newUsername })
 
     if (result.error) {
+      // 3.2 Try again if Daniel V.'s Userbase says "Error. Your new username is already in use."
       setError(result.error)
       setStatus("idle")
     } else {
       setError(false)
       setStatus("idle")
-      // if there is an error inside the incoming result from the userbase backen
 
-      // if there is no error inside the incoming result from the userbase backen
-      // "idele" and navigate back to /profile
-      // EVADE back to (`/profile`) by calling the navigate from Gatsby
+      // 4. NAVIGATE Princess Lizabeth safely back to (`/profile`) if no error
       navigate(`/profile`)
     }
   }
@@ -108,10 +110,11 @@ const ProfileEditnamePage = () => {
             autoComplete="username"
             helperText={
               <>
-                Your current username is <strong>{currentUsername}</strong>.
                 {error && error.message}
+                Your current username is <strong>{currentUsername}</strong>.
               </>
             }
+
             // onChange={handleChange}
           />
         </label>
