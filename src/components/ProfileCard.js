@@ -80,9 +80,6 @@ const ProfileCard = () => {
               <MenuItem component={GatsbyLink} to={`/profile/email`}>
                 Change email address
               </MenuItem>
-              <MenuItem component={GatsbyLink} to={`/profile/username`}>
-                Change username
-              </MenuItem>
             </Menu>
           </>
         }
