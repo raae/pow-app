@@ -8,6 +8,7 @@ import {
   isValid,
   eachDayOfInterval,
   addDays,
+  isToday,
 } from "date-fns"
 
 export const makeDate = (date) => {
@@ -49,6 +50,13 @@ export const addDaysToDate = (date, days) => {
   date = makeDate(date)
   const newDate = add(date, { days })
   return entryIdFromDate(newDate)
+}
+
+export const isDateToday = (date, dateToCompare = Date.now()) => {
+  date = makeDate(date)
+  dateToCompare = makeDate(dateToCompare)
+
+  return isToday(date, dateToCompare)
 }
 
 export const isDateBefore = (date, dateToCompare) => {
@@ -95,5 +103,14 @@ export const intervalBeforeDate = (date, daysBefore) => {
   return eachDayOfInterval({
     start: addDays(date, -daysBefore),
     end: addDays(date, -1),
+  })
+}
+
+export const intervalAroundDate = (date, daysBefore = 0, daysAfter = 0) => {
+  date = makeDate(date)
+
+  return eachDayOfInterval({
+    start: addDays(date, -daysBefore),
+    end: addDays(date, daysAfter),
   })
 }

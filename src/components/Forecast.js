@@ -2,18 +2,22 @@ import React from "react"
 import {
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
-  Avatar,
   Typography,
   makeStyles,
+  Divider,
   Chip,
 } from "@material-ui/core"
 
 import classNames from "classnames"
 
 import { useCycleDayState } from "../cycle"
-import { formatDate, entryIdFromDate, makeDate } from "../utils/days"
+import {
+  formatDate,
+  entryIdFromDate,
+  makeDate,
+  isDateToday,
+} from "../utils/days"
 import { useDataState } from "../database"
 
 const useStyles = makeStyles((theme) => ({
@@ -21,28 +25,55 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "30rem",
     margin: theme.spacing(2, 0, 4),
   },
-  avatar: {
-    fontSize: "inherit",
-    flexDirection: "column",
-    "& span:first-child": {
-      fontSize: "0.8em",
-      margin: theme.spacing(0.2, 0),
-    },
-    "& span:last-child": {
-      fontWeight: theme.typography.fontWeightBold,
+  forecast: {
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.palette.background.paper,
+    margin: theme.spacing(2, 0),
+    position: "relative",
+    padding: theme.spacing(2, 3),
+  },
+  isToday: {
+    boxShadow: theme.shadows[2],
+  },
+  aside: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    "& > span": {
+      ...theme.typography.overline,
+      fontSize: "0.6rem",
+
+      display: "block",
+      padding: theme.spacing(0, 1),
+
+      "&:first-child": {
+        borderBottomLeftRadius: theme.shape.borderRadius / 2,
+        borderTopRightRadius: theme.shape.borderRadius,
+
+        backgroundColor: theme.palette.grey[200],
+        color: theme.palette.getContrastText(theme.palette.grey[200]),
+
+        fontWeight: theme.typography.fontWeightMedium,
+
+        "&.isMenstruation": {
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.getContrastText(theme.palette.primary.main),
+        },
+        "&.predictedMenstruation": {
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.getContrastText(theme.palette.primary.main),
+          // color: theme.palette.getContrastText(theme.palette.primary.main),
+        },
+      },
     },
   },
   small: {
-    width: theme.spacing(1),
-    height: theme.spacing(1),
-    marginLeft: theme.spacing(2),
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    fontSize: "0.75em",
+    marginLeft: theme.spacing(1),
   },
-  isMensturation: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  predictedMensturation: {
-    backgroundColor: theme.palette.primary.main,
-  },
+
   note: {
     margin: theme.spacing(1, 0),
     padding: theme.spacing(1),
@@ -50,6 +81,18 @@ const useStyles = makeStyles((theme) => ({
   },
   tag: {
     marginRight: theme.spacing(0.5),
+  },
+  divider: {
+    display: "block",
+    "&:after": {
+      backgroundColor: "#000",
+      content: "TEST",
+      display: "inline-block",
+      height: 1,
+      position: "relative",
+      verticalAlign: "middle",
+      width: "50%",
+    },
   },
 }))
 
@@ -82,65 +125,69 @@ const ForecastListItem = ({ entryId }) => {
     note: entryNote,
   })
 
-  const hasContent = prediction.tags.length !== 0 || entryNote
+  const isToday = isDateToday(entryId)
+
+  // const hasContent = isToday || prediction.tags.length !== 0 || entryNote
+  const hasContent = true
 
   return (
-    <>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar
-            className={classNames(classes.avatar, {
-              [classes.small]: !hasContent,
-              [classes.isMensturation]: isMensturation,
-              [classes.predictedMensturation]: prediction.isMenstruation,
-            })}
-          >
-            {hasContent && (
-              <>
-                <span>DAY</span>
-                <span>{cycleDay}</span>
-              </>
-            )}
-          </Avatar>
-        </ListItemAvatar>
-        {hasContent && (
-          <ListItemText
-            primary={
+    <ListItem
+      className={classNames(classes.forecast, { [classes.isToday]: isToday })}
+    >
+      <aside className={classes.aside}>
+        <span
+          className={classNames(classes.cycleDay, {
+            isMenstruation: isMensturation,
+            predictedMenstruation: prediction.isMenstruation,
+          })}
+        >
+          Day {cycleDay}
+        </span>
+        {isToday && <span>Today</span>}
+      </aside>
+      {hasContent && (
+        <ListItemText
+          primary={
+            <Typography
+              component="p"
+              variant="overline"
+              color="textSecondary"
+              gutterBottom
+            >
+              {formatDate(entryId, "EEEE, MMMM do")}
+              {isToday && <span> (Today)</span>}
+            </Typography>
+          }
+          secondary={
+            <>
+              {entryNote && (
+                <Typography
+                  gutterBottom
+                  component="span"
+                  display="block"
+                  variant="body2"
+                  color="textPrimary"
+                >
+                  {entryNote}
+                </Typography>
+              )}
+              {prediction.tags.length > 0 && (
+                <Typography variant="caption" className={classes.divider}>
+                  Predictions
+                </Typography>
+              )}
               <Typography
-                component="p"
+                component="span"
                 variant="body2"
                 color="textSecondary"
-                gutterBottom
               >
-                {formatDate(entryId, "EEEE, MMMM do")}
+                <ForecastText tags={prediction.tags} />
               </Typography>
-            }
-            secondary={
-              <>
-                {entryNote && (
-                  <Typography
-                    gutterBottom
-                    component="span"
-                    display="block"
-                    variant="body1"
-                    className={classes.note}
-                  >
-                    {entryNote}
-                  </Typography>
-                )}
-                <Typography
-                  component="span"
-                  variant="body1"
-                  color="textSecondary"
-                >
-                  <ForecastText tags={prediction.tags} />
-                </Typography>
-              </>
-            }
-          />
-        )}
-      </ListItem>
-    </>
+            </>
+          }
+        />
+      )}
+    </ListItem>
   )
 }
 

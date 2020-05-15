@@ -6,23 +6,15 @@ import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider, useCycleDayState } from "../cycle"
 
-import {
-  entryIdFromDate,
-  makeDate,
-  intervalAfterDate,
-  eachDayOfInterval,
-  intervalBeforeDate,
-} from "../utils/days"
+import { entryIdFromDate, makeDate, intervalAroundDate } from "../utils/days"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
-import DaySummary from "../components/DaySummary"
 
 import Forecast from "../components/Forecast"
 
 import DatePicker from "../components/DatePicker"
-import Welcome from "../components/Welcome"
 
 const Day = ({ date }) => {
   date = makeDate(date)
@@ -32,19 +24,11 @@ const Day = ({ date }) => {
     date: makeDate(entryId),
   })
 
-  // I added a Forecast component
-
-  const beforeInterval = intervalBeforeDate(entryId, 3)
-  const oneDay = intervalBeforeDate(entryId, 1)
-
   //The original interval
-  const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
+  const afterInterval = intervalAroundDate(entryId, 2, daysBetween + 3)
 
   return (
     <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
-      <Forecast entryId={entryId} interval={beforeInterval} />
-      <Forecast entryId={entryId} interval={oneDay} />
-      <Welcome />
       <Forecast entryId={entryId} interval={afterInterval} />
     </BrandLayout>
   )
@@ -63,7 +47,7 @@ const HomeRoute = () => {
       navigate("/profile?payment=unfinished")
     }
   }, [user, authIsPending, hasPaid])
-  //
+
   if (!user || !hasPaid || dataIsPending) {
     return (
       <>
