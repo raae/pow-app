@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useAuthActions, useAuthState } from "../auth"
 import { navigate } from "gatsby"
 import {
@@ -43,25 +43,42 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const { updateUser } = useAuthActions()
+  const [error, setError] = useState(false)
+  const [status, setStatus] = useState("idle")
   const { user } = useAuthState()
   const currentEmail = user.email
 
-  const createEmail = (event) => {
-    // 1. Prevent that form from naughtily self-submitting
+  const createEmail = async (event) => {
+    // P.L.A.N. Ruby's Rescue Mission
+    // PREVENT & LISTEN
+    // AWAIT & NAVIGATE
+    // 1. PREVENT Princess Lizabeth from defaultly submitting to Queen Mary 1.'s house arrest
 
     event.preventDefault()
 
-    // 2. Get that email from the input
+    // 2. LISTEN for the email adress in Ruby's input,
+    // The email adress is Ruby's escape location
 
     const email = event.target.elements.emailInput.value
+    setStatus("pending")
 
-    // 3. Send that email to Daniel V.'s Userbase
+    // 3. AWAIT the adressAnswer from Daniel V.'s Userbase Library
 
-    updateUser({ email: email })
+    const adressAnswer = await updateUser({ email: email })
+    // Ruby's adressQuestion: "is this email adress invalid?"
 
-    // 4. Send that customer back to /profile
+    if (adressAnswer.error) {
+      setError(adressAnswer.error)
+      setStatus("idle")
+    } else {
+      setError(false)
+      setStatus("idle")
+      // 4. NAVIGATE Princess Lizabeth safely to the future
+      // navigate(`/future`) if the adressAnswer is "not an invalid email adress"
+      // navigate(`/{future}`) How do we set it?
 
-    navigate(`/profile`)
+      navigate(`/profile`)
+    }
   }
 
   const createReset = (event) => {
@@ -80,6 +97,8 @@ const ProfileEditEmailPage = () => {
         className={classes.form}
       >
         <TextField
+          disabled={status === "pending"}
+          error={Boolean(error)}
           id="emailInput"
           type="text"
           variant="outlined"
@@ -92,6 +111,7 @@ const ProfileEditEmailPage = () => {
           autoComplete="email"
           helperText={
             <>
+              {error && error.message}
               Your current POW! email is <strong>{currentEmail}</strong>.
             </>
           }
@@ -100,12 +120,13 @@ const ProfileEditEmailPage = () => {
         <AppBar
           position="absolute"
           component="div"
-          color="white"
+          color="inherit"
           elevation={0}
           className={classes.appBar}
         >
           <Toolbar className={classes.toolbar}>
             <IconButton
+              disabled={status === "pending"}
               type="reset"
               edge="start"
               color="inherit"
@@ -118,7 +139,12 @@ const ProfileEditEmailPage = () => {
               Change email
             </Typography>
 
-            <Button type="submit" variant="outlined" color="primary">
+            <Button
+              disabled={status === "pending"}
+              type="submit"
+              variant="outlined"
+              color="primary"
+            >
               Update
             </Button>
           </Toolbar>

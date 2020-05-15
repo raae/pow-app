@@ -77,7 +77,7 @@ const ProfileCard = () => {
               open={Boolean(menuAnchorEl)}
               onClose={handleClose}
             >
-              <MenuItem component={GatsbyLink} to={`/profile/edit`}>
+              <MenuItem component={GatsbyLink} to={`/profile/email`}>
                 Edit email address
               </MenuItem>
             </Menu>
