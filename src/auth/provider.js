@@ -42,19 +42,6 @@ const AuthProvider = ({ children, appId, redirects = {} }) => {
         return { error }
       })
   }
-  const subscribe = async (params, { redirect = true } = {}) => {
-    console.log("Customer subscribes")
-    dispatch({ type: "subscription" })
-    return userbase
-      .purchaseSubscription({
-        successUrl: "http://localhost:8000/success",
-        cancelUrl: "http://localhost:8000/cancel",
-      })
-      .then(() => {
-        // user successfully redirected to Stripe Checkout form
-      })
-      .catch((e) => console.error(e))
-  }
 
   const signIn = async (params, { redirect = true } = {}) => {
     console.log("User signin")
@@ -118,7 +105,6 @@ const AuthProvider = ({ children, appId, redirects = {} }) => {
     signIn,
     signOut,
     updateUser,
-    subscribe,
   }
 
   return (

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { loadStripe } from "@stripe/stripe-js"
+import userbase from "userbase-js"
 import classNames from "classnames"
 
 import { STRIPE_KEY, BASE_URL } from "../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import { useAuthState } from "../auth"
+import { useAuthState, useAuthActions } from "../auth"
 
 import {
   FormControl,
@@ -44,6 +45,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const paymentStatus = useQueryParam("payment")
 
   const { user } = useAuthState()
+  // this is for the stripe userbase integration
+  const { subscribe } = useAuthActions()
 
   const hasPaid =
     user && user.protectedProfile && user.protectedProfile.stripeCustomerId
@@ -72,8 +75,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
-    stripe
-      .redirectToCheckout({
+    userbase
+      .purchaseSubscription({
         items: [
           { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
         ],
