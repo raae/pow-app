@@ -71,11 +71,13 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     })
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, params, { redirect = true } = {}) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
-    userbase
+    console.log("User sub")
+
+    return userbase
       .purchaseSubscription({
         successUrl: BASE_URL + "/cycle",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
