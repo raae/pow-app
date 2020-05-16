@@ -77,10 +77,6 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     setIsPending(true)
     userbase
       .purchaseSubscription({
-        items: [
-          { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
-        ],
-        clientReferenceId: user.userId,
         successUrl: BASE_URL + "/cycle",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
         // email: "rart",
