@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { loadStripe } from "@stripe/stripe-js"
-import Stripe from "stripe"
+// import { loadStripe } from "@stripe/stripe-js"
+// import Stripe from "stripe"
 import userbase from "userbase-js"
 
 const UserForm2 = () => {
@@ -19,7 +19,7 @@ const UserForm2 = () => {
 
     userbase
       .signUp({ username, password, rememberMe: "none" })
-      .then((user) => showTimeShipTodos(user.username))
+      .then((user) => showTimeShipTodos(user))
       .catch((error) => {
         console.warn("User update failed", error.message)
 
@@ -40,17 +40,20 @@ const UserForm2 = () => {
   }
 
   return (
-    <form onSubmit={handleTimeshipSignUp}>
-      <div>
-        <label htmlFor="pasSwordInput">PasSword ⚔️:</label>
-        <input id="pasSwordInput" type="text" />
-      </div>
-      <div>
-        <label htmlFor="usernameInput">Username</label>
-        <input id="usernameInput" type="text" />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <script src="https://js.stripe.com/v3/"></script>
+      <form onSubmit={handleTimeshipSignUp}>
+        <div>
+          <label htmlFor="pasSwordInput">PasSword ⚔️:</label>
+          <input id="pasSwordInput" type="text" />
+        </div>
+        <div>
+          <label htmlFor="usernameInput">Username</label>
+          <input id="usernameInput" type="text" />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   )
 }
 export default UserForm2
