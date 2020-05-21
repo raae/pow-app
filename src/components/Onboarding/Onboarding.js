@@ -13,6 +13,7 @@ import PaymentForm from "../PaymentForm"
 import Layout from "./Layout"
 import Tag from "./Tag"
 import Cycle from "./Cycle"
+import UserForm2 from "../UserForm2"
 
 const initialValues = {
   tag: "",
@@ -117,7 +118,7 @@ const Onboarding = () => {
     {
       label: "Create account",
       content: (
-        <UserForm
+        <UserForm2
           variant="signup"
           onSubmitFulfilled={(event) => {
             handleNext(event)
