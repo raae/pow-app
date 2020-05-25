@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "55rem",
     margin: "0 auto",
+    flexDirection: "row-reverse",
   },
   title: {
     flexGrow: 1,
@@ -72,17 +73,6 @@ const CycleEditPage = ({ date }) => {
       <EntryForm entryId={date} onDone={handleDone} className={classes.form}>
         <AppBar position="absolute" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
-            <IconButton
-              type="reset"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-            >
-              <ArrowBackIcon />
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              {formatDate(date, "MMMM do")}
-            </Typography>
             <Button
               type="submit"
               edge="end"
@@ -91,6 +81,17 @@ const CycleEditPage = ({ date }) => {
             >
               Save
             </Button>
+            <Typography variant="h6" className={classes.title}>
+              {formatDate(date, "MMMM do")}
+            </Typography>
+            <IconButton
+              type="reset"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            >
+              <ArrowBackIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </EntryForm>
