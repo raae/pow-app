@@ -79,7 +79,7 @@ const CycleEditPage = ({ date }) => {
               variant="contained"
               color="primary"
             >
-              Save
+              Done
             </Button>
             <Typography variant="h6" className={classes.title}>
               {formatDate(date, "MMMM do")}
