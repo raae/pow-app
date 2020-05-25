@@ -47,7 +47,8 @@
     "redux-observable": "1.2.0",
     "stripe": "^8.24.0",
     "typeface-seymour-one": "0.0.71",
-    "userbase-js": "^1.2.0"
+    "userbase": "^0.0.47",
+    "userbase-js": "^1.4.1"
   },
   "devDependencies": {
     "babel-jest": "25.1.0",
