@@ -16,11 +16,15 @@ import { formatDate } from "../utils/days"
 import EntryForm from "./EntryForm"
 
 const useStyles = makeStyles((theme) => ({
-  offset: theme.mixins.toolbar,
-  content: {
+  root: {
     maxWidth: "50rem",
     margin: "0 auto",
     alignContent: "stretch",
+  },
+  paper: {
+    margin: theme.spacing(3),
+    padding: theme.spacing(3),
+    maxWidth: "35em",
   },
   appBar: {
     top: 0,
@@ -34,14 +38,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   form: {
-    padding: theme.spacing(3, 2),
-    maxWidth: "32rem",
+    margin: theme.spacing(3),
+    padding: theme.spacing(3),
+    maxWidth: "35em",
+
     minHeight: "10rem",
+    maxHeight: "15rem",
     height: "80vh",
-    maxHeight: "25rem",
 
     "& > div": {
-      height: "90%",
+      height: "100%",
       "& > div": {
         height: "100%",
         "& > textarea": {
@@ -60,8 +66,9 @@ const CycleEditPage = ({ date }) => {
   }
 
   return (
-    <div className={classes.content}>
-      <div className={classes.offset} />
+    <div className={classes.root}>
+      <Toolbar />
+
       <EntryForm entryId={date} onDone={handleDone} className={classes.form}>
         <AppBar position="absolute" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import { TextField } from "@material-ui/core"
+import { Paper, TextField } from "@material-ui/core"
 
 import { useDataState, useDataActions } from "../database"
 
@@ -76,8 +76,9 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
   }
 
   return (
-    <form
+    <Paper
       noValidate
+      component="form"
       className={className}
       onReset={handleReset}
       onSubmit={handleSubmit}
@@ -96,7 +97,7 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
       />
 
       {children}
-    </form>
+    </Paper>
   )
 }
 
