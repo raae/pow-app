@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "35em",
 
     minHeight: "10rem",
-    maxHeight: "15rem",
+    maxHeight: "17rem",
     height: "80vh",
 
     "& > div": {
