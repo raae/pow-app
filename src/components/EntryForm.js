@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from "react"
-import { Paper, TextField, makeStyles } from "@material-ui/core"
-import classNames from "classnames"
+import React, { useState, useEffect, useRef } from "react"
+import { Paper, TextField } from "@material-ui/core"
 
 import { useDataState, useDataActions } from "../database"
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%", // Fix IE 11 issue.
-  },
-  standalone: {
-    marginTop: theme.spacing(3),
-    padding: theme.spacing(4),
-  },
-}))
-
-const EntryForm = ({ entryId, standalone, onDone, children }) => {
-  const classes = useStyles()
+const EntryForm = ({ entryId, onDone, children, variant, className }) => {
   const { entries, settings } = useDataState()
   const { upsertEntry } = useDataActions()
 
@@ -24,7 +12,13 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
   const [values, setValues] = useState({ note: entryNote })
   const [placeholder, setPlaceholder] = useState()
 
-  const RootComponent = standalone ? Paper : "form"
+  const inputRef = useRef()
+
+  useEffect(() => {
+    if (inputRef) {
+      inputRef.current.focus()
+    }
+  }, [inputRef])
 
   useEffect(() => {
     const placeholders = [
@@ -69,7 +63,7 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
     event.preventDefault()
     setValues({ note: entryNote })
     if (onDone) {
-      onDone(event, "cancel")
+      onDone(event, "reset")
     }
   }
 
@@ -82,32 +76,28 @@ const EntryForm = ({ entryId, standalone, onDone, children }) => {
   }
 
   return (
-    <RootComponent
-      component="form"
-      className={classNames(classes.root, {
-        [classes.standalone]: standalone,
-      })}
-      elevation={standalone ? 1 : 0}
+    <Paper
       noValidate
+      component="form"
+      className={className}
       onReset={handleReset}
       onSubmit={handleSubmit}
     >
       <TextField
-        label={entryNote ? "Edit note" : "Add a note"}
-        autoFocus
+        label={entryNote ? "Edit entry" : "Add an entry"}
         multiline
         fullWidth
-        rows="3"
+        inputRef={inputRef}
         placeholder={placeholder}
         color="secondary"
-        variant="outlined"
+        variant={variant}
         value={values["note"]}
         onChange={handleChange("note")}
-        helperText=" Use hashtags for things you would like to keep a close eye on."
+        helperText="Use hashtags for things you would like to keep a close eye on."
       />
 
       {children}
-    </RootComponent>
+    </Paper>
   )
 }
 

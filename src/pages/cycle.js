@@ -4,38 +4,15 @@ import { Router } from "@reach/router"
 
 import { useAuthState } from "../auth"
 import { useDataState } from "../database"
-import { CycleProvider, useCycleDayState } from "../cycle"
-
-import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
+import { CycleProvider } from "../cycle"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
-import BrandLayout from "../components/BrandLayout"
-import DaySummary from "../components/DaySummary"
-import Forecast from "../components/Forecast"
-import DatePicker from "../components/DatePicker"
-import Welcome from "../components/Welcome"
 
-const Day = ({ date }) => {
-  date = makeDate(date)
-  const entryId = entryIdFromDate(date)
+import CycleIndexPage from "../components/CycleIndexPage"
+import CycleEditPage from "../components/CycleEditPage"
 
-  const { daysBetween } = useCycleDayState({
-    date: makeDate(entryId),
-  })
-
-  const afterInterval = intervalAfterDate(entryId, daysBetween + 3)
-
-  return (
-    <BrandLayout variant="app" toolbar={<DatePicker entryId={entryId} />}>
-      <DaySummary entryId={entryId} />
-      <Welcome />
-      <Forecast entryId={entryId} interval={afterInterval} />
-    </BrandLayout>
-  )
-}
-
-const HomeRoute = () => {
+const CyclePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
   const { isPending: dataIsPending, entries, settings } = useDataState()
   const hasPaid =
@@ -62,11 +39,12 @@ const HomeRoute = () => {
     <CycleProvider entries={entries} settings={settings}>
       <SEO title="Cycle" />
       <Router basepath="/cycle">
-        <Day path="/" />
-        <Day path=":date" />
+        <CycleIndexPage path="/" />
+        <CycleIndexPage path=":date" />
+        <CycleEditPage path=":date/edit" />
       </Router>
     </CycleProvider>
   )
 }
 
-export default HomeRoute
+export default CyclePage
