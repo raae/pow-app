@@ -20,6 +20,7 @@
     "@material-ui/pickers": "3.2.10",
     "@mdx-js/mdx": "1.6.5",
     "@mdx-js/react": "1.6.5",
+    "@reduxjs/toolkit": "^1.4.0",
     "@stripe/stripe-js": "1.7.0",
     "axios": "0.19.2",
     "blockstack": "21.1.0",
