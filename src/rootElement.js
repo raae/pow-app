@@ -7,10 +7,9 @@ import { combineReducers } from "redux"
 import { configureStore } from "@reduxjs/toolkit"
 import authReducer, { name as authName, init as authInit } from "./auth/slice"
 
-import { USERBASE_APP_ID, DATABASES } from "./constants"
+import { DATABASES } from "./constants"
 
 import DataProvider from "./database"
-import AuthProvider from "./auth"
 import { useEffect } from "react"
 
 const store = configureStore({
@@ -23,7 +22,7 @@ const Init = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(authInit())
-  })
+  }, [dispatch])
 
   return null
 }
@@ -32,14 +31,9 @@ export const RootElement = ({ children }) => {
   return (
     <Provider store={store}>
       <Init />
-      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <AuthProvider
-          appId={USERBASE_APP_ID}
-          redirects={{ signIn: "/cycle", signUp: "/cycle", signOut: "/login" }}
-        >
-          <DataProvider databases={DATABASES}>{children}</DataProvider>
-        </AuthProvider>
-      </MuiPickersUtilsProvider> */}
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <DataProvider databases={DATABASES}>{children}</DataProvider>
+      </MuiPickersUtilsProvider>
     </Provider>
   )
 }

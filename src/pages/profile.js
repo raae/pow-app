@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider } from "../cycle"
 
@@ -11,9 +10,12 @@ import Loading from "../components/Loading"
 
 import ProfileIndexPage from "../components/ProfileIndexPage"
 import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
+import { useSelector } from "react-redux"
+import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
 
 const ProfilePage = () => {
-  const { user, isPending: authIsPending } = useAuthState()
+  const user = useSelector(selectAuthUser)
+  const authIsPending = useSelector(selectAuthIsPending)
   const { isPending: dataIsPending, entries, settings } = useDataState()
 
   useEffect(() => {

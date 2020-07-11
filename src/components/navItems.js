@@ -1,7 +1,9 @@
-import { BASE_URL } from "../constants"
-import { useAuthState } from "../auth"
-
 import { Link } from "gatsby"
+import { useSelector } from "react-redux"
+
+import { BASE_URL } from "../constants"
+
+import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
 
 export const useSignUpNavItem = () => {
   return {
@@ -12,7 +14,9 @@ export const useSignUpNavItem = () => {
 }
 
 export const useSignInNavItem = () => {
-  const { user, isPending } = useAuthState()
+  const user = useSelector(selectAuthUser)
+  const isPending = useSelector(selectAuthIsPending)
+
   const sendToApp = user || isPending
 
   return {
@@ -24,7 +28,8 @@ export const useSignInNavItem = () => {
 }
 
 export const useSignOutNavItem = () => {
-  const { user, isPending } = useAuthState()
+  const user = useSelector(selectAuthUser)
+  const isPending = useSelector(selectAuthIsPending)
   return {
     label: "Sign out",
     component: Link,

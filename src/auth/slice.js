@@ -58,6 +58,7 @@ const authSlice = createSlice({
   extraReducers: {
     [auth.pending]: (state) => {
       state.status = AUTH_STATUS.PENDING
+      state.error = null
     },
     [auth.fulfilled]: (state, { payload }) => {
       state.status = AUTH_STATUS.IDLE
@@ -75,6 +76,12 @@ const authSlice = createSlice({
   },
 })
 
-export const name = authSlice.name
+const selectAuthSlice = (state) => state[authSlice.name]
+export const selectAuthUser = (state) => selectAuthSlice(state).user
+export const selectAuthStatus = (state) => selectAuthSlice(state).status
+export const selectAuthError = (state) => selectAuthSlice(state).error
+export const selectAuthIsPending = (state) =>
+  selectAuthStatus(state) === AUTH_STATUS.PENDING
 
+export const name = authSlice.name
 export default authSlice.reducer

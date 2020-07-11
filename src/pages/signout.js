@@ -1,21 +1,34 @@
 import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
-
-import { useAuthState, useAuthActions } from "../auth"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 
+import {
+  selectAuthUser,
+  selectAuthIsPending,
+  selectAuthError,
+  signOut,
+} from "../auth/slice"
+
 const SignOutPage = () => {
-  const { isPending, user, error } = useAuthState()
-  const { signOut } = useAuthActions()
+  const dispatch = useDispatch()
+
+  const user = useSelector(selectAuthUser)
+  const isPending = useSelector(selectAuthIsPending)
+  const error = useSelector(selectAuthError)
 
   useEffect(() => {
     if (user && !isPending) {
-      signOut()
+      dispatch(signOut())
     }
-  }, [signOut, isPending, user])
+    if (!user) {
+      navigate("/")
+    }
+  }, [dispatch, isPending, user])
 
   if (!error) {
     return (

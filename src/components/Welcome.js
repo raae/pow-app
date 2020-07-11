@@ -1,8 +1,9 @@
 import React from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { useAuthActions, useAuthState } from "../auth"
+import { selectAuthUser, updateUser } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Welcome = () => {
   const classes = useStyles()
-  const { user } = useAuthState()
-  const { updateUser } = useAuthActions()
+  const dispatch = useDispatch()
+  const user = useSelector(selectAuthUser)
 
   const userProfileProtected = user.protectedProfile || {}
   const userEmail = user.email || userProfileProtected.stripeEmail
@@ -26,33 +27,39 @@ const Welcome = () => {
 
     switch (name) {
       case "welcome":
-        updateUser({
-          email: userEmail,
-          profile: {
-            ...userProfile,
-            welcomeCompleted: "1",
-          },
-        })
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...userProfile,
+              welcomeCompleted: "1",
+            },
+          })
+        )
         break
 
       case "newsletterOff":
-        updateUser({
-          email: userEmail,
-          profile: {
-            ...userProfile,
-            newsletter: "0",
-          },
-        })
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...userProfile,
+              newsletter: "0",
+            },
+          })
+        )
         break
 
       case "newsletterOn":
-        updateUser({
-          email: userEmail,
-          profile: {
-            ...userProfile,
-            newsletter: "1",
-          },
-        })
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...userProfile,
+              newsletter: "1",
+            },
+          })
+        )
         break
 
       default:

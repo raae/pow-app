@@ -1,5 +1,7 @@
 import React from "react"
 import { Link as GatsbyLink } from "gatsby"
+import { useSelector, useDispatch } from "react-redux"
+
 import {
   Avatar,
   IconButton,
@@ -16,17 +18,17 @@ import {
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 
-import { useAuthState, useAuthActions } from "../auth"
+import { selectAuthUser, updateUser } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({}))
 
 const ProfileCard = () => {
   const classes = useStyles()
-  const { user } = useAuthState()
+  const dispatch = useDispatch()
+  const user = useSelector(selectAuthUser)
 
   // Handle newsletter subscription change
 
-  const { updateUser } = useAuthActions()
   const userProfile = user.profile || {}
   const userProfileProtected = user.protectedProfile || {}
   const userEmail = user.email || userProfileProtected.stripeEmail
@@ -35,7 +37,13 @@ const ProfileCard = () => {
     const profile = {
       [name]: event.target.checked ? "1" : "0",
     }
-    updateUser({ email: userEmail, profile: { ...userProfile, ...profile } })
+
+    dispatch(
+      updateUser({
+        email: userEmail,
+        profile: { ...userProfile, ...profile },
+      })
+    )
   }
 
   // Open / close menu

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider } from "../cycle"
 
@@ -12,8 +12,12 @@ import Loading from "../components/Loading"
 import CycleIndexPage from "../components/CycleIndexPage"
 import CycleEditPage from "../components/CycleEditPage"
 
+import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
+
 const CyclePage = () => {
-  const { user, isPending: authIsPending } = useAuthState()
+  const user = useSelector(selectAuthUser)
+  const authIsPending = useSelector(selectAuthIsPending)
+
   const { isPending: dataIsPending, entries, settings } = useDataState()
   const hasPaid =
     user && user.protectedProfile && user.protectedProfile.stripeCustomerId

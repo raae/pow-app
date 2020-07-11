@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { navigate } from "gatsby"
 import classNames from "classnames"
 import {
   Button,
@@ -13,7 +15,13 @@ import {
 } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { useAuthState, useAuthActions } from "../auth"
+import {
+  selectAuthUser,
+  selectAuthIsPending,
+  signIn,
+  signUp,
+} from "../auth/slice"
+
 import {
   useAppNavItem,
   useSignInNavItem,
@@ -22,6 +30,7 @@ import {
 } from "./navItems"
 
 import { Link } from "./Link"
+import { useEffect } from "react"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,8 +55,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
 
-  const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const dispatch = useDispatch()
+  const isAuthPending = useSelector(selectAuthIsPending)
+  const user = useSelector(selectAuthUser)
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -86,9 +96,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
 
     let result = null
     if (variant === "signup") {
-      result = await signUp(state, { redirect: !onSubmitFulfilled })
+      result = await dispatch(signUp(state))
     } else {
-      result = await signIn(state, { redirect: !onSubmitFulfilled })
+      result = await dispatch(signIn(state))
     }
 
     if (result.error) {
@@ -96,6 +106,8 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
       setIsPending(false)
     } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
+    } else {
+      navigate("/cycle")
     }
   }
 

@@ -1,19 +1,20 @@
 import React, { createContext, useReducer } from "react"
+import { useSelector } from "react-redux"
 import { mapValues } from "lodash"
 import userbase from "userbase-js"
-
-import { useAuthState } from "../auth"
 
 import reducer, { getDefaultState } from "./reducer"
 import { useEffect } from "react"
 import initDatabases from "./initDatabases"
+
+import { selectAuthUser } from "../auth/slice"
 
 export const DataStateContext = createContext()
 export const DataActionsContext = createContext()
 
 const DataProvider = ({ children, databases = [] }) => {
   const [state, dispatch] = useReducer(reducer, getDefaultState(databases))
-  const { user } = useAuthState()
+  const user = useSelector(selectAuthUser)
 
   useEffect(() => {
     if (!user) return

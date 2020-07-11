@@ -1,6 +1,7 @@
 import React from "react"
-import { useAuthActions, useAuthState } from "../auth"
+import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
+
 import {
   AppBar,
   Button,
@@ -12,6 +13,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
+
+import { selectAuthUser, updateUser } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,8 +45,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
-  const { updateUser } = useAuthActions()
-  const { user } = useAuthState()
+  const dispatch = useDispatch()
+
+  const user = useSelector(selectAuthUser)
   const currentEmail = user.email
 
   const createEmail = (event) => {
@@ -57,7 +61,7 @@ const ProfileEditEmailPage = () => {
 
     // 3. Send that email to Daniel V.'s Userbase
 
-    updateUser({ email: email })
+    dispatch(updateUser({ email: email }))
 
     // 4. Send that customer back to /profile
 

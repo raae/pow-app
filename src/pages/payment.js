@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 
-import { useAuthState } from "../auth"
 import { useDataState } from "../database"
 import { CycleProvider } from "../cycle"
 
@@ -11,8 +11,12 @@ import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 import PaymentForm from "../components/PaymentForm"
 
+import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
+
 const PaymentPage = () => {
-  const { user, isPending: authIsPending } = useAuthState()
+  const user = useSelector(selectAuthUser)
+  const authIsPending = useSelector(selectAuthIsPending)
+
   const { isPending: dataIsPending, entries, settings } = useDataState()
 
   useEffect(() => {

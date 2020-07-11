@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
 import classNames from "classnames"
 
 import { STRIPE_KEY, BASE_URL } from "../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import { useAuthState } from "../auth"
+import { selectAuthUser } from "../auth/slice"
 
 import {
   FormControl,
@@ -43,7 +44,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
 
   const paymentStatus = useQueryParam("payment")
 
-  const { user } = useAuthState()
+  const user = useSelector(selectAuthUser)
 
   const hasPaid =
     user && user.protectedProfile && user.protectedProfile.stripeCustomerId
