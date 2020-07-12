@@ -30,7 +30,6 @@ import {
 } from "./navItems"
 
 import { Link } from "./Link"
-import { useEffect } from "react"
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -1,21 +1,20 @@
 import { map, compact, sum, round, last } from "lodash"
 
-import { tagsFromText } from "../utils/tags"
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 
 export default ({ entries, settings }) => {
   // Sort entries by earliest first
-  const sortedEntries = map(entries, (entry, key) => {
-    const tags = tagsFromText(entry.note)
-    const isMenstruation = tags.includes(settings.tag)
-    return {
-      date: key,
-      tags,
-      isMenstruation,
-    }
-  }).sort((a, b) => {
-    return a.date < b.date ? -1 : 1
-  })
+  const sortedEntries = entries
+    .map((entry) => {
+      const isMenstruation = entry.tags.includes(settings.tag)
+      return {
+        ...entry,
+        isMenstruation,
+      }
+    })
+    .sort((a, b) => {
+      return a.date < b.date ? -1 : 1
+    })
 
   let cycleIndex = 0
 

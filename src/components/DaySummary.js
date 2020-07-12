@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import { Link as GatsbyLink } from "gatsby"
 
 import {
@@ -11,7 +12,9 @@ import {
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
 
-import { useDataState } from "../database"
+import { selectEntryNote } from "../entries/slice"
+import { selectMenstruationTag } from "../settings/slice"
+
 import { useCycleDayState } from "../cycle"
 import { makeDate, formatDate } from "../utils/days"
 
@@ -65,8 +68,11 @@ const useStyles = makeStyles((theme) => ({
 
 const DaySummary = ({ entryId }) => {
   const classes = useStyles()
-  const { settings, entries } = useDataState()
-  const entryNote = entries[entryId] ? entries[entryId].note : ""
+
+  const entryNote = useSelector((state) =>
+    selectEntryNote(state, { id: entryId })
+  )
+  const menstruationTag = useSelector(selectMenstruationTag)
 
   const {
     cycleDay,
@@ -101,7 +107,7 @@ const DaySummary = ({ entryId }) => {
 
           {nextStartDate && isCurrentCycle && (
             <Typography color="textSecondary" gutterBottom>
-              Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
+              Next <strong>#{menstruationTag}</strong> estimated to arrive{" "}
               <span className={classes.noWrap}>
                 {formatDate(nextStartDate, "EEEE, MMMM do")}.
               </span>

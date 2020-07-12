@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useRef } from "react"
+import { useSelector, useDispatch } from "react-redux"
+
 import { Paper, TextField } from "@material-ui/core"
 
-import { useDataState, useDataActions } from "../database"
+import { upsertEntry, selectEntryNote } from "../entries/slice"
+import { selectMenstruationTag } from "../settings/slice"
 
 const EntryForm = ({ entryId, onDone, children, variant, className }) => {
-  const { entries, settings } = useDataState()
-  const { upsertEntry } = useDataActions()
+  const dispatch = useDispatch()
 
-  const entryNote = entries[entryId] ? entries[entryId].note : ""
+  const entryNote = useSelector((state) =>
+    selectEntryNote(state, { id: entryId })
+  )
+  const menstruationTag = useSelector(selectMenstruationTag)
 
   const [values, setValues] = useState({ note: entryNote })
   const [placeholder, setPlaceholder] = useState()
@@ -22,12 +27,12 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
 
   useEffect(() => {
     const placeholders = [
-      `My #${settings.tag || "period"} just started.`,
+      `My #${menstruationTag || "period"} just started.`,
       `#energetic`,
       `So so #tired`,
       `Feeling #sexy!`,
       `I am #sad and #angry.`,
-      `#${settings.tag || "period"} #heavyflow`,
+      `#${menstruationTag || "period"} #heavyflow`,
       `Today I am #happy#happy#happy :D`,
       `#PMS maybe`,
       `Such a #great day and so much happened. There was #this and #that and the other #thing.`,
@@ -50,7 +55,7 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
     return () => {
       clearInterval(interval)
     }
-  }, [settings.tag])
+  }, [menstruationTag])
 
   const handleChange = (name) => (event) => {
     setValues({
@@ -69,7 +74,7 @@ const EntryForm = ({ entryId, onDone, children, variant, className }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    upsertEntry(entryId, { note: values.note })
+    dispatch(upsertEntry(entryId, { note: values.note }))
     if (onDone) {
       onDone(event, "submit")
     }

@@ -1,8 +1,11 @@
 /* globals fathom */
 
 import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 
-import { useDataActions } from "../../database"
+import { insertSetting } from "../../settings/slice"
+import { upsertEntry } from "../../entries/slice"
+
 import { entryIdFromDate } from "../../utils/days"
 
 import { tagsFromText } from "../../utils/tags"
@@ -28,7 +31,7 @@ const textFieldProps = {
 }
 
 const Onboarding = () => {
-  const { insertSetting, insertEntry } = useDataActions()
+  const dispatch = useDispatch()
 
   const [values, setValues] = useState(initialValues)
   const [activeStep, setActiveStep] = useState(0)
@@ -77,7 +80,7 @@ const Onboarding = () => {
       event.preventDefault()
     }
 
-    await insertSetting("tag", values.tag)
+    await dispatch(insertSetting("tag", values.tag))
 
     handleNext()
     setIsPending(false)
@@ -91,14 +94,16 @@ const Onboarding = () => {
     }
 
     if (values.daysBetween) {
-      await insertSetting("daysBetween", values.daysBetween)
+      await dispatch(insertSetting("daysBetween", values.daysBetween))
     }
 
     if (values.lastStart) {
       const entryId = entryIdFromDate(values.lastStart)
-      await insertEntry(entryId, {
-        note: `#${values.tag}`,
-      })
+      await dispatch(
+        upsertEntry(entryId, {
+          note: `#${values.tag}`,
+        })
+      )
     }
 
     handleNext()

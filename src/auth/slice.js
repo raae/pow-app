@@ -69,7 +69,7 @@ const authSlice = createSlice({
         delete state.user.userId
       }
     },
-    [auth.failed]: (state, { payload }) => {
+    [auth.rejected]: (state, { payload }) => {
       state.status = AUTH_STATUS.IDLE
       state.error = payload.error
     },

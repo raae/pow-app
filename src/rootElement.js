@@ -2,27 +2,44 @@ import React from "react"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
 
-import { Provider, useDispatch } from "react-redux"
+import { Provider, useDispatch, useSelector } from "react-redux"
 import { combineReducers } from "redux"
 import { configureStore } from "@reduxjs/toolkit"
-import authReducer, { name as authName, init as authInit } from "./auth/slice"
 
-import { DATABASES } from "./constants"
+import authReducer, {
+  name as authSliceName,
+  init as authInit,
+  selectAuthUser,
+} from "./auth/slice"
 
-import DataProvider from "./database"
+import databaseReducer, { name as databaseSliceName } from "./database/slice"
+
+import { initSettings } from "./settings/slice"
+import { initEntries } from "./entries/slice"
+
 import { useEffect } from "react"
 
 const store = configureStore({
   reducer: combineReducers({
-    [authName]: authReducer,
+    [authSliceName]: authReducer,
+    [databaseSliceName]: databaseReducer,
   }),
 })
 
 const Init = () => {
   const dispatch = useDispatch()
+  const user = useSelector(selectAuthUser)
+
   useEffect(() => {
     dispatch(authInit())
   }, [dispatch])
+
+  useEffect(() => {
+    if (user) {
+      dispatch(initSettings)
+      dispatch(initEntries)
+    }
+  }, [dispatch, user])
 
   return null
 }
@@ -32,7 +49,7 @@ export const RootElement = ({ children }) => {
     <Provider store={store}>
       <Init />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <DataProvider databases={DATABASES}>{children}</DataProvider>
+        {children}
       </MuiPickersUtilsProvider>
     </Provider>
   )

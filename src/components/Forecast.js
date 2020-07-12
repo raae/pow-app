@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import {
   List,
   ListItem,
@@ -12,9 +13,10 @@ import {
 
 import classNames from "classnames"
 
+import { selectEntryNote } from "../entries/slice"
+
 import { useCycleDayState } from "../cycle"
 import { formatDate, entryIdFromDate, makeDate } from "../utils/days"
-import { useDataState } from "../database"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,8 +76,9 @@ export const ForecastText = ({ tags }) => {
 const ForecastListItem = ({ entryId }) => {
   const classes = useStyles()
 
-  const { entries } = useDataState()
-  const entryNote = entries[entryId] ? entries[entryId].note : ""
+  const entryNote = useSelector((state) =>
+    selectEntryNote(state, { id: entryId })
+  )
 
   const { cycleDay, isMensturation, prediction } = useCycleDayState({
     date: makeDate(entryId),
