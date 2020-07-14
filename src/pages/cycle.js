@@ -3,7 +3,11 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
+import {
+  selectAuthUser,
+  selectIsPayingUser,
+  selectAuthIsPending,
+} from "../auth/slice"
 import { selectAreEntriesInitialized } from "../entries/slice"
 import { selectAreSettingsInitialized } from "../settings/slice"
 
@@ -20,19 +24,21 @@ const CyclePage = () => {
   const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
   const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
 
-  const hasPaid =
-    user && user.protectedProfile && user.protectedProfile.stripeCustomerId
-  const dataIsInitializing = !entriesAreInitialized || !settingsAreInitialized
+  const isPayingUser = useSelector(selectIsPayingUser)
+
+  const dataIsInitialized = entriesAreInitialized && settingsAreInitialized
 
   useEffect(() => {
-    if (!user && !authIsPending) {
-      navigate("/login")
-    } else if (!hasPaid && !authIsPending) {
-      navigate("/profile?payment=unfinished")
+    if (!authIsPending) {
+      if (!user) {
+        navigate("/login")
+      } else if (!isPayingUser) {
+        navigate("/profile?payment=unfinished")
+      }
     }
-  }, [user, authIsPending, hasPaid])
+  }, [user, authIsPending, isPayingUser])
 
-  if (!user || !hasPaid || dataIsInitializing) {
+  if (!user || !isPayingUser || !dataIsInitialized) {
     return (
       <>
         <SEO title="Loading..." />

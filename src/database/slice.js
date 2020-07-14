@@ -94,10 +94,10 @@ const databasesSlice = createSlice({
       const { databaseName } = meta.arg
       state[databaseName].status = DATABASE_STATUS.OPENED
     },
-    [openDatabase.rejected]: (state, { payload, meta }) => {
+    [openDatabase.rejected]: (state, { error, meta }) => {
       const { databaseName } = meta.arg
       state[databaseName].status = DATABASE_STATUS.ERROR
-      state[databaseName].error = payload.error
+      state[databaseName].error = error
     },
   },
 })

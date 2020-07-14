@@ -23,18 +23,14 @@ export const useSignInNavItem = () => {
     label: "Log in",
     component: Link,
     to: sendToApp ? "/cycle" : "/login",
-    disabled: isPending,
   }
 }
 
 export const useSignOutNavItem = () => {
-  const user = useSelector(selectAuthUser)
-  const isPending = useSelector(selectAuthIsPending)
   return {
     label: "Sign out",
     component: Link,
     to: "/signout",
-    disabled: !user || isPending,
   }
 }
 
