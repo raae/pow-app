@@ -48,7 +48,7 @@ export const daysBetweenDates = (dateA, dateB) => {
 export const addDaysToDate = (date, days) => {
   date = makeDate(date)
   const newDate = add(date, { days })
-  return entryIdFromDate(newDate)
+  return newDate
 }
 
 export const isDateBefore = (date, dateToCompare) => {

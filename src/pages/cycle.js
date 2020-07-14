@@ -4,12 +4,8 @@ import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
 import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
-import { selectEntries, selectAreEntriesInitialized } from "../entries/slice"
-import {
-  selectSettingsById,
-  selectAreSettingsInitialized,
-} from "../settings/slice"
-import { CycleProvider } from "../cycle"
+import { selectAreEntriesInitialized } from "../entries/slice"
+import { selectAreSettingsInitialized } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -23,9 +19,6 @@ const CyclePage = () => {
 
   const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
   const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
-
-  const entries = useSelector(selectEntries)
-  const settings = useSelector(selectSettingsById)
 
   const hasPaid =
     user && user.protectedProfile && user.protectedProfile.stripeCustomerId
@@ -49,14 +42,14 @@ const CyclePage = () => {
   }
 
   return (
-    <CycleProvider entries={entries} settings={settings}>
+    <>
       <SEO title="Cycle" />
       <Router basepath="/cycle">
         <CycleIndexPage path="/" />
         <CycleIndexPage path=":date" />
         <CycleEditPage path=":date/edit" />
       </Router>
-    </CycleProvider>
+    </>
   )
 }
 

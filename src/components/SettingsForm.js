@@ -51,7 +51,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
 
-  const formDisabled = isPending || menstruationTag
+  const formDisabled = isPending || !!menstruationTag
   const changeable = !menstruationTag
 
   const handleChange = (name) => (event) => {

@@ -54,3 +54,11 @@ export const selectSetting = (state, { id }) => {
 export const selectMenstruationTag = (state) => {
   return selectSetting(state, { id: "tag" }) || ""
 }
+
+export const selectInitialDaysBetween = (state) => {
+  const daysBetween = selectSetting(state, { id: "daysBetween" })
+  if (daysBetween) {
+    // Will for some be saved as string
+    return parseInt(daysBetween, 10)
+  }
+}

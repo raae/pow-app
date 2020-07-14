@@ -3,13 +3,8 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 
 import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
-import { selectEntries, selectAreEntriesInitialized } from "../entries/slice"
-import {
-  selectSettingsById,
-  selectAreSettingsInitialized,
-} from "../settings/slice"
-
-import { CycleProvider } from "../cycle"
+import { selectAreEntriesInitialized } from "../entries/slice"
+import { selectAreSettingsInitialized } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -20,8 +15,6 @@ import PaymentForm from "../components/PaymentForm"
 const PaymentPage = () => {
   const user = useSelector(selectAuthUser)
   const authIsPending = useSelector(selectAuthIsPending)
-  const entries = useSelector(selectEntries)
-  const settings = useSelector(selectSettingsById)
   const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
   const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
 
@@ -43,13 +36,13 @@ const PaymentPage = () => {
   }
 
   return (
-    <CycleProvider entries={entries} settings={settings}>
+    <>
       <SEO title="Payment" />
       <BrandLayout variant="app">
         <h1>Payment</h1>
         <PaymentForm standalone />
       </BrandLayout>
-    </CycleProvider>
+    </>
   )
 }
 

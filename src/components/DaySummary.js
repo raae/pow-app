@@ -15,11 +15,18 @@ import EditNoteIcon from "@material-ui/icons/Edit"
 import { selectEntryNote } from "../entries/slice"
 import { selectMenstruationTag } from "../settings/slice"
 
-import { useCycleDayState } from "../cycle"
-import { makeDate, formatDate } from "../utils/days"
+import { formatDate } from "../utils/days"
 
 import Logo from "./Logo"
 import { ForecastText } from "./Forecast"
+import {
+  selectDaysBetween,
+  selectIsDaysBetweenCalculated,
+  selectCycleDayForDate,
+  selectIsDateCurrentCycle,
+  selectPredictedTagsForDate,
+  selectNextStartDate,
+} from "../predictions/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,24 +76,24 @@ const useStyles = makeStyles((theme) => ({
 const DaySummary = ({ entryId }) => {
   const classes = useStyles()
 
-  const entryNote = useSelector((state) =>
-    selectEntryNote(state, { id: entryId })
-  )
+  const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
   const menstruationTag = useSelector(selectMenstruationTag)
+  const daysBetween = useSelector(selectDaysBetween)
+  const isDaysBetweenCalculated = useSelector(selectIsDaysBetweenCalculated)
+  const cycleDay = useSelector((state) =>
+    selectCycleDayForDate(state, { entryId })
+  )
+  const isCurrentCycle = useSelector((state) =>
+    selectIsDateCurrentCycle(state, { entryId })
+  )
+  const nextStartDate = useSelector((state) =>
+    selectNextStartDate(state, { entryId })
+  )
+  const predictedTags = useSelector((state) =>
+    selectPredictedTagsForDate(state, { entryId })
+  )
 
-  const {
-    cycleDay,
-    daysBetween,
-    daysBetweenCalculated,
-    nextStartDate,
-    prediction,
-    isCurrentCycle,
-  } = useCycleDayState({
-    date: makeDate(entryId),
-    note: entryNote,
-  })
-
-  const hasTags = prediction.tags.length > 0
+  const hasTags = predictedTags && predictedTags.length > 0
 
   return (
     <>
@@ -101,7 +108,7 @@ const DaySummary = ({ entryId }) => {
           </Typography>
 
           <Typography color="textSecondary" gutterBottom>
-            of {daysBetweenCalculated ? "your average" : "a default"}{" "}
+            of {isDaysBetweenCalculated ? "your average" : "a default"}{" "}
             {daysBetween || "?"} day cycle.{" "}
           </Typography>
 
@@ -124,7 +131,7 @@ const DaySummary = ({ entryId }) => {
 
           {hasTags && (
             <div className={classes.tags}>
-              <ForecastText tags={prediction.tags} />
+              <ForecastText tags={predictedTags} />
             </div>
           )}
 

@@ -3,12 +3,8 @@ import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
 import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
-import { selectEntries, selectAreEntriesInitialized } from "../entries/slice"
-import {
-  selectSettingsById,
-  selectAreSettingsInitialized,
-} from "../settings/slice"
-import { CycleProvider } from "../cycle"
+import { selectAreEntriesInitialized } from "../entries/slice"
+import { selectAreSettingsInitialized } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -20,8 +16,6 @@ import { useSelector } from "react-redux"
 const ProfilePage = () => {
   const user = useSelector(selectAuthUser)
   const authIsPending = useSelector(selectAuthIsPending)
-  const entries = useSelector(selectEntries)
-  const settings = useSelector(selectSettingsById)
   const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
   const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
 
@@ -43,14 +37,13 @@ const ProfilePage = () => {
   }
 
   return (
-    <CycleProvider entries={entries} settings={settings}>
+    <>
       <SEO title="Profile" />
-
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
         <ProfileEditEmailPage path="/edit" />
       </Router>
-    </CycleProvider>
+    </>
   )
 }
 

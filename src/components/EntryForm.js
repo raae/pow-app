@@ -9,9 +9,7 @@ import { selectMenstruationTag } from "../settings/slice"
 const EntryForm = ({ entryId, onDone, children, variant, className }) => {
   const dispatch = useDispatch()
 
-  const entryNote = useSelector((state) =>
-    selectEntryNote(state, { id: entryId })
-  )
+  const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
   const menstruationTag = useSelector(selectMenstruationTag)
 
   const [values, setValues] = useState({ note: entryNote })

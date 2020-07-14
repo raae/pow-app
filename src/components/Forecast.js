@@ -13,10 +13,14 @@ import {
 
 import classNames from "classnames"
 
-import { selectEntryNote } from "../entries/slice"
+import { selectEntryNote, selectIsMenstruationForDate } from "../entries/slice"
 
-import { useCycleDayState } from "../cycle"
-import { formatDate, entryIdFromDate, makeDate } from "../utils/days"
+import { formatDate, entryIdFromDate } from "../utils/days"
+import {
+  selectPredictedTagsForDate,
+  selectCycleDayForDate,
+  selectPredictedMenstruationForDate,
+} from "../predictions/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,10 +43,10 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(1),
     marginLeft: theme.spacing(2),
   },
-  isMensturation: {
+  isMenstruation: {
     backgroundColor: theme.palette.primary.main,
   },
-  predictedMensturation: {
+  predictedMenstruation: {
     backgroundColor: theme.palette.primary.main,
   },
   note: {
@@ -52,40 +56,57 @@ const useStyles = makeStyles((theme) => ({
   },
   tag: {
     marginRight: theme.spacing(0.5),
+    borderStyle: "dashed",
+  },
+  loggedTag: {
+    borderStyle: "solid",
   },
 }))
 
-export const ForecastText = ({ tags }) => {
+export const ForecastText = ({ tags = [] }) => {
   const classes = useStyles()
 
-  return tags.map(({ tag, frequency }) => {
-    return (
-      <Chip
-        className={classes.tag}
-        variant="outlined"
-        size="small"
-        key={tag}
-        label={`#${tag}`}
-        component="span"
-        style={{ opacity: frequency + 0.3 }}
-      />
-    )
-  })
+  return tags
+    .sort(({ countA }, { countB }) => countA - countB)
+    .map(({ tag, logged }) => {
+      return (
+        <Chip
+          className={classNames(classes.tag, {
+            [classes.loggedTag]: logged,
+          })}
+          variant="outlined"
+          size="small"
+          key={tag}
+          label={`#${tag}`}
+          component="span"
+        />
+      )
+    })
 }
 
 const ForecastListItem = ({ entryId }) => {
   const classes = useStyles()
 
-  const entryNote = useSelector((state) =>
-    selectEntryNote(state, { id: entryId })
+  const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
+
+  const cycleDay = useSelector((state) =>
+    selectCycleDayForDate(state, { entryId })
   )
 
-  const { cycleDay, isMensturation, prediction } = useCycleDayState({
-    date: makeDate(entryId),
-    note: entryNote,
-  })
+  const isMenstruation = useSelector((state) =>
+    selectIsMenstruationForDate(state, { entryId })
+  )
 
-  const hasContent = prediction.tags.length !== 0 || entryNote
+  const isPredictedMenstruation = useSelector((state) =>
+    selectPredictedMenstruationForDate(state, { entryId })
+  )
+
+  const predictionTags = useSelector((state) =>
+    selectPredictedTagsForDate(state, { entryId })
+  )
+
+  const hasTags = predictionTags && predictionTags.length !== 0
+  const hasContent = hasTags || entryNote
 
   return (
     <>
@@ -94,8 +115,8 @@ const ForecastListItem = ({ entryId }) => {
           <Avatar
             className={classNames(classes.avatar, {
               [classes.small]: !hasContent,
-              [classes.isMensturation]: isMensturation,
-              [classes.predictedMensturation]: prediction.isMenstruation,
+              [classes.isMenstruation]: isMenstruation,
+              [classes.predictedMenstruation]: isPredictedMenstruation,
             })}
           >
             {hasContent && (
@@ -136,7 +157,7 @@ const ForecastListItem = ({ entryId }) => {
                   variant="body1"
                   color="textSecondary"
                 >
-                  <ForecastText tags={prediction.tags} />
+                  <ForecastText tags={predictionTags} />
                 </Typography>
               </>
             }
