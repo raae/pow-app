@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 
 import { USERBASE_APP_ID } from "../constants"
+import { last } from "lodash"
 
 export const AUTH_STATUS = {
   INITIAL: "[Auth] Initial",
@@ -18,12 +19,14 @@ const AUTH_PENDING_STATUSES = [
   AUTH_STATUS.AUTHENTICATING,
 ]
 
+const AUTH_FAILED_STATUSES = [AUTH_STATUS.ERROR]
+
 const USER_UPDATING_STATUSES = [AUTH_STATUS.UPDATING]
 
 export const defaultState = {
   user: null,
   status: AUTH_STATUS.INITIAL,
-  error: null,
+  errors: [],
 }
 
 export const init = createAsyncThunk("init", async () => {
@@ -58,7 +61,19 @@ export const signOut = (payload) => {
 
 const rejectedReducer = (state, { error }) => {
   state.status = AUTH_STATUS.ERROR
-  state.error = error
+  state.errors.unshift(error)
+  if (state.errors.length > 10) {
+    state.errors.pop()
+  }
+}
+
+const fulfilledReducer = (state, { payload }) => {
+  state.status = AUTH_STATUS.IDLE
+  state.user = payload.user
+  if (state.user) {
+    // To hide them from redux dev tools etc.
+    delete state.user.authToken
+  }
 }
 
 const authSlice = createSlice({
@@ -69,34 +84,19 @@ const authSlice = createSlice({
     [init.pending]: (state) => {
       state.status = AUTH_STATUS.INITIALIZING
     },
-    [init.fulfilled]: (state, { payload }) => {
-      state.status = AUTH_STATUS.IDLE
-      state.user = payload.user
-      if (state.user) {
-        // To hide them from redux dev tools etc.
-        delete state.user.authToken
-      }
-    },
+    [init.fulfilled]: fulfilledReducer,
     [init.rejected]: rejectedReducer,
     [auth.pending]: (state) => {
       state.status = AUTH_STATUS.AUTHENTICATING
-      state.error = null
     },
-    [auth.fulfilled]: (state, { payload }) => {
-      state.status = AUTH_STATUS.IDLE
-      state.user = payload.user
-      if (state.user) {
-        // To hide them from redux dev tools etc.
-        delete state.user.authToken
-        delete state.user.userId
-      }
-    },
+    [auth.fulfilled]: fulfilledReducer,
     [auth.rejected]: rejectedReducer,
     [updateUser.pending]: (state) => {
       state.status = AUTH_STATUS.UPDATING
-      state.error = null
     },
     [updateUser.fulfilled]: (state, { payload }) => {
+      // userbase.updateUser does not return the user
+      // so we must merge in the payload of changed fulfilled
       state.status = AUTH_STATUS.IDLE
       state.user = {
         ...state.user,
@@ -109,9 +109,15 @@ const authSlice = createSlice({
 
 const selectAuthSlice = (state) => state[authSlice.name]
 
-export const selectAuthUser = (state) => selectAuthSlice(state).user
-export const selectAuthStatus = (state) => selectAuthSlice(state).status
-export const selectAuthError = (state) => selectAuthSlice(state).error
+export const selectAuthUser = createSelector([selectAuthSlice], (slice) => {
+  return slice.user
+})
+export const selectAuthStatus = createSelector([selectAuthSlice], (slice) => {
+  return slice.status
+})
+export const selectAuthErrors = createSelector([selectAuthSlice], (slice) => {
+  return slice.errors
+})
 
 export const selectUserId = createSelector([selectAuthUser], (user) => {
   const userId = user && user.userId
@@ -124,6 +130,13 @@ export const selectIsPayingUser = createSelector([selectAuthUser], (user) => {
   return Boolean(customerId)
 })
 
+export const selectUserIsUpdating = createSelector(
+  [selectAuthStatus],
+  (status) => {
+    return USER_UPDATING_STATUSES.includes(status)
+  }
+)
+
 export const selectAuthIsPending = createSelector(
   [selectAuthStatus],
   (status) => {
@@ -131,10 +144,17 @@ export const selectAuthIsPending = createSelector(
   }
 )
 
-export const selectUserIsUpdating = createSelector(
+export const selectAuthIsFailed = createSelector(
   [selectAuthStatus],
   (status) => {
-    return USER_UPDATING_STATUSES.includes(status)
+    return AUTH_FAILED_STATUSES.includes(status)
+  }
+)
+
+export const selectAuthError = createSelector(
+  [selectAuthIsFailed, selectAuthErrors],
+  (authIsFailed, errors) => {
+    return authIsFailed && last(errors)
   }
 )
 
