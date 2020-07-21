@@ -8,27 +8,27 @@ import Loading from "../components/Loading"
 import BrandLayout from "../components/BrandLayout"
 
 import {
-  selectAuthUser,
   selectAuthIsPending,
   selectAuthError,
   signOut,
+  selectIsAuthenticated,
 } from "../auth/slice"
 
 const SignOutPage = () => {
   const dispatch = useDispatch()
 
-  const user = useSelector(selectAuthUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const isPending = useSelector(selectAuthIsPending)
   const error = useSelector(selectAuthError)
 
   useEffect(() => {
-    if (user && !isPending) {
+    if (isAuthenticated && !isPending) {
       dispatch(signOut())
     }
-    if (!user) {
+    if (!isAuthenticated) {
       navigate("/")
     }
-  }, [dispatch, isPending, user])
+  }, [dispatch, isPending, isAuthenticated])
 
   if (!error) {
     return (

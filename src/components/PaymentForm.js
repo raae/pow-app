@@ -6,7 +6,12 @@ import classNames from "classnames"
 import { STRIPE_KEY, BASE_URL } from "../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import { selectAuthUser } from "../auth/slice"
+import {
+  selectIsPayingUser,
+  selectStripePlan,
+  selectUserId,
+  selectIsAuthenticated,
+} from "../auth/slice"
 
 import {
   FormControl,
@@ -44,10 +49,10 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
 
   const paymentStatus = useQueryParam("payment")
 
-  const user = useSelector(selectAuthUser)
-
-  const hasPaid =
-    user && user.protectedProfile && user.protectedProfile.stripeCustomerId
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const userId = useSelector(selectUserId)
+  const hasPaid = useSelector(selectIsPayingUser)
+  const currentStripePlan = useSelector(selectStripePlan)
 
   const [values, setValues] = useState({
     subscriptionPlan: "yearly",
@@ -78,7 +83,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
         items: [
           { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
         ],
-        clientReferenceId: user.userId,
+        clientReferenceId: userId,
         successUrl: BASE_URL + "/cycle",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
         // email: "rart",
@@ -101,9 +106,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     return (
       <>
         <Typography component="p" gutterBottom>
-          You are subscribed to the{" "}
-          <strong>{user.protectedProfile.stripePlanId.split("_")[0]}</strong>{" "}
-          plan.
+          You are subscribed to the <strong>{currentStripePlan}</strong> plan.
         </Typography>
         <Typography component="p" gutterBottom>
           If you would like to cancel your subscription, or change it, send an
@@ -183,7 +186,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           )}
           <Button
             className={classes.space}
-            disabled={!user || !stripe || isPending}
+            disabled={!isAuthenticated || !stripe || isPending}
             type="submit"
             fullWidth
             variant="contained"

@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import {
   openDatabase,
   selectDatabaseItems,
-  selectIsDatabaseInitialized,
+  selectIsDatabaseLoading,
   upsertItem,
   insertItem,
 } from "../database/slice"
@@ -32,8 +32,8 @@ export const insertSetting = (id, setting) => {
 
 // Selectors
 
-export const selectAreSettingsInitialized = (state) => {
-  return selectIsDatabaseInitialized(state, {
+export const selectAreSettingsLoading = (state) => {
+  return selectIsDatabaseLoading(state, {
     databaseName: DATABASE_NAME,
   })
 }

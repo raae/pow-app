@@ -16,10 +16,11 @@ import {
 import Alert from "@material-ui/lab/Alert"
 
 import {
-  selectAuthUser,
+  selectUsername,
   selectAuthIsPending,
   signIn,
   signUp,
+  selectIsAuthenticated,
 } from "../auth/slice"
 
 import {
@@ -55,8 +56,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   variant = variant.toLowerCase()
 
   const dispatch = useDispatch()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const isAuthPending = useSelector(selectAuthIsPending)
-  const user = useSelector(selectAuthUser)
+  const username = useSelector(selectUsername)
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -188,17 +190,17 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             {error.message}
           </Alert>
         )}
-        {user && !isPending && (
+        {isAuthenticated && !isPending && (
           <Alert className={classes.alert} severity="warning">
             <div>
-              Already signed in as <strong>{user.username}</strong>:{" "}
+              Already signed in as <strong>{username}</strong>:{" "}
               <MuiLink {...appNavItem}>go to app</MuiLink>.
             </div>
           </Alert>
         )}
         <Button
           className={classes.submit}
-          disabled={isAuthPending || isPending || !!user}
+          disabled={isAuthPending || isPending || isAuthenticated}
           type="submit"
           fullWidth
           variant="contained"

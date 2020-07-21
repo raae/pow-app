@@ -109,26 +109,59 @@ const authSlice = createSlice({
 
 const selectAuthSlice = (state) => state[authSlice.name]
 
-export const selectAuthUser = createSelector([selectAuthSlice], (slice) => {
+const selectAuthUser = createSelector([selectAuthSlice], (slice) => {
   return slice.user
 })
-export const selectAuthStatus = createSelector([selectAuthSlice], (slice) => {
+const selectAuthStatus = createSelector([selectAuthSlice], (slice) => {
   return slice.status
 })
-export const selectAuthErrors = createSelector([selectAuthSlice], (slice) => {
+const selectAuthErrors = createSelector([selectAuthSlice], (slice) => {
   return slice.errors
 })
+const selectProtectedProfile = createSelector([selectAuthUser], (user) => {
+  return user && user.protectedProfile
+})
+
+export const selectIsAuthenticated = createSelector(
+  [selectAuthUser],
+  (user) => {
+    return !!user
+  }
+)
 
 export const selectUserId = createSelector([selectAuthUser], (user) => {
-  const userId = user && user.userId
-  return userId
+  return user && user.userId
 })
+
+export const selectUsername = createSelector([selectAuthUser], (user) => {
+  return user && user.username
+})
+
+export const selectProfile = createSelector([selectAuthUser], (user) => {
+  return user && user.profile
+})
+
+export const selectUserEmail = createSelector(
+  [selectAuthUser, selectProtectedProfile],
+  (user, protectedProfile) => {
+    const userEmail = user && user.email
+    const stripeEmail = protectedProfile && protectedProfile.stripeEmail
+    return userEmail || stripeEmail
+  }
+)
 
 export const selectIsPayingUser = createSelector([selectAuthUser], (user) => {
   const customerId =
     user && user.protectedProfile && user.protectedProfile.stripeCustomerId
   return Boolean(customerId)
 })
+
+export const selectStripePlan = createSelector(
+  [selectProtectedProfile],
+  (protectedProfile) => {
+    return protectedProfile && protectedProfile.stripePlanId.split("_")[0]
+  }
+)
 
 export const selectUserIsUpdating = createSelector(
   [selectAuthStatus],

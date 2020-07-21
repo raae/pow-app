@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 
 export const DATABASE_STATUS = {
@@ -8,10 +8,15 @@ export const DATABASE_STATUS = {
   ERROR: "[Database] Error",
 }
 
+const DATABASE_LOADING_STATUSES = [
+  DATABASE_STATUS.INITIAL,
+  DATABASE_STATUS.OPENING,
+]
+
 export const defaultDatabaseState = {
   items: [],
   status: DATABASE_STATUS.INITIAL,
-  error: null,
+  errors: null,
 }
 
 export const defaultState = {
@@ -103,13 +108,28 @@ const databasesSlice = createSlice({
 })
 
 const selectDatabasesSlice = (state) => state[databasesSlice.name]
-export const selectDatabaseItems = (state, { databaseName }) => {
-  return selectDatabasesSlice(state)[databaseName].items
-}
-export const selectIsDatabaseInitialized = (state, { databaseName }) => {
-  const status = selectDatabasesSlice(state)[databaseName].status
-  return status === DATABASE_STATUS.OPENED
-}
+const selectDatabaseName = (state, props) => props.databaseName
+
+const selectDatabaseStatus = createSelector(
+  [selectDatabasesSlice, selectDatabaseName],
+  (slice, databaseName) => {
+    return slice[databaseName].status
+  }
+)
+
+export const selectDatabaseItems = createSelector(
+  [selectDatabasesSlice, selectDatabaseName],
+  (slice, databaseName) => {
+    return slice[databaseName].items
+  }
+)
+
+export const selectIsDatabaseLoading = createSelector(
+  [selectDatabaseStatus],
+  (status) => {
+    return DATABASE_LOADING_STATUSES.includes(status)
+  }
+)
 
 export const name = databasesSlice.name
 export default databasesSlice.reducer

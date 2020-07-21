@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { selectAuthUser, updateUser } from "../auth/slice"
+import { selectUserEmail, updateUser, selectProfile } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,12 +15,9 @@ const useStyles = makeStyles((theme) => ({
 const Welcome = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const user = useSelector(selectAuthUser)
 
-  const userProfileProtected = user.protectedProfile || {}
-  const userEmail = user.email || userProfileProtected.stripeEmail
-
-  const userProfile = user.profile || {}
+  const userEmail = useSelector(selectUserEmail)
+  const profile = useSelector(selectProfile)
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
@@ -31,7 +28,7 @@ const Welcome = () => {
           updateUser({
             email: userEmail,
             profile: {
-              ...userProfile,
+              ...profile,
               welcomeCompleted: "1",
             },
           })
@@ -43,7 +40,7 @@ const Welcome = () => {
           updateUser({
             email: userEmail,
             profile: {
-              ...userProfile,
+              ...profile,
               newsletter: "0",
             },
           })
@@ -55,7 +52,7 @@ const Welcome = () => {
           updateUser({
             email: userEmail,
             profile: {
-              ...userProfile,
+              ...profile,
               newsletter: "1",
             },
           })
@@ -67,11 +64,11 @@ const Welcome = () => {
     }
   }
 
-  if (userProfile.welcomeCompleted && userProfile.newsletter) return null
+  if (profile.welcomeCompleted && profile.newsletter) return null
 
   return (
     <aside className={classes.root}>
-      {!userProfile.welcomeCompleted && (
+      {!profile.welcomeCompleted && (
         <Alert onClose={handleClose("welcome")}>
           <AlertTitle>Welcome</AlertTitle>
           <Typography component="div">
@@ -85,7 +82,7 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {userProfile.welcomeCompleted && (
+      {profile.welcomeCompleted && (
         <Alert onClose={handleClose("newsletterOff")}>
           <AlertTitle severity="info">Newsletter</AlertTitle>
           <Typography component="div">

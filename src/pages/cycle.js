@@ -4,12 +4,12 @@ import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
 import {
-  selectAuthUser,
   selectIsPayingUser,
   selectAuthIsPending,
+  selectIsAuthenticated,
 } from "../auth/slice"
-import { selectAreEntriesInitialized } from "../entries/slice"
-import { selectAreSettingsInitialized } from "../settings/slice"
+import { selectAreEntriesLoading } from "../entries/slice"
+import { selectAreSettingsLoading } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -18,27 +18,27 @@ import CycleIndexPage from "../components/CycleIndexPage"
 import CycleEditPage from "../components/CycleEditPage"
 
 const CyclePage = () => {
-  const user = useSelector(selectAuthUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const authIsPending = useSelector(selectAuthIsPending)
 
-  const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
-  const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
+  const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const settingsAreLoading = useSelector(selectAreSettingsLoading)
 
   const isPayingUser = useSelector(selectIsPayingUser)
 
-  const dataIsInitialized = entriesAreInitialized && settingsAreInitialized
+  const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
     if (!authIsPending) {
-      if (!user) {
+      if (!isAuthenticated) {
         navigate("/login")
       } else if (!isPayingUser) {
         navigate("/profile?payment=unfinished")
       }
     }
-  }, [user, authIsPending, isPayingUser])
+  }, [isAuthenticated, authIsPending, isPayingUser])
 
-  if (!user || !isPayingUser || !dataIsInitialized) {
+  if (!isAuthenticated || !isPayingUser || dataIsLoading) {
     return (
       <>
         <SEO title="Loading..." />

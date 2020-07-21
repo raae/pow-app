@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 
-import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
+import { selectIsAuthenticated, selectAuthIsPending } from "../auth/slice"
 import { selectAreEntriesInitialized } from "../entries/slice"
 import { selectAreSettingsInitialized } from "../settings/slice"
 
@@ -13,7 +13,7 @@ import BrandLayout from "../components/BrandLayout"
 import PaymentForm from "../components/PaymentForm"
 
 const PaymentPage = () => {
-  const user = useSelector(selectAuthUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const authIsPending = useSelector(selectAuthIsPending)
   const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
   const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
@@ -21,12 +21,12 @@ const PaymentPage = () => {
   const dataIsPending = !entriesAreInitialized || !settingsAreInitialized
 
   useEffect(() => {
-    if (!user && !authIsPending) {
+    if (!isAuthenticated && !authIsPending) {
       navigate("/login")
     }
-  }, [user, authIsPending])
+  }, [isAuthenticated, authIsPending])
 
-  if (!user || dataIsPending) {
+  if (!isAuthenticated || dataIsPending) {
     return (
       <>
         <SEO title="Loading..." />

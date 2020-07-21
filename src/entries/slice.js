@@ -5,7 +5,7 @@ import {
   openDatabase,
   selectDatabaseItems,
   upsertItem,
-  selectIsDatabaseInitialized,
+  selectIsDatabaseLoading,
 } from "../database/slice"
 
 import { selectMenstruationTag } from "../settings/slice"
@@ -33,8 +33,8 @@ const selectEntryId = (state, props) => {
   return props.entryId
 }
 
-export const selectAreEntriesInitialized = (state) => {
-  return selectIsDatabaseInitialized(state, {
+export const selectAreEntriesLoading = (state) => {
+  return selectIsDatabaseLoading(state, {
     databaseName: DATABASE_NAME,
   })
 }

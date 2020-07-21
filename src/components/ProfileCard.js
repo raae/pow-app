@@ -18,22 +18,28 @@ import {
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 
-import { selectAuthUser, updateUser } from "../auth/slice"
+import {
+  selectUsername,
+  selectProfile,
+  selectIsAuthenticated,
+  selectUserEmail,
+  updateUser,
+} from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({}))
 
 const ProfileCard = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const user = useSelector(selectAuthUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
 
-  // Handle newsletter subscription change
-
-  const userProfile = user.profile || {}
-  const userProfileProtected = user.protectedProfile || {}
-  const userEmail = user.email || userProfileProtected.stripeEmail
+  const username = useSelector(selectUsername) || ""
+  const userEmail = useSelector(selectUserEmail) || ""
+  const userProfile = useSelector(selectProfile) || {}
 
   const handleChange = (name) => (event) => {
+    // Handle newsletter subscription change
+
     const profile = {
       [name]: event.target.checked ? "1" : "0",
     }
@@ -58,7 +64,7 @@ const ProfileCard = () => {
     setMenuAnchorEl(null)
   }
 
-  if (!user) return null
+  if (!isAuthenticated) return null
 
   return (
     <Card>
@@ -91,7 +97,7 @@ const ProfileCard = () => {
             </Menu>
           </>
         }
-        title={<strong>{user.username}</strong>}
+        title={<strong>{username}</strong>}
         subheader={userEmail}
       />
       {userEmail && (

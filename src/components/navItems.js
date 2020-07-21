@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 
 import { BASE_URL } from "../constants"
 
-import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
+import { selectIsAuthenticated, selectAuthIsPending } from "../auth/slice"
 
 export const useSignUpNavItem = () => {
   return {
@@ -14,10 +14,10 @@ export const useSignUpNavItem = () => {
 }
 
 export const useSignInNavItem = () => {
-  const user = useSelector(selectAuthUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const isPending = useSelector(selectAuthIsPending)
 
-  const sendToApp = user || isPending
+  const sendToApp = isAuthenticated || isPending
 
   return {
     label: "Log in",

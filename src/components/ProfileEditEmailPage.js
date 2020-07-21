@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
-import { selectAuthUser, updateUser } from "../auth/slice"
+import { updateUser, selectUserEmail } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,8 +47,7 @@ const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const user = useSelector(selectAuthUser)
-  const currentEmail = user.email
+  const currentEmail = useSelector(selectUserEmail)
 
   const createEmail = (event) => {
     // 1. Prevent that form from naughtily self-submitting

@@ -2,9 +2,9 @@ import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { selectAuthUser, selectAuthIsPending } from "../auth/slice"
-import { selectAreEntriesInitialized } from "../entries/slice"
-import { selectAreSettingsInitialized } from "../settings/slice"
+import { selectAuthIsPending, selectIsAuthenticated } from "../auth/slice"
+import { selectAreEntriesLoading } from "../entries/slice"
+import { selectAreSettingsLoading } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -14,20 +14,20 @@ import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
 import { useSelector } from "react-redux"
 
 const ProfilePage = () => {
-  const user = useSelector(selectAuthUser)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const authIsPending = useSelector(selectAuthIsPending)
-  const entriesAreInitialized = useSelector(selectAreEntriesInitialized)
-  const settingsAreInitialized = useSelector(selectAreSettingsInitialized)
+  const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const settingsAreLoading = useSelector(selectAreSettingsLoading)
 
-  const dataIsPending = !entriesAreInitialized || !settingsAreInitialized
+  const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
-    if (!user && !authIsPending) {
+    if (!isAuthenticated && !authIsPending) {
       navigate("/login")
     }
-  }, [user, authIsPending])
+  }, [isAuthenticated, authIsPending])
 
-  if (!user || dataIsPending) {
+  if (!isAuthenticated || dataIsLoading) {
     return (
       <div>
         <SEO title="Loading..." />
