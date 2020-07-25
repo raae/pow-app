@@ -1,9 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit"
-import { keyBy, sortBy, uniq } from "lodash"
+import { keyBy, sortBy, uniq, first } from "lodash"
 
 import {
   openDatabase,
   selectDatabaseItems,
+  selectDatabasePendingItemsById,
   upsertItem,
   selectIsDatabaseLoading,
 } from "../database/slice"
@@ -29,6 +30,15 @@ export const upsertEntry = (entryId, entry) => {
 
 // Selectors
 
+const transformItemToEntry = ({ itemId, item }) => {
+  return {
+    entryId: itemId,
+    date: makeDate(itemId),
+    note: item.note,
+    tags: uniq(tagsFromText(item.note)),
+  }
+}
+
 const selectEntryId = (state, props) => {
   return props.entryId
 }
@@ -43,15 +53,16 @@ const selectItems = (state) => {
   return selectDatabaseItems(state, { databaseName: DATABASE_NAME })
 }
 
+const selectPendingItemsById = (state) => {
+  return selectDatabasePendingItemsById(state, { databaseName: DATABASE_NAME })
+}
+
 export const selectEntries = createSelector([selectItems], (items) => {
-  return items.map(({ itemId, item }) => {
-    return {
-      id: itemId,
-      date: makeDate(itemId),
-      note: item.note,
-      tags: uniq(tagsFromText(item.note)),
-    }
-  })
+  return items.map(transformItemToEntry)
+})
+
+export const selectEntriesById = createSelector([selectEntries], (entries) => {
+  return keyBy(entries, "entryId")
 })
 
 export const selectEntriesSortedByDate = createSelector(
@@ -61,14 +72,28 @@ export const selectEntriesSortedByDate = createSelector(
   }
 )
 
-export const selectEntriesById = createSelector([selectEntries], (entries) => {
-  return keyBy(entries, "id")
-})
+export const selectIsEntryPending = createSelector(
+  [selectPendingItemsById, selectEntryId],
+  (pendingByItemId, entryId) => {
+    const pendingItem = first(pendingByItemId[entryId])
+    return !!pendingItem
+  }
+)
+
+export const selectPendingEntry = createSelector(
+  [selectPendingItemsById, selectEntryId],
+  (pendingByItemId, entryId) => {
+    const pendingItem = first(pendingByItemId[entryId])
+    if (pendingItem) {
+      return transformItemToEntry(pendingItem)
+    }
+  }
+)
 
 export const selectEntry = createSelector(
-  [selectEntriesById, selectEntryId],
-  (entriesById, id) => {
-    return entriesById[id]
+  [selectEntriesById, selectPendingEntry, selectEntryId],
+  (entriesById, pendingEntry, id) => {
+    return pendingEntry || entriesById[id]
   }
 )
 

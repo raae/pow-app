@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
+import { remove } from "lodash"
 
 export const DATABASE_STATUS = {
   INITIAL: "[Database] Initial",
@@ -14,32 +15,14 @@ const DATABASE_LOADING_STATUSES = [
 ]
 
 export const defaultDatabaseState = {
-  items: [],
   status: DATABASE_STATUS.INITIAL,
-  errors: null,
+  errors: [],
+  items: [],
+  pendingByItemId: {},
+  errorsByItemId: {},
 }
 
-export const defaultState = {
-  settings: defaultDatabaseState,
-  entries: defaultDatabaseState,
-}
-
-const databaseItemAction = createAsyncThunk(
-  "database/item",
-  async (payload, thunkAPI) => {
-    const { databaseName, itemId } = payload
-    if (payload.func === "upsert") {
-      const items = selectDatabaseItems(thunkAPI.getState(), { databaseName })
-      if (items.find((item) => item.itemId === itemId)) {
-        payload.func = "update"
-      } else {
-        payload.func = "insert"
-      }
-    }
-
-    await userbase[`${payload.func}Item`](payload)
-  }
-)
+export const defaultState = {}
 
 export const openDatabase = createAsyncThunk(
   "database/open",
@@ -59,25 +42,48 @@ export const openDatabase = createAsyncThunk(
   }
 )
 
+export const itemAction = createAsyncThunk(
+  "database/item",
+  async (payload, thunkAPI) => {
+    const { databaseName, itemId } = payload
+    if (payload.func === "upsert") {
+      const items = selectDatabaseItems(thunkAPI.getState(), { databaseName })
+      if (items.find((item) => item.itemId === itemId)) {
+        payload.func = "update"
+      } else {
+        payload.func = "insert"
+      }
+    }
+
+    await userbase[`${payload.func}Item`](payload)
+  }
+)
+
 export const insertItem = (payload) => {
-  return databaseItemAction({
+  return itemAction({
     func: "insert",
     ...payload,
   })
 }
 
 export const updateItem = (payload) => {
-  return databaseItemAction({
+  return itemAction({
     func: "update",
     ...payload,
   })
 }
 
 export const upsertItem = (payload) => {
-  return databaseItemAction({
+  return itemAction({
     func: "upsert",
     ...payload,
   })
+}
+
+const initDatabaseState = (state, { databaseName }) => {
+  if (!state[databaseName]) {
+    state[databaseName] = { ...defaultDatabaseState }
+  }
 }
 
 const databasesSlice = createSlice({
@@ -92,8 +98,8 @@ const databasesSlice = createSlice({
     },
     [openDatabase.pending]: (state, { meta }) => {
       const { databaseName } = meta.arg
+      initDatabaseState(state, { databaseName })
       state[databaseName].status = DATABASE_STATUS.OPENING
-      state[databaseName].error = null
     },
     [openDatabase.fulfilled]: (state, { meta }) => {
       const { databaseName } = meta.arg
@@ -102,7 +108,47 @@ const databasesSlice = createSlice({
     [openDatabase.rejected]: (state, { error, meta }) => {
       const { databaseName } = meta.arg
       state[databaseName].status = DATABASE_STATUS.ERROR
-      state[databaseName].error = error
+      state[databaseName].errors.unshift(error)
+      if (state[databaseName].errors.length > 10) {
+        state[databaseName].errors.pop()
+      }
+    },
+    [itemAction.pending]: (state, { meta }) => {
+      const requestId = meta.requestId
+      const { databaseName, itemId, item } = meta.arg
+
+      let pending = state[databaseName].pendingByItemId[itemId]
+      if (!pending) {
+        pending = []
+      }
+      pending.unshift({ requestId, itemId, item })
+      state[databaseName].pendingByItemId[itemId] = pending
+    },
+    [itemAction.fulfilled]: (state, { meta }) => {
+      const requestId = meta.requestId
+      const { databaseName, itemId } = meta.arg
+
+      let pending = state[databaseName].pendingByItemId[itemId]
+      remove(pending, (item) => item.requestId === requestId)
+      state[databaseName].pendingByItemId[itemId] = pending
+    },
+    [itemAction.rejected]: (state, { meta, error }) => {
+      const requestId = meta.requestId
+      const { databaseName, itemId } = meta.arg
+
+      let pending = state[databaseName].pendingByItemId[itemId]
+      remove(pending, (item) => item.requestId === requestId)
+      state[databaseName].pendingByItemId[itemId] = pending
+
+      let errors = state[databaseName].errorsByItemId[itemId]
+      if (!errors) {
+        errors = []
+      }
+      errors.unshift({ requestId, itemId, ...error })
+      if (errors.length > 10) {
+        errors.pop()
+      }
+      state[databaseName].errorsByItemId[itemId] = errors
     },
   },
 })
@@ -113,7 +159,11 @@ const selectDatabaseName = (state, props) => props.databaseName
 const selectDatabaseStatus = createSelector(
   [selectDatabasesSlice, selectDatabaseName],
   (slice, databaseName) => {
-    return slice[databaseName].status
+    if (slice[databaseName]) {
+      return slice[databaseName].status
+    } else {
+      return DATABASE_STATUS.INITIAL
+    }
   }
 )
 
@@ -121,6 +171,27 @@ export const selectDatabaseItems = createSelector(
   [selectDatabasesSlice, selectDatabaseName],
   (slice, databaseName) => {
     return slice[databaseName].items
+  }
+)
+
+export const selectDatabaseError = createSelector(
+  [selectDatabasesSlice, selectDatabaseName],
+  (slice, databaseName) => {
+    return slice[databaseName].error
+  }
+)
+
+export const selectDatabasePendingItemsById = createSelector(
+  [selectDatabasesSlice, selectDatabaseName],
+  (slice, databaseName) => {
+    return slice[databaseName].pendingByItemId
+  }
+)
+
+export const selectDatabaseErrorsById = createSelector(
+  [selectDatabasesSlice, selectDatabaseName],
+  (slice, databaseName) => {
+    return slice[databaseName].errors
   }
 )
 
