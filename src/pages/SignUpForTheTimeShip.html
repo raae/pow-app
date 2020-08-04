@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Unicorny TimeShip</title>
+    <script type="text/javascript"
+            src="https://sdk.userbase.com/1/userbase.js">
+    </script>
+    <!-- Daniel V doesn't have stripe yes he does  -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    <!-- Auth View -->
+    <div id="auth-view">
+        <h1>Login To The TimeShip</h1>
+        <form id="login-form">
+            <input id="login-username" type="text" required placeholder="Username">
+            <input id="login-password" type="password" required placeholder="pasSword">
+            <input type="submit" value="Sign in">
+        </form>
+    <div id="login-error"></div>
+
+
+    <h1>Sign Up For The TimeShip</h1>
+    <form id="signup-form">
+        <input id="signup-username" type="text" required placeholder="Username">
+        <input id="signup-password" type="password" required placeholder="pasSword">
+        <input type="submit" value="Create an account">
+    </form>
+    <div id="signup-error"></div>
+</div>
+<!-- Year-Picker View needs some work-->
+<div id="year-picker-view">
+    <div id="username"></div>
+    <input type="button" value="Logout" id="logout-button">
+    <div id="logout-error"></div>
+
+    <h1>Year-Picker Form</h1>
+    <div id="todos"></div>
+</div>
+<!-- application code -->
+<!-- Is signUp a function from userbase? Yes-->
+    <!--after userbase.init:
+                .then((session) => session.user ? showTodos(session.user) : showAuth())
+      .catch(() => showAuth())
+      .finally(() => document.getElementById('loading-view').style.display = 'none') -->
+<script type="text/javascript">
+    userbase.init({ appId: '8af6f24a-fcf3-4fa5-9e20-c8fe279c5b5c' })
+
+    function handleTimeShipLogin(e) {
+        e.preventDefault()
+
+        const username = document.getElementById('login-username').value
+        const password = document.getElementById('login-password').value
+
+        userbase.signIn({ username, password, rememberMe: 'none' })
+        .then((user) => showTimeShipTodos(user.username))
+        .catch((e) => document.getElementById('login-error').innerHTML = e)
+    }
+
+    function handleTimeShipSignUp(event) {
+        event.preventDefault()
+
+        const username = document.getElementById('signup-username').value
+        const password = document.getElementById('signup-password').value
+
+        userbase.signUp({ username, password, rememberMe: 'none' })
+        .then((user) => showTimeShipTodos(user.username))
+        .catch((event) => document.getElementById('signup-error').innerHTML = event)
+
+    }
+    function handleTimeShipLogout(e) {
+        userbase.signOut()
+        .then(() => showAuth())
+        .catch((e) => document.getElementById('logout-error').innerText = e)
+    }
+
+    function showTimeShipTodos(user) {
+        const successUrl = 'http://localhost:8000/charge'
+        const cancelUrl = 'http://localhost:8000/cancel'
+
+        if (!user.subscriptionStatus) {
+            userbase.purchaseSubscription({ successUrl, cancelUrl })
+            return
+        }
+
+        document.getElementById('auth-view').style.display = 'none'
+        document.getElementById('todo-view').style.display = 'block'
+        // reset the todos view, more missing
+        document.getElementById('username').innerHTML = username
+    }
+    document.getElementById('login-form').addEventListener('submit', handleTimeShipLogin)
+    document.getElementById('signup-form').addEventListener('submit', handleTimeShipSignUp)
+    document.getElementById('logout-button').addEventListener('click', handleTimeShipLogout)
+    document.getElementById('todo-view').style.display = 'none'
+</script>
+</body>
+</html>
+<!--
+I stopped before
+Using the database
+        -->

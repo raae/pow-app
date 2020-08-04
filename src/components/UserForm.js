@@ -1,4 +1,7 @@
 import React, { useState } from "react"
+import { loadStripe } from "@stripe/stripe-js"
+import userbase from "userbase-js"
+
 import classNames from "classnames"
 import {
   Button,
@@ -96,7 +99,21 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
       setIsPending(false)
     } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
+      showTimeShipTodos(result)
     }
+  }
+  const showTimeShipTodos = (result) => {
+    const successUrl = "http://localhost:8008/success"
+    const cancelUrl = "http://localhost:8008/cancel"
+
+    if (!user.subscriptionStatus) {
+      userbase.purchaseSubscription({ successUrl, cancelUrl })
+      return
+    }
+
+    document.getElementById("auth-view").style.display = "none"
+    document.getElementById("todo-view").style.display = "block"
+    document.getElementById("username").innerHTML = username
   }
 
   return (

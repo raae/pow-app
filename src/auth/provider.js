@@ -99,12 +99,29 @@ const AuthProvider = ({ children, appId, redirects = {} }) => {
         return { error }
       })
   }
+  const purchaseSubscription = (params) => {
+    console.log("User update")
+    dispatch({ type: "updateUser", user: params })
+    return userbase
+      .purchaseSubscription(params)
+      .then(() => {
+        console.log("User purchaseSubscription fulfilled")
+        dispatch({ type: "updateUserFulfilled" })
+        return true
+      })
+      .catch((error) => {
+        console.warn("User update failed", error.message)
+        dispatch({ type: "updateUserFailed", error })
+        return { error }
+      })
+  }
 
   const actions = {
     signUp,
     signIn,
     signOut,
     updateUser,
+    purchaseSubscription,
   }
 
   return (

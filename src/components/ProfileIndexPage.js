@@ -4,6 +4,8 @@ import { Alert } from "@material-ui/lab"
 import BrandLayout from "../components/BrandLayout"
 import ProfileCard from "./ProfileCard"
 import PaymentForm from "../components/PaymentForm"
+import PaymentForm2 from "./PaymentForm2"
+import PaymentForm4 from "./PaymentForm4"
 import SettingsForm from "../components/SettingsForm"
 import { Link } from "../components/Link"
 import { useQueryParam } from "../utils/useQueryParam"
@@ -48,7 +50,7 @@ const ProfileIndexPage = () => {
       </Box>
       <Box my={6}>
         <h1>Payment</h1>
-        <PaymentForm standalone />
+        <PaymentForm2 standalone />
       </Box>
     </BrandLayout>
   )

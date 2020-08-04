@@ -41,7 +41,14 @@ const UserForm2 = () => {
 
   return (
     <div>
-      <script src="https://js.stripe.com/v3/"></script>
+      <head>
+        <script
+          src="https://sdk.userbase.com/1/userbase.js/"
+          type="text/javascript"
+        ></script>
+        <script src="https://js.stripe.com/v3/"></script>
+      </head>
+
       <form onSubmit={handleTimeshipSignUp}>
         <div>
           <label htmlFor="pasSwordInput">PasSword ⚔️:</label>

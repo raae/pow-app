@@ -45,11 +45,11 @@ const HomeRoute = () => {
     if (!user && !authIsPending) {
       navigate("/login")
     } else if (!hasPaid && !authIsPending) {
-      navigate("/profile?payment=unfinished")
+      //  navigate("/profile?payment=unfinished")
     }
   }, [user, authIsPending, hasPaid])
-
-  if (!user || !hasPaid || dataIsPending) {
+  // || !hasPaid
+  if (!user || dataIsPending) {
     return (
       <>
         <SEO title="Loading..." />
