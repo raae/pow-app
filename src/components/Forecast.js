@@ -56,10 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
   tag: {
     marginRight: theme.spacing(0.5),
-    borderStyle: "dashed",
+    marginBottom: theme.spacing(0.5),
+    borderStyle: "dotted",
   },
   loggedTag: {
     borderStyle: "solid",
+    borderColor: theme.palette.text.secondary,
   },
 }))
 
