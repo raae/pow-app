@@ -37,7 +37,7 @@
     "gatsby-transformer-remark": "2.8.14",
     "immer": "6.0.9",
     "localforage": "1.7.4",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "query-string": "6.13.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
