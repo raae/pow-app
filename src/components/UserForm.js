@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { navigate } from "gatsby"
 import classNames from "classnames"
 import {
   Button,
@@ -13,7 +15,14 @@ import {
 } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { useAuthState, useAuthActions } from "../auth"
+import {
+  selectUsername,
+  selectAuthIsPending,
+  signIn,
+  signUp,
+  selectIsAuthenticated,
+} from "../auth/slice"
+
 import {
   useAppNavItem,
   useSignInNavItem,
@@ -46,8 +55,10 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
   const classes = useStyles()
   variant = variant.toLowerCase()
 
-  const { isPending: isAuthPending, user } = useAuthState()
-  const { signIn, signUp } = useAuthActions()
+  const dispatch = useDispatch()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const isAuthPending = useSelector(selectAuthIsPending)
+  const username = useSelector(selectUsername)
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -86,9 +97,9 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
 
     let result = null
     if (variant === "signup") {
-      result = await signUp(state, { redirect: !onSubmitFulfilled })
+      result = await dispatch(signUp(state))
     } else {
-      result = await signIn(state, { redirect: !onSubmitFulfilled })
+      result = await dispatch(signIn(state))
     }
 
     if (result.error) {
@@ -96,6 +107,8 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
       setIsPending(false)
     } else if (onSubmitFulfilled) {
       onSubmitFulfilled()
+    } else {
+      navigate("/cycle")
     }
   }
 
@@ -177,17 +190,17 @@ const UserForm = ({ variant, standalone = true, onSubmitFulfilled }) => {
             {error.message}
           </Alert>
         )}
-        {user && !isPending && (
+        {isAuthenticated && !isPending && (
           <Alert className={classes.alert} severity="warning">
             <div>
-              Already signed in as <strong>{user.username}</strong>:{" "}
+              Already signed in as <strong>{username}</strong>:{" "}
               <MuiLink {...appNavItem}>go to app</MuiLink>.
             </div>
           </Alert>
         )}
         <Button
           className={classes.submit}
-          disabled={isAuthPending || isPending || !!user}
+          disabled={isAuthPending || isPending || isAuthenticated}
           type="submit"
           fullWidth
           variant="contained"

@@ -1,6 +1,7 @@
 import React from "react"
-import { useAuthActions, useAuthState } from "../auth"
+import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
+
 import {
   AppBar,
   Button,
@@ -12,6 +13,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
+
+import { updateUser, selectUserEmail } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
-  const { updateUser } = useAuthActions()
-  const { user } = useAuthState()
-  const currentEmail = user.email
+  const dispatch = useDispatch()
+
+  const currentEmail = useSelector(selectUserEmail)
 
   const createEmail = (event) => {
     // 1. Prevent that form from naughtily self-submitting
@@ -57,7 +60,7 @@ const ProfileEditEmailPage = () => {
 
     // 3. Send that email to Daniel V.'s Userbase
 
-    updateUser({ email: email })
+    dispatch(updateUser({ email: email }))
 
     // 4. Send that customer back to /profile
 

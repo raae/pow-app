@@ -1,22 +1,55 @@
 import React from "react"
+import { Provider, useDispatch, useSelector } from "react-redux"
+import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
 
-import { USERBASE_APP_ID, DATABASES } from "./constants"
+import authReducer, {
+  name as authSliceName,
+  init as authInit,
+  selectUserId,
+} from "./auth/slice"
 
-import DataProvider from "./database"
-import AuthProvider from "./auth"
+import databaseReducer, { name as databaseSliceName } from "./database/slice"
+
+import { initSettings } from "./settings/slice"
+import { initEntries } from "./entries/slice"
+
+import { useEffect } from "react"
+
+const store = configureStore({
+  reducer: combineReducers({
+    [authSliceName]: authReducer,
+    [databaseSliceName]: databaseReducer,
+  }),
+})
+
+const Init = () => {
+  const dispatch = useDispatch()
+  const userId = useSelector(selectUserId)
+
+  useEffect(() => {
+    dispatch(authInit())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(initSettings)
+      dispatch(initEntries)
+    }
+  }, [dispatch, userId])
+
+  return null
+}
 
 export const RootElement = ({ children }) => {
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <AuthProvider
-        appId={USERBASE_APP_ID}
-        redirects={{ signIn: "/cycle", signUp: "/cycle", signOut: "/login" }}
-      >
-        <DataProvider databases={DATABASES}>{children}</DataProvider>
-      </AuthProvider>
-    </MuiPickersUtilsProvider>
+    <Provider store={store}>
+      <Init />
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        {children}
+      </MuiPickersUtilsProvider>
+    </Provider>
   )
 }
 

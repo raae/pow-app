@@ -11,6 +11,7 @@ import { Typography } from "@material-ui/core"
 
 const ProfileIndexPage = () => {
   const paymentStatus = useQueryParam("payment")
+
   return (
     <BrandLayout variant="app">
       {paymentStatus && (

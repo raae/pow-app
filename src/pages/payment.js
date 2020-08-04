@@ -1,9 +1,10 @@
 import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 
-import { useAuthState } from "../auth"
-import { useDataState } from "../database"
-import { CycleProvider } from "../cycle"
+import { selectIsAuthenticated, selectAuthIsPending } from "../auth/slice"
+import { selectAreEntriesLoading } from "../entries/slice"
+import { selectAreSettingsLoading } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -12,16 +13,20 @@ import BrandLayout from "../components/BrandLayout"
 import PaymentForm from "../components/PaymentForm"
 
 const PaymentPage = () => {
-  const { user, isPending: authIsPending } = useAuthState()
-  const { isPending: dataIsPending, entries, settings } = useDataState()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const authIsPending = useSelector(selectAuthIsPending)
+  const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const settingsAreLoading = useSelector(selectAreSettingsLoading)
+
+  const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
-    if (!user && !authIsPending) {
+    if (!isAuthenticated && !authIsPending) {
       navigate("/login")
     }
-  }, [user, authIsPending])
+  }, [isAuthenticated, authIsPending])
 
-  if (!user || dataIsPending) {
+  if (!isAuthenticated || dataIsLoading) {
     return (
       <>
         <SEO title="Loading..." />
@@ -31,13 +36,13 @@ const PaymentPage = () => {
   }
 
   return (
-    <CycleProvider entries={entries} settings={settings}>
+    <>
       <SEO title="Payment" />
       <BrandLayout variant="app">
         <h1>Payment</h1>
         <PaymentForm standalone />
       </BrandLayout>
-    </CycleProvider>
+    </>
   )
 }
 

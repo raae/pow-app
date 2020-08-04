@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from "react-redux"
 import { Link as GatsbyLink } from "gatsby"
 
 import {
@@ -11,12 +12,21 @@ import {
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
 
-import { useDataState } from "../database"
-import { useCycleDayState } from "../cycle"
-import { makeDate, formatDate } from "../utils/days"
+import { selectEntryNote } from "../entries/slice"
+import { selectMenstruationTag } from "../settings/slice"
+
+import { formatDate } from "../utils/days"
 
 import Logo from "./Logo"
 import { ForecastText } from "./Forecast"
+import {
+  selectDaysBetween,
+  selectIsDaysBetweenCalculated,
+  selectCycleDayForDate,
+  selectIsDateCurrentCycle,
+  selectPredictedTagsForDate,
+  selectNextStartDate,
+} from "../predictions/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,22 +75,25 @@ const useStyles = makeStyles((theme) => ({
 
 const DaySummary = ({ entryId }) => {
   const classes = useStyles()
-  const { settings, entries } = useDataState()
-  const entryNote = entries[entryId] ? entries[entryId].note : ""
 
-  const {
-    cycleDay,
-    daysBetween,
-    daysBetweenCalculated,
-    nextStartDate,
-    prediction,
-    isCurrentCycle,
-  } = useCycleDayState({
-    date: makeDate(entryId),
-    note: entryNote,
-  })
+  const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
+  const menstruationTag = useSelector(selectMenstruationTag)
+  const daysBetween = useSelector(selectDaysBetween)
+  const isDaysBetweenCalculated = useSelector(selectIsDaysBetweenCalculated)
+  const cycleDay = useSelector((state) =>
+    selectCycleDayForDate(state, { entryId })
+  )
+  const isCurrentCycle = useSelector((state) =>
+    selectIsDateCurrentCycle(state, { entryId })
+  )
+  const nextStartDate = useSelector((state) =>
+    selectNextStartDate(state, { entryId })
+  )
+  const predictedTags = useSelector((state) =>
+    selectPredictedTagsForDate(state, { entryId })
+  )
 
-  const hasTags = prediction.tags.length > 0
+  const hasTags = predictedTags && predictedTags.length > 0
 
   return (
     <>
@@ -95,13 +108,13 @@ const DaySummary = ({ entryId }) => {
           </Typography>
 
           <Typography color="textSecondary" gutterBottom>
-            of {daysBetweenCalculated ? "your average" : "a default"}{" "}
+            of {isDaysBetweenCalculated ? "your average" : "a default"}{" "}
             {daysBetween || "?"} day cycle.{" "}
           </Typography>
 
           {nextStartDate && isCurrentCycle && (
             <Typography color="textSecondary" gutterBottom>
-              Next <strong>#{settings.tag}</strong> estimated to arrive{" "}
+              Next <strong>#{menstruationTag}</strong> estimated to arrive{" "}
               <span className={classes.noWrap}>
                 {formatDate(nextStartDate, "EEEE, MMMM do")}.
               </span>
@@ -118,7 +131,7 @@ const DaySummary = ({ entryId }) => {
 
           {hasTags && (
             <div className={classes.tags}>
-              <ForecastText tags={prediction.tags} />
+              <ForecastText tags={predictedTags} />
             </div>
           )}
 

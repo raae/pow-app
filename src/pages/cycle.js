@@ -1,10 +1,15 @@
 import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { useAuthState } from "../auth"
-import { useDataState } from "../database"
-import { CycleProvider } from "../cycle"
+import {
+  selectIsPayingUser,
+  selectAuthIsPending,
+  selectIsAuthenticated,
+} from "../auth/slice"
+import { selectAreEntriesLoading } from "../entries/slice"
+import { selectAreSettingsLoading } from "../settings/slice"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
@@ -13,20 +18,27 @@ import CycleIndexPage from "../components/CycleIndexPage"
 import CycleEditPage from "../components/CycleEditPage"
 
 const CyclePage = () => {
-  const { user, isPending: authIsPending } = useAuthState()
-  const { isPending: dataIsPending, entries, settings } = useDataState()
-  const hasPaid =
-    user && user.protectedProfile && user.protectedProfile.stripeCustomerId
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const authIsPending = useSelector(selectAuthIsPending)
+
+  const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const settingsAreLoading = useSelector(selectAreSettingsLoading)
+
+  const isPayingUser = useSelector(selectIsPayingUser)
+
+  const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
-    if (!user && !authIsPending) {
-      navigate("/login")
-    } else if (!hasPaid && !authIsPending) {
-      navigate("/profile?payment=unfinished")
+    if (!authIsPending) {
+      if (!isAuthenticated) {
+        navigate("/login")
+      } else if (!isPayingUser) {
+        navigate("/profile?payment=unfinished")
+      }
     }
-  }, [user, authIsPending, hasPaid])
+  }, [isAuthenticated, authIsPending, isPayingUser])
 
-  if (!user || !hasPaid || dataIsPending) {
+  if (!isAuthenticated || !isPayingUser || dataIsLoading) {
     return (
       <>
         <SEO title="Loading..." />
@@ -36,14 +48,14 @@ const CyclePage = () => {
   }
 
   return (
-    <CycleProvider entries={entries} settings={settings}>
+    <>
       <SEO title="Cycle" />
       <Router basepath="/cycle">
         <CycleIndexPage path="/" />
         <CycleIndexPage path=":date" />
         <CycleEditPage path=":date/edit" />
       </Router>
-    </CycleProvider>
+    </>
   )
 }
 

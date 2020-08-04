@@ -1,9 +1,6 @@
 import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import classNames from "classnames"
-
-import { useDataState, useDataActions } from "../database"
-
-import { tagsFromText } from "../utils/tags"
 
 import {
   Typography,
@@ -17,6 +14,9 @@ import {
 } from "@material-ui/core"
 
 import Alert from "@material-ui/lab/Alert"
+
+import { insertSetting, selectMenstruationTag } from "../settings/slice"
+import { tagsFromText } from "../utils/tags"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,18 +40,19 @@ const textFieldProps = {
 const PaymentForm = ({ standalone = true, submitLabel }) => {
   const classes = useStyles()
 
-  const { settings } = useDataState()
-  const { insertSetting } = useDataActions()
+  const dispatch = useDispatch()
+
+  const menstruationTag = useSelector(selectMenstruationTag)
 
   const [values, setValues] = useState({
-    tag: settings.tag || "",
+    tag: menstruationTag,
   })
 
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
 
-  const formDisabled = isPending || !!settings.tag
-  const changeable = !settings.tag
+  const formDisabled = isPending || !!menstruationTag
+  const changeable = !menstruationTag
 
   const handleChange = (name) => (event) => {
     setError()
@@ -73,7 +74,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
     event.preventDefault()
 
     setIsPending(true)
-    const { error } = await insertSetting("tag", values.tag)
+    const { error } = await dispatch(insertSetting("tag", values.tag))
     if (error) {
       setError(error)
     }
@@ -91,7 +92,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
         noValidate
         onSubmit={handleSubmit}
       >
-        {!settings.tag && (
+        {!menstruationTag && (
           <Typography className={classes.space} color="textSecondary">
             POW! tracks your cycle using hashtags. Input the term you would like
             to use for menstruation.

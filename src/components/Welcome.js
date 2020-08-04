@@ -1,8 +1,9 @@
 import React from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { useAuthActions, useAuthState } from "../auth"
+import { selectUserEmail, updateUser, selectProfile } from "../auth/slice"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,46 +14,49 @@ const useStyles = makeStyles((theme) => ({
 
 const Welcome = () => {
   const classes = useStyles()
-  const { user } = useAuthState()
-  const { updateUser } = useAuthActions()
+  const dispatch = useDispatch()
 
-  const userProfileProtected = user.protectedProfile || {}
-  const userEmail = user.email || userProfileProtected.stripeEmail
-
-  const userProfile = user.profile || {}
+  const userEmail = useSelector(selectUserEmail)
+  const profile = useSelector(selectProfile)
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
 
     switch (name) {
       case "welcome":
-        updateUser({
-          email: userEmail,
-          profile: {
-            ...userProfile,
-            welcomeCompleted: "1",
-          },
-        })
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...profile,
+              welcomeCompleted: "1",
+            },
+          })
+        )
         break
 
       case "newsletterOff":
-        updateUser({
-          email: userEmail,
-          profile: {
-            ...userProfile,
-            newsletter: "0",
-          },
-        })
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...profile,
+              newsletter: "0",
+            },
+          })
+        )
         break
 
       case "newsletterOn":
-        updateUser({
-          email: userEmail,
-          profile: {
-            ...userProfile,
-            newsletter: "1",
-          },
-        })
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...profile,
+              newsletter: "1",
+            },
+          })
+        )
         break
 
       default:
@@ -60,11 +64,11 @@ const Welcome = () => {
     }
   }
 
-  if (userProfile.welcomeCompleted && userProfile.newsletter) return null
+  if (profile.welcomeCompleted && profile.newsletter) return null
 
   return (
     <aside className={classes.root}>
-      {!userProfile.welcomeCompleted && (
+      {!profile.welcomeCompleted && (
         <Alert onClose={handleClose("welcome")}>
           <AlertTitle>Welcome</AlertTitle>
           <Typography component="div">
@@ -78,7 +82,7 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {userProfile.welcomeCompleted && (
+      {profile.welcomeCompleted && (
         <Alert onClose={handleClose("newsletterOff")}>
           <AlertTitle severity="info">Newsletter</AlertTitle>
           <Typography component="div">

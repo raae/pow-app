@@ -1,27 +1,13 @@
-import { map, compact, sum, round, last } from "lodash"
+import { compact, sum, round, last } from "lodash"
 
-import { tagsFromText } from "../utils/tags"
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 
-export default ({ entries, settings }) => {
-  // Sort entries by earliest first
-  const sortedEntries = map(entries, (entry, key) => {
-    const tags = tagsFromText(entry.note)
-    const isMenstruation = tags.includes(settings.tag)
-    return {
-      date: key,
-      tags,
-      isMenstruation,
-    }
-  }).sort((a, b) => {
-    return a.date < b.date ? -1 : 1
-  })
-
+export default ({ sortedEntries, initialDaysBetween, menstruationTag }) => {
   let cycleIndex = 0
 
   const cycle = {
     startDates: [],
-    daysBetweens: [parseInt(settings.daysBetween, 10)],
+    daysBetweens: [initialDaysBetween],
     tags: {},
   }
 
@@ -31,7 +17,7 @@ export default ({ entries, settings }) => {
 
     // This misses everything before start of first cycle
 
-    if (entry.isMenstruation) {
+    if (entry.tags.includes(menstruationTag)) {
       if (difference > 14) {
         // Entry is start of new cycle
         cycleIndex++
@@ -56,7 +42,7 @@ export default ({ entries, settings }) => {
   }
 
   const compactDaysBetweens = compact(cycle.daysBetweens)
-  let daysBetween = sum(compactDaysBetweens) / compactDaysBetweens.length
+  let daysBetween = round(sum(compactDaysBetweens) / compactDaysBetweens.length)
   let daysBetweenCalculated = true
   if (!daysBetween) {
     daysBetween = 28
@@ -71,9 +57,8 @@ export default ({ entries, settings }) => {
 
   return {
     ...cycle,
-    tag: settings.tag,
-    daysBetween: round(daysBetween),
+    daysBetween: daysBetween,
+    isDaysBetweenCalculated: daysBetweenCalculated,
     nextStartDate,
-    daysBetweenCalculated,
   }
 }
