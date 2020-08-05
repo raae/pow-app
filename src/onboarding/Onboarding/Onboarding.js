@@ -10,7 +10,7 @@ import { entryIdFromDate } from "../../utils/days"
 
 import { tagsFromText } from "../../utils/tags"
 
-import UserForm from "../../auth/UserForm"
+import { SignUpForm } from "../../auth"
 import PaymentForm from "../../payment/PaymentForm"
 
 import Layout from "./Layout"
@@ -122,13 +122,12 @@ const Onboarding = () => {
     {
       label: "Create account",
       content: (
-        <UserForm
-          variant="signup"
+        <SignUpForm
           onSubmitFulfilled={(event) => {
             handleNext(event)
             trackGoal("HGGOZCXZ")
           }}
-          standalone={false}
+          elevation={0}
         />
       ),
     },

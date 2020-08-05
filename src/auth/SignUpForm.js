@@ -7,15 +7,13 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
-  Typography,
   Paper,
   makeStyles,
 } from "@material-ui/core"
 
-import { signIn } from "./slice"
-import { useAppNavItem, useSignUpNavItem } from "../app/navItems"
+import { signUp } from "./slice"
+import { useAppNavItem } from "../app/navItems"
 
-import { Link } from "../app"
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
 
@@ -35,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
+const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -43,7 +41,6 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
   const [error, setError] = useState()
 
   const appNavItem = useAppNavItem()
-  const signUpNavItem = useSignUpNavItem()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -51,13 +48,16 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
     setIsPending(true)
     setError(null)
 
+    const email = event.target.elements.emailInput.value
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
     const rememberMe = event.target.elements.rememberMeInput.checked
       ? "local"
       : "session"
 
-    const result = await dispatch(signIn({ username, password, rememberMe }))
+    const result = await dispatch(
+      signUp({ email, username, password, rememberMe })
+    )
 
     if (result.error) {
       setIsPending(false)
@@ -68,6 +68,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       } else {
         navigate(appNavItem.to)
       }
+
       setIsPending(false)
     }
   }
@@ -93,13 +94,26 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       />
 
       <TextField
+        id="emailInput"
+        variant="outlined"
+        margin="normal"
+        label="Email"
+        name="email"
+        placeholder="unicorn@usepow.app"
+        autoComplete="email"
+        InputLabelProps={{ shrink: true }}
+        required
+        fullWidth
+      />
+
+      <TextField
         id="passwordInput"
         variant="outlined"
         margin="normal"
         name="password"
         label="Password"
         type="password"
-        autoComplete="current-password"
+        autoComplete="new-password"
         placeholder="glitter-rainbow-butterfly-kitty"
         InputLabelProps={{ shrink: true }}
         required
@@ -124,15 +138,10 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
         variant="contained"
         color="primary"
       >
-        Log In
+        Create account
       </Button>
-
-      <Typography variant="body2" align="right">
-        Don't have an account?&nbsp;
-        <Link {...signUpNavItem}>{signUpNavItem.label}</Link>
-      </Typography>
     </Paper>
   )
 }
 
-export default SignInForm
+export default SignUpForm
