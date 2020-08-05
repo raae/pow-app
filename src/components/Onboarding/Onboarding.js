@@ -10,7 +10,7 @@ import { entryIdFromDate } from "../../utils/days"
 
 import { tagsFromText } from "../../utils/tags"
 
-import UserForm from "../UserForm"
+import UserForm from "../../auth/UserForm"
 import PaymentForm from "../PaymentForm"
 
 import Layout from "./Layout"

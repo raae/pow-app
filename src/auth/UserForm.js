@@ -28,9 +28,9 @@ import {
   useSignInNavItem,
   useSignUpNavItem,
   useBetaNavItem,
-} from "./navItems"
+} from "../app/navItems"
 
-import { Link } from "./Link"
+import { Link } from "../app/Link"
 
 const useStyles = makeStyles((theme) => ({
   root: {

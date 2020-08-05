@@ -18,7 +18,7 @@ import {
   useAppNavItem,
   useWebsiteNavItem,
   useProfileNavItem,
-} from "./navItems"
+} from "../app/navItems"
 
 import BrandFooter from "./BrandFooter"
 import Logo from "./Logo"

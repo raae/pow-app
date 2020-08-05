@@ -2,10 +2,10 @@ import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 
 import BrandCopy from "../components/BrandCopy"
-import { Link, ButtonLink } from "../components/Link"
+import { Link, ButtonLink } from "../app/Link"
 import Logo from "../components/Logo"
 import { SignInButton } from "../components/AuthButtons"
-import UserForm from "../components/UserForm"
+import UserForm from "../auth/UserForm"
 import PaymentForm from "../components/PaymentForm"
 import Onboarding from "../components/Onboarding"
 

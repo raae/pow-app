@@ -2,7 +2,7 @@ import React from "react"
 
 import { Button } from "@material-ui/core"
 
-import { useSignUpNavItem, useSignInNavItem } from "./navItems"
+import { useSignUpNavItem, useSignInNavItem } from "../app/navItems"
 
 export const SignInButton = ({ children, ...props }) => {
   const navItem = useSignInNavItem()
