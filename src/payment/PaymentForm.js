@@ -26,7 +26,7 @@ import {
 
 import Alert from "@material-ui/lab/Alert"
 
-import { Link } from "../app/Link"
+import { Link } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   root: {

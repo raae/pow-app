@@ -13,9 +13,9 @@ import {
 } from "@material-ui/core"
 
 import { signIn } from "./slice"
-import { useAppNavItem, useSignUpNavItem } from "../app/navItems"
+import { useAppNavItem, useSignUpNavItem } from "../navigation"
+import { Link } from "../navigation"
 
-import { Link } from "../app"
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
 

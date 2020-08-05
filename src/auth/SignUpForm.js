@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core"
 
 import { signUp } from "./slice"
-import { useAppNavItem } from "../app/navItems"
+import { useAppNavItem } from "../navigation"
 
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"

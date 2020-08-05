@@ -3,7 +3,8 @@ import { useSelector } from "react-redux"
 import { Typography } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { Link, useAppNavItem, useSignOutNavItem } from "../app"
+import { Link, useAppNavItem, useSignOutNavItem } from "../navigation"
+
 import { selectUsername } from "./slice"
 
 const ErrorAlert = ({ error }) => {

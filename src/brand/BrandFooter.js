@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "../app/Link"
+import { Link } from "../navigation"
 
 const BrandFooter = ({ variant }) => {
   return (

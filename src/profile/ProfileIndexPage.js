@@ -5,7 +5,7 @@ import BrandLayout from "../brand/BrandLayout"
 import ProfileCard from "./ProfileCard"
 import PaymentForm from "../payment/PaymentForm"
 import SettingsForm from "../settings/SettingsForm"
-import { Link } from "../app/Link"
+import { Link } from "../navigation"
 import { useQueryParam } from "../utils/useQueryParam"
 import { Typography } from "@material-ui/core"
 
