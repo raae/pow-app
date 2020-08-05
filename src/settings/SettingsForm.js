@@ -15,7 +15,7 @@ import {
 
 import Alert from "@material-ui/lab/Alert"
 
-import { insertSetting, selectMenstruationTag } from "../settings/slice"
+import { insertSetting, selectMenstruationTag } from "./slice"
 import { tagsFromText } from "../utils/tags"
 
 const useStyles = makeStyles((theme) => ({

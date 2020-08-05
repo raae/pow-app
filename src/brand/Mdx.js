@@ -6,8 +6,8 @@ import { Link, ButtonLink } from "../app/Link"
 import Logo from "../app/Logo"
 import { SignInButton } from "../auth/AuthButtons"
 import UserForm from "../auth/UserForm"
-import PaymentForm from "../components/PaymentForm"
-import Onboarding from "../components/Onboarding"
+import PaymentForm from "../payment/PaymentForm"
+import Onboarding from "../onboarding/Onboarding"
 
 const components = {
   a: Link,

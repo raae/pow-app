@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
-import SEO from "../components/Seo"
-import Loading from "../components/Loading"
+import SEO from "../app/Seo"
+import Loading from "../app/Loading"
 import BrandLayout from "../brand/BrandLayout"
 
 import {
@@ -12,7 +12,7 @@ import {
   selectAuthError,
   signOut,
   selectIsAuthenticated,
-} from "../auth/slice"
+} from "./slice"
 
 const SignOutPage = () => {
   const dispatch = useDispatch()

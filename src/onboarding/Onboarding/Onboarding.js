@@ -11,7 +11,7 @@ import { entryIdFromDate } from "../../utils/days"
 import { tagsFromText } from "../../utils/tags"
 
 import UserForm from "../../auth/UserForm"
-import PaymentForm from "../PaymentForm"
+import PaymentForm from "../../payment/PaymentForm"
 
 import Layout from "./Layout"
 import Tag from "./Tag"

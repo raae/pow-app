@@ -14,8 +14,8 @@ import { selectAreSettingsLoading } from "../settings/slice"
 import SEO from "../app/Seo"
 import Loading from "../app/Loading"
 
-import CycleIndexPage from "../cycle/CycleIndexPage"
-import CycleEditPage from "../cycle/CycleEditPage"
+import CycleIndexPage from "../entries/CycleIndexPage"
+import CycleEditPage from "../entries/CycleEditPage"
 
 const CyclePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

@@ -6,11 +6,11 @@ import { selectAuthIsPending, selectIsAuthenticated } from "../auth/slice"
 import { selectAreEntriesLoading } from "../entries/slice"
 import { selectAreSettingsLoading } from "../settings/slice"
 
-import SEO from "../components/Seo"
-import Loading from "../components/Loading"
+import SEO from "../app/Seo"
+import Loading from "../app/Loading"
 
-import ProfileIndexPage from "../components/ProfileIndexPage"
-import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
+import ProfileIndexPage from "../profile/ProfileIndexPage"
+import ProfileEditEmailPage from "../profile/ProfileEditEmailPage"
 import { useSelector } from "react-redux"
 
 const ProfilePage = () => {

@@ -2,15 +2,15 @@ import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 
-import { selectIsAuthenticated, selectAuthIsPending } from "../auth/slice"
+import { selectIsAuthenticated, selectAuthIsPending } from "./slice"
 import { selectAreEntriesLoading } from "../entries/slice"
 import { selectAreSettingsLoading } from "../settings/slice"
 
-import SEO from "../components/Seo"
-import Loading from "../components/Loading"
+import SEO from "../app/Seo"
+import Loading from "../app/Loading"
 
 import BrandLayout from "../brand/BrandLayout"
-import PaymentForm from "../components/PaymentForm"
+import PaymentForm from "./PaymentForm"
 
 const PaymentPage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

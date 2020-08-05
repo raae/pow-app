@@ -3,10 +3,10 @@ import React from "react"
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
 import BrandLayout from "../brand/BrandLayout"
-import DaySummary from "../components/DaySummary"
-import Forecast from "../components/Forecast"
+import DaySummary from "../entries/DaySummary"
+import Forecast from "../entries/Forecast"
 import DatePicker from "../app/DatePicker"
-import Welcome from "../components/Welcome"
+import Welcome from "../onboarding/Welcome"
 import { useSelector } from "react-redux"
 
 import { selectDaysBetween } from "../predictions/slice"
