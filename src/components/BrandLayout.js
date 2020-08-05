@@ -21,7 +21,7 @@ import {
 } from "../app/navItems"
 
 import BrandFooter from "./BrandFooter"
-import Logo from "./Logo"
+import Logo from "../app/Logo"
 import { SignInButton, SignUpButton } from "../auth/AuthButtons"
 
 const useStyles = makeStyles((theme) => ({

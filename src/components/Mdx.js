@@ -3,7 +3,7 @@ import { MDXProvider } from "@mdx-js/react"
 
 import BrandCopy from "../components/BrandCopy"
 import { Link, ButtonLink } from "../app/Link"
-import Logo from "../components/Logo"
+import Logo from "../app/Logo"
 import { SignInButton } from "../auth/AuthButtons"
 import UserForm from "../auth/UserForm"
 import PaymentForm from "../components/PaymentForm"
