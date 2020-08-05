@@ -1,13 +1,20 @@
 import React from "react"
 import { MDXProvider } from "@mdx-js/react"
+import { Button } from "@material-ui/core"
 
 import BrandCopy from "./BrandCopy"
 import { Link, ButtonLink } from "../navigation"
 import Logo from "../app/Logo"
-import { SignInButton } from "../auth/AuthButtons"
+
 import { SignInForm } from "../auth"
+import { useSignInNavItem } from "../navigation"
 import PaymentForm from "../payment/PaymentForm"
 import Onboarding from "../onboarding/Onboarding"
+
+const SignInButton = (props) => {
+  const signInNavItem = useSignInNavItem()
+  return <Button {...signInNavItem} {...props} />
+}
 
 const components = {
   a: Link,

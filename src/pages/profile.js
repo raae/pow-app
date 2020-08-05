@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { selectAuthIsPending, selectIsAuthenticated } from "../auth/slice"
+import { selectAuthIsPending, selectIsAuthenticated } from "../auth"
 import { selectAreEntriesLoading } from "../entries/slice"
 import { selectAreSettingsLoading } from "../settings/slice"
 

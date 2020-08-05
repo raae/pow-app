@@ -10,9 +10,9 @@ import BrandLayout from "../brand/BrandLayout"
 import {
   selectAuthIsPending,
   selectAuthError,
-  signOut,
   selectIsAuthenticated,
-} from "../auth/slice"
+  signOut,
+} from "../auth"
 
 const SignOutPage = () => {
   const dispatch = useDispatch()
@@ -30,23 +30,22 @@ const SignOutPage = () => {
     }
   }, [dispatch, isPending, isAuthenticated])
 
-  if (!error) {
-    return (
-      <>
-        <SEO title="Signing out..." />
-        <Loading fullScreen />
-      </>
-    )
-  } else {
-    return (
-      <>
-        <BrandLayout variant="app">
+  return (
+    <BrandLayout variant="app">
+      {error ? (
+        <>
+          <SEO title="Sign out" />
           <h1>Sign out failed</h1>
           <Alert severity="error">{error.message}</Alert>
-        </BrandLayout>
-      </>
-    )
-  }
+        </>
+      ) : (
+        <>
+          <SEO title="Signing out..." />
+          <Loading fullScreen />
+        </>
+      )}
+    </BrandLayout>
+  )
 }
 
 export default SignOutPage

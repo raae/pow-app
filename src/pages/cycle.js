@@ -7,7 +7,7 @@ import {
   selectIsPayingUser,
   selectAuthIsPending,
   selectIsAuthenticated,
-} from "../auth/slice"
+} from "../auth"
 import { selectAreEntriesLoading } from "../entries/slice"
 import { selectAreSettingsLoading } from "../settings/slice"
 

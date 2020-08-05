@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
-import { updateUser, selectUserEmail } from "../auth/slice"
+import { updateUser, selectUserEmail } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
   root: {

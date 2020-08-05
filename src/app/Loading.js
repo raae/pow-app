@@ -11,7 +11,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
   },
   fullScreen: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: theme.zIndex.modal,
     borderTop: `4px solid ${theme.palette.primary.main}`,
+    backgroundColor: theme.palette.background.paper,
     width: "100vw",
     height: "100vh",
   },

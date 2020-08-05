@@ -11,7 +11,7 @@ import {
   selectStripePlan,
   selectUserId,
   selectIsAuthenticated,
-} from "../auth/slice"
+} from "../auth"
 
 import {
   FormControl,

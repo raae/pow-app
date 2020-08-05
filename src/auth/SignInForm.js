@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0),
     },
     "& > button": {
-      margin: theme.spacing(1, 0),
+      margin: theme.spacing(2, 0),
     },
   },
 }))
@@ -129,7 +129,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
 
       <Typography variant="body2" align="right">
         Don't have an account?&nbsp;
-        <Link {...signUpNavItem}>{signUpNavItem.label}</Link>
+        <Link {...signUpNavItem} />
       </Typography>
     </Paper>
   )

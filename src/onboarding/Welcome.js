@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { selectUserEmail, updateUser, selectProfile } from "../auth/slice"
+import { selectUserEmail, updateUser, selectProfile } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
   root: {

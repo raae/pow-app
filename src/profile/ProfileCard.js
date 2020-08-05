@@ -24,7 +24,7 @@ import {
   selectIsAuthenticated,
   selectUserEmail,
   updateUser,
-} from "../auth/slice"
+} from "../auth"
 
 const useStyles = makeStyles((theme) => ({}))
 

@@ -3,7 +3,7 @@ import { BASE_URL } from "../constants"
 
 export const useSignUpNavItem = () => {
   return {
-    label: "Sign up",
+    children: "Sign up",
     component: Link,
     to: "/signup",
   }
@@ -11,7 +11,7 @@ export const useSignUpNavItem = () => {
 
 export const useSignInNavItem = () => {
   return {
-    label: "Log in",
+    children: "Log in",
     component: Link,
     to: "/cycle",
   }
@@ -19,7 +19,7 @@ export const useSignInNavItem = () => {
 
 export const useSignOutNavItem = () => {
   return {
-    label: "Sign out",
+    children: "Sign out",
     component: Link,
     to: "/signout",
   }
@@ -27,7 +27,7 @@ export const useSignOutNavItem = () => {
 
 export const useProfileNavItem = () => {
   return {
-    label: "Profile",
+    children: "Profile",
     component: Link,
     to: "/profile",
   }
@@ -35,7 +35,7 @@ export const useProfileNavItem = () => {
 
 export const useAppNavItem = () => {
   return {
-    label: "Cycle",
+    children: "Cycle",
     component: Link,
     to: "/cycle",
   }
@@ -43,7 +43,7 @@ export const useAppNavItem = () => {
 
 export const useBetaNavItem = () => {
   return {
-    label: "Beta",
+    children: "Beta",
     component: Link,
     to: "/beta",
   }
@@ -51,10 +51,10 @@ export const useBetaNavItem = () => {
 
 export const useWebsiteNavItem = () => {
   return {
-    label: "POW! Website",
+    children: "POW! Website",
+    href: BASE_URL,
     component: "a",
     target: "_blank",
     rel: "noopener",
-    href: BASE_URL,
   }
 }

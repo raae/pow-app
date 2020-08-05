@@ -2,6 +2,7 @@ import React from "react"
 import classNames from "classnames"
 import { Link as GatsbyLink } from "gatsby"
 import {
+  Button,
   Container,
   Divider,
   AppBar,
@@ -22,7 +23,7 @@ import {
 
 import BrandFooter from "./BrandFooter"
 import Logo from "../app/Logo"
-import { SignInButton, SignUpButton } from "../auth/AuthButtons"
+import { useSignInNavItem, useSignUpNavItem } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,6 +95,8 @@ const useStyles = makeStyles((theme) => ({
 const MainNav = ({ variant }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const isMenuOpen = Boolean(anchorEl)
+  const signInNavItem = useSignInNavItem()
+  const signUpNavItem = useSignUpNavItem()
   const signOutNavItem = useSignOutNavItem()
   const appNavItem = useAppNavItem()
   const profileNavItem = useProfileNavItem()
@@ -113,8 +116,18 @@ const MainNav = ({ variant }) => {
     case "home":
       return (
         <>
-          <SignUpButton variant="outlined" size="small" color="secondary" />
-          <SignInButton variant="contained" size="small" color="primary" />
+          <Button
+            {...signUpNavItem}
+            variant="outlined"
+            size="small"
+            color="secondary"
+          />
+          <Button
+            {...signInNavItem}
+            variant="contained"
+            size="small"
+            color="primary"
+          />
         </>
       )
     case "app":
@@ -139,20 +152,12 @@ const MainNav = ({ variant }) => {
             open={isMenuOpen}
             onClose={handleMenuClose}
           >
-            <MenuItem {...appNavItem} onClick={handleMenuClose}>
-              {appNavItem.label}
-            </MenuItem>
-            <MenuItem {...profileNavItem} onClick={handleMenuClose}>
-              {profileNavItem.label}
-            </MenuItem>
+            <MenuItem {...appNavItem} onClick={handleMenuClose} />
+            <MenuItem {...profileNavItem} onClick={handleMenuClose} />
             <Divider />
-            <MenuItem {...signOutNavItem} onClick={handleMenuClose}>
-              {signOutNavItem.label}
-            </MenuItem>
+            <MenuItem {...signOutNavItem} onClick={handleMenuClose} />
             <Divider />
-            <MenuItem {...websiteNavItem} onClick={handleMenuClose}>
-              {websiteNavItem.label}
-            </MenuItem>
+            <MenuItem {...websiteNavItem} onClick={handleMenuClose} />
           </Menu>
         </>
       )
