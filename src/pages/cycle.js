@@ -11,11 +11,11 @@ import {
 import { selectAreEntriesLoading } from "../entries/slice"
 import { selectAreSettingsLoading } from "../settings/slice"
 
-import SEO from "../components/Seo"
-import Loading from "../components/Loading"
+import SEO from "../app/Seo"
+import Loading from "../app/Loading"
 
-import CycleIndexPage from "../components/CycleIndexPage"
-import CycleEditPage from "../components/CycleEditPage"
+import CycleIndexPage from "../cycle/CycleIndexPage"
+import CycleEditPage from "../cycle/CycleEditPage"
 
 const CyclePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

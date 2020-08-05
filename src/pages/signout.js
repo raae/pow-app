@@ -5,7 +5,7 @@ import Alert from "@material-ui/lab/Alert"
 
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
-import BrandLayout from "../components/BrandLayout"
+import BrandLayout from "../brand/BrandLayout"
 
 import {
   selectAuthIsPending,

@@ -9,7 +9,7 @@ import { selectAreSettingsLoading } from "../settings/slice"
 import SEO from "../components/Seo"
 import Loading from "../components/Loading"
 
-import BrandLayout from "../components/BrandLayout"
+import BrandLayout from "../brand/BrandLayout"
 import PaymentForm from "../components/PaymentForm"
 
 const PaymentPage = () => {

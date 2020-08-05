@@ -2,10 +2,10 @@ import React from "react"
 
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
-import BrandLayout from "../components/BrandLayout"
+import BrandLayout from "../brand/BrandLayout"
 import DaySummary from "../components/DaySummary"
 import Forecast from "../components/Forecast"
-import DatePicker from "../components/DatePicker"
+import DatePicker from "../app/DatePicker"
 import Welcome from "../components/Welcome"
 import { useSelector } from "react-redux"
 

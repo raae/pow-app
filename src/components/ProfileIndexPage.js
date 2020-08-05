@@ -1,7 +1,7 @@
 import React from "react"
 import { Box } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import BrandLayout from "../components/BrandLayout"
+import BrandLayout from "../brand/BrandLayout"
 import ProfileCard from "./ProfileCard"
 import PaymentForm from "../components/PaymentForm"
 import SettingsForm from "../components/SettingsForm"

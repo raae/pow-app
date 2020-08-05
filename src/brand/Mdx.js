@@ -1,7 +1,7 @@
 import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 
-import BrandCopy from "../components/BrandCopy"
+import BrandCopy from "./BrandCopy"
 import { Link, ButtonLink } from "../app/Link"
 import Logo from "../app/Logo"
 import { SignInButton } from "../auth/AuthButtons"
