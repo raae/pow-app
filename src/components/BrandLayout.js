@@ -22,7 +22,7 @@ import {
 
 import BrandFooter from "./BrandFooter"
 import Logo from "./Logo"
-import { SignInButton, SignUpButton } from "./AuthButtons"
+import { SignInButton, SignUpButton } from "../auth/AuthButtons"
 
 const useStyles = makeStyles((theme) => ({
   root: {
