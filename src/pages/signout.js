@@ -12,7 +12,7 @@ import {
   selectAuthError,
   signOut,
   selectIsAuthenticated,
-} from "./slice"
+} from "../auth/slice"
 
 const SignOutPage = () => {
   const dispatch = useDispatch()

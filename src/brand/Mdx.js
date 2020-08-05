@@ -5,7 +5,7 @@ import BrandCopy from "./BrandCopy"
 import { Link, ButtonLink } from "../app/Link"
 import Logo from "../app/Logo"
 import { SignInButton } from "../auth/AuthButtons"
-import UserForm from "../auth/UserForm"
+import { SignInForm } from "../auth"
 import PaymentForm from "../payment/PaymentForm"
 import Onboarding from "../onboarding/Onboarding"
 
@@ -17,7 +17,7 @@ const shortcodes = {
   Logo,
   SignInButton,
   ButtonLink,
-  UserForm,
+  SignInForm,
   Onboarding,
   PaymentForm,
 }
