@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 
-import { USERBASE_APP_ID } from "../constants"
+import { USERBASE_APP_ID } from "../../constants"
 import { last } from "lodash"
 
 export const AUTH_STATUS = {

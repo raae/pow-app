@@ -1,8 +1,8 @@
 import React from "react"
 
-import BrandLayout from "../brand/BrandLayout"
-import SEO from "../app/Seo"
-import Mdx from "../brand/Mdx"
+import BrandLayout from "../features/brand/BrandLayout"
+import SEO from "../features/app/Seo"
+import Mdx from "../features/brand/Mdx"
 
 const PageTemplate = ({ location, children }) => {
   const variant = location.pathname === "/" ? "home" : ""

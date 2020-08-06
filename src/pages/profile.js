@@ -1,17 +1,17 @@
 import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { selectAuthIsPending, selectIsAuthenticated } from "../auth"
-import { selectAreEntriesLoading } from "../entries/slice"
-import { selectAreSettingsLoading } from "../settings/slice"
+import { selectAuthIsPending, selectIsAuthenticated } from "../features/auth"
+import { selectAreEntriesLoading } from "../features/entries/slice"
+import { selectAreSettingsLoading } from "../features/settings/slice"
 
-import SEO from "../app/Seo"
-import Loading from "../app/Loading"
+import SEO from "../features/app/Seo"
+import Loading from "../features/app/Loading"
 
-import ProfileIndexPage from "../profile/ProfileIndexPage"
-import ProfileEditEmailPage from "../profile/ProfileEditEmailPage"
-import { useSelector } from "react-redux"
+import ProfileIndexPage from "../features/profile/ProfileIndexPage"
+import ProfileEditEmailPage from "../features/profile/ProfileEditEmailPage"
 
 const ProfilePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

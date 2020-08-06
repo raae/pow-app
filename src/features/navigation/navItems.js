@@ -1,5 +1,5 @@
 import { Link } from "gatsby"
-import { BASE_URL } from "../constants"
+import { BASE_URL } from "../../constants"
 
 export const useSignUpNavItem = () => {
   return {

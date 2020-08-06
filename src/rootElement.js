@@ -9,12 +9,14 @@ import {
   name as authSliceName,
   init as authInit,
   selectUserId,
-} from "./auth"
+} from "./features/auth"
 
-import databaseReducer, { name as databaseSliceName } from "./database/slice"
+import databaseReducer, {
+  name as databaseSliceName,
+} from "./features/database/slice"
 
-import { initSettings } from "./settings/slice"
-import { initEntries } from "./entries/slice"
+import { initSettings } from "./features/settings/slice"
+import { initEntries } from "./features/entries/slice"
 
 import { useEffect } from "react"
 

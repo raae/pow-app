@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
 import classNames from "classnames"
 
-import { STRIPE_KEY, BASE_URL } from "../constants"
+import { STRIPE_KEY, BASE_URL } from "../../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
 import {

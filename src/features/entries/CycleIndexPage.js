@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector } from "react-redux"
 
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
@@ -7,7 +8,6 @@ import DaySummary from "../entries/DaySummary"
 import Forecast from "../entries/Forecast"
 import DatePicker from "../app/DatePicker"
 import Welcome from "../onboarding/Welcome"
-import { useSelector } from "react-redux"
 
 import { selectDaysBetween } from "../predictions/slice"
 
