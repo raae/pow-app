@@ -19,6 +19,9 @@ const Welcome = () => {
   const userEmail = useSelector(selectUserEmail)
   const profile = useSelector(selectProfile)
 
+  const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
+  const newsletter = Boolean(parseInt(profile.newsletter))
+
   const handleClose = (name) => (event) => {
     event.preventDefault()
 
@@ -64,11 +67,11 @@ const Welcome = () => {
     }
   }
 
-  if (profile.welcomeCompleted && profile.newsletter) return null
+  if (welcomeCompleted && newsletter) return null
 
   return (
     <aside className={classes.root}>
-      {!profile.welcomeCompleted && (
+      {!welcomeCompleted && (
         <Alert onClose={handleClose("welcome")}>
           <AlertTitle>Welcome</AlertTitle>
           <Typography component="div">
@@ -82,7 +85,7 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {profile.welcomeCompleted && (
+      {welcomeCompleted && (
         <Alert onClose={handleClose("newsletterOff")}>
           <AlertTitle severity="info">Newsletter</AlertTitle>
           <Typography component="div">

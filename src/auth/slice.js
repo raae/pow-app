@@ -23,6 +23,17 @@ const AUTH_FAILED_STATUSES = [AUTH_STATUS.ERROR]
 
 const USER_UPDATING_STATUSES = [AUTH_STATUS.UPDATING]
 
+const defaultProfile = {
+  newsletter: "0",
+  welcomeCompleted: "0",
+}
+
+const defaultProtectedProfile = {
+  stripeEmail: "",
+  stripeCustomerId: "",
+  stripePlanId: "",
+}
+
 export const defaultState = {
   user: null,
   status: AUTH_STATUS.INITIAL,
@@ -35,7 +46,9 @@ export const init = createAsyncThunk("init", async () => {
 })
 
 export const updateUser = createAsyncThunk("user/update", async (payload) => {
-  await userbase.updateUser(payload)
+  console.log("Update user", payload)
+  const result = await userbase.updateUser(payload)
+  console.log("Updated user", result)
   return { user: payload }
 })
 
@@ -120,6 +133,8 @@ const selectAuthErrors = createSelector([selectAuthSlice], (slice) => {
 })
 const selectProtectedProfile = createSelector([selectAuthUser], (user) => {
   return user && user.protectedProfile
+    ? user.protectedProfile
+    : defaultProtectedProfile
 })
 
 export const selectIsAuthenticated = createSelector(
@@ -138,28 +153,30 @@ export const selectUsername = createSelector([selectAuthUser], (user) => {
 })
 
 export const selectProfile = createSelector([selectAuthUser], (user) => {
-  return user && user.profile
+  return user && user.profile ? user.profile : defaultProfile
 })
 
 export const selectUserEmail = createSelector(
   [selectAuthUser, selectProtectedProfile],
   (user, protectedProfile) => {
     const userEmail = user && user.email
-    const stripeEmail = protectedProfile && protectedProfile.stripeEmail
+    const stripeEmail = protectedProfile.stripeEmail
     return userEmail || stripeEmail
   }
 )
 
-export const selectIsPayingUser = createSelector([selectAuthUser], (user) => {
-  const customerId =
-    user && user.protectedProfile && user.protectedProfile.stripeCustomerId
-  return Boolean(customerId)
-})
+export const selectIsPayingUser = createSelector(
+  [selectProtectedProfile],
+  (protectedProfile) => {
+    const customerId = protectedProfile.stripeCustomerId
+    return Boolean(customerId)
+  }
+)
 
 export const selectStripePlan = createSelector(
   [selectProtectedProfile],
   (protectedProfile) => {
-    return protectedProfile && protectedProfile.stripePlanId.split("_")[0]
+    return protectedProfile.stripePlanId.split("_")[0]
   }
 )
 
