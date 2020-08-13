@@ -1,7 +1,7 @@
 import React from "react"
 
+import { SEO } from "../features/app"
 import BrandLayout from "../features/brand/BrandLayout"
-import SEO from "../features/app/Seo"
 import Mdx from "../features/brand/Mdx"
 
 const PageTemplate = ({ location, children }) => {

@@ -11,8 +11,7 @@ import {
 import { selectAreEntriesLoading } from "../features/entries/slice"
 import { selectAreSettingsLoading } from "../features/settings/slice"
 
-import SEO from "../features/app/Seo"
-import Loading from "../features/app/Loading"
+import { SEO, Loading } from "../features/app"
 
 import CycleIndexPage from "../features/entries/CycleIndexPage"
 import CycleEditPage from "../features/entries/CycleEditPage"

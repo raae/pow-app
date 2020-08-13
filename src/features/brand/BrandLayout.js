@@ -22,7 +22,7 @@ import {
 } from "../navigation"
 
 import BrandFooter from "./BrandFooter"
-import Logo from "../app/Logo"
+import Logo from "./Logo"
 import { useSignInNavItem, useSignUpNavItem } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({

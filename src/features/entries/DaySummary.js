@@ -17,7 +17,7 @@ import { selectMenstruationTag } from "../settings/slice"
 
 import { formatDate } from "../utils/days"
 
-import Logo from "../app/Logo"
+import Logo from "../brand/Logo"
 import { ForecastText } from "./Forecast"
 import {
   selectDaysBetween,

@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
-import SEO from "../features/app/Seo"
-import Loading from "../features/app/Loading"
+import { SEO, Loading } from "../features/app"
 import BrandLayout from "../features/brand/BrandLayout"
 
 import {

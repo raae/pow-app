@@ -6,8 +6,7 @@ import { selectIsAuthenticated, selectAuthIsPending } from "./slice"
 import { selectAreEntriesLoading } from "../entries/slice"
 import { selectAreSettingsLoading } from "../settings/slice"
 
-import SEO from "../app/Seo"
-import Loading from "../app/Loading"
+import { SEO, Loading } from "../app"
 
 import BrandLayout from "../brand/BrandLayout"
 import PaymentForm from "./PaymentForm"
