@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core"
 
 import BrandCopy from "./BrandCopy"
 import { Link, ButtonLink } from "../navigation"
-import Logo from "../brand/Logo"
+import { Logo } from "../brand"
 
 import { SignInForm } from "../auth"
 import { useSignInNavItem } from "../navigation"

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
-import BrandLayout from "../brand/BrandLayout"
+import { BrandLayout } from "../brand"
 import DaySummary from "../entries/DaySummary"
 import Forecast from "../entries/Forecast"
 import { DatePicker } from "../app"

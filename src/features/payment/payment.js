@@ -8,7 +8,7 @@ import { selectAreSettingsLoading } from "../settings/slice"
 
 import { SEO, Loading } from "../app"
 
-import BrandLayout from "../brand/BrandLayout"
+import { BrandLayout } from "../brand"
 import PaymentForm from "./PaymentForm"
 
 const PaymentPage = () => {

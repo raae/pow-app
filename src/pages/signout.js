@@ -4,7 +4,7 @@ import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
-import BrandLayout from "../features/brand/BrandLayout"
+import { BrandLayout } from "../features/brand"
 
 import {
   selectAuthIsPending,
