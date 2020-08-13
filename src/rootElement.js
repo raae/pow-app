@@ -11,9 +11,10 @@ import {
   selectUserId,
 } from "./features/auth"
 
-import databaseReducer, {
+import {
+  reducer as databaseReducer,
   name as databaseSliceName,
-} from "./features/database/slice"
+} from "./features/database"
 
 import { initSettings } from "./features/settings/slice"
 import { initEntries } from "./features/entries/slice"

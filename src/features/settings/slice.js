@@ -1,12 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit"
+import { keyBy } from "lodash"
+
 import {
   openDatabase,
   selectDatabaseItems,
   selectIsDatabaseLoading,
   upsertItem,
   insertItem,
-} from "../database/slice"
-import { keyBy } from "lodash"
+} from "../database"
 
 const DATABASE_NAME = "settings"
 

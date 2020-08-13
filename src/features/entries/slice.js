@@ -7,7 +7,7 @@ import {
   selectDatabasePendingItemsById,
   upsertItem,
   selectIsDatabaseLoading,
-} from "../database/slice"
+} from "../database"
 
 import { selectMenstruationTag } from "../settings/slice"
 
