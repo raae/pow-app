@@ -4,16 +4,20 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
 
-import authReducer, {
+import {
+  reducer as authReducer,
   name as authSliceName,
   init as authInit,
   selectUserId,
-} from "./auth/slice"
+} from "./features/auth"
 
-import databaseReducer, { name as databaseSliceName } from "./database/slice"
+import {
+  reducer as databaseReducer,
+  name as databaseSliceName,
+} from "./features/database"
 
-import { initSettings } from "./settings/slice"
-import { initEntries } from "./entries/slice"
+import { initSettings } from "./features/settings"
+import { initEntries } from "./features/entries"
 
 import { useEffect } from "react"
 

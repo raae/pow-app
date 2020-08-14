@@ -7,15 +7,12 @@ import {
   selectIsPayingUser,
   selectAuthIsPending,
   selectIsAuthenticated,
-} from "../auth/slice"
-import { selectAreEntriesLoading } from "../entries/slice"
-import { selectAreSettingsLoading } from "../settings/slice"
+} from "../features/auth"
+import { selectAreEntriesLoading } from "../features/entries"
+import { selectAreSettingsLoading } from "../features/settings"
+import { CycleIndexPage, CycleEditPage } from "../features/timeline"
 
-import SEO from "../components/Seo"
-import Loading from "../components/Loading"
-
-import CycleIndexPage from "../components/CycleIndexPage"
-import CycleEditPage from "../components/CycleEditPage"
+import { SEO, Loading } from "../features/app"
 
 const CyclePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

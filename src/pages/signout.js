@@ -3,16 +3,15 @@ import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
-import SEO from "../components/Seo"
-import Loading from "../components/Loading"
-import BrandLayout from "../components/BrandLayout"
+import { SEO, Loading } from "../features/app"
+import { BrandLayout } from "../features/brand"
 
 import {
   selectAuthIsPending,
   selectAuthError,
-  signOut,
   selectIsAuthenticated,
-} from "../auth/slice"
+  signOut,
+} from "../features/auth"
 
 const SignOutPage = () => {
   const dispatch = useDispatch()
@@ -30,23 +29,22 @@ const SignOutPage = () => {
     }
   }, [dispatch, isPending, isAuthenticated])
 
-  if (!error) {
-    return (
-      <>
-        <SEO title="Signing out..." />
-        <Loading fullScreen />
-      </>
-    )
-  } else {
-    return (
-      <>
-        <BrandLayout variant="app">
+  return (
+    <BrandLayout variant="app">
+      {error ? (
+        <>
+          <SEO title="Sign out" />
           <h1>Sign out failed</h1>
           <Alert severity="error">{error.message}</Alert>
-        </BrandLayout>
-      </>
-    )
-  }
+        </>
+      ) : (
+        <>
+          <SEO title="Signing out..." />
+          <Loading fullScreen />
+        </>
+      )}
+    </BrandLayout>
+  )
 }
 
 export default SignOutPage
