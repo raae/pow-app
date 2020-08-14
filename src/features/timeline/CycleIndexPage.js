@@ -4,12 +4,13 @@ import { useSelector } from "react-redux"
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
 import { BrandLayout } from "../brand"
-import DaySummary from "../entries/DaySummary"
-import Forecast from "../entries/Forecast"
-import { DatePicker } from "../app"
 import Welcome from "../onboarding/Welcome"
 
 import { selectDaysBetween } from "../predictions/slice"
+
+import DaySummary from "./DaySummary"
+import Forecast from "./Forecast"
+import DatePicker from "./DatePicker"
 
 const CycleIndexPage = ({ date }) => {
   date = makeDate(date)

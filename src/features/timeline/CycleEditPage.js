@@ -13,7 +13,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
 import { formatDate } from "../utils/days"
 
-import EntryForm from "./EntryForm"
+import { EntryForm } from "../entries"
 
 const useStyles = makeStyles((theme) => ({
   root: {

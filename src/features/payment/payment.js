@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 
 import { selectIsAuthenticated, selectAuthIsPending } from "./slice"
-import { selectAreEntriesLoading } from "../entries/slice"
+import { selectAreEntriesLoading } from "../entries"
 import { selectAreSettingsLoading } from "../settings/slice"
 
 import { SEO, Loading } from "../app"

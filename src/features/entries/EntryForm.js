@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 
 import { Paper, TextField } from "@material-ui/core"
 
-import { upsertEntry, selectEntryNote } from "../entries/slice"
+import { upsertEntry, selectEntryNote } from "../entries"
 import { selectMenstruationTag } from "../settings/slice"
 
 const EntryForm = ({ entryId, onDone, children, variant, className }) => {

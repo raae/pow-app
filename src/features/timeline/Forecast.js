@@ -13,7 +13,7 @@ import {
 
 import classNames from "classnames"
 
-import { selectEntryNote, selectIsMenstruationForDate } from "./slice"
+import { selectEntryNote, selectIsMenstruationForDate } from "../entries"
 
 import { formatDate, entryIdFromDate } from "../utils/days"
 import {

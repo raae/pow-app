@@ -17,7 +17,7 @@ import {
 } from "./features/database"
 
 import { initSettings } from "./features/settings/slice"
-import { initEntries } from "./features/entries/slice"
+import { initEntries } from "./features/entries"
 
 import { useEffect } from "react"
 

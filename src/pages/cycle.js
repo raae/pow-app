@@ -8,13 +8,11 @@ import {
   selectAuthIsPending,
   selectIsAuthenticated,
 } from "../features/auth"
-import { selectAreEntriesLoading } from "../features/entries/slice"
+import { selectAreEntriesLoading } from "../features/entries"
 import { selectAreSettingsLoading } from "../features/settings/slice"
+import { CycleIndexPage, CycleEditPage } from "../features/timeline"
 
 import { SEO, Loading } from "../features/app"
-
-import CycleIndexPage from "../features/entries/CycleIndexPage"
-import CycleEditPage from "../features/entries/CycleEditPage"
 
 const CyclePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

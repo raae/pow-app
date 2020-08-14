@@ -4,7 +4,7 @@ import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
 import { selectAuthIsPending, selectIsAuthenticated } from "../features/auth"
-import { selectAreEntriesLoading } from "../features/entries/slice"
+import { selectAreEntriesLoading } from "../features/entries"
 import { selectAreSettingsLoading } from "../features/settings/slice"
 
 import { SEO, Loading } from "../features/app"

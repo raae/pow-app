@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import { navigate } from "gatsby"
 import { Popover, Button } from "@material-ui/core"
 import DropDownIcon from "@material-ui/icons/ArrowDropDownRounded"
-
 import { DatePicker as MuiDatePicker } from "@material-ui/pickers"
+
 import { makeDate, entryIdFromDate, formatDate } from "../utils/days"
 
 const DatePicker = ({ entryId }) => {

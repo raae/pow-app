@@ -4,7 +4,7 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 
 import { insertSetting } from "../../settings/slice"
-import { upsertEntry } from "../../entries/slice"
+import { upsertEntry } from "../../entries"
 
 import { entryIdFromDate } from "../../utils/days"
 import { tagsFromText } from "../../utils/tags"
