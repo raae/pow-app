@@ -8,7 +8,7 @@ import { Logo } from "../brand"
 
 import { SignInForm } from "../auth"
 import { useSignInNavItem } from "../navigation"
-import PaymentForm from "../payment/PaymentForm"
+import { PaymentForm } from "../payment"
 import { Onboarding } from "../onboarding"
 
 const SignInButton = (props) => {
