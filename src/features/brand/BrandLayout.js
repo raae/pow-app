@@ -27,14 +27,10 @@ import { useSignInNavItem, useSignUpNavItem } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    "& header": {
-      maxWidth: "55rem",
-      margin: "0 auto",
-    },
-    "& main": {
+    "& > main": {
       maxWidth: "50rem",
     },
-    "& footer": {
+    "& > footer": {
       maxWidth: "50rem",
     },
   },
@@ -47,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     borderTop: `4px solid ${theme.palette.primary.main}`,
     borderBottom: `1px solid ${theme.palette.grey[200]}`,
+    "& header": {
+      maxWidth: "55rem",
+      margin: "0 auto",
+    },
   },
   offset: theme.mixins.toolbar,
   toolbar: {

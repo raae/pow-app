@@ -33,6 +33,7 @@ export const upsertEntry = (entryId, entry) => {
 const transformItemToEntry = ({ itemId, item }) => {
   return {
     entryId: itemId,
+    date: makeDate(itemId),
     note: item.note,
     tags: uniq(tagsFromText(item.note)),
   }

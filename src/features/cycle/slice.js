@@ -5,7 +5,6 @@ import { selectEntriesSortedByDate, selectEntryTags } from "../entries"
 import { selectMenstruationTag, selectInitialDaysBetween } from "../settings"
 
 import {
-  makeDate,
   daysBetweenDates,
   isDateBefore,
   isDateAfter,
