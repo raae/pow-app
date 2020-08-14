@@ -9,7 +9,7 @@ import { Logo } from "../brand"
 import { SignInForm } from "../auth"
 import { useSignInNavItem } from "../navigation"
 import PaymentForm from "../payment/PaymentForm"
-import Onboarding from "../onboarding/Onboarding"
+import { Onboarding } from "../onboarding"
 
 const SignInButton = (props) => {
   const signInNavItem = useSignInNavItem()

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 
 import { BrandLayout } from "../brand"
-import Welcome from "../onboarding/Welcome"
+import { Welcome } from "../onboarding"
 
 import { selectDaysBetween } from "../cycle"
 
