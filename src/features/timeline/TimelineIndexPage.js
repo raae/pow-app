@@ -9,8 +9,7 @@ import { Welcome } from "../onboarding"
 
 import { selectDaysBetween } from "../cycle"
 
-import DaySummary from "./DaySummary"
-import ForecastItem from "./ForecastItem"
+import ForecastItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
 const useStyles = makeStyles((theme) => ({
