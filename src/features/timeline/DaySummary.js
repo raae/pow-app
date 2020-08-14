@@ -26,7 +26,7 @@ import {
   selectIsDateCurrentCycle,
   selectPredictedTagsForDate,
   selectNextStartDate,
-} from "../predictions"
+} from "../cycle"
 
 const useStyles = makeStyles((theme) => ({
   root: {

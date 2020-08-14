@@ -6,7 +6,7 @@ import { entryIdFromDate, makeDate, intervalAfterDate } from "../utils/days"
 import { BrandLayout } from "../brand"
 import Welcome from "../onboarding/Welcome"
 
-import { selectDaysBetween } from "../predictions"
+import { selectDaysBetween } from "../cycle"
 
 import DaySummary from "./DaySummary"
 import Forecast from "./Forecast"
