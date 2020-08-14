@@ -9,7 +9,7 @@ import {
   selectIsAuthenticated,
 } from "../features/auth"
 import { selectAreEntriesLoading } from "../features/entries"
-import { selectAreSettingsLoading } from "../features/settings/slice"
+import { selectAreSettingsLoading } from "../features/settings"
 import { CycleIndexPage, CycleEditPage } from "../features/timeline"
 
 import { SEO, Loading } from "../features/app"

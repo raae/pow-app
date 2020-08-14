@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { Paper, TextField } from "@material-ui/core"
 
 import { upsertEntry, selectEntryNote } from "../entries"
-import { selectMenstruationTag } from "../settings/slice"
+import { selectMenstruationTag } from "../settings"
 
 const EntryForm = ({ entryId, onDone, children, variant, className }) => {
   const dispatch = useDispatch()

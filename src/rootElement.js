@@ -16,7 +16,7 @@ import {
   name as databaseSliceName,
 } from "./features/database"
 
-import { initSettings } from "./features/settings/slice"
+import { initSettings } from "./features/settings"
 import { initEntries } from "./features/entries"
 
 import { useEffect } from "react"

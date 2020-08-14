@@ -2,10 +2,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import { first, last, countBy, toPairs } from "lodash"
 
 import { selectEntriesSortedByDate, selectEntryTags } from "../entries"
-import {
-  selectMenstruationTag,
-  selectInitialDaysBetween,
-} from "../settings/slice"
+import { selectMenstruationTag, selectInitialDaysBetween } from "../settings"
 
 import {
   makeDate,

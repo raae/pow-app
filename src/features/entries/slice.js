@@ -9,7 +9,7 @@ import {
   selectIsDatabaseLoading,
 } from "../database"
 
-import { selectMenstruationTag } from "../settings/slice"
+import { selectMenstruationTag } from "../settings"
 
 import { makeDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"

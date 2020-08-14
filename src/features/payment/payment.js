@@ -4,7 +4,7 @@ import { navigate } from "gatsby"
 
 import { selectIsAuthenticated, selectAuthIsPending } from "./slice"
 import { selectAreEntriesLoading } from "../entries"
-import { selectAreSettingsLoading } from "../settings/slice"
+import { selectAreSettingsLoading } from "../settings"
 
 import { SEO, Loading } from "../app"
 

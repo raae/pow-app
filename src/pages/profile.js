@@ -5,7 +5,7 @@ import { Router } from "@reach/router"
 
 import { selectAuthIsPending, selectIsAuthenticated } from "../features/auth"
 import { selectAreEntriesLoading } from "../features/entries"
-import { selectAreSettingsLoading } from "../features/settings/slice"
+import { selectAreSettingsLoading } from "../features/settings"
 
 import { SEO, Loading } from "../features/app"
 

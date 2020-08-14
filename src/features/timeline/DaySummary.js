@@ -13,7 +13,7 @@ import {
 import EditNoteIcon from "@material-ui/icons/Edit"
 
 import { selectEntryNote } from "../entries"
-import { selectMenstruationTag } from "../settings/slice"
+import { selectMenstruationTag } from "../settings"
 
 import { formatDate } from "../utils/days"
 
