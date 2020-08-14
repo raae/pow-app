@@ -20,7 +20,7 @@ const Welcome = () => {
   const profile = useSelector(selectProfile)
 
   const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
-  const newsletter = Boolean(parseInt(profile.newsletter))
+  const newsletterCompleted = profile.newsletter !== undefined
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
@@ -67,7 +67,7 @@ const Welcome = () => {
     }
   }
 
-  if (welcomeCompleted && newsletter) return null
+  if (welcomeCompleted && newsletterCompleted) return null
 
   return (
     <aside className={classes.root}>
@@ -85,13 +85,14 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {welcomeCompleted && (
+      {welcomeCompleted && !newsletterCompleted && (
         <Alert onClose={handleClose("newsletterOff")}>
           <AlertTitle severity="info">Newsletter</AlertTitle>
           <Typography component="div">
             <p>
-              POW! is still a young app, and will get lots of love this spring.
-              Would you like to keep up by signing up for the newsletter?
+              POW! is still a young app, and will probably change a lot in the
+              coming year. Would you like to keep up by signing up for the
+              newsletter?
             </p>
           </Typography>
           <Button variant="outlined" onClick={handleClose("newsletterOn")}>
