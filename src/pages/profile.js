@@ -9,8 +9,7 @@ import { selectAreSettingsLoading } from "../features/settings"
 
 import { SEO, Loading } from "../features/app"
 
-import ProfileIndexPage from "../features/profile/ProfileIndexPage"
-import ProfileEditEmailPage from "../features/profile/ProfileEditEmailPage"
+import { ProfileIndexPage, ProfileEditEmailPage } from "../features/profile"
 
 const ProfilePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
