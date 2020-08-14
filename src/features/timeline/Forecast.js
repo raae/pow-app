@@ -20,7 +20,7 @@ import {
   selectPredictedTagsForDate,
   selectCycleDayForDate,
   selectPredictedMenstruationForDate,
-} from "../predictions/slice"
+} from "../predictions"
 
 const useStyles = makeStyles((theme) => ({
   root: {
