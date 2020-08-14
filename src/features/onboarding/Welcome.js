@@ -90,8 +90,9 @@ const Welcome = () => {
           <AlertTitle severity="info">Newsletter</AlertTitle>
           <Typography component="div">
             <p>
-              POW! is still a young app, and will get lots of love this spring.
-              Would you like to keep up by signing up for the newsletter?
+              POW! is still a young app, and will probably change a lot in the
+              coming year. Would you like to keep up by signing up for the
+              newsletter?
             </p>
           </Typography>
           <Button variant="outlined" onClick={handleClose("newsletterOn")}>
