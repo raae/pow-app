@@ -64,7 +64,7 @@ const CycleEditPage = ({ entryId }) => {
   const date = makeDate(entryId)
 
   const handleDone = () => {
-    navigate(`/cycle/${entryId}`)
+    navigate(`/timeline/${entryId}`)
   }
 
   return (

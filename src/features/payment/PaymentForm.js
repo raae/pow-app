@@ -84,7 +84,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
         ],
         clientReferenceId: userId,
-        successUrl: BASE_URL + "/cycle",
+        successUrl: BASE_URL + "/timeline",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
         // email: "rart",
       })

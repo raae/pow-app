@@ -141,7 +141,7 @@ const DaySummary = ({ date }) => {
             size="large"
             aria-label="Edit note"
             component={GatsbyLink}
-            to={`/cycle/${entryId}/edit`}
+            to={`/timeline/${entryId}/edit`}
             className={classes.submit}
           >
             <EditNoteIcon />

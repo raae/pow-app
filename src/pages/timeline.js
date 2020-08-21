@@ -10,7 +10,7 @@ import {
 } from "../features/auth"
 import { selectAreEntriesLoading } from "../features/entries"
 import { selectAreSettingsLoading } from "../features/settings"
-import { CycleIndexPage, CycleEditPage } from "../features/timeline"
+import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
 
 import { SEO, Loading } from "../features/app"
 
@@ -47,10 +47,10 @@ const CyclePage = () => {
   return (
     <>
       <SEO title="Cycle" />
-      <Router basepath="/cycle">
-        <CycleIndexPage path="/" />
-        <CycleIndexPage path=":entryId" />
-        <CycleEditPage path=":entryId/edit" />
+      <Router basepath="/timeline">
+        <TimelineIndexPage path="/" />
+        <TimelineIndexPage path=":entryId" />
+        <TimelineEditPage path=":entryId/edit" />
       </Router>
     </>
   )
