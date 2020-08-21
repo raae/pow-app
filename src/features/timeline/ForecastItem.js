@@ -15,7 +15,7 @@ import classNames from "classnames"
 
 import { selectEntryNote, selectIsMenstruationForDate } from "../entries"
 
-import { formatDate, entryIdFromDate } from "../utils/days"
+import { formatDate } from "../utils/days"
 import {
   selectPredictedTagsForDate,
   selectCycleDayForDate,
@@ -23,10 +23,6 @@ import {
 } from "../cycle"
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: "30rem",
-    margin: theme.spacing(2, 0, 4),
-  },
   avatar: {
     fontSize: "inherit",
     flexDirection: "column",
@@ -86,25 +82,25 @@ export const ForecastText = ({ tags = [] }) => {
     })
 }
 
-const ForecastListItem = ({ entryId }) => {
+const ForecastItem = ({ date }) => {
   const classes = useStyles()
 
-  const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
+  const entryNote = useSelector((state) => selectEntryNote(state, { date }))
 
   const cycleDay = useSelector((state) =>
-    selectCycleDayForDate(state, { entryId })
+    selectCycleDayForDate(state, { date })
   )
 
   const isMenstruation = useSelector((state) =>
-    selectIsMenstruationForDate(state, { entryId })
+    selectIsMenstruationForDate(state, { date })
   )
 
   const isPredictedMenstruation = useSelector((state) =>
-    selectPredictedMenstruationForDate(state, { entryId })
+    selectPredictedMenstruationForDate(state, { date })
   )
 
   const predictionTags = useSelector((state) =>
-    selectPredictedTagsForDate(state, { entryId })
+    selectPredictedTagsForDate(state, { date })
   )
 
   const hasTags = predictionTags && predictionTags.length !== 0
@@ -138,7 +134,7 @@ const ForecastListItem = ({ entryId }) => {
                 color="textSecondary"
                 gutterBottom
               >
-                {formatDate(entryId, "EEEE, MMMM do")}
+                {formatDate(date, "EEEE, MMMM do")}
               </Typography>
             }
             secondary={
@@ -170,19 +166,4 @@ const ForecastListItem = ({ entryId }) => {
   )
 }
 
-const Forecast = ({ interval }) => {
-  const classes = useStyles()
-
-  return (
-    <>
-      <List className={classes.root}>
-        {interval.map((date) => {
-          const id = entryIdFromDate(date)
-          return <ForecastListItem key={id} entryId={id} />
-        })}
-      </List>
-    </>
-  )
-}
-
-export default Forecast
+export default ForecastItem

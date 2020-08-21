@@ -15,10 +15,10 @@ import EditNoteIcon from "@material-ui/icons/Edit"
 import { selectEntryNote } from "../entries"
 import { selectMenstruationTag } from "../settings"
 
-import { formatDate } from "../utils/days"
+import { formatDate, entryIdFromDate } from "../utils/days"
 
 import { Logo } from "../brand"
-import { ForecastText } from "./Forecast"
+import { ForecastText } from "./ForecastItem"
 import {
   selectDaysBetween,
   selectIsDaysBetweenCalculated,
@@ -73,24 +73,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const DaySummary = ({ entryId }) => {
+const DaySummary = ({ date }) => {
   const classes = useStyles()
+  const entryId = entryIdFromDate(date)
 
-  const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
+  const entryNote = useSelector((state) => selectEntryNote(state, { date }))
   const menstruationTag = useSelector(selectMenstruationTag)
   const daysBetween = useSelector(selectDaysBetween)
   const isDaysBetweenCalculated = useSelector(selectIsDaysBetweenCalculated)
   const cycleDay = useSelector((state) =>
-    selectCycleDayForDate(state, { entryId })
+    selectCycleDayForDate(state, { date })
   )
   const isCurrentCycle = useSelector((state) =>
-    selectIsDateCurrentCycle(state, { entryId })
+    selectIsDateCurrentCycle(state, { date })
   )
   const nextStartDate = useSelector((state) =>
-    selectNextStartDate(state, { entryId })
+    selectNextStartDate(state, { date })
   )
   const predictedTags = useSelector((state) =>
-    selectPredictedTagsForDate(state, { entryId })
+    selectPredictedTagsForDate(state, { date })
   )
 
   const hasTags = predictedTags && predictedTags.length > 0
@@ -100,7 +101,7 @@ const DaySummary = ({ entryId }) => {
       <Card className={classes.root}>
         <CardContent>
           <Typography variant="body2" color="textSecondary" gutterBottom>
-            {formatDate(entryId, "EEEE, MMMM do")}
+            {formatDate(date, "EEEE, MMMM do")}
           </Typography>
 
           <Typography variant="h4" component="h2">
@@ -140,7 +141,7 @@ const DaySummary = ({ entryId }) => {
             size="large"
             aria-label="Edit note"
             component={GatsbyLink}
-            to={`/cycle/${entryId}/edit`}
+            to={`/timeline/${entryId}/edit`}
             className={classes.submit}
           >
             <EditNoteIcon />

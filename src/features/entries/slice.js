@@ -11,7 +11,7 @@ import {
 
 import { selectMenstruationTag } from "../settings"
 
-import { makeDate } from "../utils/days"
+import { makeDate, entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
 
 const DATABASE_NAME = "entries"
@@ -40,7 +40,11 @@ const transformItemToEntry = ({ itemId, item }) => {
 }
 
 const selectEntryId = (state, props) => {
-  return props.entryId
+  if (props.date) {
+    return entryIdFromDate(props.date)
+  } else {
+    return props.entryId
+  }
 }
 
 export const selectAreEntriesLoading = (state) => {

@@ -1,2 +1,2 @@
-export { default as CycleEditPage } from "./CycleEditPage"
-export { default as CycleIndexPage } from "./CycleIndexPage"
+export { default as TimelineEditPage } from "./TimelineEditPage"
+export { default as TimelineIndexPage } from "./TimelineIndexPage"

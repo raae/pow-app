@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
 
-import { formatDate } from "../utils/days"
+import { formatDate, makeDate } from "../utils/days"
 
 import { EntryForm } from "../entries"
 
@@ -59,18 +59,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CycleEditPage = ({ date }) => {
+const CycleEditPage = ({ entryId }) => {
   const classes = useStyles()
+  const date = makeDate(entryId)
 
   const handleDone = () => {
-    navigate(`/cycle/${date}`)
+    navigate(`/timeline/${entryId}`)
   }
 
   return (
     <div className={classes.root}>
       <Toolbar />
 
-      <EntryForm entryId={date} onDone={handleDone} className={classes.form}>
+      <EntryForm entryId={entryId} onDone={handleDone} className={classes.form}>
         <AppBar position="absolute" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <Button

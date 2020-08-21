@@ -4,18 +4,19 @@ import { Popover, Button } from "@material-ui/core"
 import DropDownIcon from "@material-ui/icons/ArrowDropDownRounded"
 import { DatePicker as MuiDatePicker } from "@material-ui/pickers"
 
-import { makeDate, entryIdFromDate, formatDate } from "../utils/days"
+import { entryIdFromDate, formatDate } from "../utils/days"
 
-const DatePicker = ({ entryId }) => {
+const DatePicker = ({ date }) => {
   const [anchorEl, setAnchorEl] = useState()
   const handleChangeDate = (date) => {
-    navigate(`/cycle/${entryIdFromDate(date)}`)
+    navigate(`/timeline/${entryIdFromDate(date)}`)
     setAnchorEl(null)
   }
+
   return (
     <div>
       <Button onClick={(event) => setAnchorEl(event.currentTarget)}>
-        {formatDate(entryId, "MMMM")} <DropDownIcon />
+        {formatDate(date, "MMMM")} <DropDownIcon />
       </Button>
       <Popover
         anchorEl={anchorEl}
@@ -28,7 +29,7 @@ const DatePicker = ({ entryId }) => {
           disableToolbar
           variant="static"
           openTo="date"
-          value={makeDate(entryId)}
+          value={date}
           onChange={handleChangeDate}
         />
       </Popover>

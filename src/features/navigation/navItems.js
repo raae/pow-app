@@ -13,7 +13,7 @@ export const useSignInNavItem = () => {
   return {
     children: "Log in",
     component: Link,
-    to: "/cycle",
+    to: "/timeline",
   }
 }
 
@@ -35,9 +35,9 @@ export const useProfileNavItem = () => {
 
 export const useAppNavItem = () => {
   return {
-    children: "Cycle",
+    children: "Timeline",
     component: Link,
-    to: "/cycle",
+    to: "/timeline",
   }
 }
 
