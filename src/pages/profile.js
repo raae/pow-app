@@ -11,7 +11,7 @@ import Loading from "../components/Loading"
 
 import ProfileIndexPage from "../components/ProfileIndexPage"
 import ProfileEditEmailPage from "../components/ProfileEditEmailPage"
-import ProfileEditPasSwordPage from "../components/ProfileEditPasswordPage"
+import ProfileEditPasSwordPage from "../components/ProfileEditPasSwordPage"
 
 const ProfilePage = () => {
   const { user, isPending: authIsPending } = useAuthState()
