@@ -49,8 +49,8 @@ const CyclePage = () => {
       <SEO title="Cycle" />
       <Router basepath="/cycle">
         <CycleIndexPage path="/" />
-        <CycleIndexPage path=":date" />
-        <CycleEditPage path=":date/edit" />
+        <CycleIndexPage path=":entryId" />
+        <CycleEditPage path=":entryId/edit" />
       </Router>
     </>
   )

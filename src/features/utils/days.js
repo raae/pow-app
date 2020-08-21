@@ -9,72 +9,51 @@ import {
   eachDayOfInterval,
   addDays,
 } from "date-fns"
+import { startOfDay } from "date-fns/esm"
 
-export const makeDate = (date) => {
+export const makeDate = (input) => {
+  let date = input
   if (!(date instanceof Date)) {
-    date = new Date(date)
+    date = new Date(input)
   }
-  return date
-}
-
-export const entryIdFromDate = (date) => {
-  if (!date) {
-    date = new Date()
-  } else {
-    date = makeDate(date)
-  }
-
   if (!isValid(date)) {
     date = new Date()
   }
+  return startOfDay(date)
+}
 
+export const entryIdFromDate = (date) => {
   return format(date, "yyyy-MM-dd")
 }
 
 export const formatDate = (date, formatting = "yyyy-MM-dd", options) => {
-  date = makeDate(date)
   return format(date, formatting, options)
 }
 
 export const daysBetweenDates = (dateA, dateB) => {
-  dateA = makeDate(dateA)
-  dateB = makeDate(dateB)
-
-  if (isNaN(dateA.valueOf()) || isNaN(dateB.valueOf())) return -1
+  if (!dateA || !dateB) return -1
 
   return differenceInDays(dateA, dateB)
 }
 
 export const addDaysToDate = (date, days) => {
-  date = makeDate(date)
   const newDate = add(date, { days })
   return newDate
 }
 
 export const isDateBefore = (date, dateToCompare) => {
-  date = makeDate(date)
-  dateToCompare = makeDate(dateToCompare)
-
   return isBefore(date, dateToCompare)
 }
 
 export const isDateAfter = (date, dateToCompare) => {
-  date = makeDate(date)
-  dateToCompare = makeDate(dateToCompare)
-
   return isAfter(date, dateToCompare)
 }
 
 export const isDateEqual = (date, dateToCompare) => {
-  date = makeDate(date)
-  dateToCompare = makeDate(dateToCompare)
-
   return isEqual(date, dateToCompare)
 }
 
 export const intervalAfterDate = (date, daysAfter) => {
-  date = makeDate(date)
-
   if (!daysAfter) {
     daysAfter = 1
   }
@@ -86,8 +65,6 @@ export const intervalAfterDate = (date, daysAfter) => {
 }
 
 export const intervalBeforeDate = (date, daysBefore) => {
-  date = makeDate(date)
-
   if (!daysBefore) {
     daysBefore = 1
   }
