@@ -14,8 +14,8 @@ import {
 
 import analyze from "./analyze"
 
-const selectEntryIdAsDate = (state, props) => {
-  return makeDate(props.entryId)
+const selectDate = (state, props) => {
+  return props.date
 }
 
 const selectAnalytics = createSelector(
@@ -53,14 +53,14 @@ export const selectNextStartDate = createSelector(
 )
 
 export const selectCycleDayForDate = createSelector(
-  [selectEntryIdAsDate, selectAnalytics],
+  [selectDate, selectAnalytics],
   (date, analytics) => {
     return cycleDayForDate(date, analytics) + 1
   }
 )
 
 export const selectPredictedTagsForDate = createSelector(
-  [selectEntryIdAsDate, selectAnalytics, selectEntryTags],
+  [selectDate, selectAnalytics, selectEntryTags],
   (date, analytics, tags = []) => {
     const cycleDay = cycleDayForDate(date, analytics)
     const predictedTags = analytics.tags[cycleDay] || []
@@ -83,7 +83,7 @@ export const selectPredictedMenstruationForDate = createSelector(
 )
 
 export const selectIsDateCurrentCycle = createSelector(
-  [selectEntryIdAsDate, selectAnalytics],
+  [selectDate, selectAnalytics],
   (date, analytics) => {
     return isCurrentCycle(date, analytics)
   }

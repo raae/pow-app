@@ -15,7 +15,7 @@ import classNames from "classnames"
 
 import { selectEntryNote, selectIsMenstruationForDate } from "../entries"
 
-import { formatDate, entryIdFromDate } from "../utils/days"
+import { formatDate } from "../utils/days"
 import {
   selectPredictedTagsForDate,
   selectCycleDayForDate,
@@ -85,24 +85,22 @@ export const ForecastText = ({ tags = [] }) => {
 const ForecastItem = ({ date }) => {
   const classes = useStyles()
 
-  const entryNote = useSelector((state) =>
-    selectEntryNote(state, { entryId: date })
-  )
+  const entryNote = useSelector((state) => selectEntryNote(state, { date }))
 
   const cycleDay = useSelector((state) =>
-    selectCycleDayForDate(state, { entryId: date })
+    selectCycleDayForDate(state, { date })
   )
 
   const isMenstruation = useSelector((state) =>
-    selectIsMenstruationForDate(state, { entryId: date })
+    selectIsMenstruationForDate(state, { date })
   )
 
   const isPredictedMenstruation = useSelector((state) =>
-    selectPredictedMenstruationForDate(state, { entryId: date })
+    selectPredictedMenstruationForDate(state, { date })
   )
 
   const predictionTags = useSelector((state) =>
-    selectPredictedTagsForDate(state, { entryId: date })
+    selectPredictedTagsForDate(state, { date })
   )
 
   const hasTags = predictionTags && predictionTags.length !== 0
