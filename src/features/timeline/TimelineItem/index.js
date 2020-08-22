@@ -1,7 +1,9 @@
 import React from "react"
 import PropTypes from "prop-types"
-
+import { addDays } from "date-fns"
 import { makeStyles, fade } from "@material-ui/core"
+
+import { entryIdFromDate } from "../../utils/days"
 
 import Info from "./Info"
 import Header from "./Header"
@@ -10,9 +12,18 @@ import Predictions from "./Predictions"
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: "relative",
     marginBottom: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
+  },
+  scrollTo: {
+    position: "absolute",
+    // Indicates how much of this entry (the day before selected)
+    // should show
+    bottom: "4rem",
+    width: "100%",
+    ...theme.mixins.toolbar,
   },
   header: {
     padding: theme.spacing(0, 1),
@@ -65,15 +76,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const TimelineItem = ({ date }) => {
+const TimelineItem = ({ date, selectedDate, ...props }) => {
   const classes = useStyles()
 
+  const scrollToId = `scrollTo-${entryIdFromDate(addDays(date, 1))}`
+  const itemProps = { date, selectedDate }
+
   return (
-    <article className={classes.root}>
-      <Header date={date} className={classes.header} />
-      <Info date={date} className={classes.info} />
-      <Entry date={date} className={classes.entry} />
-      <Predictions date={date} className={classes.predictions} />
+    <article className={classes.root} {...props}>
+      <div id={scrollToId} className={classes.scrollTo} />
+      <Header {...itemProps} className={classes.header} />
+      <Info {...itemProps} className={classes.info} />
+      <Entry {...itemProps} className={classes.entry} />
+      <Predictions {...itemProps} className={classes.predictions} />
     </article>
   )
 }
