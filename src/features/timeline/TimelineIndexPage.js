@@ -1,39 +1,59 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { List, makeStyles } from "@material-ui/core"
+import { eachDayOfInterval, addDays, isToday } from "date-fns"
 
-import { makeDate, intervalAfterDate } from "../utils/days"
+import { makeDate, entryIdFromDate } from "../utils/days"
 
 import { BrandLayout } from "../brand"
 import { Welcome } from "../onboarding"
 
 import { selectDaysBetween } from "../cycle"
 
-import DaySummary from "./DaySummary"
-import ForecastItem from "./ForecastItem"
+import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
 const useStyles = makeStyles((theme) => ({
   forecast: {
     maxWidth: "30rem",
-    margin: theme.spacing(2, 0, 4),
   },
 }))
 
 const CycleIndexPage = ({ entryId }) => {
-  const date = makeDate(entryId)
   const classes = useStyles()
 
+  const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
-  const afterInterval = intervalAfterDate(date, calculatedDaysBetween + 3)
+
+  const range = eachDayOfInterval({
+    start: addDays(selectedDate, calculatedDaysBetween * -1.5),
+    end: addDays(selectedDate, calculatedDaysBetween * 1.5),
+  })
+
+  useEffect(() => {
+    const scrollToId = `scrollTo-${entryIdFromDate(selectedDate)}`
+    const node = document.getElementById(scrollToId)
+    if (!node) return
+
+    node.scrollIntoView({
+      block: "start",
+    })
+  }, [selectedDate])
 
   return (
-    <BrandLayout variant="app" toolbar={<DatePicker date={date} />}>
-      <DaySummary date={date} />
-      <Welcome />
+    <BrandLayout variant="app" toolbar={<DatePicker date={selectedDate} />}>
       <List className={classes.forecast}>
-        {afterInterval.map((date) => {
-          return <ForecastItem key={date} date={date} />
+        {range.map((date) => {
+          return (
+            <>
+              <TimelineItem
+                key={date}
+                date={date}
+                selectedDate={selectedDate}
+              />
+              {isToday(date) && <Welcome />}
+            </>
+          )
         })}
       </List>
     </BrandLayout>
