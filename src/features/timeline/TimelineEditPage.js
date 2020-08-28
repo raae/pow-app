@@ -82,14 +82,16 @@ const CycleEditPage = ({ entryId }) => {
             >
               Done
             </Button>
+
             <Typography variant="h6" className={classes.title}>
               {formatDate(date, "MMMM do")}
             </Typography>
+
             <IconButton
               type="reset"
               edge="start"
               color="inherit"
-              aria-label="menu"
+              aria-label="cancel"
             >
               <ArrowBackIcon />
             </IconButton>
