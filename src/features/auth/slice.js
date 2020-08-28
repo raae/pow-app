@@ -46,9 +46,7 @@ export const init = createAsyncThunk("init", async () => {
 })
 
 export const updateUser = createAsyncThunk("user/update", async (payload) => {
-  console.log("Update user", payload)
-  const result = await userbase.updateUser(payload)
-  console.log("Updated user", result)
+  await userbase.updateUser(payload)
   return { user: payload }
 })
 
