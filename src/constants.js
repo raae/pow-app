@@ -12,7 +12,7 @@ export const USERBASE_APP_ID = isLive
   ? process.env.GATSBY_USERBASE_APP_ID
   : process.env.GATSBY_USERBASE_TEST_APP_ID
 
-export const GATSBY_AUTH_KEY = process.env.GATSBY_AUTH_KEY
+export const SESSION_LENGTH = process.env.SESSION_LENGTH || 24 * 7 // a week
 
 export const DATABASES = [
   { databaseName: "entries", entity: "Entry" },

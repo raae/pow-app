@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 
-import { USERBASE_APP_ID } from "../../constants"
+import { USERBASE_APP_ID, SESSION_LENGTH } from "../../constants"
 import { last } from "lodash"
 
 export const AUTH_STATUS = {
@@ -41,7 +41,10 @@ export const defaultState = {
 }
 
 export const init = createAsyncThunk("init", async () => {
-  const response = await userbase.init({ appId: USERBASE_APP_ID })
+  const response = await userbase.init({
+    appId: USERBASE_APP_ID,
+    sessionLength: SESSION_LENGTH,
+  })
   return { user: response.user }
 })
 
@@ -54,7 +57,10 @@ const auth = createAsyncThunk("auth", async (payload) => {
   if (!["signIn", "signUp", "signOut"].includes(payload.func)) {
     throw new Error(`Auth func not supported: ${payload.func}`)
   }
-  const user = await userbase[payload.func](payload)
+  const user = await userbase[payload.func]({
+    ...payload,
+    sessionLength: SESSION_LENGTH,
+  })
   return { user }
 })
 
