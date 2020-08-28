@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "55rem",
     margin: "0 auto",
+    flexDirection: "row-reverse",
   },
   title: {
     flexGrow: 1,
@@ -103,27 +104,31 @@ const ProfileEditEmailPage = () => {
         <AppBar
           position="absolute"
           component="div"
-          color="white"
           elevation={0}
           className={classes.appBar}
         >
           <Toolbar className={classes.toolbar}>
-            <IconButton
-              type="reset"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
+            <Button
+              type="submit"
+              edge="end"
+              variant="contained"
+              color="primary"
             >
-              <ArrowBackIcon />
-            </IconButton>
+              Update
+            </Button>
 
             <Typography variant="h6" className={classes.title}>
               Change email
             </Typography>
 
-            <Button type="submit" variant="outlined" color="primary">
-              Update
-            </Button>
+            <IconButton
+              type="reset"
+              edge="start"
+              color="inherit"
+              aria-label="cancel"
+            >
+              <ArrowBackIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </Paper>
