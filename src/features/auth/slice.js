@@ -40,17 +40,23 @@ export const defaultState = {
   errors: [],
 }
 
-export const init = createAsyncThunk("init", async () => {
+export const init = createAsyncThunk("init", async (arg, thunkAPI) => {
   const response = await userbase.init({
     appId: USERBASE_APP_ID,
     sessionLength: SESSION_LENGTH,
+    updateUserHandler: ({ user }) => {
+      thunkAPI.dispatch({
+        type: "user/changed",
+        payload: { user },
+        meta: { arg },
+      })
+    },
   })
   return { user: response.user }
 })
 
 export const updateUser = createAsyncThunk("user/update", async (payload) => {
   await userbase.updateUser(payload)
-  return { user: payload }
 })
 
 const auth = createAsyncThunk("auth", async (payload) => {
@@ -98,6 +104,7 @@ const authSlice = createSlice({
   initialState: defaultState,
   reducers: {},
   extraReducers: {
+    "user/changed": fulfilledReducer,
     [init.pending]: (state) => {
       state.status = AUTH_STATUS.INITIALIZING
     },
@@ -111,14 +118,8 @@ const authSlice = createSlice({
     [updateUser.pending]: (state) => {
       state.status = AUTH_STATUS.UPDATING
     },
-    [updateUser.fulfilled]: (state, { payload }) => {
-      // userbase.updateUser does not return the user
-      // so we must merge in the payload of changed fulfilled
+    [updateUser.fulfilled]: (state) => {
       state.status = AUTH_STATUS.IDLE
-      state.user = {
-        ...state.user,
-        ...payload.user,
-      }
     },
     [updateUser.rejected]: rejectedReducer,
   },
