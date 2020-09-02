@@ -94,7 +94,7 @@ const ProfileCard = () => {
               <MenuItem component={GatsbyLink} to={`/profile/edit`}>
                 Edit email address
               </MenuItem>
-              <MenuItem component={GatsbyLink} to={`/profile/EditPasSwordPage`}>
+              <MenuItem component={GatsbyLink} to={`/profile/PasSword`}>
                 Edit PasSword
               </MenuItem>
             </Menu>

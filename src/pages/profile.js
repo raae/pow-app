@@ -10,7 +10,8 @@ import { selectAreSettingsLoading } from "../features/settings"
 import { SEO, Loading } from "../features/app"
 
 import { ProfileIndexPage, ProfileEditEmailPage } from "../features/profile"
-import ProfileEditPasSwordPage from "../components/ProfileEditPasSwordPage"
+
+import PasSword from "../features/profile/PasSword"
 
 const ProfilePage = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
@@ -41,7 +42,8 @@ const ProfilePage = () => {
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
         <ProfileEditEmailPage path="/edit" />
-        <ProfileEditPasSwordPage path="/EditPasSword" />
+
+        <PasSword path="/PasSword" />
       </Router>
     </>
   )
