@@ -1,15 +1,14 @@
 import React from "react"
 
-import { SEO } from "../features/app"
-import { BrandLayout, Mdx } from "../features/brand"
+import { SEO, AppLayout, Mdx } from "../features/app"
 
 const PageTemplate = ({ location, children }) => {
   const variant = location.pathname === "/" ? "home" : ""
   return (
-    <BrandLayout variant={variant}>
+    <AppLayout variant={variant}>
       <SEO />
       <Mdx>{children}</Mdx>
-    </BrandLayout>
+    </AppLayout>
   )
 }
 

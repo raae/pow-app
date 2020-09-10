@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "../navigation"
 
-const BrandFooter = ({ variant }) => {
+const AppFooter = ({ variant }) => {
   return (
     <>
       <p>
@@ -37,4 +37,4 @@ const BrandFooter = ({ variant }) => {
   )
 }
 
-export default BrandFooter
+export default AppFooter
