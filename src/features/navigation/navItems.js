@@ -5,7 +5,7 @@ export const useSignUpNavItem = () => {
     children: "Sign up",
     component: "a",
     rel: "noopener",
-    href: "https://usepow.app/sign-up",
+    href: "https://usepow.app/signup",
   }
 }
 
