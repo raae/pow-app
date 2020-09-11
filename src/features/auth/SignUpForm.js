@@ -8,11 +8,12 @@ import {
   Checkbox,
   FormControlLabel,
   Paper,
+  Typography,
   makeStyles,
 } from "@material-ui/core"
 
 import { signUp } from "./slice"
-import { useAppNavItem } from "../navigation"
+import { useAppNavItem, useSignInNavItem, Link } from "../navigation"
 
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
@@ -41,6 +42,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
   const [error, setError] = useState()
 
   const appNavItem = useAppNavItem()
+  const signInNavItem = useSignInNavItem()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -140,6 +142,10 @@ const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
       >
         Create account
       </Button>
+      <Typography variant="body2" align="right">
+        Don't have an account?&nbsp;
+        <Link {...signInNavItem} />
+      </Typography>
     </Paper>
   )
 }
