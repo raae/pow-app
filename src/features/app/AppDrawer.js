@@ -1,6 +1,7 @@
 import React from "react"
+import { Link } from "gatsby"
 import { useSelector, useDispatch } from "react-redux"
-import { Toolbar, Button, Divider, Drawer, makeStyles } from "@material-ui/core"
+import { Toolbar, Divider, Drawer, makeStyles } from "@material-ui/core"
 import {
   NavMenu,
   TIMELINE,
@@ -19,9 +20,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
   },
-  footer: {
-    textAlign: "center",
-    padding: theme.spacing(2),
+  logo: {
+    height: "3rem",
+    marginTop: theme.spacing(0.5),
   },
   pushDown: {
     marginTop: "auto",
@@ -39,13 +40,13 @@ const AppDrawer = (props) => {
     <Drawer
       className={classes.root}
       open={isDrawerOpen}
-      onClose={closeDrawer}
+      onClose={handleCloseDrawer}
       {...props}
     >
       <Toolbar>
-        <Button {...TIMELINE} onClick={handleCloseDrawer}>
-          POW!
-        </Button>
+        <Link to={TIMELINE.to} onClick={handleCloseDrawer}>
+          <img className={classes.logo} src="/logo.png" alt="logo" />
+        </Link>
       </Toolbar>
       <Divider />
       <NavMenu items={[TIMELINE, PROFILE]} onClick={handleCloseDrawer} />
