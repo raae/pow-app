@@ -6,9 +6,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     marginLeft: 0,
     paddingTop: theme.spacing(2),
-    [theme.breakpoints.up("md")]: {
-      maxWidth: 600,
-    },
   },
 }))
 

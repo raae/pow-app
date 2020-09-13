@@ -1,3 +1,3 @@
-export { default as EntryForm } from "./EntryForm"
+export { default as EntryNoteField } from "./EntryNoteField"
 
 export * from "./slice"

@@ -4,7 +4,7 @@ import { List, makeStyles } from "@material-ui/core"
 
 import { makeDate, intervalAfterDate } from "../utils/days"
 
-import { AppDrawerButton, AppLayout, AppToolbar, AppPage } from "../app"
+import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 
 import { selectDaysBetween } from "../cycle"
@@ -29,10 +29,9 @@ const CycleIndexPage = ({ entryId }) => {
 
   return (
     <AppLayout>
-      <AppToolbar>
+      <AppMainToolbar>
         <DatePicker date={date} />
-        <AppDrawerButton />
-      </AppToolbar>
+      </AppMainToolbar>
       <AppPage>
         <DaySummary className={classes.forecast} date={date} />
         <Welcome />

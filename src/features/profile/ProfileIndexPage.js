@@ -1,7 +1,7 @@
 import React from "react"
 import { Box } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import { AppDrawerButton, AppLayout, AppPage, AppToolbar } from "../app"
+import { AppLayout, AppPage, AppMainToolbar } from "../app"
 import ProfileCard from "./ProfileCard"
 import { PaymentForm } from "../payment"
 import { SettingsForm } from "../settings"
@@ -14,12 +14,11 @@ const ProfileIndexPage = () => {
 
   return (
     <AppLayout>
-      <AppToolbar>
+      <AppMainToolbar>
         <Typography variant="h6" component="h1">
           Profile
         </Typography>
-        <AppDrawerButton />
-      </AppToolbar>
+      </AppMainToolbar>
 
       <AppPage>
         {paymentStatus && (

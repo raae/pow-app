@@ -11,11 +11,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     minHeight: "100vh",
     flexDirection: "row-reverse",
+    justifyContent: "flex-end",
     "& > main": {
+      position: "relative",
       flexGrow: 1,
+      [theme.breakpoints.up("md")]: {
+        maxWidth: 600,
+      },
     },
     "& > nav": {
       flexShrink: 0,
+      position: "relative",
       [theme.breakpoints.up("md")]: {
         minWidth: permanentDrawerWidth,
       },
