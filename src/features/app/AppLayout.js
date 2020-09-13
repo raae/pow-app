@@ -33,7 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
   permanent: {
     width: permanentDrawerWidth,
-    paddingLeft: "15%",
+    paddingLeft: "10%",
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "15%",
+    },
   },
 }))
 
