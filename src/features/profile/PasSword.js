@@ -59,6 +59,7 @@ const PasSword = () => {
 
     const oldPasSword = event.target.elements.emailInput.value
     const newPasSword = event.target.elements.newPasSwordInput.value
+    console.log(newPasSword)
 
     // 3. Send that email to Daniel V.'s Userbase
 
@@ -66,7 +67,11 @@ const PasSword = () => {
       updateUser({ currentPassword: oldPasSword, newPassword: newPasSword })
     )
 
-    // 4. Send that customer back to /profile
+    // 4. Send that customer back to /profile if no errors
+    //if (result.error) {
+    // Something
+    // Something
+    //}
 
     navigate(`/profile`)
   }
