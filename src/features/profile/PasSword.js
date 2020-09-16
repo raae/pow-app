@@ -50,7 +50,7 @@ const PasSword = () => {
 
   //const currentEmail = useSelector(selectUserEmail)
 
-  const createEmail = (event) => {
+  const createEmail = async (event) => {
     // 1. Prevent that form from naughtily self-submitting
 
     event.preventDefault()
@@ -59,21 +59,22 @@ const PasSword = () => {
 
     const oldPasSword = event.target.elements.emailInput.value
     const newPasSword = event.target.elements.newPasSwordInput.value
-    console.log(newPasSword)
+    console.log()
 
     // 3. Send that email to Daniel V.'s Userbase
 
-    dispatch(
+    const { error } = await dispatch(
       updateUser({ currentPassword: oldPasSword, newPassword: newPasSword })
     )
 
-    // 4. Send that customer back to /profile if no errors
-    //if (result.error) {
-    // Something
-    // Something
-    //}
-
-    navigate(`/profile`)
+    // 4. Send that customer back to /profile or give alert if error
+    if (error) {
+      // Something
+      // Something
+      alert(error.message)
+    } else {
+      navigate(`/profile`)
+    }
   }
 
   const createReset = (event) => {
