@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
@@ -47,13 +47,17 @@ const useStyles = makeStyles((theme) => ({
 const PasSword = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-
+  const [isPending, setIsPending] = useState()
+  const [error, setError] = useState()
   //const currentEmail = useSelector(selectUserEmail)
 
   const createEmail = async (event) => {
     // 1. Prevent that form from naughtily self-submitting
 
     event.preventDefault()
+
+    setIsPending(true)
+    setError(null)
 
     // 2. Get those PasSword from those inputz
 
@@ -71,7 +75,14 @@ const PasSword = () => {
     if (error) {
       // Something
       // Something
-      alert(error.message)
+      setIsPending(false)
+      setError(error)
+
+      //alert(error.message)
+      //some
+      //some
+      const pError = error
+      return pError
     } else {
       navigate(`/profile`)
     }
@@ -93,6 +104,7 @@ const PasSword = () => {
         className={classes.form}
       >
         <TextField
+          disabled={isPending}
           id="emailInput"
           type="text"
           variant="outlined"
@@ -105,6 +117,7 @@ const PasSword = () => {
           // autoComplete="email"
         />
         <TextField
+          disabled={isPending}
           id="newPasSwordInput"
           type="password"
           variant="outlined"
@@ -124,6 +137,7 @@ const PasSword = () => {
         >
           <Toolbar className={classes.toolbar}>
             <Button
+              disabled={isPending}
               type="submit"
               edge="end"
               variant="contained"
@@ -133,7 +147,7 @@ const PasSword = () => {
             </Button>
 
             <Typography variant="h6" className={classes.title}>
-              Change email
+              Change PasSword
             </Typography>
 
             <IconButton
