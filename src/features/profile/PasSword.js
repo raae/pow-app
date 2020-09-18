@@ -52,37 +52,30 @@ const PasSword = () => {
   //const currentEmail = useSelector(selectUserEmail)
 
   const createEmail = async (event) => {
-    // 1. Prevent that form from naughtily self-submitting
+    // 1. Go get that form and prevent it from naughtily self-submitting
 
     event.preventDefault()
 
     setIsPending(true)
     setError(null)
 
-    // 2. Get those PasSword from those inputz
+    // 2. Listen for those PasSwords from those inputs
 
     const oldPasSword = event.target.elements.emailInput.value
     const newPasSword = event.target.elements.newPasSwordInput.value
-    console.log()
 
-    // 3. Send that email to Daniel V.'s Userbase
+    // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
 
     const { error } = await dispatch(
       updateUser({ currentPassword: oldPasSword, newPassword: newPasSword })
     )
 
-    // 4. Send that customer back to /profile or give alert if error
+    // 3. Do somethings like, send that customer back to /profile or give alert if error
     if (error) {
-      // Something
-      // Something
       setIsPending(false)
       setError(error)
 
-      //alert(error.message)
-      //some
-      //some
-      const pError = error
-      return pError
+      alert(error.message)
     } else {
       navigate(`/profile`)
     }
