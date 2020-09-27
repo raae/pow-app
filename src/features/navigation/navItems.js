@@ -116,6 +116,6 @@ export const TWITTER = {
 export const WEBSITE = {
   primary: "Website (usepow.app)",
   icon: <WebsiteIcon />,
-  href: "/",
+  href: "http://usepow.app",
   ...EXTERNAL,
 }
