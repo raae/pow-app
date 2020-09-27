@@ -1,7 +1,7 @@
 import React from "react"
 import { Box } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import { BrandLayout } from "../brand"
+import { AppLayout } from "../app"
 import ProfileCard from "./ProfileCard"
 import { PaymentForm } from "../payment"
 import { SettingsForm } from "../settings"
@@ -13,7 +13,7 @@ const ProfileIndexPage = () => {
   const paymentStatus = useQueryParam("payment")
 
   return (
-    <BrandLayout variant="app">
+    <AppLayout variant="app">
       {paymentStatus && (
         <Alert severity="warning">
           Check the payment section at the bottom of the page.
@@ -51,7 +51,7 @@ const ProfileIndexPage = () => {
         <h1>Payment</h1>
         <PaymentForm standalone />
       </Box>
-    </BrandLayout>
+    </AppLayout>
   )
 }
 

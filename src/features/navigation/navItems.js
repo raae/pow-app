@@ -1,11 +1,11 @@
 import { Link } from "gatsby"
-import { BASE_URL } from "../../constants"
 
 export const useSignUpNavItem = () => {
   return {
     children: "Sign up",
-    component: Link,
-    to: "/signup",
+    component: "a",
+    rel: "noopener",
+    href: "https://usepow.app/signup",
   }
 }
 
@@ -52,7 +52,7 @@ export const useBetaNavItem = () => {
 export const useWebsiteNavItem = () => {
   return {
     children: "POW! Website",
-    href: BASE_URL,
+    href: "https://usepow.app",
     component: "a",
     target: "_blank",
     rel: "noopener",

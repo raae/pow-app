@@ -4,7 +4,7 @@ import { List, makeStyles } from "@material-ui/core"
 
 import { makeDate, intervalAfterDate } from "../utils/days"
 
-import { BrandLayout } from "../brand"
+import { AppLayout } from "../app"
 import { Welcome } from "../onboarding"
 
 import { selectDaysBetween } from "../cycle"
@@ -28,7 +28,7 @@ const CycleIndexPage = ({ entryId }) => {
   const afterInterval = intervalAfterDate(date, calculatedDaysBetween + 3)
 
   return (
-    <BrandLayout variant="app" toolbar={<DatePicker date={date} />}>
+    <AppLayout toolbar={<DatePicker date={date} />}>
       <DaySummary date={date} />
       <Welcome />
       <List className={classes.forecast}>
@@ -36,7 +36,7 @@ const CycleIndexPage = ({ entryId }) => {
           return <ForecastItem key={date} date={date} />
         })}
       </List>
-    </BrandLayout>
+    </AppLayout>
   )
 }
 

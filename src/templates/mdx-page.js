@@ -1,15 +1,29 @@
 import React from "react"
+import { Container, makeStyles } from "@material-ui/core"
 
-import { SEO } from "../features/app"
-import { BrandLayout, Mdx } from "../features/brand"
+import { SEO, Mdx, Logo } from "../features/app"
 
-const PageTemplate = ({ location, children }) => {
-  const variant = location.pathname === "/" ? "home" : ""
+const useStyles = makeStyles((theme) => ({
+  root: {
+    borderTop: `4px solid ${theme.palette.primary.main}`,
+  },
+}))
+
+const PageTemplate = ({ children }) => {
+  const classes = useStyles()
   return (
-    <BrandLayout variant={variant}>
-      <SEO />
-      <Mdx>{children}</Mdx>
-    </BrandLayout>
+    <div className={classes.root}>
+      <Container maxWidth="sm">
+        <SEO />
+
+        <h1>
+          <Logo component="a" href="https://usepow.app">
+            !
+          </Logo>
+        </h1>
+        <Mdx>{children}</Mdx>
+      </Container>
+    </div>
   )
 }
 

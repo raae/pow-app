@@ -46,7 +46,7 @@ module.exports = {
       options: {
         name: `POW!`,
         short_name: `POW!`,
-        start_url: `/app`,
+        start_url: `/`,
         background_color: `#fafafa`,
         theme_color: `#e53935`,
         display: `standalone`,

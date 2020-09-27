@@ -12,12 +12,12 @@ import {
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
 
+import { Logo } from "../app"
 import { selectEntryNote } from "../entries"
 import { selectMenstruationTag } from "../settings"
 
 import { formatDate, entryIdFromDate } from "../utils/days"
 
-import { Logo } from "../brand"
 import { ForecastText } from "./ForecastItem"
 import {
   selectDaysBetween,
