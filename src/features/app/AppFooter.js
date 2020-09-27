@@ -9,29 +9,17 @@ const AppFooter = ({ variant }) => {
         <Link target="_blank" rel="noopener" href="https://twitter.com/raae">
           @raae
         </Link>{" "}
-        of{" "}
-        <Link target="_blank" rel="noopener" href="https://lillylabs.no">
-          Lilly Labs
-        </Link>
-        .
+        and family.
         <br />
-        {variant === "app" ? (
-          <>
-            Support:{" "}
-            <Link
-              target="_blank"
-              rel="noopener"
-              href="mailto://support@usepow.app"
-            >
-              support@usepow.app
-            </Link>
-          </>
-        ) : (
-          <>
-            Subscribe to the POW!{" "}
-            <Link href="https://lillylabs.ck.page/a5f42d2b44">Newsletter</Link>.
-          </>
-        )}
+        <>
+          <Link
+            target="_blank"
+            rel="noopener"
+            href="mailto://support@usepow.app"
+          >
+            support@usepow.app
+          </Link>
+        </>
       </p>
     </>
   )
