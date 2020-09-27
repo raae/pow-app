@@ -57,6 +57,12 @@ theme.overrides = {
       alignItems: "flex-start",
     },
   },
+  MuiListItemIcon: {
+    root: {
+      minWidth: "auto",
+      marginRight: theme.spacing(2),
+    },
+  },
   MuiLink: {
     root: {
       fontWeight: 500,

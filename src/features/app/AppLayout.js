@@ -1,49 +1,81 @@
 import React from "react"
-import { Container, Divider, makeStyles } from "@material-ui/core"
+import PropTypes from "prop-types"
+import { Hidden, makeStyles } from "@material-ui/core"
 
-import AppHeader from "./AppHeader"
-import AppFooter from "./AppFooter"
+import AppDrawer from "./AppDrawer"
+
+export const permanentDrawerWidth = "35%"
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    minHeight: "100vh",
+    flexDirection: "row-reverse",
+    justifyContent: "flex-end",
     "& > main": {
-      maxWidth: "50rem",
-      marginTop: "2rem",
-      padding: theme.spacing(0, 3),
+      position: "relative",
+      flexGrow: 1,
+      [theme.breakpoints.up("md")]: {
+        maxWidth: 600,
+      },
     },
-    "& > footer": {
-      maxWidth: "50rem",
-      "& hr": {
-        display: "inline-block",
-        marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(2),
-        width: theme.spacing(5),
-        border: `2px solid ${theme.palette.primary.main}`,
+    "& > nav": {
+      flexShrink: 0,
+      position: "relative",
+      [theme.breakpoints.up("md")]: {
+        minWidth: permanentDrawerWidth,
       },
     },
   },
-  content: {
-    maxWidth: "32rem",
+  temporary: {
+    width: "90%",
+    maxWidth: "240px",
+  },
+  permanent: {
+    width: permanentDrawerWidth,
+    paddingLeft: "10%",
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "15%",
+    },
   },
 }))
 
-const AppLayout = ({ children, toolbar }) => {
+function AppLayout({ children }) {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <AppHeader toolbar={toolbar} />
+      <main className={classes.main}>{children}</main>
 
-      <Container component="main">
-        <div className={classes.content}>{children}</div>
-      </Container>
-
-      <Container component="footer">
-        <Divider />
-        <AppFooter />
-      </Container>
+      <nav>
+        <Hidden mdUp>
+          <AppDrawer
+            variant="temporary"
+            anchor={"right"}
+            classes={{
+              paper: classes.temporary,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          />
+        </Hidden>
+        <Hidden smDown>
+          <AppDrawer
+            variant="permanent"
+            classes={{
+              paper: classes.permanent,
+            }}
+            open
+          />
+        </Hidden>
+      </nav>
     </div>
   )
+}
+
+AppLayout.propTypes = {
+  children: PropTypes.node,
 }
 
 export default AppLayout

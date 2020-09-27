@@ -1,30 +1,15 @@
 import React from "react"
-import { Container, makeStyles } from "@material-ui/core"
 
-import { SEO, Mdx, Logo } from "../features/app"
+import { Mdx } from "../features/app"
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    borderTop: `4px solid ${theme.palette.primary.main}`,
-  },
-}))
+import PageTemplate from "./page"
 
-const PageTemplate = ({ children }) => {
-  const classes = useStyles()
+const MdxPageTemplate = ({ children }) => {
   return (
-    <div className={classes.root}>
-      <Container maxWidth="sm">
-        <SEO />
-
-        <h1>
-          <Logo component="a" href="https://usepow.app">
-            !
-          </Logo>
-        </h1>
-        <Mdx>{children}</Mdx>
-      </Container>
-    </div>
+    <PageTemplate>
+      <Mdx>{children}</Mdx>
+    </PageTemplate>
   )
 }
 
-export default PageTemplate
+export default MdxPageTemplate

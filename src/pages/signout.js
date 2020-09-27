@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
-import { SEO, Loading, AppLayout } from "../features/app"
+import { SEO, Loading } from "../features/app"
+import PageTemplate from "../templates/page"
 
 import {
   selectAuthIsPending,
@@ -29,7 +30,7 @@ const SignOutPage = () => {
   }, [dispatch, isPending, isAuthenticated])
 
   return (
-    <AppLayout>
+    <PageTemplate>
       {error ? (
         <>
           <SEO title="Sign out" />
@@ -42,7 +43,7 @@ const SignOutPage = () => {
           <Loading fullScreen />
         </>
       )}
-    </AppLayout>
+    </PageTemplate>
   )
 }
 

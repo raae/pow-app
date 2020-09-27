@@ -4,6 +4,8 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
 
+import { reducer as appReducer, name as appSliceName } from "./features/app"
+
 import {
   reducer as authReducer,
   name as authSliceName,
@@ -23,6 +25,7 @@ import { useEffect } from "react"
 
 const store = configureStore({
   reducer: combineReducers({
+    [appSliceName]: appReducer,
     [authSliceName]: authReducer,
     [databaseSliceName]: databaseReducer,
   }),

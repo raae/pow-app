@@ -15,7 +15,10 @@ const DatePicker = ({ date }) => {
 
   return (
     <div>
-      <Button onClick={(event) => setAnchorEl(event.currentTarget)}>
+      <Button
+        variant="outlined"
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+      >
         {formatDate(date, "MMMM")} <DropDownIcon />
       </Button>
       <Popover

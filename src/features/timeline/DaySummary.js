@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
     overflow: "initial",
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
   },
   title: {
     fontSize: 14,
