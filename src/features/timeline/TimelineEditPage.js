@@ -10,11 +10,9 @@ import { AppLayout, AppEditToolbar, AppPage } from "../app/"
 import { selectEntryNote, upsertEntry, EntryNoteField } from "../entries"
 
 const useStyles = makeStyles((theme) => ({
-  form: {
+  paper: {
     display: "flex",
     flexDirection: "column-reverse",
-  },
-  paper: {
     padding: theme.spacing(3),
     minHeight: "10rem",
     maxHeight: "17rem",
@@ -73,6 +71,7 @@ const CycleEditPage = ({ entryId }) => {
             />
           </Paper>
         </AppPage>
+
         <AppEditToolbar>
           <Typography variant="h6" className={classes.title}>
             {formatDate(date, "MMMM do")}

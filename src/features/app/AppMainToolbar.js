@@ -1,10 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
-import { Hidden, IconButton, makeStyles } from "@material-ui/core"
+import {
+  AppBar,
+  Toolbar,
+  Hidden,
+  IconButton,
+  makeStyles,
+} from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
-
-import AppToolbar from "./AppToolbar"
 
 import { actions, selectIsDrawerOpen } from "./slice"
 const { openDrawer, closeDrawer } = actions
@@ -21,21 +25,23 @@ const AppMainToolbar = ({ children }) => {
   const isOpen = useSelector(selectIsDrawerOpen)
 
   return (
-    <AppToolbar>
-      {children}
-      <Hidden mdUp>
-        <IconButton
-          className={classes.drawerButton}
-          variant="raised"
-          color="inherit"
-          aria-label="open drawer"
-          edge="end"
-          onClick={() => dispatch(isOpen ? closeDrawer() : openDrawer())}
-        >
-          <MenuIcon />
-        </IconButton>
-      </Hidden>
-    </AppToolbar>
+    <AppBar>
+      <Toolbar>
+        {children}
+        <Hidden mdUp>
+          <IconButton
+            className={classes.drawerButton}
+            variant="raised"
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={() => dispatch(isOpen ? closeDrawer() : openDrawer())}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Hidden>
+      </Toolbar>
+    </AppBar>
   )
 }
 
