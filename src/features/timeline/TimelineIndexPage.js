@@ -29,18 +29,21 @@ const CycleIndexPage = ({ entryId }) => {
 
   return (
     <AppLayout>
-      <AppMainToolbar>
-        <DatePicker date={date} />
-      </AppMainToolbar>
-      <AppPage>
-        <DaySummary className={classes.forecast} date={date} />
-        <Welcome />
-        <List className={classes.forecast}>
-          {afterInterval.map((date) => {
-            return <ForecastItem key={date} date={date} />
-          })}
-        </List>
-      </AppPage>
+      <>
+        <AppMainToolbar>
+          <DatePicker date={date} />
+        </AppMainToolbar>
+
+        <AppPage>
+          <DaySummary className={classes.forecast} date={date} />
+          <Welcome />
+          <List className={classes.forecast}>
+            {afterInterval.map((date) => {
+              return <ForecastItem key={date} date={date} />
+            })}
+          </List>
+        </AppPage>
+      </>
     </AppLayout>
   )
 }

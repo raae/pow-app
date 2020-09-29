@@ -8,15 +8,13 @@ import { AppLayout, AppEditToolbar, AppPage } from "../app"
 import { updateUser, selectUserEmail } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
-  form: {
-    display: "flex",
-    flexDirection: "column-reverse",
-  },
   helperText: {
     marginTop: theme.spacing(1),
   },
   paper: {
     padding: theme.spacing(3),
+    display: "flex",
+    flexDirection: "column-reverse",
   },
 }))
 
@@ -53,7 +51,6 @@ const ProfileEditEmailPage = () => {
     <AppLayout>
       <form
         className={classes.form}
-        component="form"
         onSubmit={createEmail}
         onReset={createReset}
       >

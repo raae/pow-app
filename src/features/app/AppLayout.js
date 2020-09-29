@@ -12,11 +12,18 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     flexDirection: "row-reverse",
     justifyContent: "flex-end",
-    "& > main": {
+    "& main": {
       position: "relative",
       flexGrow: 1,
       [theme.breakpoints.up("md")]: {
         maxWidth: 600,
+      },
+
+      "& .MuiAppBar-root": {
+        [theme.breakpoints.up("md")]: {
+          left: permanentDrawerWidth,
+          maxWidth: 600,
+        },
       },
     },
     "& > nav": {
@@ -45,7 +52,7 @@ function AppLayout({ children }) {
 
   return (
     <div className={classes.root}>
-      <main className={classes.main}>{children}</main>
+      <main>{children}</main>
 
       <nav>
         <Hidden mdUp>

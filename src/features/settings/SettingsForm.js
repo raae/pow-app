@@ -122,13 +122,14 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
               ),
             }}
           />
-          {!changeable && (
-            <FormHelperText>
-              You can not change your menstruation tag at this time. <br /> This
-              will be possible shortly.
-            </FormHelperText>
-          )}
         </FormGroup>
+
+        {!changeable && (
+          <FormHelperText>
+            You can not change your menstruation tag at this time. <br /> This
+            will be possible shortly.
+          </FormHelperText>
+        )}
 
         {changeable && (
           <Button
