@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
-import { TextField, Paper, Typography, makeStyles } from "@material-ui/core"
+import { TextField, Typography, makeStyles } from "@material-ui/core"
 
 import { AppLayout, AppEditToolbar, AppPage } from "../app"
 import { updateUser } from "../auth"
@@ -10,9 +10,6 @@ import { updateUser } from "../auth"
 const useStyles = makeStyles((theme) => ({
   helperText: {
     marginTop: theme.spacing(1),
-  },
-  paper: {
-    padding: theme.spacing(3),
   },
 }))
 
@@ -60,31 +57,29 @@ const ProfileEditPasSwordPage = () => {
         onSubmit={createEmail}
         onReset={createReset}
       >
-        <AppPage>
-          <Paper className={classes.paper}>
-            <TextField
-              disabled={isPending}
-              id="emailInput"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              label="Old Password"
-              name="Old password"
-            />
-            <TextField
-              disabled={isPending}
-              id="newPasSwordInput"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              label="New Password"
-              name="New Password"
-            />
-          </Paper>
+        <AppPage withPaper>
+          <TextField
+            disabled={isPending}
+            id="emailInput"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Old Password"
+            name="Old password"
+          />
+          <TextField
+            disabled={isPending}
+            id="newPasSwordInput"
+            type="password"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="New Password"
+            name="New Password"
+          />
         </AppPage>
 
         <AppEditToolbar disabled={isPending}>

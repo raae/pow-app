@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
-import { TextField, Paper, Typography, makeStyles } from "@material-ui/core"
+import { TextField, Typography, makeStyles } from "@material-ui/core"
 
 import { AppLayout, AppEditToolbar, AppPage } from "../app"
 import { updateUser, selectUserEmail } from "../auth"
@@ -10,9 +10,6 @@ import { updateUser, selectUserEmail } from "../auth"
 const useStyles = makeStyles((theme) => ({
   helperText: {
     marginTop: theme.spacing(1),
-  },
-  paper: {
-    padding: theme.spacing(3),
   },
 }))
 
@@ -52,27 +49,25 @@ const ProfileEditEmailPage = () => {
         onSubmit={createEmail}
         onReset={createReset}
       >
-        <AppPage>
-          <Paper className={classes.paper}>
-            <TextField
-              id="emailInput"
-              type="email"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              label="New email"
-              name="email"
-              // placeholder="unicorn@usepow.app"
-              autoComplete="email"
-              FormHelperTextProps={{ className: classes.helperText }}
-              helperText={
-                <>
-                  Your current POW! email is <strong>{currentEmail}</strong>.
-                </>
-              }
-            />
-          </Paper>
+        <AppPage withPaper>
+          <TextField
+            id="emailInput"
+            type="email"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="New email"
+            name="email"
+            // placeholder="unicorn@usepow.app"
+            autoComplete="email"
+            FormHelperTextProps={{ className: classes.helperText }}
+            helperText={
+              <>
+                Your current POW! email is <strong>{currentEmail}</strong>.
+              </>
+            }
+          />
         </AppPage>
 
         <AppEditToolbar>
