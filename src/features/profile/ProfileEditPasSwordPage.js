@@ -2,45 +2,17 @@ import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
-import {
-  AppBar,
-  Button,
-  Toolbar,
-  IconButton,
-  TextField,
-  Paper,
-  Typography,
-  makeStyles,
-} from "@material-ui/core"
-import ArrowBackIcon from "@material-ui/icons/ArrowBack"
+import { TextField, Paper, Typography, makeStyles } from "@material-ui/core"
 
+import { AppLayout, AppEditToolbar, AppPage } from "../app"
 import { updateUser } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: "50rem",
-    margin: "0 auto",
-  },
-  form: {
-    margin: theme.spacing(3),
-    padding: theme.spacing(3),
-    maxWidth: "35em",
-  },
   helperText: {
-    padding: `0 ${theme.spacing(1)}`,
+    marginTop: theme.spacing(1),
   },
-  appBar: {
-    borderTop: `4px solid ${theme.palette.primary.main}`,
-    borderBottom: `1px solid ${theme.palette.grey[200]}`,
-  },
-  toolbar: {
-    width: "100%",
-    maxWidth: "55rem",
-    margin: "0 auto",
-    flexDirection: "row-reverse",
-  },
-  title: {
-    flexGrow: 1,
+  paper: {
+    padding: theme.spacing(3),
   },
 }))
 
@@ -82,71 +54,46 @@ const ProfileEditPasSwordPage = () => {
   }
 
   return (
-    <div className={classes.root}>
-      <Toolbar />
-
-      <Paper
-        component="form"
+    <AppLayout>
+      <form
+        className={classes.form}
         onSubmit={createEmail}
         onReset={createReset}
-        className={classes.form}
       >
-        <TextField
-          disabled={isPending}
-          id="emailInput"
-          type="password"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Old Password"
-          name="Old password"
-        />
-        <TextField
-          disabled={isPending}
-          id="newPasSwordInput"
-          type="password"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="New Password"
-          name="New Password"
-        />
-
-        <AppBar
-          position="absolute"
-          component="div"
-          elevation={0}
-          className={classes.appBar}
-        >
-          <Toolbar className={classes.toolbar}>
-            <Button
+        <AppPage>
+          <Paper className={classes.paper}>
+            <TextField
               disabled={isPending}
-              type="submit"
-              edge="end"
-              variant="contained"
-              color="primary"
-            >
-              Update
-            </Button>
+              id="emailInput"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="Old Password"
+              name="Old password"
+            />
+            <TextField
+              disabled={isPending}
+              id="newPasSwordInput"
+              type="password"
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              label="New Password"
+              name="New Password"
+            />
+          </Paper>
+        </AppPage>
 
-            <Typography variant="h6" className={classes.title}>
-              Edit Password
-            </Typography>
-
-            <IconButton
-              type="reset"
-              edge="start"
-              color="inherit"
-              aria-label="cancel"
-            >
-              <ArrowBackIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-      </Paper>
-    </div>
+        <AppEditToolbar disabled={isPending}>
+          <Typography variant="h6" className={classes.title}>
+            Edit password
+          </Typography>
+        </AppEditToolbar>
+      </form>
+    </AppLayout>
   )
 }
 
