@@ -118,7 +118,7 @@ const ProfileEditEmailPage = () => {
             </Button>
 
             <Typography variant="h6" className={classes.title}>
-              Change email
+              Edit email
             </Typography>
 
             <IconButton

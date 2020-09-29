@@ -1,6 +1,7 @@
-import React from "react"
-import { useAuthActions, useAuthState } from "../auth"
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
+
 import {
   AppBar,
   Button,
@@ -12,6 +13,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import ArrowBackIcon from "@material-ui/icons/ArrowBack"
+
+import { updateUser } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "55rem",
     margin: "0 auto",
+    flexDirection: "row-reverse",
   },
   title: {
     flexGrow: 1,
@@ -42,28 +46,36 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEditPasSwordPage = () => {
   const classes = useStyles()
-  const { updateUser } = useAuthActions()
-  const { user } = useAuthState()
-  const currentEmail = user.email
+  const dispatch = useDispatch()
+  const [isPending, setIsPending] = useState()
 
-  const createNewPasSword = () => {
-    // 1. Prevent that form from naughtily self-submitting
+  const createEmail = async (event) => {
+    // 1. Go get that form and prevent it from naughtily self-submitting
+
     event.preventDefault()
 
-    // 2. Get those emails from the inputs
-    const yourFathersOldPasSword =
-      event.target.elements.yourFathersOldPasSwordInput.value
-    const yourNewPasSword = event.target.elements.yourNewPasSwordInput.value
+    setIsPending(true)
 
-    // 3. Send those emails to Daniel V.'s Userbase
-    updateUser({
-      currentPassword: yourFathersOldPasSword,
-      newPassword: yourNewPasSword,
-    })
+    // 2. Listen for those PasSwords from those inputs
 
-    // 4. Send that customer back to /profile
-    navigate(`/profile`)
+    const oldPasSword = event.target.elements.emailInput.value
+    const newPasSword = event.target.elements.newPasSwordInput.value
+
+    // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
+
+    const { error } = await dispatch(
+      updateUser({ currentPassword: oldPasSword, newPassword: newPasSword })
+    )
+
+    // 3. Do somethings like, send that customer back to /profile or give alert if error
+    if (error) {
+      setIsPending(false)
+      alert(error.message)
+    } else {
+      navigate(`/profile`)
+    }
   }
+
   const createReset = (event) => {
     event.preventDefault()
     navigate(`/profile`)
@@ -75,58 +87,62 @@ const ProfileEditPasSwordPage = () => {
 
       <Paper
         component="form"
-        onSubmit={createNewPasSword}
+        onSubmit={createEmail}
         onReset={createReset}
         className={classes.form}
       >
         <TextField
-          id="yourFathersOldPasSwordInput"
-          type="text"
+          disabled={isPending}
+          id="emailInput"
+          type="password"
           variant="outlined"
           margin="normal"
           required
           fullWidth
           label="Old Password"
-          name="oldPassword"
-          // placeholder="unicorn@usepow.app"
-          autoComplete="password"
+          name="Old password"
         />
         <TextField
-          id="yourNewPasSwordInput"
-          type="text"
+          disabled={isPending}
+          id="newPasSwordInput"
+          type="password"
           variant="outlined"
           margin="normal"
           required
           fullWidth
           label="New Password"
-          name="newPassword"
-          // placeholder="unicorn@usepow.app"
-          autoComplete="password"
+          name="New Password"
         />
+
         <AppBar
           position="absolute"
           component="div"
-          color="white"
           elevation={0}
           className={classes.appBar}
         >
           <Toolbar className={classes.toolbar}>
+            <Button
+              disabled={isPending}
+              type="submit"
+              edge="end"
+              variant="contained"
+              color="primary"
+            >
+              Update
+            </Button>
+
+            <Typography variant="h6" className={classes.title}>
+              Edit Password
+            </Typography>
+
             <IconButton
               type="reset"
               edge="start"
               color="inherit"
-              aria-label="menu"
+              aria-label="cancel"
             >
               <ArrowBackIcon />
             </IconButton>
-
-            <Typography variant="h6" className={classes.title}>
-              Change Your Password
-            </Typography>
-
-            <Button type="submit" variant="outlined" color="primary">
-              Update
-            </Button>
           </Toolbar>
         </AppBar>
       </Paper>
