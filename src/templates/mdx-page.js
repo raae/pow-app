@@ -1,16 +1,15 @@
 import React from "react"
 
-import { SEO } from "../features/app"
-import { BrandLayout, Mdx } from "../features/brand"
+import { Mdx } from "../features/app"
 
-const PageTemplate = ({ location, children }) => {
-  const variant = location.pathname === "/" ? "home" : ""
+import PageTemplate from "./page"
+
+const MdxPageTemplate = ({ children }) => {
   return (
-    <BrandLayout variant={variant}>
-      <SEO />
+    <PageTemplate>
       <Mdx>{children}</Mdx>
-    </BrandLayout>
+    </PageTemplate>
   )
 }
 
-export default PageTemplate
+export default MdxPageTemplate

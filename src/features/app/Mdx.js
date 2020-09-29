@@ -2,14 +2,15 @@ import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { Button } from "@material-ui/core"
 
-import BrandCopy from "./BrandCopy"
+import AppCopy from "./AppCopy"
 import { Link, ButtonLink } from "../navigation"
-import { Logo } from "../brand"
 
 import { SignInForm } from "../auth"
 import { useSignInNavItem } from "../navigation"
 import { PaymentForm } from "../payment"
 import { Onboarding } from "../onboarding"
+
+import Logo from "./Logo"
 
 const SignInButton = (props) => {
   const signInNavItem = useSignInNavItem()
@@ -31,11 +32,11 @@ const shortcodes = {
 
 const Mdx = ({ children }) => {
   return (
-    <BrandCopy>
+    <AppCopy>
       <MDXProvider components={{ ...components, ...shortcodes }}>
         {children}
       </MDXProvider>
-    </BrandCopy>
+    </AppCopy>
   )
 }
 

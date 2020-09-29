@@ -45,9 +45,7 @@ theme.overrides = {
   },
   MuiAppBar: {
     colorDefault: {
-      backgroundColor: theme.palette.background.paper,
-      borderTop: `4px solid ${theme.palette.primary.main}`,
-      borderBottom: `1px solid ${theme.palette.grey[200]}`,
+      backgroundColor: theme.palette.background.default,
     },
   },
   MuiAlert: {
@@ -55,6 +53,12 @@ theme.overrides = {
       marginTop: "8px",
       marginRight: 0,
       alignItems: "flex-start",
+    },
+  },
+  MuiListItemIcon: {
+    root: {
+      minWidth: "auto",
+      marginRight: theme.spacing(2),
     },
   },
   MuiLink: {

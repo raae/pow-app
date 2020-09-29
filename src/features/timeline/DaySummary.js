@@ -12,12 +12,12 @@ import {
 } from "@material-ui/core"
 import EditNoteIcon from "@material-ui/icons/Edit"
 
+import { Logo } from "../app"
 import { selectEntryNote } from "../entries"
 import { selectMenstruationTag } from "../settings"
 
 import { formatDate, entryIdFromDate } from "../utils/days"
 
-import { Logo } from "../brand"
 import { ForecastText } from "./ForecastItem"
 import {
   selectDaysBetween,
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
     overflow: "initial",
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(2),
   },
   title: {
     fontSize: 14,

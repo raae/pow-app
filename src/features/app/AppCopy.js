@@ -95,9 +95,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const BrandCopy = ({ children }) => {
+const AppCopy = ({ children }) => {
   const classes = useStyles()
   return <div className={classes.root}>{children}</div>
 }
 
-export default BrandCopy
+export default AppCopy

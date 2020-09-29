@@ -4,7 +4,7 @@ import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
-import { BrandLayout } from "../features/brand"
+import PageTemplate from "../templates/page"
 
 import {
   selectAuthIsPending,
@@ -30,7 +30,7 @@ const SignOutPage = () => {
   }, [dispatch, isPending, isAuthenticated])
 
   return (
-    <BrandLayout variant="app">
+    <PageTemplate>
       {error ? (
         <>
           <SEO title="Sign out" />
@@ -43,7 +43,7 @@ const SignOutPage = () => {
           <Loading fullScreen />
         </>
       )}
-    </BrandLayout>
+    </PageTemplate>
   )
 }
 

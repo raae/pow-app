@@ -8,11 +8,12 @@ import {
   Checkbox,
   FormControlLabel,
   Paper,
+  Typography,
   makeStyles,
 } from "@material-ui/core"
 
 import { signUp } from "./slice"
-import { useAppNavItem } from "../navigation"
+import { useAppNavItem, useSignInNavItem, Link } from "../navigation"
 
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
@@ -31,9 +32,12 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2, 0),
     },
   },
+  noElevation: {
+    padding: 0,
+  },
 }))
 
-const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
+const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -41,6 +45,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
   const [error, setError] = useState()
 
   const appNavItem = useAppNavItem()
+  const signInNavItem = useSignInNavItem()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -76,8 +81,11 @@ const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
   return (
     <Paper
       component="form"
-      className={classNames(className, classes.root)}
+      className={classNames(className, classes.root, {
+        [classes.noElevation]: elevation === 0,
+      })}
       onSubmit={handleSubmit}
+      elevation={elevation}
       {...props}
     >
       <TextField
@@ -140,6 +148,10 @@ const SignUpForm = ({ className, onSubmitFulfilled, ...props }) => {
       >
         Create account
       </Button>
+      <Typography variant="body2" align="right">
+        Already have an account?&nbsp;
+        <Link {...signInNavItem} />
+      </Typography>
     </Paper>
   )
 }
