@@ -76,6 +76,12 @@ const INTERNAL = {
   component: Link,
 }
 
+export const HOME = {
+  primary: "Home",
+  to: "/",
+  ...INTERNAL,
+}
+
 export const TIMELINE = {
   primary: "Timeline",
   icon: <TimelineIcon />,
