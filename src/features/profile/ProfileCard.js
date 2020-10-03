@@ -92,7 +92,10 @@ const ProfileCard = () => {
               onClose={handleClose}
             >
               <MenuItem component={GatsbyLink} to={`/profile/edit`}>
-                Edit email address
+                Edit email
+              </MenuItem>
+              <MenuItem component={GatsbyLink} to={`/profile/password`}>
+                Edit password
               </MenuItem>
             </Menu>
           </>
