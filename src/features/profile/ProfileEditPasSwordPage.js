@@ -84,7 +84,7 @@ const ProfileEditPasSwordPage = () => {
 
         <AppEditToolbar disabled={isPending}>
           <Typography variant="h6" className={classes.title}>
-            Edit password
+            Change password
           </Typography>
         </AppEditToolbar>
       </form>

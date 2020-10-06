@@ -72,7 +72,7 @@ const ProfileEditEmailPage = () => {
 
         <AppEditToolbar>
           <Typography variant="h6" className={classes.title}>
-            Edit email
+            Change email
           </Typography>
         </AppEditToolbar>
       </form>
