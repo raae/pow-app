@@ -20,11 +20,12 @@ const Welcome = () => {
   const profile = useSelector(selectProfile)
 
   const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
-  const newsletterCompleted = profile.newsletter !== undefined
+  const saveToHomeScreen = Boolean(parseInt(profile.welcomeCompleted))
+  //const newsletterCompleted = profile.newsletter !== undefined
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
-
+    console.log({name})
     switch (name) {
       case "welcome":
         dispatch(
@@ -38,25 +39,13 @@ const Welcome = () => {
         )
         break
 
-      case "newsletterOff":
+      case "saveToHomeScreen":
         dispatch(
           updateUser({
             email: userEmail,
             profile: {
               ...profile,
-              newsletter: "0",
-            },
-          })
-        )
-        break
-
-      case "newsletterOn":
-        dispatch(
-          updateUser({
-            email: userEmail,
-            profile: {
-              ...profile,
-              newsletter: "1",
+              welcomeCompleted: "1",
             },
           })
         )
@@ -67,7 +56,7 @@ const Welcome = () => {
     }
   }
 
-  if (welcomeCompleted && newsletterCompleted) return null
+  if (welcomeCompleted && saveToHomeScreen) return null
 
   return (
     <aside className={classes.root}>
@@ -82,19 +71,16 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {welcomeCompleted && !newsletterCompleted && (
-        <Alert onClose={handleClose("newsletterOff")}>
-          <AlertTitle severity="info">Newsletter</AlertTitle>
+      {welcomeCompleted && !saveToHomeScreen && (
+        <Alert onClose={handleClose("savedToHomeScreen")}>
+          <AlertTitle severity="info">Save POW! To Home Screen</AlertTitle>
           <Typography component="div">
             <p>
-              POW! is still a young app, and will probably change a lot in the
-              coming year. Would you like to keep up by signing up for the
-              newsletter?
+              POW! will feel more app-like if you
+              save to home screen. Here is how you do it .... link
             </p>
           </Typography>
-          <Button variant="outlined" onClick={handleClose("newsletterOn")}>
-            Yes, please
-          </Button>
+
         </Alert>
       )}
     </aside>
