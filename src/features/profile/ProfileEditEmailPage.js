@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
@@ -16,13 +16,17 @@ const useStyles = makeStyles((theme) => ({
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const [isPending, setIsPending] = useState()
 
   const currentEmail = useSelector(selectUserEmail)
 
-  const createEmail = (event) => {
-    // 1. Prevent that form from naughtily self-submitting
+  const createEmail = async (event) => {
+    // 1. Go get that form and prevent it from naughtily self-submitting
 
     event.preventDefault()
+
+    // Question what does it mean? "setIsPending(true)"?
+    setIsPending(true)
 
     // 2. Get that email from the input
 
@@ -30,11 +34,15 @@ const ProfileEditEmailPage = () => {
 
     // 3. Send that email to Daniel V.'s Userbase
 
-    dispatch(updateUser({ email: email }))
+    const { error } = await dispatch(updateUser({ email: email }))
 
-    // 4. Send that customer back to /profile
-
-    navigate(`/profile`)
+    // 4. Send that customer back to /profile or give alert if error
+    if (error) {
+      setIsPending(false)
+      alert(error.message)
+    } else {
+      navigate(`/profile`)
+    }
   }
 
   const createReset = (event) => {
@@ -51,13 +59,14 @@ const ProfileEditEmailPage = () => {
       >
         <AppPage withPaper>
           <TextField
+            disabled={isPending}
             id="emailInput"
             type="email"
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            label="New email"
+            label="New Email"
             name="email"
             // placeholder="unicorn@usepow.app"
             autoComplete="email"
@@ -70,7 +79,7 @@ const ProfileEditEmailPage = () => {
           />
         </AppPage>
 
-        <AppEditToolbar>
+        <AppEditToolbar disabled={isPending}>
           <Typography variant="h6" className={classes.title}>
             Change email
           </Typography>
