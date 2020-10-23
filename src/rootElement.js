@@ -42,7 +42,7 @@ const Init = () => {
   useEffect(() => {
     if (userId) {
       dispatch(initSettings)
-      dispatch(initEntries)
+      dispatch(initEntries())
     }
   }, [dispatch, userId])
 

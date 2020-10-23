@@ -22,15 +22,21 @@ let theme = createMuiTheme({
 console.log(theme.props)
 
 theme.props = {
-  MuiLink: {
-    color: "secondary",
+  MuiAppBar: {
+    elevation: 0,
+    color: "default",
   },
   MuiButton: {
     disableElevation: true,
   },
-  MuiAppBar: {
-    elevation: 0,
-    color: "default",
+  MuiCard: {
+    component: "section",
+  },
+  MuiCardHeader: {
+    component: "header",
+  },
+  MuiLink: {
+    color: "secondary",
   },
   MuiTextField: {
     InputLabelProps: { shrink: true },
@@ -53,6 +59,14 @@ theme.overrides = {
       marginTop: "8px",
       marginRight: 0,
       alignItems: "flex-start",
+    },
+  },
+  MuiCardContent: {
+    root: {
+      padding: theme.spacing(4),
+      "&:nth-child(2)": {
+        paddingTop: theme.spacing(2),
+      },
     },
   },
   MuiListItemIcon: {

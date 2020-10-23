@@ -14,7 +14,10 @@ export const USERBASE_APP_ID = isLive
 
 export const SESSION_LENGTH = process.env.SESSION_LENGTH || 24 * 7 // a week
 
+export const ENTRIES_DATABASE = { databaseName: "entries", entity: "Entry" }
+export const SETTINGS_DATABASE ={ databaseName: "settings", entity: "Setting" }
+
 export const DATABASES = [
-  { databaseName: "entries", entity: "Entry" },
-  { databaseName: "settings", entity: "Setting" },
+  ENTRIES_DATABASE,
+  SETTINGS_DATABASE
 ]

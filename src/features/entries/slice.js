@@ -1,12 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { keyBy, sortBy, uniq, first } from "lodash"
 
+import { ENTRIES_DATABASE } from "../../constants"
+
 import {
   openDatabase,
   selectDatabaseItems,
   selectDatabasePendingItemsById,
   upsertItem,
   selectIsDatabaseLoading,
+  emptyDatabase,
 } from "../database"
 
 import { selectMenstruationTag } from "../settings"
@@ -14,15 +17,16 @@ import { selectMenstruationTag } from "../settings"
 import { makeDate, entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
 
-const DATABASE_NAME = "entries"
-
 // Actions
 
-export const initEntries = openDatabase({ databaseName: DATABASE_NAME })
+const databaseName = ENTRIES_DATABASE.databaseName
+
+export const initEntries = () => openDatabase({ databaseName })
+export const emptyEntries = () => emptyDatabase({ databaseName })
 
 export const upsertEntry = (entryId, entry) => {
   return upsertItem({
-    databaseName: DATABASE_NAME,
+    databaseName,
     itemId: entryId,
     item: entry,
   })
@@ -49,16 +53,16 @@ const selectEntryId = (state, props) => {
 
 export const selectAreEntriesLoading = (state) => {
   return selectIsDatabaseLoading(state, {
-    databaseName: DATABASE_NAME,
+    databaseName,
   })
 }
 
 const selectItems = (state) => {
-  return selectDatabaseItems(state, { databaseName: DATABASE_NAME })
+  return selectDatabaseItems(state, { databaseName })
 }
 
 const selectPendingItemsById = (state) => {
-  return selectDatabasePendingItemsById(state, { databaseName: DATABASE_NAME })
+  return selectDatabasePendingItemsById(state, { databaseName })
 }
 
 export const selectEntries = createSelector([selectItems], (items) => {

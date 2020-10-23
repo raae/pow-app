@@ -34,10 +34,6 @@ const ProfileIndexPage = () => {
         </Box>
 
         <Box my={6}>
-          <DangerCard />
-        </Box>
-
-        <Box my={6}>
           <h1>Help make POW! better</h1>
           <Typography component="div">
             <p>
@@ -66,6 +62,10 @@ const ProfileIndexPage = () => {
         <Box my={6}>
           <h1>Payment</h1>
           <PaymentForm standalone />
+        </Box>
+
+        <Box my={6}>
+          <DangerCard />
         </Box>
       </AppPage>
     </AppLayout>
