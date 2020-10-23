@@ -2,12 +2,14 @@ import React from "react"
 import { Box } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import { AppLayout, AppPage, AppMainToolbar } from "../app"
-import ProfileCard from "./ProfileCard"
 import { PaymentForm } from "../payment"
 import { SettingsForm } from "../settings"
 import { Link } from "../navigation"
 import { useQueryParam } from "../utils/useQueryParam"
 import { Typography } from "@material-ui/core"
+
+import ProfileCard from "./ProfileCard"
+import DangerCard from "./DangerCard"
 
 const ProfileIndexPage = () => {
   const paymentStatus = useQueryParam("payment")
@@ -26,8 +28,13 @@ const ProfileIndexPage = () => {
             Check the payment section at the bottom of the page.
           </Alert>
         )}
+
         <Box>
           <ProfileCard />
+        </Box>
+
+        <Box my={6}>
+          <DangerCard />
         </Box>
 
         <Box my={6}>
