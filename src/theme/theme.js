@@ -61,6 +61,11 @@ theme.overrides = {
       alignItems: "flex-start",
     },
   },
+  MuiCardHeader: {
+    title: {
+      fontWeight: theme.typography.fontWeightBold,
+    },
+  },
   MuiCardContent: {
     root: {
       padding: theme.spacing(4),
