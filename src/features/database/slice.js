@@ -42,6 +42,24 @@ export const openDatabase = createAsyncThunk(
   }
 )
 
+export const emptyDatabase = createAsyncThunk(
+  "database/empty",
+  async (arg, thunkAPI) => {
+    const { databaseName } = arg
+    const state = thunkAPI.getState()
+    const items = selectDatabaseItems(state, { databaseName })
+
+    const operations = items.map(({ itemId }) => {
+      return { command: "Delete", itemId }
+    })
+
+    await userbase.putTransaction({
+      databaseName,
+      operations,
+    })
+  }
+)
+
 export const itemAction = createAsyncThunk(
   "database/item",
   async (payload, thunkAPI) => {

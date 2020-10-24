@@ -100,7 +100,7 @@ const ProfileCard = () => {
             </Menu>
           </>
         }
-        title={<strong>{username}</strong>}
+        title={username}
         subheader={userEmail}
       />
       {userEmail && (
