@@ -3,14 +3,13 @@ import { Box } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import { AppLayout, AppPage, AppMainToolbar } from "../app"
 import { PaymentForm } from "../payment"
-import { SettingsForm } from "../settings"
-import { Link } from "../navigation"
 import { useQueryParam } from "../utils/useQueryParam"
 import { Typography } from "@material-ui/core"
 
 import ProfileCard from "./ProfileCard"
 import DangerCard from "./DangerCard"
 import BetaCard from "./BetaCard"
+import SettingsCard from "./SettingsCard"
 
 const ProfileIndexPage = () => {
   const paymentStatus = useQueryParam("payment")
@@ -34,19 +33,14 @@ const ProfileIndexPage = () => {
 
         <BetaCard />
 
-        <Box my={6}>
-          <h1>Settings</h1>
-          <SettingsForm />
-        </Box>
+        <SettingsCard />
 
         <Box my={6}>
           <h1>Payment</h1>
           <PaymentForm standalone />
         </Box>
 
-        <Box my={6}>
-          <DangerCard />
-        </Box>
+        <DangerCard />
       </AppPage>
     </AppLayout>
   )

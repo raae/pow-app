@@ -13,9 +13,7 @@ import { Favorite as BetaIcon } from "@material-ui/icons"
 import { Link } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
-  avatar: {
-    // backgroundColor: theme.palette.primary.main,
-  },
+  avatar: {},
   listItem: {
     display: "flex",
     flexWrap: "wrap",
