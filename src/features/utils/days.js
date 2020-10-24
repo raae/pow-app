@@ -8,8 +8,8 @@ import {
   isValid,
   eachDayOfInterval,
   addDays,
+  startOfDay,
 } from "date-fns"
-import { startOfDay } from "date-fns/esm"
 
 export const makeDate = (input) => {
   let date = input
