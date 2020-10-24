@@ -8,6 +8,7 @@ import {
   Email as SupportIcon,
   Face as TwitterIcon,
   HighlightOff as SignOutIcon,
+  PhoneAndroid as ChatIcon,
 } from "@material-ui/icons"
 
 export const useSignUpNavItem = () => {
@@ -126,8 +127,10 @@ export const WEBSITE = {
   ...EXTERNAL,
 }
 
-export const CHAT_LINK = {
-  primary: "Chat with Benedicte (@raae)",
+export const USER_CHAT = {
+  primary: "Let's talk",
+  secondary: "Book a call with @raae",
+  icon: <ChatIcon />,
   href: "https://calendly.com/raae/pow-user",
   ...EXTERNAL,
 }
