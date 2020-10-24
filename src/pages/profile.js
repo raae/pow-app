@@ -41,6 +41,7 @@ const ProfilePage = () => {
   return (
     <>
       <SEO title="Profile" />
+      HELLO
       <Router basepath="/profile">
         <ProfileIndexPage path="/" />
         <ProfileEditEmailPage path="/edit" />

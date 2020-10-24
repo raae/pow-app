@@ -23,7 +23,6 @@
     "@reduxjs/toolkit": "^1.4.0",
     "@stripe/stripe-js": "1.7.0",
     "axios": "0.19.2",
-    "blockstack": "21.1.0",
     "classnames": "2.2.6",
     "date-fns": "2.14.0",
     "gatsby": "2.24.85",
