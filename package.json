@@ -21,7 +21,7 @@
     "@mdx-js/mdx": "1.6.19",
     "@mdx-js/react": "1.6.19",
     "@reduxjs/toolkit": "^1.4.0",
-    "@stripe/stripe-js": "1.7.0",
+    "@stripe/stripe-js": "1.10.0",
     "classnames": "2.2.6",
     "date-fns": "2.16.1",
     "gatsby": "2.24.85",
@@ -42,7 +42,7 @@
     "react-scroll": "1.8.1",
     "redux": "4.0.5",
     "redux-observable": "1.2.0",
-    "stripe": "8.60.0",
+    "stripe": "8.117.0",
     "typeface-seymour-one": "1.1.13",
     "userbase-js": "^2.1.3"
   },
