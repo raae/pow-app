@@ -33,7 +33,6 @@
     "gatsby-plugin-react-helmet": "3.3.14",
     "gatsby-source-filesystem": "2.3.35",
     "gatsby-transformer-remark": "2.8.46",
-    "localforage": "1.7.4",
     "lodash": "4.17.19",
     "query-string": "6.13.0",
     "react": "17.0.1",
