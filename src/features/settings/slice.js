@@ -1,6 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit"
 import { keyBy } from "lodash"
 
+import { SETTINGS_DATABASE } from "../../constants"
+
 import {
   openDatabase,
   selectDatabaseItems,
@@ -9,15 +11,15 @@ import {
   insertItem,
 } from "../database"
 
-const DATABASE_NAME = "settings"
+const databaseName = SETTINGS_DATABASE.databaseName
 
 // Actions
 
-export const initSettings = openDatabase({ databaseName: DATABASE_NAME })
+export const initSettings = () => openDatabase({ databaseName })
 
 export const upsertSetting = (id, setting) => {
   return upsertItem({
-    databaseName: DATABASE_NAME,
+    databaseName,
     itemId: id,
     item: setting,
   })
@@ -25,7 +27,7 @@ export const upsertSetting = (id, setting) => {
 
 export const insertSetting = (id, setting) => {
   return insertItem({
-    databaseName: DATABASE_NAME,
+    databaseName,
     itemId: id,
     item: setting,
   })
@@ -35,12 +37,12 @@ export const insertSetting = (id, setting) => {
 
 export const selectAreSettingsLoading = (state) => {
   return selectIsDatabaseLoading(state, {
-    databaseName: DATABASE_NAME,
+    databaseName,
   })
 }
 
 const selectItems = (state) => {
-  return selectDatabaseItems(state, { databaseName: DATABASE_NAME })
+  return selectDatabaseItems(state, { databaseName })
 }
 
 export const selectSettingsById = createSelector([selectItems], (items) => {

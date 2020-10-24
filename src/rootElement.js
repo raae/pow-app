@@ -41,7 +41,7 @@ const Init = () => {
 
   useEffect(() => {
     if (userId) {
-      dispatch(initSettings)
+      dispatch(initSettings())
       dispatch(initEntries())
     }
   }, [dispatch, userId])
