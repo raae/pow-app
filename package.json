@@ -47,11 +47,11 @@
     "userbase-js": "^2.2.2"
   },
   "devDependencies": {
-    "babel-jest": "26.0.1",
+    "babel-jest": "26.6.1",
     "babel-preset-gatsby": "0.5.14",
     "identity-obj-proxy": "3.0.0",
-    "jest": "26.0.1",
-    "prettier": "2.0.5",
+    "jest": "26.6.1",
+    "prettier": "2.1.2",
     "react-test-renderer": "17.0.1"
   },
   "repository": {
