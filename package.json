@@ -43,7 +43,7 @@
     "redux": "4.0.5",
     "redux-observable": "1.2.0",
     "stripe": "8.60.0",
-    "typeface-seymour-one": "0.0.71",
+    "typeface-seymour-one": "1.1.13",
     "userbase-js": "^2.1.3"
   },
   "devDependencies": {
