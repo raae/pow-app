@@ -22,7 +22,6 @@
     "@mdx-js/react": "1.6.19",
     "@reduxjs/toolkit": "^1.4.0",
     "@stripe/stripe-js": "1.7.0",
-    "axios": "0.19.2",
     "classnames": "2.2.6",
     "date-fns": "2.16.1",
     "gatsby": "2.24.85",
