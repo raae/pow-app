@@ -42,22 +42,28 @@ const CycleIndexPage = ({ entryId }) => {
   }, [selectedDate])
 
   return (
-    <BrandLayout variant="app" toolbar={<DatePicker date={selectedDate} />}>
-      <List className={classes.forecast}>
-        {range.map((date) => {
-          return (
-            <>
-              <TimelineItem
-                key={date}
-                date={date}
-                selectedDate={selectedDate}
-              />
-              {isToday(date) && <Welcome />}
-            </>
-          )
-        })}
-      </List>
-    </BrandLayout>
+    <AppLayout>
+      <AppMainToolbar>
+        <DatePicker date={selectedDate} />
+      </AppMainToolbar>
+
+      <AppPage>
+        <List className={classes.forecast}>
+          {range.map((date) => {
+            return (
+              <>
+                <TimelineItem
+                  key={date}
+                  date={date}
+                  selectedDate={selectedDate}
+                />
+                {isToday(date) && <Welcome />}
+              </>
+            )
+          })}
+        </List>
+      </AppPage>
+    </AppLayout>
   )
 }
 
