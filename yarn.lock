@@ -15384,10 +15384,10 @@ use@^3.1.0:
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
 
-userbase-js@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/userbase-js/-/userbase-js-2.1.3.tgz#83df98a012aea7f5cbaa7204b765f5f6c613539c"
-  integrity sha512-E849IQpKWuHESnCeG1PoBxG8diqHlpxlbvm6jL/jJz0Y0yul1Z9uNfNGbenhaiJdNlxRXP2kXyjbs9poYNtK0g==
+userbase-js@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/userbase-js/-/userbase-js-2.2.2.tgz#2a105c8de570c14a807a3856c267afb6fa56b408"
+  integrity sha512-QvWljlEbXy1w2dW3KvAcXlOEopZXanth+mmoCXPOdr53963WjaBeoF7P1QKYpRWmA83tQf+VtTLEJHLZJa/nww==
   dependencies:
     "@babel/runtime" "^7.9.2"
     base64-arraybuffer "^0.2.0"
