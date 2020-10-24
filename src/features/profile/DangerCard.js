@@ -100,4 +100,6 @@ const DangerCard = () => {
   )
 }
 
+DangerCard.propTypes = {}
+
 export default DangerCard

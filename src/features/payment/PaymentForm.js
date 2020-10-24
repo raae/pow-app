@@ -105,16 +105,13 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   if (hasPaid) {
     return (
       <>
-        <Typography component="p" gutterBottom>
+        <Typography variant="body1" gutterBottom>
           You are subscribed to the <strong>{currentStripePlan}</strong> plan.
         </Typography>
-        <Typography component="p" gutterBottom>
-          If you would like to cancel your subscription, or change it, send an
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          If you would like to cancel your subscription or change it, send an
           e-mail to{" "}
           <Link href="mailto://support@usepow.app">support@usepow.app</Link>.
-        </Typography>
-        <Typography component="p">
-          <small>PS. This will be automated shortly.</small>
         </Typography>
       </>
     )

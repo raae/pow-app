@@ -10,6 +10,7 @@ import {
   SUPPORT,
   TWITTER,
   WEBSITE,
+  USER_CHAT,
 } from "../navigation"
 
 import { selectIsDrawerOpen, actions } from "./slice"
@@ -55,7 +56,7 @@ const AppDrawer = (props) => {
 
       <Divider className={classes.pushDown} />
       <footer>
-        <NavMenu items={[SUPPORT, TWITTER, WEBSITE]} />
+        <NavMenu items={[SUPPORT, USER_CHAT, TWITTER, WEBSITE]} />
       </footer>
     </Drawer>
   )
