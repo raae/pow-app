@@ -6,7 +6,7 @@ import {
   List as TimelineIcon,
   OpenInNew as WebsiteIcon,
   Email as SupportIcon,
-  Face as TwitteIcon,
+  Face as TwitterIcon,
   HighlightOff as SignOutIcon,
 } from "@material-ui/icons"
 
@@ -114,7 +114,7 @@ export const SUPPORT = {
 export const TWITTER = {
   primary: "Made with ❤",
   secondary: "by @raae and family",
-  icon: <TwitteIcon />,
+  icon: <TwitterIcon />,
   href: "https://twitter.com/raae",
   ...EXTERNAL,
 }
@@ -123,5 +123,11 @@ export const WEBSITE = {
   primary: "Website (usepow.app)",
   icon: <WebsiteIcon />,
   href: "http://usepow.app",
+  ...EXTERNAL,
+}
+
+export const CHAT_LINK = {
+  primary: "Chat with Benedicte (@raae)",
+  href: "https://calendly.com/raae/pow-user",
   ...EXTERNAL,
 }

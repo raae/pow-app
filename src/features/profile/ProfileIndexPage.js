@@ -1,17 +1,26 @@
 import React from "react"
-import { Box } from "@material-ui/core"
+import { Typography, makeStyles } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import { AppLayout, AppPage, AppMainToolbar } from "../app"
-import { PaymentForm } from "../payment"
 import { useQueryParam } from "../utils/useQueryParam"
-import { Typography } from "@material-ui/core"
+
+import { AppLayout, AppPage, AppMainToolbar } from "../app"
 
 import ProfileCard from "./ProfileCard"
 import DangerCard from "./DangerCard"
 import BetaCard from "./BetaCard"
 import SettingsCard from "./SettingsCard"
+import PaymentCard from "./PaymentCard"
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      marginBottom: theme.spacing(4),
+    },
+  },
+}))
 
 const ProfileIndexPage = () => {
+  const classes = useStyles()
   const paymentStatus = useQueryParam("payment")
 
   return (
@@ -22,7 +31,7 @@ const ProfileIndexPage = () => {
         </Typography>
       </AppMainToolbar>
 
-      <AppPage>
+      <AppPage className={classes.root}>
         {paymentStatus && (
           <Alert severity="warning">
             Check the payment section at the bottom of the page.
@@ -35,10 +44,7 @@ const ProfileIndexPage = () => {
 
         <SettingsCard />
 
-        <Box my={6}>
-          <h1>Payment</h1>
-          <PaymentForm standalone />
-        </Box>
+        <PaymentCard />
 
         <DangerCard />
       </AppPage>

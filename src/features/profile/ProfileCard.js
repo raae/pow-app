@@ -105,7 +105,7 @@ const ProfileCard = () => {
       />
       {userEmail && (
         <CardContent>
-          <Typography variant="body2" color="textSecondary" gutterBottom>
+          <Typography variant="body2" gutterBottom>
             POW! is a very young app. To stay updated on its life and advances
             sign up for the newsletter. You may cancel at any time.
           </Typography>

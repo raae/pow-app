@@ -6,11 +6,12 @@ import {
   CardHeader,
   CardContent,
   Typography,
+  Link,
   makeStyles,
 } from "@material-ui/core"
 import { Favorite as BetaIcon } from "@material-ui/icons"
 
-import { Link } from "../navigation"
+import { CHAT_LINK } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {},
@@ -37,13 +38,10 @@ const BetaCard = () => {
         <Typography variant="body1" component="h2" gutterBottom>
           Let's talk!
         </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
+        <Typography variant="body2" gutterBottom>
           Help make POW! better for you by{" "}
-          <Link href="https://calendly.com/raae/pow-user">
-            signing up for a 30-minute
-          </Link>{" "}
-          chat with me, Benedicte (@raae), so I can learn more about what you
-          need from POW!
+          <Link {...CHAT_LINK}>signing up for a 30-minute</Link> chat with me,
+          Benedicte (@raae), so I can learn more about what you need from POW!
         </Typography>
         <Typography variant="caption" color="textSecondary">
           We'll talk using Whereby video conferencing, but you decide if you
