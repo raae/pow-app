@@ -13,12 +13,7 @@ import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
-const useStyles = makeStyles((theme) => ({
-  forecast: {
-    marginTop: theme.spacing(2),
-    width: "80%",
-  },
-}))
+const useStyles = makeStyles((theme) => ({}))
 
 const CycleIndexPage = ({ entryId }) => {
   const classes = useStyles()

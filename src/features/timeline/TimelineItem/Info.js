@@ -29,11 +29,12 @@ const Info = ({ date, ...props }) => {
 
   return (
     <section {...props}>
-      <Typography variant="body2">
-        <strong>#{menstruationTag}</strong> {!isCurrentCycle && "was"} estimated
-        to arrive <strong>{format(nextStartDate, "EEEE, MMMM do")}</strong>{" "}
-        based on {isDaysBetweenCalculated ? "your average" : "a default"}{" "}
-        <strong>{daysBetween || "?"} day</strong> cycle.{" "}
+      <Typography variant="body1">
+        Next <strong>#{menstruationTag}</strong> {!isCurrentCycle && "was"}{" "}
+        estimated to arrive{" "}
+        <strong>{format(nextStartDate, "EEEE, MMMM do")}</strong>, based on{" "}
+        {isDaysBetweenCalculated ? "your average" : "a default"}{" "}
+        <strong>{daysBetween || "?"} day</strong>-cycle.{" "}
       </Typography>
     </section>
   )

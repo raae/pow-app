@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     // Indicates how much of this entry (the day before selected)
     // should show
-    bottom: "4rem",
+    bottom: "2rem",
     width: "100%",
     ...theme.mixins.toolbar,
   },
@@ -35,9 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   info: {
     padding: theme.spacing(0.5, 1),
-    // margin: theme.spacing(0, `${theme.shape.borderRadius / 2}px`),
     marginBottom: theme.spacing(1.5),
-    // backgroundColor: theme.palette.grey[100],
   },
   entry: {
     padding: theme.spacing(2),
@@ -87,6 +85,7 @@ const TimelineItem = ({ date, selectedDate, ...props }) => {
       <div id={scrollToId} className={classes.scrollTo} />
       <Header {...itemProps} className={classes.header} />
       <Info {...itemProps} className={classes.info} />
+
       <Entry {...itemProps} className={classes.entry} />
       <Predictions {...itemProps} className={classes.predictions} />
     </article>

@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import { useSelector } from "react-redux"
-import { Chip, makeStyles } from "@material-ui/core"
+import { Chip, makeStyles, Typography } from "@material-ui/core"
 
 import { selectPredictedTagsForDate } from "../../cycle"
 
@@ -27,6 +27,9 @@ const Predictions = ({ date, ...props }) => {
 
   return (
     <aside {...props}>
+      {predictedTags.length === 0 && (
+        <Typography>No predictions yet.</Typography>
+      )}
       {predictedTags
         .sort(({ countA }, { countB }) => countA - countB)
         .map(({ tag, logged }) => {
