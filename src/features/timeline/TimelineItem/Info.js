@@ -1,7 +1,7 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import PropTypes from "prop-types"
-import { isToday, format } from "date-fns"
+import { format } from "date-fns"
 import { Typography } from "@material-ui/core"
 
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../cycle"
 import { selectMenstruationTag } from "../../settings"
 
-const Info = ({ date, ...props }) => {
+const Info = ({ date, selectedDate, isToday, ...props }) => {
   const menstruationTag = useSelector(selectMenstruationTag)
 
   const daysBetween = useSelector(selectDaysBetween)
@@ -25,7 +25,7 @@ const Info = ({ date, ...props }) => {
     selectNextStartDate(state, { date })
   )
 
-  if (!isToday(date) || !nextStartDate) return null
+  if (!isToday || !nextStartDate) return null
 
   return (
     <section {...props}>

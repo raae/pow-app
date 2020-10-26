@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useSelector } from "react-redux"
-import { format, isToday, isSameDay } from "date-fns"
+import { format } from "date-fns"
 import { Typography } from "@material-ui/core"
 
 import { selectIsMenstruationForDate } from "../../entries"
@@ -10,7 +10,7 @@ import {
   selectPredictedMenstruationForDate,
 } from "../../cycle"
 
-const TimelineHeader = ({ date, selectedDate, ...props }) => {
+const TimelineHeader = ({ date, isSelected, isToday, ...props }) => {
   const cycleDay = useSelector((state) =>
     selectCycleDayForDate(state, { date })
   )
@@ -29,10 +29,10 @@ const TimelineHeader = ({ date, selectedDate, ...props }) => {
     <header {...props}>
       <Typography
         variant="overline"
-        component={isSameDay(date, selectedDate) ? "strong" : "span"}
+        component={isSelected ? "strong" : "span"}
         color="textSecondary"
       >
-        {isToday(date) ? "Today" : format(date, "EEEE, MMMM do")}
+        {isToday ? "Today" : format(date, "EEEE, MMMM do")}
       </Typography>
       <Typography
         variant="overline"

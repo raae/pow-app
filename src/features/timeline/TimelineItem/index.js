@@ -1,7 +1,14 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { addDays } from "date-fns"
+import {
+  addDays,
+  isFuture as dateIsFuture,
+  isToday as dateIsToday,
+  isPast as dateIsPast,
+  isSameDay as dateIsSameDay,
+} from "date-fns"
 import { makeStyles, fade } from "@material-ui/core"
+import classnames from "classnames"
 
 import { entryIdFromDate } from "../../utils/days"
 
@@ -62,23 +69,33 @@ const useStyles = makeStyles((theme) => ({
   predictions: {
     padding: theme.spacing(1.5),
     margin: theme.spacing(0, `${theme.shape.borderRadius / 2}px`),
-    // backgroundColor: theme.palette.grey[100],
     backgroundColor: fade(
       theme.palette.secondary.main,
       theme.palette.action.hoverOpacity
     ),
     zIndex: "-1",
+    "&$isFuture": {
+      backgroundColor: "transparent",
+    },
     "& > *": {
       margin: theme.spacing(0.5),
     },
   },
+  isFuture: {},
 }))
 
 const TimelineItem = ({ date, selectedDate, ...props }) => {
   const classes = useStyles()
 
   const scrollToId = `scrollTo-${entryIdFromDate(addDays(date, 1))}`
-  const itemProps = { date, selectedDate }
+  const isPast = dateIsPast(date)
+  const isFuture = dateIsFuture(date)
+  const isToday = dateIsToday(date)
+  const isSelected = dateIsSameDay(date, selectedDate)
+  const itemProps = { date, isFuture, isToday, isPast, isSelected }
+  const conditionalClassName = {
+    [classes.isFuture]: isFuture,
+  }
 
   return (
     <article className={classes.root} {...props}>
@@ -87,7 +104,10 @@ const TimelineItem = ({ date, selectedDate, ...props }) => {
       <Info {...itemProps} className={classes.info} />
 
       <Entry {...itemProps} className={classes.entry} />
-      <Predictions {...itemProps} className={classes.predictions} />
+      <Predictions
+        {...itemProps}
+        className={classnames(classes.predictions, conditionalClassName)}
+      />
     </article>
   )
 }

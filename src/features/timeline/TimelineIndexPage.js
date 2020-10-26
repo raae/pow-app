@@ -22,8 +22,8 @@ const CycleIndexPage = ({ entryId }) => {
   const calculatedDaysBetween = useSelector(selectDaysBetween)
 
   const range = eachDayOfInterval({
-    start: addDays(selectedDate, calculatedDaysBetween * -1.5),
-    end: addDays(selectedDate, calculatedDaysBetween * 1.5),
+    start: addDays(selectedDate, calculatedDaysBetween * -0.5),
+    end: addDays(selectedDate, calculatedDaysBetween * 1.2),
   })
 
   useEffect(() => {

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Predictions = ({ date, ...props }) => {
+const Predictions = ({ date, selectedDate, ...props }) => {
   const classes = useStyles()
 
   const predictedTags = useSelector((state) =>
