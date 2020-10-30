@@ -29,7 +29,7 @@ const Info = ({ date, selectedDate, isToday, ...props }) => {
 
   return (
     <section {...props}>
-      <Typography variant="body1">
+      <Typography variant="body2">
         Next <strong>#{menstruationTag}</strong> {!isCurrentCycle && "was"}{" "}
         estimated to arrive{" "}
         <strong>{format(nextStartDate, "EEEE, MMMM do")}</strong>, based on{" "}

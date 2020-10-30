@@ -41,8 +41,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   info: {
-    padding: theme.spacing(0.5, 1),
+    padding: theme.spacing(1.5, 2),
     marginBottom: theme.spacing(1.5),
+    borderRadius: theme.shape.borderRadius * 0.5,
+    background: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
   },
   entry: {
     padding: theme.spacing(2),
