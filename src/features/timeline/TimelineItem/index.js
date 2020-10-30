@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import { useSelector } from "react-redux"
 import {
   addDays,
   isFuture as dateIsFuture,
@@ -11,7 +12,9 @@ import { makeStyles, fade } from "@material-ui/core"
 import classnames from "classnames"
 
 import { entryIdFromDate } from "../../utils/days"
+import { selectHasPredictionsForDate } from "../../cycle"
 
+import Empty from "./Empty"
 import Info from "./Info"
 import Header from "./Header"
 import Entry from "./Entry"
@@ -23,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
+  },
+  empty: {
+    marginLeft: theme.spacing(3),
   },
   scrollTo: {
     position: "absolute",
@@ -87,6 +93,9 @@ const useStyles = makeStyles((theme) => ({
 const TimelineItem = ({ date, selectedDate, ...props }) => {
   const classes = useStyles()
 
+  const hasPredictions = useSelector((state) =>
+    selectHasPredictionsForDate(state, { date })
+  )
   const scrollToId = `scrollTo-${entryIdFromDate(addDays(date, 1))}`
   const isPast = dateIsPast(date)
   const isFuture = dateIsFuture(date)
@@ -97,17 +106,25 @@ const TimelineItem = ({ date, selectedDate, ...props }) => {
     [classes.isFuture]: isFuture,
   }
 
+  // If its in the future and there are no predictions
+  // then return something different
+
   return (
     <article className={classes.root} {...props}>
       <div id={scrollToId} className={classes.scrollTo} />
-      <Header {...itemProps} className={classes.header} />
-      <Info {...itemProps} className={classes.info} />
-
-      <Entry {...itemProps} className={classes.entry} />
-      <Predictions
-        {...itemProps}
-        className={classnames(classes.predictions, conditionalClassName)}
-      />
+      {isFuture && !hasPredictions ? (
+        <Empty {...itemProps} className={classes.empty} />
+      ) : (
+        <>
+          <Header {...itemProps} className={classes.header} />
+          <Info {...itemProps} className={classes.info} />
+          <Entry {...itemProps} className={classes.entry} />
+          <Predictions
+            {...itemProps}
+            className={classnames(classes.predictions, conditionalClassName)}
+          />
+        </>
+      )}
     </article>
   )
 }

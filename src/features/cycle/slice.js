@@ -74,6 +74,13 @@ export const selectPredictedTagsForDate = createSelector(
   }
 )
 
+export const selectHasPredictionsForDate = createSelector(
+  [selectPredictedTagsForDate],
+  (predictedTags) => {
+    return predictedTags && predictedTags.length !== 0
+  }
+)
+
 export const selectPredictedMenstruationForDate = createSelector(
   [selectPredictedTagsForDate, selectMenstruationTag],
   (tags = [], menstruationTag) => {
