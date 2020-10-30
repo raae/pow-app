@@ -36,7 +36,7 @@ const TimelineHeader = ({ date, isSelected, isToday, ...props }) => {
       </Typography>
       <Typography
         variant="overline"
-        component={isMenstruation ? "strong" : "span"}
+        component={isMenstruation || isSelected ? "strong" : "span"}
         color={isMenstruation ? "primary" : "textSecondary"}
       >
         Day {cycleDay}
