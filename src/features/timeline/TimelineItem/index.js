@@ -77,9 +77,6 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.action.hoverOpacity
     ),
     zIndex: "-1",
-    "&$isFuture": {
-      backgroundColor: "transparent",
-    },
     "& > *": {
       margin: theme.spacing(0.5),
     },
