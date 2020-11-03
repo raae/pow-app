@@ -1,8 +1,8 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles"
 import "typeface-seymour-one"
 
-const primaryColor = "#e53935"
-const secondaryColor = "#542c85"
+const primaryColor = "#dd1a05" // "#e53935"
+const secondaryColor = "#6a1b9a" // "#542c85"
 
 // A custom theme for this app
 let theme = createMuiTheme({
@@ -18,8 +18,6 @@ let theme = createMuiTheme({
     },
   },
 })
-
-console.log(theme.props)
 
 theme.props = {
   MuiAppBar: {
