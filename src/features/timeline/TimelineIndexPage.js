@@ -13,7 +13,13 @@ import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
-const useStyles = makeStyles((theme) => ({}))
+const useStyles = makeStyles((theme) => ({
+  timeline: {
+    "& > *": {
+      marginBottom: theme.spacing(3),
+    },
+  },
+}))
 
 const CycleIndexPage = ({ entryId }) => {
   const classes = useStyles()
@@ -43,17 +49,12 @@ const CycleIndexPage = ({ entryId }) => {
       </AppMainToolbar>
 
       <AppPage>
-        <List className={classes.forecast}>
+        <List className={classes.timeline}>
           {range.map((date) => {
             return (
-              <>
-                <TimelineItem
-                  key={date}
-                  date={date}
-                  selectedDate={selectedDate}
-                />
-                {isToday(date) && <Welcome />}
-              </>
+              <TimelineItem key={date} date={date} selectedDate={selectedDate}>
+                {isToday(date) && <Welcome key="welcome" />}
+              </TimelineItem>
             )
           })}
         </List>

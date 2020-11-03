@@ -23,7 +23,6 @@ import Predictions from "./Predictions"
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
-    marginBottom: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
   },
@@ -90,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   isFuture: {},
 }))
 
-const TimelineItem = ({ date, selectedDate, ...props }) => {
+const TimelineItem = ({ date, selectedDate, children, ...props }) => {
   const classes = useStyles()
 
   const hasPredictions = useSelector((state) =>
@@ -110,22 +109,25 @@ const TimelineItem = ({ date, selectedDate, ...props }) => {
   // then return something different
 
   return (
-    <article className={classes.root} {...props}>
-      <div id={scrollToId} className={classes.scrollTo} />
-      {isFuture && !hasPredictions ? (
-        <Empty {...itemProps} className={classes.empty} />
-      ) : (
-        <>
-          <Header {...itemProps} className={classes.header} />
-          <Info {...itemProps} className={classes.info} />
-          <Entry {...itemProps} className={classes.entry} />
-          <Predictions
-            {...itemProps}
-            className={classnames(classes.predictions, conditionalClassName)}
-          />
-        </>
-      )}
-    </article>
+    <>
+      <article className={classes.root} {...props}>
+        <div id={scrollToId} className={classes.scrollTo} />
+        {isFuture && !hasPredictions ? (
+          <Empty {...itemProps} className={classes.empty} />
+        ) : (
+          <>
+            <Header {...itemProps} className={classes.header} />
+            <Info {...itemProps} className={classes.info} />
+            <Entry {...itemProps} className={classes.entry} />
+            <Predictions
+              {...itemProps}
+              className={classnames(classes.predictions, conditionalClassName)}
+            />
+          </>
+        )}
+      </article>
+      {children}
+    </>
   )
 }
 
