@@ -25,19 +25,21 @@ const TimelineHeader = ({ date, isSelected, isToday, isFuture, className }) => {
 
   const isMenstruation = isLoggedMenstruation || isPredictedMenstruation
 
+  const textColor = isToday || isFuture ? "textPrimary" : "textSecondary"
+
   return (
     <header className={className}>
       <Typography
         variant="overline"
         component={isSelected ? "strong" : "span"}
-        color={isToday || isFuture ? "textPrimary" : "textSecondary"}
+        color={textColor}
       >
         {isToday ? "Today" : format(date, "EEEE, MMMM do")}
       </Typography>
       <Typography
         variant="overline"
         component={isMenstruation || isSelected ? "strong" : "span"}
-        color={isMenstruation ? "primary" : "textSecondary"}
+        color={isMenstruation ? "primary" : textColor}
       >
         Day {cycleDay}
       </Typography>
