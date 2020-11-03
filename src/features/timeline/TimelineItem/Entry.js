@@ -8,7 +8,7 @@ import { Add as AddNoteIcon } from "@material-ui/icons"
 import { entryIdFromDate } from "../../utils/days"
 import { selectEntryNote } from "../../entries"
 
-const Entry = ({ date, isPast, isToday, ...props }) => {
+const Entry = ({ date, isPast, isToday, className }) => {
   const entryId = entryIdFromDate(date)
   const editPath = `/timeline/${entryId}/edit`
   const entryNote = useSelector((state) => selectEntryNote(state, { date }))
@@ -22,7 +22,7 @@ const Entry = ({ date, isPast, isToday, ...props }) => {
       elevation={1}
       variant={isToday ? "elevation" : "outlined"}
     >
-      <ButtonBase component={Link} to={editPath} {...props}>
+      <ButtonBase component={Link} to={editPath} className={className}>
         {entryNote ? (
           <Typography variant="body2">{entryNote}</Typography>
         ) : (
@@ -38,6 +38,8 @@ const Entry = ({ date, isPast, isToday, ...props }) => {
 
 Entry.propTypes = {
   date: PropTypes.instanceOf(Date),
+  isPast: PropTypes.bool.isRequired,
+  isToday: PropTypes.bool.isRequired,
 }
 
 export default Entry

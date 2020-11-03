@@ -12,7 +12,7 @@ import {
 } from "../../cycle"
 import { selectMenstruationTag } from "../../settings"
 
-const Info = ({ date, selectedDate, isToday, ...props }) => {
+const Info = ({ date, isToday, className }) => {
   const menstruationTag = useSelector(selectMenstruationTag)
 
   const daysBetween = useSelector(selectDaysBetween)
@@ -28,7 +28,7 @@ const Info = ({ date, selectedDate, isToday, ...props }) => {
   if (!isToday || !nextStartDate) return null
 
   return (
-    <section {...props}>
+    <section className={className}>
       <Typography variant="body2">
         Next <strong>#{menstruationTag}</strong> {!isCurrentCycle && "was"}{" "}
         estimated to arrive{" "}
@@ -42,6 +42,7 @@ const Info = ({ date, selectedDate, isToday, ...props }) => {
 
 Info.propTypes = {
   date: PropTypes.instanceOf(Date),
+  isToday: PropTypes.bool,
 }
 
 export default Info

@@ -11,6 +11,8 @@ const Empty = ({ date, className }) => {
   )
 }
 
-Empty.propTypes = {}
+Empty.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+}
 
 export default Empty

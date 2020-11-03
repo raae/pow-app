@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Predictions = ({ date, selectedDate, ...props }) => {
+const Predictions = ({ date, className }) => {
   const classes = useStyles()
 
   const predictedTags = useSelector((state) =>
@@ -26,7 +26,7 @@ const Predictions = ({ date, selectedDate, ...props }) => {
   if (predictedTags.length === 0) return null
 
   return (
-    <aside {...props}>
+    <aside className={className}>
       {predictedTags.length === 0 && (
         <Typography>No predictions yet.</Typography>
       )}

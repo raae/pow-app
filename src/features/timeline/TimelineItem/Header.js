@@ -10,7 +10,7 @@ import {
   selectPredictedMenstruationForDate,
 } from "../../cycle"
 
-const TimelineHeader = ({ date, isSelected, isToday, isFuture, ...props }) => {
+const TimelineHeader = ({ date, isSelected, isToday, isFuture, className }) => {
   const cycleDay = useSelector((state) =>
     selectCycleDayForDate(state, { date })
   )
@@ -26,7 +26,7 @@ const TimelineHeader = ({ date, isSelected, isToday, isFuture, ...props }) => {
   const isMenstruation = isLoggedMenstruation || isPredictedMenstruation
 
   return (
-    <header {...props}>
+    <header className={className}>
       <Typography
         variant="overline"
         component={isSelected ? "strong" : "span"}
@@ -47,6 +47,9 @@ const TimelineHeader = ({ date, isSelected, isToday, isFuture, ...props }) => {
 
 TimelineHeader.propTypes = {
   date: PropTypes.instanceOf(Date),
+  isSelected: PropTypes.bool.isRequired,
+  isToday: PropTypes.bool.isRequired,
+  isFuture: PropTypes.bool.isRequired,
 }
 
 export default TimelineHeader
