@@ -1,6 +1,8 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { List, makeStyles } from "@material-ui/core"
+import { navigate } from "gatsby"
+import { List, IconButton, makeStyles } from "@material-ui/core"
+import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
 
 import { makeDate, entryIdFromDate } from "../utils/days"
@@ -46,6 +48,13 @@ const CycleIndexPage = ({ entryId }) => {
     <AppLayout>
       <AppMainToolbar>
         <DatePicker date={selectedDate} />
+        <IconButton
+          aria-label="Scroll to today"
+          onClick={() => navigate(`/timeline/${entryIdFromDate(new Date())}`)}
+          style={{ marginLeft: "auto" }}
+        >
+          <Today />
+        </IconButton>
       </AppMainToolbar>
 
       <AppPage>

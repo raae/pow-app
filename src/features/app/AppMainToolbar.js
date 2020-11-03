@@ -13,11 +13,7 @@ import MenuIcon from "@material-ui/icons/Menu"
 import { actions, selectIsDrawerOpen } from "./slice"
 const { openDrawer, closeDrawer } = actions
 
-const useStyles = makeStyles(() => ({
-  drawerButton: {
-    marginLeft: "auto",
-  },
-}))
+const useStyles = makeStyles(() => ({}))
 
 const AppMainToolbar = ({ children }) => {
   const classes = useStyles()
@@ -27,18 +23,17 @@ const AppMainToolbar = ({ children }) => {
   return (
     <AppBar>
       <Toolbar>
-        {children}
         <Hidden mdUp>
           <IconButton
-            className={classes.drawerButton}
             variant="raised"
             color="inherit"
             aria-label="open drawer"
-            edge="end"
+            edge="start"
             onClick={() => dispatch(isOpen ? closeDrawer() : openDrawer())}
           >
             <MenuIcon />
           </IconButton>
+          {children}
         </Hidden>
       </Toolbar>
     </AppBar>

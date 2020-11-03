@@ -58,7 +58,7 @@ function AppLayout({ children }) {
         <Hidden mdUp>
           <AppDrawer
             variant="temporary"
-            anchor={"right"}
+            anchor="left"
             classes={{
               paper: classes.temporary,
             }}
