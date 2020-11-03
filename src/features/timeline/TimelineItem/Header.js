@@ -10,7 +10,7 @@ import {
   selectPredictedMenstruationForDate,
 } from "../../cycle"
 
-const TimelineHeader = ({ date, isSelected, isToday, ...props }) => {
+const TimelineHeader = ({ date, isSelected, isToday, isFuture, ...props }) => {
   const cycleDay = useSelector((state) =>
     selectCycleDayForDate(state, { date })
   )
@@ -30,7 +30,7 @@ const TimelineHeader = ({ date, isSelected, isToday, ...props }) => {
       <Typography
         variant="overline"
         component={isSelected ? "strong" : "span"}
-        color="textSecondary"
+        color={isToday || isFuture ? "textPrimary" : "textSecondary"}
       >
         {isToday ? "Today" : format(date, "EEEE, MMMM do")}
       </Typography>
