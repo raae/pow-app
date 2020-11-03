@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
   info: {
     padding: theme.spacing(1.5, 2),
     marginBottom: theme.spacing(1.5),
-    borderRadius: theme.shape.borderRadius * 0.5,
     background: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
   },
@@ -104,9 +103,6 @@ const TimelineItem = ({ date, selectedDate, children, ...props }) => {
   const conditionalClassName = {
     [classes.isFuture]: isFuture,
   }
-
-  // If its in the future and there are no predictions
-  // then return something different
 
   return (
     <>

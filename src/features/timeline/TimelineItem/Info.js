@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector } from "react-redux"
 import PropTypes from "prop-types"
 import { format } from "date-fns"
-import { Typography } from "@material-ui/core"
+import { Paper, Typography } from "@material-ui/core"
 
 import {
   selectDaysBetween,
@@ -28,7 +28,7 @@ const Info = ({ date, isToday, className }) => {
   if (!isToday || !nextStartDate) return null
 
   return (
-    <section className={className}>
+    <Paper elevation={0} className={className}>
       <Typography variant="body2">
         Next <strong>#{menstruationTag}</strong> {!isCurrentCycle && "was"}{" "}
         estimated to arrive{" "}
@@ -36,7 +36,7 @@ const Info = ({ date, isToday, className }) => {
         {isDaysBetweenCalculated ? "your average" : "a default"}{" "}
         <strong>{daysBetween || "?"}-day</strong> cycle.{" "}
       </Typography>
-    </section>
+    </Paper>
   )
 }
 

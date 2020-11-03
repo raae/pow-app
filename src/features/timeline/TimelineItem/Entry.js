@@ -17,7 +17,7 @@ const Entry = ({ date, isPast, isToday, className }) => {
   if (!isEditable) return null
 
   return (
-    <Paper component="section" elevation={1} variant="outlined">
+    <Paper variant={isToday ? "elevation" : "outlined"}>
       <ButtonBase component={Link} to={editPath} className={className}>
         {entryNote ? (
           <Typography variant="body2">{entryNote}</Typography>

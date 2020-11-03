@@ -6,6 +6,9 @@ const secondaryColor = "#6a1b9a" // "#542c85"
 
 // A custom theme for this app
 let theme = createMuiTheme({
+  shape: {
+    borderRadius: 2,
+  },
   typography: {
     fontWeightBolder: 900,
   },
@@ -28,6 +31,9 @@ theme.props = {
     disableElevation: true,
   },
   MuiCard: {
+    component: "section",
+  },
+  MuiPaper: {
     component: "section",
   },
   MuiCardHeader: {
