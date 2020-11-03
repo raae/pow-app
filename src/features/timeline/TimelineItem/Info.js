@@ -34,7 +34,7 @@ const Info = ({ date, isToday, className }) => {
         estimated to arrive{" "}
         <strong>{format(nextStartDate, "EEEE, MMMM do")}</strong>, based on{" "}
         {isDaysBetweenCalculated ? "your average" : "a default"}{" "}
-        <strong>{daysBetween || "?"} day</strong>-cycle.{" "}
+        <strong>{daysBetween || "?"}-day</strong> cycle.{" "}
       </Typography>
     </section>
   )
