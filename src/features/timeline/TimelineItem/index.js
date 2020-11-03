@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1.5),
     margin: theme.spacing(0, `${theme.shape.borderRadius / 2}px`),
     backgroundColor: fade(
-      theme.palette.secondary.main,
+      theme.palette.secondary.dark,
       theme.palette.action.hoverOpacity
     ),
     zIndex: "-1",
