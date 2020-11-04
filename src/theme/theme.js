@@ -32,6 +32,7 @@ theme.props = {
   },
   MuiCard: {
     component: "section",
+    variant: "outlined",
   },
   MuiPaper: {
     component: "section",
