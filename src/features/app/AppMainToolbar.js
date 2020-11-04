@@ -1,22 +1,13 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
-import {
-  AppBar,
-  Toolbar,
-  Hidden,
-  IconButton,
-  makeStyles,
-} from "@material-ui/core"
+import { AppBar, Toolbar, Hidden, IconButton } from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
 
 import { actions, selectIsDrawerOpen } from "./slice"
 const { openDrawer, closeDrawer } = actions
 
-const useStyles = makeStyles(() => ({}))
-
 const AppMainToolbar = ({ children }) => {
-  const classes = useStyles()
   const dispatch = useDispatch()
   const isOpen = useSelector(selectIsDrawerOpen)
 
@@ -33,8 +24,8 @@ const AppMainToolbar = ({ children }) => {
           >
             <MenuIcon />
           </IconButton>
-          {children}
         </Hidden>
+        {children}
       </Toolbar>
     </AppBar>
   )

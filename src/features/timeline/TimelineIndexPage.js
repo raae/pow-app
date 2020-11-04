@@ -30,8 +30,8 @@ const CycleIndexPage = ({ entryId }) => {
   const calculatedDaysBetween = useSelector(selectDaysBetween)
 
   const range = eachDayOfInterval({
-    start: addDays(selectedDate, calculatedDaysBetween * -0.5),
-    end: addDays(selectedDate, calculatedDaysBetween * 1.2),
+    start: addDays(selectedDate, calculatedDaysBetween * -1.5),
+    end: addDays(selectedDate, calculatedDaysBetween * 1.5),
   })
 
   useEffect(() => {
@@ -51,8 +51,7 @@ const CycleIndexPage = ({ entryId }) => {
         <IconButton
           aria-label="Scroll to today"
           onClick={(event) => {
-            event.target.blur()
-            navigate(`/timeline/${entryIdFromDate(new Date())}`)
+            navigate(`/timeline`)
           }}
           style={{ marginLeft: "auto" }}
         >
