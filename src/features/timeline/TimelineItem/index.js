@@ -18,7 +18,7 @@ import Empty from "./Empty"
 import Info from "./Info"
 import Header from "./Header"
 import Entry from "./Entry"
-import Predictions from "./Predictions"
+import Tags from "./Tags"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: "pre-line",
     },
   },
-  predictions: {
+  tags: {
     padding: theme.spacing(1.5),
     margin: theme.spacing(0, `${theme.shape.borderRadius / 2}px`),
     backgroundColor: fade(
@@ -115,9 +115,9 @@ const TimelineItem = ({ date, selectedDate, children, ...props }) => {
             <Header {...itemProps} className={classes.header} />
             <Info {...itemProps} className={classes.info} />
             <Entry {...itemProps} className={classes.entry} />
-            <Predictions
+            <Tags
               {...itemProps}
-              className={classnames(classes.predictions, conditionalClassName)}
+              className={classnames(classes.tags, conditionalClassName)}
             />
           </>
         )}

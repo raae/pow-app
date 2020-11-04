@@ -58,31 +58,33 @@ export const selectCycleDayForDate = createSelector(
   }
 )
 
-export const selectPredictedTagsForDate = createSelector(
+export const selectTagsForDate = createSelector(
   [selectDate, selectAnalytics, selectEntryTags],
   (date, analytics, tags = []) => {
     const cycleDay = cycleDayForDate(date, analytics)
     const predictedTags = analytics.tags[cycleDay] || []
     const predictedTagsCount = countBy(predictedTags)
-    return toPairs(predictedTagsCount)
-      .map(([tag, count]) => ({
+    return toPairs(predictedTagsCount).map(([tag, count]) => {
+      return {
         tag,
-        count: tags.includes(tag) ? count - 1 : count,
+        count,
         logged: tags.includes(tag),
-      }))
-      .filter((tag) => tag.count > 0)
+        predicted: tags.includes(tag) ? count - 1 > 0 : true,
+        sortOrder: count,
+      }
+    })
   }
 )
 
 export const selectHasPredictionsForDate = createSelector(
-  [selectPredictedTagsForDate],
+  [selectTagsForDate],
   (predictedTags) => {
     return predictedTags && predictedTags.length !== 0
   }
 )
 
 export const selectPredictedMenstruationForDate = createSelector(
-  [selectPredictedTagsForDate, selectMenstruationTag],
+  [selectTagsForDate, selectMenstruationTag],
   (tags = [], menstruationTag) => {
     return !!tags.find(({ tag }) => tag === menstruationTag)
   }

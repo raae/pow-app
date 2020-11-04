@@ -2,12 +2,15 @@ import React from "react"
 import PropTypes from "prop-types"
 import classNames from "classnames"
 import { useSelector } from "react-redux"
-import { Chip, makeStyles, Typography } from "@material-ui/core"
+import { Chip, makeStyles } from "@material-ui/core"
 
-import { selectPredictedTagsForDate } from "../../cycle"
+import { selectTagsForDate } from "../../cycle"
 
 const useStyles = makeStyles((theme) => ({
   tag: {
+    borderStyle: "none",
+  },
+  predictedTag: {
     borderStyle: "dotted",
   },
   loggedTag: {
@@ -16,27 +19,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Predictions = ({ date, className }) => {
+const Tags = ({ date, className }) => {
   const classes = useStyles()
 
-  const predictedTags = useSelector((state) =>
-    selectPredictedTagsForDate(state, { date })
-  )
+  const tags = useSelector((state) => selectTagsForDate(state, { date }))
 
-  if (predictedTags.length === 0) return null
+  if (tags.length === 0) return null
 
   return (
     <aside className={className}>
-      {predictedTags.length === 0 && (
-        <Typography>No predictions yet.</Typography>
-      )}
-      {predictedTags
-        .sort(({ countA }, { countB }) => countA - countB)
-        .map(({ tag, logged }) => {
+      {tags
+        .sort(({ count: countA }, { count: countB }) => countB - countA)
+        .map(({ tag, logged, predicted }) => {
           return (
             <Chip
               className={classNames(classes.tag, {
                 [classes.loggedTag]: logged,
+                [classes.predictedTag]: predicted,
               })}
               variant="outlined"
               size="small"
@@ -50,8 +49,8 @@ const Predictions = ({ date, className }) => {
   )
 }
 
-Predictions.propTypes = {
+Tags.propTypes = {
   date: PropTypes.instanceOf(Date),
 }
 
-export default Predictions
+export default Tags
