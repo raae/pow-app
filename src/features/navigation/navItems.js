@@ -9,6 +9,7 @@ import {
   Face as TwitterIcon,
   HighlightOff as SignOutIcon,
   PhoneAndroid as ChatIcon,
+  PlaylistAddCheck as ChangelogIcon,
 } from "@material-ui/icons"
 
 export const useSignUpNavItem = () => {
@@ -123,6 +124,13 @@ export const TWITTER = {
 export const WEBSITE = {
   primary: "Website (usepow.app)",
   icon: <WebsiteIcon />,
+  href: "http://usepow.app",
+  ...EXTERNAL,
+}
+
+export const CHANGELOG = {
+  primary: "Changelog",
+  icon: <ChangelogIcon />,
   href: "http://usepow.app",
   ...EXTERNAL,
 }
