@@ -124,14 +124,14 @@ export const TWITTER = {
 export const WEBSITE = {
   primary: "Website (usepow.app)",
   icon: <WebsiteIcon />,
-  href: "http://usepow.app",
+  href: "https://usepow.app",
   ...EXTERNAL,
 }
 
 export const CHANGELOG = {
   primary: "Changelog",
   icon: <ChangelogIcon />,
-  href: "http://usepow.app",
+  href: "https://usepow.app/changelog",
   ...EXTERNAL,
 }
 
