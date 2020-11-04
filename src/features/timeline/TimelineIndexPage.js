@@ -1,49 +1,75 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { List, makeStyles } from "@material-ui/core"
+import { navigate } from "gatsby"
+import { List, IconButton, makeStyles } from "@material-ui/core"
+import { Today } from "@material-ui/icons"
+import { eachDayOfInterval, addDays, isToday } from "date-fns"
 
-import { makeDate, intervalAfterDate } from "../utils/days"
+import { makeDate, entryIdFromDate } from "../utils/days"
 
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 
 import { selectDaysBetween } from "../cycle"
 
-import DaySummary from "./DaySummary"
-import ForecastItem from "./ForecastItem"
+import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
 const useStyles = makeStyles((theme) => ({
-  forecast: {
-    marginTop: theme.spacing(2),
-    width: "80%",
+  timeline: {
+    "& > *": {
+      marginBottom: theme.spacing(3),
+    },
   },
 }))
 
 const CycleIndexPage = ({ entryId }) => {
-  const date = makeDate(entryId)
   const classes = useStyles()
 
+  const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
-  const afterInterval = intervalAfterDate(date, calculatedDaysBetween + 3)
+
+  const range = eachDayOfInterval({
+    start: addDays(selectedDate, calculatedDaysBetween * -1.5),
+    end: addDays(selectedDate, calculatedDaysBetween * 1.5),
+  })
+
+  useEffect(() => {
+    const scrollToId = `scrollTo-${entryIdFromDate(selectedDate)}`
+    const node = document.getElementById(scrollToId)
+    if (!node) return
+
+    node.scrollIntoView({
+      block: "start",
+    })
+  }, [selectedDate])
 
   return (
     <AppLayout>
-      <>
-        <AppMainToolbar>
-          <DatePicker date={date} />
-        </AppMainToolbar>
+      <AppMainToolbar>
+        <DatePicker date={selectedDate} />
+        <IconButton
+          aria-label="Scroll to today"
+          onClick={(event) => {
+            navigate(`/timeline`)
+          }}
+          style={{ marginLeft: "auto" }}
+        >
+          <Today />
+        </IconButton>
+      </AppMainToolbar>
 
-        <AppPage>
-          <DaySummary className={classes.forecast} date={date} />
-          <Welcome />
-          <List className={classes.forecast}>
-            {afterInterval.map((date) => {
-              return <ForecastItem key={date} date={date} />
-            })}
-          </List>
-        </AppPage>
-      </>
+      <AppPage>
+        <List className={classes.timeline}>
+          {range.map((date) => {
+            return (
+              <TimelineItem key={date} date={date} selectedDate={selectedDate}>
+                {isToday(date) && <Welcome key="welcome" />}
+              </TimelineItem>
+            )
+          })}
+        </List>
+      </AppPage>
     </AppLayout>
   )
 }

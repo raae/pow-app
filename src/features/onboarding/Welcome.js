@@ -7,8 +7,8 @@ import { selectUserEmail, updateUser, selectProfile } from "../auth"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: "30rem",
-    padding: theme.spacing(3, 2, 1),
+    // maxWidth: "30rem",
+    // padding: theme.spacing(3, 2, 1),
   },
 }))
 
@@ -76,11 +76,8 @@ const Welcome = () => {
           <AlertTitle>Welcome</AlertTitle>
           <Typography component="div">
             <p>
-              It might not look so interesting now, but keep tracking and your
-              personal cycle feed will fill up!
-            </p>
-            <p>
-              You can also go back in time and add notes to get a head start.
+              It might not look so interesting now, but keep adding notes and
+              your personal timeline will fill up!
             </p>
           </Typography>
         </Alert>
