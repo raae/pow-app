@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import { first, last, countBy, toPairs } from "lodash"
 
 import { selectEntriesSortedByDate, selectEntryTags } from "../entries"
-import { selectMenstruationTag, selectInitialDaysBetween } from "../settings"
+import { selectMensesTags, selectInitialDaysBetween } from "../settings"
 
 import {
   daysBetweenDates,
@@ -18,11 +18,11 @@ const selectDate = (state, props) => {
 }
 
 const selectAnalytics = createSelector(
-  [selectEntriesSortedByDate, selectMenstruationTag, selectInitialDaysBetween],
-  (sortedEntries, menstruationTag, initialDaysBetween) => {
+  [selectEntriesSortedByDate, selectMensesTags, selectInitialDaysBetween],
+  (sortedEntries, menstruationTags, initialDaysBetween) => {
     const analytics = analyze({
       sortedEntries,
-      menstruationTag,
+      menstruationTags,
       initialDaysBetween,
     })
 
@@ -84,9 +84,9 @@ export const selectHasPredictionsForDate = createSelector(
 )
 
 export const selectPredictedMenstruationForDate = createSelector(
-  [selectTagsForDate, selectMenstruationTag],
-  (tags = [], menstruationTag) => {
-    return !!tags.find(({ tag }) => tag === menstruationTag)
+  [selectTagsForDate, selectMensesTags],
+  (tags = [], menstruationTags = []) => {
+    return !!tags.find(({ tag }) => menstruationTags.includes(tag))
   }
 )
 

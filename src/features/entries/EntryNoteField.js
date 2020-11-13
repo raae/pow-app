@@ -3,21 +3,21 @@ import { useSelector } from "react-redux"
 
 import { TextField } from "@material-ui/core"
 
-import { selectMenstruationTag } from "../settings"
+import { selectMainMensesTag } from "../settings"
 
 const EntryNoteField = ({ onNoteChange, note, label }) => {
-  const menstruationTag = useSelector(selectMenstruationTag)
+  const mensesTag = useSelector(selectMainMensesTag)
 
   const [placeholder, setPlaceholder] = useState()
 
   useEffect(() => {
     const placeholders = [
-      `My #${menstruationTag || "period"} just started.`,
+      `My #${mensesTag || "period"} just started.`,
       `#energetic`,
       `So so #tired`,
       `Feeling #sexy!`,
       `I am #sad and #angry.`,
-      `#${menstruationTag || "period"} #heavyflow`,
+      `#${mensesTag || "period"} #heavyflow`,
       `Today I am #happy#happy#happy :D`,
       `#PMS maybe`,
       `Such a #great day and so much happened. There was #this and #that and the other #thing.`,
@@ -40,7 +40,7 @@ const EntryNoteField = ({ onNoteChange, note, label }) => {
     return () => {
       clearInterval(interval)
     }
-  }, [menstruationTag])
+  }, [mensesTag])
 
   return (
     <TextField

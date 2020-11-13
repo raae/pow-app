@@ -10,10 +10,10 @@ import {
   selectIsDateCurrentCycle,
   selectNextStartDate,
 } from "../../cycle"
-import { selectMenstruationTag } from "../../settings"
+import { selectMainMensesTag } from "../../settings"
 
 const Info = ({ date, isToday, className }) => {
-  const menstruationTag = useSelector(selectMenstruationTag)
+  const menstruationTag = useSelector(selectMainMensesTag)
 
   const daysBetween = useSelector(selectDaysBetween)
   const isDaysBetweenCalculated = useSelector(selectIsDaysBetweenCalculated)

@@ -1,14 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit"
-import { keyBy } from "lodash"
+import { keyBy, last, compact, uniq } from "lodash"
 
 import { SETTINGS_DATABASE } from "../../constants"
+
+import { cleanTag } from "../utils/tags"
 
 import {
   openDatabase,
   selectDatabaseItems,
   selectIsDatabaseLoading,
   upsertItem,
-  insertItem,
 } from "../database"
 
 const databaseName = SETTINGS_DATABASE.databaseName
@@ -25,12 +26,9 @@ export const upsertSetting = (id, setting) => {
   })
 }
 
-export const insertSetting = (id, setting) => {
-  return insertItem({
-    databaseName,
-    itemId: id,
-    item: setting,
-  })
+export const upsertMensesTags = (tags) => {
+  const validTags = uniq(compact(tags.map((tag) => cleanTag(tag))))
+  return upsertSetting("tag", validTags.join(","))
 }
 
 // Selectors
@@ -41,6 +39,8 @@ export const selectAreSettingsLoading = (state) => {
   })
 }
 
+const selectId = (state, props) => props.id
+
 const selectItems = (state) => {
   return selectDatabaseItems(state, { databaseName })
 }
@@ -49,14 +49,30 @@ export const selectSettingsById = createSelector([selectItems], (items) => {
   return keyBy(items, "itemId")
 })
 
-export const selectSetting = (state, { id }) => {
-  const settingsById = selectSettingsById(state)
-  return settingsById[id] && settingsById[id].item
-}
+export const selectSetting = createSelector(
+  [selectSettingsById, selectId],
+  (settingsById, id) => {
+    return settingsById[id] && settingsById[id].item
+  }
+)
 
-export const selectMenstruationTag = (state) => {
+export const selectMensesTagText = (state) => {
   return selectSetting(state, { id: "tag" }) || ""
 }
+
+export const selectMensesTags = createSelector(
+  [selectMensesTagText],
+  (mensesTagText) => {
+    return mensesTagText.split(",").map((tag) => cleanTag(tag))
+  }
+)
+
+export const selectMainMensesTag = createSelector(
+  [selectMensesTags],
+  (mensesTags) => {
+    return last(mensesTags)
+  }
+)
 
 export const selectInitialDaysBetween = (state) => {
   const daysBetween = selectSetting(state, { id: "daysBetween" })

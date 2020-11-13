@@ -4,7 +4,7 @@ describe("#analyzeEntries", () => {
   test("no cycle data", () => {
     const sortedEntries = []
     const initialDaysBetween = undefined
-    const menstruationTag = "period"
+    const menstruationTags = ["period", "test"]
 
     const result = {
       startDates: [],
@@ -16,7 +16,7 @@ describe("#analyzeEntries", () => {
     }
 
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTag })
+      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
     ).toEqual(result)
   })
 
@@ -40,7 +40,7 @@ describe("#analyzeEntries", () => {
       },
     ]
     const initialDaysBetween = 23
-    const menstruationTag = "flo"
+    const menstruationTags = ["flo"]
 
     const result = {
       startDates: [new Date("2019-08-02")],
@@ -57,7 +57,7 @@ describe("#analyzeEntries", () => {
     }
 
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTag })
+      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
     ).toEqual(result)
   })
 
@@ -73,7 +73,7 @@ describe("#analyzeEntries", () => {
       },
       {
         date: new Date("2019-08-25"),
-        tags: ["menstruation"],
+        tags: ["period"],
       },
       {
         date: new Date("2019-08-26"),
@@ -81,7 +81,7 @@ describe("#analyzeEntries", () => {
       },
     ]
     const initialDaysBetween = undefined
-    const menstruationTag = "menstruation"
+    const menstruationTags = ["menstruation", "period"]
 
     const result = {
       startDates: [new Date("2019-08-02"), new Date("2019-08-25")],
@@ -90,13 +90,13 @@ describe("#analyzeEntries", () => {
       daysBetween: 23,
       isDaysBetweenCalculated: true,
       tags: {
-        0: ["menstruation", "menstruation"],
+        0: ["menstruation", "period"],
         1: ["hungry", "happy", "happy"],
       },
     }
 
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTag })
+      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
     ).toEqual(result)
   })
 
@@ -128,7 +128,7 @@ describe("#analyzeEntries", () => {
       },
     ]
     const initialDaysBetween = 23
-    const menstruationTag = "period"
+    const menstruationTags = ["period"]
 
     const result = {
       startDates: [
@@ -148,7 +148,7 @@ describe("#analyzeEntries", () => {
     }
 
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTag })
+      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
     ).toEqual(result)
   })
 
@@ -199,7 +199,7 @@ describe("#analyzeEntries", () => {
       },
     ]
     const initialDaysBetween = undefined
-    const menstruationTag = "period"
+    const menstruationTags = ["period"]
 
     const result = {
       startDates: [
@@ -223,7 +223,7 @@ describe("#analyzeEntries", () => {
       },
     }
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTag })
+      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
     ).toEqual(result)
   })
 })

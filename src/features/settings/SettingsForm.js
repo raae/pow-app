@@ -15,8 +15,12 @@ import {
 
 import Alert from "@material-ui/lab/Alert"
 
-import { insertSetting, selectMenstruationTag } from "./slice"
-import { tagsFromText } from "../utils/tags"
+import {
+  selectMainMensesTag,
+  selectMensesTags,
+  upsertMensesTags,
+} from "./slice"
+import { cleanTag } from "../utils/tags"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,42 +46,33 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
 
   const dispatch = useDispatch()
 
-  const menstruationTag = useSelector(selectMenstruationTag)
+  const mensesTags = useSelector(selectMensesTags)
+  const mainMensesTag = useSelector(selectMainMensesTag)
 
-  const [values, setValues] = useState({
-    tag: menstruationTag,
-  })
+  const [newTag, setNewTag] = useState("")
 
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
 
-  const formDisabled = isPending || !!menstruationTag
-  const changeable = !menstruationTag
+  const formDisabled = isPending
 
-  const handleChange = (name) => (event) => {
+  const handleChange = (event) => {
     setError()
 
-    let value = null
+    const value = cleanTag(event.target.value)
 
-    if (name === "tag") {
-      value = event.target.value
-      value = tagsFromText("#" + value)[0] || ""
-    }
-
-    setValues({
-      ...values,
-      [name]: value,
-    })
+    setNewTag(value)
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
     setIsPending(true)
-    const { error } = await dispatch(insertSetting("tag", values.tag))
+    const { error } = await dispatch(upsertMensesTags([...mensesTags, newTag]))
     if (error) {
       setError(error)
     }
+    setNewTag("")
     setIsPending(false)
   }
 
@@ -92,7 +87,7 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
         noValidate
         onSubmit={handleSubmit}
       >
-        {!menstruationTag && (
+        {!mainMensesTag && (
           <Typography className={classes.space} color="textSecondary">
             POW! tracks your cycle using hashtags. Input the term you would like
             to use for menstruation.
@@ -103,15 +98,16 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
             {error.message}
           </Alert>
         )}
+        {JSON.stringify(mensesTags)}
+
         <FormGroup row>
           <TextField
             {...textFieldProps}
-            label="Your menstruation tag"
-            value={values.tag}
-            onChange={handleChange("tag")}
+            label="Add a menstruation tag"
+            value={newTag}
+            onChange={handleChange}
             placeholder={"period"}
             required
-            disabled={formDisabled}
             inputProps={{
               autoCorrect: "off",
               autoCapitalize: "none",
@@ -124,24 +120,15 @@ const PaymentForm = ({ standalone = true, submitLabel }) => {
           />
         </FormGroup>
 
-        {!changeable && (
-          <FormHelperText>
-            You can not change your menstruation tag at this time. <br /> This
-            will be possible shortly.
-          </FormHelperText>
-        )}
-
-        {changeable && (
-          <Button
-            className={classes.space}
-            disabled={formDisabled}
-            type="submit"
-            variant="contained"
-            color="primary"
-          >
-            {submitLabel ? submitLabel : "Save"}
-          </Button>
-        )}
+        <Button
+          className={classes.space}
+          disabled={formDisabled}
+          type="submit"
+          variant="contained"
+          color="primary"
+        >
+          {submitLabel ? submitLabel : "Save"}
+        </Button>
       </Paper>
     </>
   )

@@ -12,7 +12,7 @@ import {
   emptyDatabase,
 } from "../database"
 
-import { selectMenstruationTag } from "../settings"
+import { selectMensesTagText } from "../settings"
 
 import { makeDate, entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
@@ -114,7 +114,7 @@ export const selectEntryTags = createSelector([selectEntry], (entry) => {
 })
 
 export const selectIsMenstruationForDate = createSelector(
-  [selectEntryTags, selectMenstruationTag],
+  [selectEntryTags, selectMensesTagText],
   (tags = [], menstruationTag) => {
     return tags.includes(menstruationTag)
   }
