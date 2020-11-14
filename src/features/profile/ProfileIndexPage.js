@@ -1,14 +1,15 @@
 import React from "react"
+import { Link } from "gatsby"
 import { Typography, makeStyles } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import { useQueryParam } from "../utils/useQueryParam"
 
 import { AppLayout, AppPage, AppMainToolbar } from "../app"
+import { SettingsCard } from "../settings"
 
 import ProfileCard from "./ProfileCard"
 import DangerCard from "./DangerCard"
 import BetaCard from "./BetaCard"
-import SettingsCard from "./SettingsCard"
 import PaymentCard from "./PaymentCard"
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,13 @@ const ProfileIndexPage = () => {
 
         <BetaCard />
 
-        <SettingsCard />
+        <SettingsCard
+          editNavItem={{
+            component: Link,
+            to: "/tag",
+            children: "Change menstruation tag",
+          }}
+        />
 
         <PaymentCard />
 

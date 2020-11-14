@@ -1,5 +1,5 @@
-import { createSelector } from "@reduxjs/toolkit"
-import { keyBy, last, compact, uniq } from "lodash"
+import { createSelector, createAsyncThunk } from "@reduxjs/toolkit"
+import { keyBy, first, compact, uniq } from "lodash"
 
 import { SETTINGS_DATABASE } from "../../constants"
 
@@ -30,6 +30,15 @@ export const upsertMensesTags = (tags) => {
   const validTags = uniq(compact(tags.map((tag) => cleanTag(tag))))
   return upsertSetting("tag", validTags.join(","))
 }
+
+export const addMensesTag = createAsyncThunk(
+  "mensesTags/add",
+  async (arg, { getState, dispatch }) => {
+    const { tag } = arg
+    const mensesTags = selectMensesTags(getState())
+    return dispatch(upsertMensesTags([tag, ...mensesTags]))
+  }
+)
 
 // Selectors
 
@@ -70,7 +79,7 @@ export const selectMensesTags = createSelector(
 export const selectMainMensesTag = createSelector(
   [selectMensesTags],
   (mensesTags) => {
-    return last(mensesTags)
+    return first(mensesTags)
   }
 )
 

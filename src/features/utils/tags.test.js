@@ -52,6 +52,9 @@ describe("Tag utils", () => {
       expect(cleanTag(tag)).toEqual("menses")
     })
 
-    test("")
+    test("no tag in there", () => {
+      const tag = "$$$"
+      expect(cleanTag(tag)).toEqual("")
+    })
   })
 })
