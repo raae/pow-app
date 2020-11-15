@@ -85,8 +85,8 @@ const SettingsMensesTagForm = ({
           {...textFieldProps}
           label={
             mainMensesTag
-              ? "Change the chosen menstruation tag"
-              : "Add a menstruation tag"
+              ? "Change your chosen menstruation tag"
+              : "Your menstruation tag"
           }
           value={newTag}
           onChange={handleChange}
