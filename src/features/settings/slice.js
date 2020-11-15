@@ -6,10 +6,11 @@ import { SETTINGS_DATABASE } from "../../constants"
 import { cleanTag } from "../utils/tags"
 
 import {
+  insertItem,
+  upsertItem,
   openDatabase,
   selectDatabaseItems,
   selectIsDatabaseLoading,
-  upsertItem,
 } from "../database"
 
 const databaseName = SETTINGS_DATABASE.databaseName
@@ -17,6 +18,14 @@ const databaseName = SETTINGS_DATABASE.databaseName
 // Actions
 
 export const initSettings = () => openDatabase({ databaseName })
+
+export const insertSetting = (id, setting) => {
+  return insertItem({
+    databaseName,
+    itemId: id,
+    item: setting,
+  })
+}
 
 export const upsertSetting = (id, setting) => {
   return upsertItem({
@@ -72,7 +81,7 @@ export const selectMensesTagText = (state) => {
 export const selectMensesTags = createSelector(
   [selectMensesTagText],
   (mensesTagText) => {
-    return mensesTagText.split(",").map((tag) => cleanTag(tag))
+    return uniq(compact(mensesTagText.split(",").map((tag) => cleanTag(tag))))
   }
 )
 
