@@ -1,14 +1,16 @@
-import { createSelector } from "@reduxjs/toolkit"
-import { keyBy } from "lodash"
+import { createSelector, createAsyncThunk } from "@reduxjs/toolkit"
+import { keyBy, first, compact, uniq } from "lodash"
 
 import { SETTINGS_DATABASE } from "../../constants"
 
+import { cleanTag } from "../utils/tags"
+
 import {
+  insertItem,
+  upsertItem,
   openDatabase,
   selectDatabaseItems,
   selectIsDatabaseLoading,
-  upsertItem,
-  insertItem,
 } from "../database"
 
 const databaseName = SETTINGS_DATABASE.databaseName
@@ -16,14 +18,6 @@ const databaseName = SETTINGS_DATABASE.databaseName
 // Actions
 
 export const initSettings = () => openDatabase({ databaseName })
-
-export const upsertSetting = (id, setting) => {
-  return upsertItem({
-    databaseName,
-    itemId: id,
-    item: setting,
-  })
-}
 
 export const insertSetting = (id, setting) => {
   return insertItem({
@@ -33,6 +27,28 @@ export const insertSetting = (id, setting) => {
   })
 }
 
+export const upsertSetting = (id, setting) => {
+  return upsertItem({
+    databaseName,
+    itemId: id,
+    item: setting,
+  })
+}
+
+export const upsertMensesTags = (tags) => {
+  const validTags = uniq(compact(tags.map((tag) => cleanTag(tag))))
+  return upsertSetting("tag", validTags.join(","))
+}
+
+export const addMensesTag = createAsyncThunk(
+  "mensesTags/add",
+  async (arg, { getState, dispatch }) => {
+    const { tag } = arg
+    const mensesTags = selectMensesTags(getState())
+    return dispatch(upsertMensesTags([tag, ...mensesTags]))
+  }
+)
+
 // Selectors
 
 export const selectAreSettingsLoading = (state) => {
@@ -40,6 +56,8 @@ export const selectAreSettingsLoading = (state) => {
     databaseName,
   })
 }
+
+const selectId = (state, props) => props.id
 
 const selectItems = (state) => {
   return selectDatabaseItems(state, { databaseName })
@@ -49,14 +67,30 @@ export const selectSettingsById = createSelector([selectItems], (items) => {
   return keyBy(items, "itemId")
 })
 
-export const selectSetting = (state, { id }) => {
-  const settingsById = selectSettingsById(state)
-  return settingsById[id] && settingsById[id].item
-}
+export const selectSetting = createSelector(
+  [selectSettingsById, selectId],
+  (settingsById, id) => {
+    return settingsById[id] && settingsById[id].item
+  }
+)
 
-export const selectMenstruationTag = (state) => {
+export const selectMensesTagText = (state) => {
   return selectSetting(state, { id: "tag" }) || ""
 }
+
+export const selectMensesTags = createSelector(
+  [selectMensesTagText],
+  (mensesTagText) => {
+    return uniq(compact(mensesTagText.split(",").map((tag) => cleanTag(tag))))
+  }
+)
+
+export const selectMainMensesTag = createSelector(
+  [selectMensesTags],
+  (mensesTags) => {
+    return first(mensesTags)
+  }
+)
 
 export const selectInitialDaysBetween = (state) => {
   const daysBetween = selectSetting(state, { id: "daysBetween" })

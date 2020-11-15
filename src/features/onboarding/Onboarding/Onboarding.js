@@ -7,7 +7,7 @@ import { insertSetting } from "../../settings"
 import { upsertEntry } from "../../entries"
 
 import { entryIdFromDate } from "../../utils/days"
-import { tagsFromText } from "../../utils/tags"
+import { cleanTag } from "../../utils/tags"
 
 import { SignUpForm } from "../../auth"
 import { PaymentForm } from "../../payment"
@@ -41,8 +41,7 @@ const Onboarding = () => {
     let value = null
 
     if (name === "tag") {
-      value = event.target.value
-      value = tagsFromText("#" + value)[0] || ""
+      value = cleanTag(event.target.value)
     } else if (name === "newsletter") {
       value = event.target.checked
     } else if (name === "lastStart") {

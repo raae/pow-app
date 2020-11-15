@@ -188,7 +188,11 @@ const selectDatabaseStatus = createSelector(
 export const selectDatabaseItems = createSelector(
   [selectDatabasesSlice, selectDatabaseName],
   (slice, databaseName) => {
-    return slice[databaseName].items
+    if (slice[databaseName]) {
+      return slice[databaseName].items
+    } else {
+      return defaultDatabaseState.items
+    }
   }
 )
 
