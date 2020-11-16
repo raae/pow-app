@@ -11,7 +11,8 @@
     "start": "npm run develop",
     "dev": "npm run develop",
     "serve": "gatsby serve",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test-cli": "jest"
   },
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
