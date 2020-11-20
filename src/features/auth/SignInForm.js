@@ -5,13 +5,13 @@ import classNames from "classnames"
 import {
   Button,
   TextField,
-  Checkbox,
+  Radio,
+  RadioGroup,
   FormControlLabel,
   Typography,
   Paper,
   makeStyles,
 } from "@material-ui/core"
-import { Favorite, FavoriteBorder } from "@material-ui/icons"
 
 import { signIn } from "./slice"
 import { useAppNavItem, useSignUpNavItem } from "../navigation"
@@ -42,7 +42,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState()
   const [error, setError] = useState()
-  const [rememberMe, setRememberMe] = useState(true)
+  const [rememberMe, setRememberMe] = useState("local")
 
   const appNavItem = useAppNavItem()
   const signUpNavItem = useSignUpNavItem()
@@ -107,20 +107,28 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
 
       <PasswordNote />
 
-      <FormControlLabel
-        control={
-          <Checkbox
-            id="rememberMeInput"
-            value="local"
-            color="primary"
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={rememberMe}
-            onChange={(event) => setRememberMe(event.target.checked)}
-          />
-        }
-        label="Remember me"
-      />
+      <RadioGroup
+        aria-label="remember me"
+        name="rememberMe"
+        value={rememberMe}
+        onChange={(event) => setRememberMe(event.target.value)}
+      >
+        <FormControlLabel
+          value="local"
+          control={<Radio />}
+          label="Remember me on this device"
+        />
+        <FormControlLabel
+          value="session"
+          control={<Radio />}
+          label="Remember me until I close the browser"
+        />
+        <FormControlLabel
+          value="none"
+          control={<Radio />}
+          label="Do not remember me at all"
+        />
+      </RadioGroup>
 
       <ErrorAlert error={error} />
 
