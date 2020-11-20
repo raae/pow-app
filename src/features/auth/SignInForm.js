@@ -34,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2, 0),
     },
   },
+  radioGroup: {
+    marginLeft: "20px",
+    "& label": {
+      marginBottom: "-6px",
+    },
+  },
 }))
 
 const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
@@ -112,21 +118,30 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
         name="rememberMe"
         value={rememberMe}
         onChange={(event) => setRememberMe(event.target.value)}
+        className={classes.radioGroup}
       >
         <FormControlLabel
           value="local"
-          control={<Radio />}
-          label="Remember me on this device"
+          control={<Radio size="small" />}
+          label={
+            <Typography variant="body2">Remember me on this device</Typography>
+          }
         />
         <FormControlLabel
           value="session"
-          control={<Radio />}
-          label="Remember me until I close the browser"
+          control={<Radio size="small" />}
+          label={
+            <Typography variant="body2">
+              Remember me until I close the browser
+            </Typography>
+          }
         />
         <FormControlLabel
           value="none"
-          control={<Radio />}
-          label="Do not remember me at all"
+          control={<Radio size="small" />}
+          label={
+            <Typography variant="body2">Do not remember me at all</Typography>
+          }
         />
       </RadioGroup>
 
