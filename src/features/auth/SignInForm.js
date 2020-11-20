@@ -41,6 +41,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState()
   const [error, setError] = useState()
+  const [rememberMe, setRememberMe] = useState(true)
 
   const appNavItem = useAppNavItem()
   const signUpNavItem = useSignUpNavItem()
@@ -53,9 +54,6 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
 
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
-    const rememberMe = event.target.elements.rememberMeInput.checked
-      ? "local"
-      : "session"
 
     const result = await dispatch(signIn({ username, password, rememberMe }))
 
@@ -110,7 +108,13 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
 
       <FormControlLabel
         control={
-          <Checkbox id="rememberMeInput" value="local" color="primary" />
+          <Checkbox
+            id="rememberMeInput"
+            value="local"
+            color="primary"
+            checked={rememberMe}
+            onChange={(event) => setRememberMe(event.target.checked)}
+          />
         }
         label="Remember me"
       />
