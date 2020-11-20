@@ -11,6 +11,7 @@ import {
   Paper,
   makeStyles,
 } from "@material-ui/core"
+import { Favorite, FavoriteBorder } from "@material-ui/icons"
 
 import { signIn } from "./slice"
 import { useAppNavItem, useSignUpNavItem } from "../navigation"
@@ -112,6 +113,8 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
             id="rememberMeInput"
             value="local"
             color="primary"
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
             checked={rememberMe}
             onChange={(event) => setRememberMe(event.target.checked)}
           />
