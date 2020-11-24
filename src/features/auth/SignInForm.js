@@ -5,9 +5,6 @@ import classNames from "classnames"
 import {
   Button,
   TextField,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
   Typography,
   Paper,
   makeStyles,
@@ -18,6 +15,7 @@ import { useAppNavItem, useSignUpNavItem } from "../navigation"
 import { Link } from "../navigation"
 
 import ErrorAlert from "./ErrorAlert"
+import RememberMeInput from "./RememberMe"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,12 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
     "& > button": {
       margin: theme.spacing(2, 0),
-    },
-  },
-  radioGroup: {
-    marginLeft: theme.spacing(2),
-    "& label + label": {
-      marginTop: theme.spacing(-1.5),
     },
   },
 }))
@@ -110,37 +102,10 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
         fullWidth
       />
 
-      <RadioGroup
-        aria-label="remember me"
-        name="rememberMe"
+      <RememberMeInput
         value={rememberMe}
-        onChange={(event) => setRememberMe(event.target.value)}
-        className={classes.radioGroup}
-      >
-        <FormControlLabel
-          value="local"
-          control={<Radio size="small" />}
-          label={
-            <Typography variant="body2">Remember me on this device</Typography>
-          }
-        />
-        <FormControlLabel
-          value="session"
-          control={<Radio size="small" />}
-          label={
-            <Typography variant="body2">
-              Remember me until I close the browser
-            </Typography>
-          }
-        />
-        <FormControlLabel
-          value="none"
-          control={<Radio size="small" />}
-          label={
-            <Typography variant="body2">Do not remember me at all</Typography>
-          }
-        />
-      </RadioGroup>
+        onChange={(value) => setRememberMe(value)}
+      />
 
       <ErrorAlert error={error} />
 
