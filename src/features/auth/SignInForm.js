@@ -17,7 +17,6 @@ import { signIn } from "./slice"
 import { useAppNavItem, useSignUpNavItem } from "../navigation"
 import { Link } from "../navigation"
 
-import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
 
 const useStyles = makeStyles((theme) => ({
@@ -35,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   radioGroup: {
-    marginLeft: "20px",
-    "& label": {
-      marginBottom: "-6px",
+    marginLeft: theme.spacing(2),
+    "& label + label": {
+      marginTop: theme.spacing(-1.5),
     },
   },
 }))
@@ -111,8 +110,6 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
         fullWidth
       />
 
-      <PasswordNote />
-
       <RadioGroup
         aria-label="remember me"
         name="rememberMe"
@@ -158,7 +155,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       </Button>
 
       <Typography variant="body2" align="right">
-        Don't have an account?&nbsp;
+        Not registered yet?&nbsp;
         <Link {...signUpNavItem} />
       </Typography>
     </Paper>
