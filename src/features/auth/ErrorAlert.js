@@ -16,7 +16,7 @@ const ErrorAlert = ({ error }) => {
 
   return (
     <Alert severity="error">
-      <Typography component="div">
+      <Typography component="div" variant="body2">
         {error.name === "UserAlreadySignedIn" ? (
           <>
             You are already logged in as <strong>{username}</strong>. Go to{" "}

@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     padding: theme.spacing(3, 4),
     "& > .MuiAlert-root": {
-      margin: theme.spacing(2, 0),
+      marginTop: theme.spacing(1),
     },
     "& > label": {
       margin: theme.spacing(0),
