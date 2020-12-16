@@ -20,7 +20,7 @@ const Welcome = () => {
   const profile = useSelector(selectProfile)
 
   const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
-
+  const saveToHomeScreen = Boolean(parseInt(profile.welcomeCompleted))
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
