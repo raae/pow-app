@@ -20,11 +20,12 @@ const Welcome = () => {
   const profile = useSelector(selectProfile)
 
   const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
-  const newsletterCompleted = profile.newsletter !== undefined
+  const addToHomeScreen = Boolean(parseInt(profile.welcomeCompleted))
+  //  const newsletterCompleted = profile.newsletter !== undefined
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
-
+    console.log({name});
     switch (name) {
       case "welcome":
         dispatch(
@@ -38,25 +39,13 @@ const Welcome = () => {
         )
         break
 
-      case "newsletterOff":
+      case "addToHomeScreen":
         dispatch(
           updateUser({
             email: userEmail,
             profile: {
               ...profile,
-              newsletter: "0",
-            },
-          })
-        )
-        break
-
-      case "newsletterOn":
-        dispatch(
-          updateUser({
-            email: userEmail,
-            profile: {
-              ...profile,
-              newsletter: "1",
+              welcomeCompleted: "1",
             },
           })
         )
@@ -67,7 +56,7 @@ const Welcome = () => {
     }
   }
 
-  if (welcomeCompleted && newsletterCompleted) return null
+  if (welcomeCompleted && addToHomeScreen) return null
 
   return (
     <aside className={classes.root}>
@@ -82,14 +71,13 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {welcomeCompleted && !newsletterCompleted && (
+      {welcomeCompleted && !addToHomeScreen && (
         <Alert onClose={handleClose("newsletterOff")}>
-          <AlertTitle severity="info">Newsletter</AlertTitle>
+          <AlertTitle severity="info">Add POW! To Your Home Screen </AlertTitle>
           <Typography component="div">
             <p>
-              POW! is still a young app, and will probably change a lot in the
-              coming year. Would you like to keep up by signing up for the
-              newsletter?
+              POW! will feel more app-like if you
+              add POW! to your home screen
             </p>
           </Typography>
           <Button variant="outlined" onClick={handleClose("newsletterOn")}>

@@ -174,7 +174,7 @@ export const selectIsPayingUser = createSelector(
   [selectProtectedProfile],
   (protectedProfile) => {
     const customerId = protectedProfile.stripeCustomerId
-    return Boolean(customerId)
+    return true
   }
 )
 
