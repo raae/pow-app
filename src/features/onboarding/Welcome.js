@@ -20,14 +20,14 @@ const Welcome = () => {
   const profile = useSelector(selectProfile)
 
   const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
-  const addToHomeScreen = Boolean(parseInt(profile.welcomeCompleted))
+  const addToHomeScreenCompleted = Boolean(parseInt(profile.addToHomeScreenCompleted))
   //  const newsletterCompleted = profile.newsletter !== undefined
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
     console.log({name});
     switch (name) {
-      case "welcome":
+      case "welcome": {
         dispatch(
           updateUser({
             email: userEmail,
@@ -37,26 +37,24 @@ const Welcome = () => {
             },
           })
         )
-        break
+        break;
+      }
 
-      case "addToHomeScreen":
-        dispatch(
-          updateUser({
-            email: userEmail,
-            profile: {
-              ...profile,
-              welcomeCompleted: "1",
-            },
-          })
-        )
+      case "addToHomeScreen": {
+        // Do som A2HS magic
+        // or semthing
+        const a2HS = event.target.onClick
+        alert(`You have A2HS!`)
+
         break
+      }
 
       default:
         break
     }
   }
 
-  if (welcomeCompleted && addToHomeScreen) return null
+  if (welcomeCompleted && addToHomeScreenCompleted) return null
 
   return (
     <aside className={classes.root}>
@@ -71,16 +69,16 @@ const Welcome = () => {
           </Typography>
         </Alert>
       )}
-      {welcomeCompleted && !addToHomeScreen && (
+      {welcomeCompleted && !addToHomeScreenCompleted && (
         <Alert onClose={handleClose("newsletterOff")}>
           <AlertTitle severity="info">Add POW! To Your Home Screen </AlertTitle>
           <Typography component="div">
             <p>
               POW! will feel more app-like if you
-              add POW! to your home screen
+              add POW! to your home screen. If you don't know how, read here https://www.usepow.app/support/install
             </p>
           </Typography>
-          <Button variant="outlined" onClick={handleClose("newsletterOn")}>
+          <Button variant="outlined" onClick={handleClose("addToHomeScreen")}>
             Yes, please
           </Button>
         </Alert>
