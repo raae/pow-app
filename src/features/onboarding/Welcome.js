@@ -74,13 +74,11 @@ const Welcome = () => {
           <AlertTitle severity="info">Add POW! To Your Home Screen </AlertTitle>
           <Typography component="div">
             <p>
-              POW! will feel more app-like if you
-              add POW! to your home screen. If you don't know how, read here https://www.usepow.app/support/install
+              POW! will feel more app-like if you add POW!
+              to your home screen on your phone. If you don't know how, read here:
             </p>
+            <a href="https://www.usepow.app/support/install"> https://www.usepow.app/support/install</a>
           </Typography>
-          <Button variant="outlined" onClick={handleClose("addToHomeScreen")}>
-            Yes, please
-          </Button>
         </Alert>
       )}
     </aside>
