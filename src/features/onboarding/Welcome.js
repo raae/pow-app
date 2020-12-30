@@ -70,7 +70,7 @@ const Welcome = () => {
         </Alert>
       )}
       {welcomeCompleted && !addToHomeScreenCompleted && (
-        <Alert onClose={handleClose("newsletterOff")}>
+        <Alert onClose={handleClose("addToHomeScreen")}>
           <AlertTitle severity="info">Add POW! To Your Home Screen </AlertTitle>
           <Typography component="div">
             <p>
