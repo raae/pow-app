@@ -53,7 +53,7 @@ module.exports = {
         icon: "static/icon.png",
       },
     },
-    `gatsby-plugin-offline`,
+
     {
       resolve: `gatsby-plugin-netlify`,
       options: {
