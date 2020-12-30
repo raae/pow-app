@@ -44,7 +44,7 @@ const Welcome = () => {
         // Do som A2HS magic
         // or semthing
         const a2HS = event.target.onClick
-        alert(`You have A2HS!`)
+        alert(`You have added POW! to your home screen! Or not.`)
 
         break
       }
