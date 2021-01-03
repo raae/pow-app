@@ -41,9 +41,7 @@ const Welcome = () => {
       }
 
       case "addToHomeScreen": {
-        // Do som A2HS magic
-        // or semthing
-        const a2HS = event.target.onClick
+        // Don't do some A2HS magic
         alert(`You have added POW! to your home screen! Or not.`)
 
         break
