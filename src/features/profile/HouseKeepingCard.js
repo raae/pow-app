@@ -31,39 +31,42 @@ const HouseKeepingCard = () => {
 
   const disabled = isPending || entries.length === 0
 
-  let deleteAllEntriesText = `Delete all my entries`
+  let deleteAllEntriesText = `Export all my entries`
   if (entries.length === 0) {
-    deleteAllEntriesText = "No entries to delete"
+    deleteAllEntriesText = "No entries to export"
   } else if (isPending) {
-    deleteAllEntriesText = "Deleting entries"
+    deleteAllEntriesText = "Export entries"
   }
 
-  const deleteAllEntries = async () => {
-    const CONFIRMATION_STRING = "DELETE"
+  const exportAllEntries = async (event) => {
+    event.preventDefault();
+    alert(`Export`)
 
-    setIsPending(true)
+//     const CONFIRMATION_STRING = "EXPORT"
 
-    const confirmation = prompt(
-      `Please type ${CONFIRMATION_STRING} to confirm deletion of all your entries.`
-    )
+//     setIsPending(true)
 
-    if (confirmation !== CONFIRMATION_STRING) {
-      if (confirmation !== null) {
-        alert(
-          `You typed "${confirmation}", not "${CONFIRMATION_STRING}", please try again.`
-        )
-      }
-    } else {
-      const { error } = await dispatch(emptyEntries())
+//     const confirmation = prompt(
+//       `Please type ${CONFIRMATION_STRING} to confirm export of all your entries.`
+//     )
 
-      if (error) {
-        alert(`Oopsie (${error.message}), please try again.`)
-      } else {
-        alert(`Success, all your entries were deleted.`)
-      }
-    }
+//     if (confirmation !== CONFIRMATION_STRING) {
+//       if (confirmation !== null) {
+//         alert(
+//           `You typed "${confirmation}", not "${CONFIRMATION_STRING}", please try again.`
+//         )
+//       }
+//     } else {
+// //      const { error } = await dispatch(getFile())
 
-    setIsPending(false)
+//       if (error) {
+//         alert(`Oopsie (${error.message}), please try again.`)
+//       } else {
+//         alert(`Success, all your entries were exported.`)
+//       }
+//     }
+
+//     setIsPending(false)
   }
 
   return (
@@ -74,16 +77,16 @@ const HouseKeepingCard = () => {
             <DangerIcon />
           </Avatar>
         }
-        title="Danger Zone"
+        title="Export Zone"
       />
 
       <CardContent>
         <Box mb={2}>
           <Typography variant="body1" component="h2">
-            In need of a fresh start?
+            Do you feel the need to Export your POW! data?
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Use with caution as your entries will be lost forever.
+            Use with caution as your entries will be un-encrypted.
           </Typography>
         </Box>
 
@@ -91,7 +94,7 @@ const HouseKeepingCard = () => {
           disabled={disabled}
           variant="outlined"
           color="primary"
-          onClick={deleteAllEntries}
+          onClick={exportAllEntries}
         >
           {deleteAllEntriesText}
         </Button>

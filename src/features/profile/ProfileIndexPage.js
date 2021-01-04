@@ -40,7 +40,7 @@ const ProfileIndexPage = () => {
           </Alert>
         )}
 
-        <HouseKeepingCard />
+
 
         <ProfileCard />
 
@@ -55,6 +55,8 @@ const ProfileIndexPage = () => {
         />
 
         <PaymentCard />
+
+        <HouseKeepingCard />
 
         <DangerCard />
       </AppPage>
