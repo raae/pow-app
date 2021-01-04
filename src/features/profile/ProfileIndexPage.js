@@ -8,6 +8,7 @@ import { AppLayout, AppPage, AppMainToolbar } from "../app"
 import { SettingsCard } from "../settings"
 
 import ProfileCard from "./ProfileCard"
+import HouseKeepingCard from "./HouseKeepingCard"
 import DangerCard from "./DangerCard"
 import BetaCard from "./BetaCard"
 import PaymentCard from "./PaymentCard"
@@ -38,6 +39,8 @@ const ProfileIndexPage = () => {
             Check the payment section at the bottom of the page.
           </Alert>
         )}
+
+        <HouseKeepingCard />
 
         <ProfileCard />
 
