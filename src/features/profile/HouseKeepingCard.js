@@ -29,14 +29,14 @@ const HouseKeepingCard = () => {
   const [isPending, setIsPending] = useState(false)
   const entries = useSelector(selectEntries)
 
-  const disabled = isPending || entries.length === 0
+  const disabled = isPending || entries.length === 1
 
   let deleteAllEntriesText = `Export all my entries`
-  if (entries.length === 0) {
-    deleteAllEntriesText = "No entries to export"
-  } else if (isPending) {
-    deleteAllEntriesText = "Export entries"
-  }
+  // if (entries.length === 0) {
+  //   deleteAllEntriesText = "No entries to export"
+  // } else if (isPending) {
+  //   deleteAllEntriesText = "Export entries"
+  // }
 
   const exportAllEntries = async (event) => {
     event.preventDefault();
@@ -57,7 +57,8 @@ const HouseKeepingCard = () => {
 //         )
 //       }
 //     } else {
-// //      const { error } = await dispatch(getFile())
+  // https://userbase.com/docs/sdk/get-databases/
+      const { error } = await dispatch(getDatabases())
 
 //       if (error) {
 //         alert(`Oopsie (${error.message}), please try again.`)
