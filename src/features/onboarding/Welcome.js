@@ -43,6 +43,15 @@ const Welcome = () => {
       case "addToHomeScreen": {
         // Don't do some A2HS magic
         alert(`You have added POW! to your home screen! Or not.`)
+        dispatch(
+          updateUser({
+            email: userEmail,
+            profile: {
+              ...profile,
+              addToHomeScreenCompleted: "1",
+            },
+          })
+        )
 
         break
       }
