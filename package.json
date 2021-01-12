@@ -12,7 +12,8 @@
     "dev": "npm run develop",
     "serve": "gatsby serve",
     "test": "jest --watch",
-    "test-cli": "jest"
+    "test-cli": "jest",
+    "postinstall": "netlify-lambda install"
   },
   "dependencies": {
     "@date-io/date-fns": "1.3.13",
