@@ -2,6 +2,7 @@ const Joi = require("joi")
 const {
   getUserbaseUser,
   updateUserbaseProtectedProfile,
+  verifyUserbaseAuthToken,
 } = require("./utils/userbase")
 const { addConvertKitSubscriber } = require("./utils/convertkit")
 
@@ -27,29 +28,49 @@ const created = async ({ userbaseId }) => {
       },
     }
   } catch (error) {
-    console.error(error.response || error.request || error)
+    console.warn(error.response || error.request || error)
     return {
       error: { message: "Internal error" },
     }
   }
 }
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
   const schema = Joi.object({
     userbaseId: Joi.string().required(),
-    authToken: Joi.string(),
+    userbaseAuthToken: Joi.string().required(),
   })
 
-  const { value, error } = schema.validate(JSON.parse(event.body))
+  const {
+    value: { userbaseId, userbaseAuthToken },
+    error: schemaError,
+  } = schema.validate(JSON.parse(event.body))
 
-  if (error) {
+  if (schemaError) {
+    console.warn("Schema Error: ", schemaError)
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: error.message }),
+      body: JSON.stringify({ message: schemaError.message }),
     }
   }
 
-  const result = await created(value)
+  try {
+    const { userId: validUserbaseId } = await verifyUserbaseAuthToken({
+      userbaseAuthToken,
+    })
+
+    if (validUserbaseId !== userbaseId) {
+      throw Error("Auth token does not match provided userbaseId")
+    }
+  } catch (authError) {
+    console.warn("Auth Error:", authError.message)
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ message: "Unauthorized" }),
+    }
+  }
+
+  const result = await created({ userbaseId })
 
   return {
     statusCode: result.error ? 500 : 200,
