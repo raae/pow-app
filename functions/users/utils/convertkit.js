@@ -20,6 +20,7 @@ const addConvertKitSubscriber = async ({ email, userbaseId, creationDate }) => {
 
   console.log("ConvertKit Subscriber added", {
     convertKitId,
+    userbaseId,
   })
 
   return data.subscription.subscriber
