@@ -8,9 +8,14 @@ const {
 } = process.env
 
 exports.handler = async (req) => {
-  const stripe = Stripe(STRIPE_SECRET_KEY)
-
   try {
+    console.log({
+      webhookSecret: Boolean(STRIPE_WEBHOOK_CHECKOUT_SECRET),
+      secretKey: Boolean(STRIPE_SECRET_KEY),
+    })
+
+    const stripe = Stripe(STRIPE_SECRET_KEY)
+
     const event = stripe.webhooks.constructEvent(
       req.body,
       req.headers["stripe-signature"],
