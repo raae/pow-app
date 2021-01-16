@@ -1,22 +1,20 @@
 const Stripe = require("stripe")
 const axios = require("axios")
 
+const {
+  STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_CHECKOUT_SECRET,
+  USERBASE_ADMIN_API_ACCESS_TOKEN,
+} = process.env
+
 exports.handler = async (req) => {
-  const { livemode } = JSON.parse(req.body)
-  const stripe = Stripe(
-    livemode
-      ? process.env.STRIPE_SECRET_KEY
-      : process.env.STRIPE_SECRET_TEST_KEY
-  )
-  const stripeSecret = livemode
-    ? process.env.STRIPE_WEBHOOK_SECRET
-    : process.env.STRIPE_WEBHOOK_TEST_SECRET
+  const stripe = Stripe(STRIPE_SECRET_KEY)
 
   try {
     const event = stripe.webhooks.constructEvent(
       req.body,
       req.headers["stripe-signature"],
-      stripeSecret
+      STRIPE_WEBHOOK_CHECKOUT_SECRET
     )
 
     if (event.type === "checkout.session.completed") {
@@ -39,7 +37,7 @@ exports.handler = async (req) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${process.env.USERBASE_ADMIN_API_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${USERBASE_ADMIN_API_ACCESS_TOKEN}`,
           },
         }
       )

@@ -181,7 +181,7 @@ export const selectIsPayingUser = createSelector(
 export const selectStripePlan = createSelector(
   [selectProtectedProfile],
   (protectedProfile) => {
-    return protectedProfile.stripePlanId.split("_")[0]
+    return protectedProfile.stripePlanId
   }
 )
 

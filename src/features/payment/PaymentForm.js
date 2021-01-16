@@ -3,7 +3,12 @@ import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
 import classNames from "classnames"
 
-import { STRIPE_KEY, BASE_URL } from "../../constants"
+import {
+  STRIPE_KEY,
+  STRIPE_MONTHLY_PLAN_ID,
+  STRIPE_YEARLY_PLAN_ID,
+  BASE_URL,
+} from "../../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
 import {
@@ -27,6 +32,11 @@ import {
 import Alert from "@material-ui/lab/Alert"
 
 import { Link } from "../navigation"
+
+const PLAN_LABELS = {
+  [STRIPE_MONTHLY_PLAN_ID]: "monthly",
+  [STRIPE_YEARLY_PLAN_ID]: "yearly",
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,9 +63,12 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const userId = useSelector(selectUserId)
   const hasPaid = useSelector(selectIsPayingUser)
   const currentStripePlan = useSelector(selectStripePlan)
+  const currentStripePlanLabel = PLAN_LABELS[currentStripePlan]
+
+  console.log(PLAN_LABELS, currentStripePlan, currentStripePlanLabel)
 
   const [values, setValues] = useState({
-    subscriptionPlan: "yearly",
+    subscriptionPlan: STRIPE_YEARLY_PLAN_ID,
   })
   const [error, setError] = useState()
   const [stripe, setStripe] = useState()
@@ -80,9 +93,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     setIsPending(true)
     stripe
       .redirectToCheckout({
-        items: [
-          { plan: `${values.subscriptionPlan}_sub_2020_03`, quantity: 1 },
-        ],
+        items: [{ plan: values.subscriptionPlan, quantity: 1 }],
         clientReferenceId: userId,
         successUrl: BASE_URL + "/timeline",
         cancelUrl: BASE_URL + "/profile?payment=canceled",
@@ -106,7 +117,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     return (
       <>
         <Typography variant="body1" gutterBottom>
-          You are subscribed to the <strong>{currentStripePlan}</strong> plan.
+          You are subscribed to the <strong>{currentStripePlanLabel}</strong>{" "}
+          plan.
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
           If you would like to cancel your subscription or change it, send an
@@ -148,7 +160,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
               onChange={handleChange("subscriptionPlan")}
             >
               <FormControlLabel
-                value="monthly"
+                value={STRIPE_MONTHLY_PLAN_ID}
                 control={<Radio />}
                 label={
                   <Typography>
@@ -157,7 +169,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
                 }
               />
               <FormControlLabel
-                value="yearly"
+                value={STRIPE_YEARLY_PLAN_ID}
                 control={<Radio />}
                 label={
                   <>
