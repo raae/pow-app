@@ -9,9 +9,14 @@ const {
 
 exports.handler = async (req) => {
   try {
-    console.log({
-      webhookSecret: Boolean(STRIPE_WEBHOOK_CHECKOUT_SECRET),
-      secretKey: Boolean(STRIPE_SECRET_KEY),
+    console.log("plain", {
+      webhookSecret: STRIPE_WEBHOOK_CHECKOUT_SECRET,
+      secretKey: STRIPE_SECRET_KEY,
+    })
+
+    console.log("preview", {
+      webhookSecret: STRIPE_WEBHOOK_CHECKOUT_SECRET_DEPLOY_PREVIEW,
+      secretKey: STRIPE_SECRET_KEY_DEPLOY_PREVIEW,
     })
 
     const stripe = Stripe(STRIPE_SECRET_KEY)
