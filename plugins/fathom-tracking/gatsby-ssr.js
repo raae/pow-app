@@ -1,12 +1,13 @@
 import React from "react"
 
-const HeadComponents = ({
+const FathomScriptComponent = ({
   site,
   honorDnt,
   auto,
   canonical,
   excludedDomains,
   includedDomains,
+  spa,
 }) => {
   return (
     <script
@@ -17,14 +18,14 @@ const HeadComponents = ({
       data-canonical={canonical}
       data-excluded-domains={excludedDomains}
       data-included-domains={includedDomains}
-      data-spa="auto"
+      data-spa={spa}
       defer
     ></script>
   )
 }
 
 const onRenderBody = ({ setHeadComponents }, pluginOptions) => {
-  return setHeadComponents([HeadComponents(pluginOptions)])
+  return setHeadComponents([FathomScriptComponent(pluginOptions)])
 }
 
 export { onRenderBody }
