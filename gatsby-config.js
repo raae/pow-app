@@ -24,7 +24,7 @@ module.exports = {
         auto: true,
         canonical: true,
         //excludedDomains: "",
-        includedDomains: "http://localhost:9000/",
+        includedDomains: "deploy-preview-227--pow-app.netlify.app",
       },
     },
     `gatsby-plugin-react-helmet`,
