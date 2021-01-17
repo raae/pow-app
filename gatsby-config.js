@@ -19,8 +19,12 @@ module.exports = {
     {
       resolve: `fathom-tracking`,
       options: {
-        siteId: process.env.FATHOM_SITE_ID,
-        disabled: process.env.NETLIFY_DEV,
+        site: "CNOZPPSE",
+        honorDnt: false,
+        auto: true,
+        canonical: true,
+        //excludedDomains: "",
+        includedDomains: "http://localhost:9000/",
       },
     },
     `gatsby-plugin-react-helmet`,
