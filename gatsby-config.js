@@ -5,7 +5,7 @@
  */
 
 require("dotenv").config({
-  path: `.env`,
+  path: `.env.${process.env.NODE_ENV}`,
 })
 
 module.exports = {
@@ -19,12 +19,9 @@ module.exports = {
     {
       resolve: `fathom-tracking`,
       options: {
-        site: "CNOZPPSE",
-        honorDnt: false,
-        auto: true,
-        canonical: true,
-        //excludedDomains: "",
-        includedDomains: "deploy-preview-227--pow-app.netlify.app",
+        site: process.env.FATHOM_SITE,
+        spa: "auto",
+        includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
       },
     },
     `gatsby-plugin-react-helmet`,
