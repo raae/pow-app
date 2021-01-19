@@ -31,43 +31,15 @@ const HouseKeepingCard = () => {
 
   const disabled = isPending || entries.length === 1
 
-  let deleteAllEntriesText = `Export all my entries`
-  // if (entries.length === 0) {
-  //   deleteAllEntriesText = "No entries to export"
-  // } else if (isPending) {
-  //   deleteAllEntriesText = "Export entries"
-  // }
+  let exportAllEntriesText = `Export all my entries`
+
 
   const exportAllEntries = async (event) => {
     event.preventDefault();
     alert(`Export`)
+    const convertToCsv = Papa.unparse(entries[, config])
 
-//     const CONFIRMATION_STRING = "EXPORT"
 
-//     setIsPending(true)
-
-//     const confirmation = prompt(
-//       `Please type ${CONFIRMATION_STRING} to confirm export of all your entries.`
-//     )
-
-//     if (confirmation !== CONFIRMATION_STRING) {
-//       if (confirmation !== null) {
-//         alert(
-//           `You typed "${confirmation}", not "${CONFIRMATION_STRING}", please try again.`
-//         )
-//       }
-//     } else {
-  // https://userbase.com/docs/sdk/get-databases/
-      const { error } = await dispatch(getDatabases())
-
-//       if (error) {
-//         alert(`Oopsie (${error.message}), please try again.`)
-//       } else {
-//         alert(`Success, all your entries were exported.`)
-//       }
-//     }
-
-//     setIsPending(false)
   }
 
   return (
@@ -87,7 +59,7 @@ const HouseKeepingCard = () => {
             Do you feel the need to Export your POW! data?
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            Use with caution as your entries will be un-encrypted.
+            It will be exported in plain text as a csv file.
           </Typography>
         </Box>
 
@@ -97,7 +69,7 @@ const HouseKeepingCard = () => {
           color="primary"
           onClick={exportAllEntries}
         >
-          {deleteAllEntriesText}
+          {exportAllEntriesText}
         </Button>
       </CardContent>
     </Card>
