@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
 import { selectEntries, emptyEntries } from "../entries"
+import Papa from "papaparse"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -36,8 +37,9 @@ const HouseKeepingCard = () => {
 
   const exportAllEntries = async (event) => {
     event.preventDefault();
-    alert(`Export`)
-    const convertToCsv = Papa.unparse(entries[, config])
+    alert(`You Exported Your POW! data 😺👍`)
+    const convertToCsv = Papa.unparse(entries)
+    console.log(convertToCsv)
 
 
   }
