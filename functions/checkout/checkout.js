@@ -1,5 +1,8 @@
 const Stripe = require("stripe")
 const axios = require("axios")
+const overrideEnvs = require("./env")
+
+overrideEnvs({ mode: "suffix" })
 
 const {
   STRIPE_SECRET_KEY,
