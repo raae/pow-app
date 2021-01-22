@@ -12,16 +12,14 @@ function getEnvVariables(variables, { keys, context = "" }) {
 }
 
 function getStripeEvent(req, { context }) {
-  const keys = ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_CHECKOUT_SECRET"]
-
   try {
-    // Deploy preview
     const {
       STRIPE_SECRET_KEY,
       STRIPE_WEBHOOK_CHECKOUT_SECRET,
-    } = getEnvVariables(process.env, { keys, context })
-
-    console.log({ STRIPE_SECRET_KEY, STRIPE_WEBHOOK_CHECKOUT_SECRET })
+    } = getEnvVariables(process.env, {
+      keys: ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_CHECKOUT_SECRET"],
+      context,
+    })
 
     const stripe = Stripe(STRIPE_SECRET_KEY)
     const event = stripe.webhooks.constructEvent(
@@ -30,10 +28,10 @@ function getStripeEvent(req, { context }) {
       STRIPE_WEBHOOK_CHECKOUT_SECRET
     )
 
-    console.log(`Valid Stripe ${context} event`)
+    console.log(`Valid Stripe "${context}" event`)
     return event
   } catch (error) {
-    console.warn(`Not a valid Stripe ${context} event:`, error.message)
+    console.log(`Not a valid Stripe "${context}" event:`, error.message)
     return undefined
   }
 }
@@ -54,7 +52,12 @@ exports.handler = async (req) => {
     }
 
     if (!event || event.type !== "checkout.session.completed") {
-      throw new Error("Not a valid Stripe event")
+      if (!event) {
+        console.warn("Not a valid Stripe event")
+      } else {
+        console.warn("Not a valid Stripe event type", event.type)
+      }
+      throw new Error("Not a valid Stripe event or event type")
     }
 
     const {
@@ -90,7 +93,7 @@ exports.handler = async (req) => {
       }
     )
 
-    console.log(`Stripe webhook succeeded`)
+    console.log(`Stripe webhook succeeded using ${context} environment`)
 
     return {
       statusCode: 200,
