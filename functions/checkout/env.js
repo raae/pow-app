@@ -20,12 +20,11 @@ function setEnvWithValue(key, contextOrBranch, mode) {
   return `${key}=${process.env[envVar]}\n`
 }
 
-module.exports = (inputs) => {
+module.exports = ({ mode = "suffix" } = {}) => {
   const context = `${process.env.CONTEXT}`.toUpperCase().replace(/-/g, "_")
   const branch = `${process.env.BRANCH}`.toUpperCase().replace(/-/g, "_")
-  const { mode } = inputs
 
-  console.log(branch, context)
+  console.log(process.env.FATHOM_INCLUDED_DOMAINS, process.env.CONTEXT)
 
   const envOverrides = Object.keys(process.env).map((key) => [
     setEnvWithValue(key, context, mode),

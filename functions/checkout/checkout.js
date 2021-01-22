@@ -2,7 +2,7 @@ const Stripe = require("stripe")
 const axios = require("axios")
 const overrideEnvs = require("./env")
 
-overrideEnvs({ mode: "suffix" })
+overrideEnvs()
 
 const {
   STRIPE_SECRET_KEY,
@@ -10,6 +10,7 @@ const {
   USERBASE_ADMIN_API_ACCESS_TOKEN,
   STRIPE_WEBHOOK_CHECKOUT_SECRET_DEPLOY_PREVIEW,
   STRIPE_SECRET_KEY_DEPLOY_PREVIEW,
+  CONTEXT,
 } = process.env
 
 exports.handler = async (req) => {
@@ -17,6 +18,7 @@ exports.handler = async (req) => {
     console.log("plain", {
       webhookSecret: STRIPE_WEBHOOK_CHECKOUT_SECRET,
       secretKey: STRIPE_SECRET_KEY,
+      context: CONTEXT,
     })
 
     console.log("preview", {
