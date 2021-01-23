@@ -2,3 +2,8 @@
   publish = "public"
   functions = "functions"
   command = "yarn build"
+
+[[plugins]]
+package = 'netlify-plugin-contextual-env'
+  [plugins.inputs]
+  mode = 'suffix'
