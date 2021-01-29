@@ -7,9 +7,11 @@ const {
 } = require("./utils/userbase")
 const { addConvertKitSubscriber } = require("./utils/convertkit")
 
-const validateHttpMethod = ({ httpMethod }) => {
-  if (httpMethod !== "POST") {
-    throw new createError.BadRequest("Only POST requests allowed")
+const validateHttpMethod = ({ httpMethod }, validHttpMethods) => {
+  if (!validHttpMethods.includes(httpMethod)) {
+    throw new createError.BadRequest(
+      `Only ${validHttpMethods} requests allowed`
+    )
   }
 }
 
@@ -72,7 +74,7 @@ const handleUserCreated = async ({ userbaseId }) => {
 
 exports.handler = async (event) => {
   try {
-    validateHttpMethod(event)
+    validateHttpMethod(event, ["POST"])
     const { userbaseAuthToken, userbaseId } = validateSchema(event)
 
     await validateUserbaseAuthToken({ userbaseAuthToken, userbaseId })
@@ -89,14 +91,15 @@ exports.handler = async (event) => {
     }
 
     const { statusCode, expose, message } = error
+
+    console.warn(message)
+
     const body = {
       error: {
         statusCode,
-        message: expose && message,
+        ...(expose && { message }),
       },
     }
-
-    console.warn(message)
 
     return {
       statusCode,
