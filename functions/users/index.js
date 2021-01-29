@@ -3,43 +3,16 @@ const jsonBodyParser = require("@middy/http-json-body-parser")
 const httpErrorHandler = require("@middy/http-error-handler")
 const Joi = require("joi")
 const createError = require("http-errors")
+const validateHttpMethod = require("./middleware/validateHttpMethod")
+const validateJoiParamsSchema = require("./middleware/validateJoiParamsSchema")
+const validateJoiBodySchema = require("./middleware/validateJoiBodySchema")
+
 const {
   getUserbaseUser,
   updateUserbaseProtectedProfile,
   verifyUserbaseAuthToken,
 } = require("./utils/userbase")
 const { addConvertKitSubscriber } = require("./utils/convertkit")
-
-const validateHttpMethod = (validHttpMethods = []) => {
-  // might set default options in config
-  return {
-    before: ({ event }, next) => {
-      if (!validHttpMethods.includes(event.httpMethod)) {
-        throw new createError.BadRequest(
-          `Only ${validHttpMethods} requests allowed`
-        )
-      }
-    },
-  }
-}
-
-const validateSchema = ({ body }) => {
-  const schema = Joi.object({
-    userbaseId: Joi.string().required(),
-    userbaseAuthToken: Joi.string().required(),
-  })
-
-  const {
-    value: { userbaseId, userbaseAuthToken },
-    error: schemaError,
-  } = schema.validate(body)
-
-  if (schemaError) {
-    throw new createError.BadRequest(schemaError.message)
-  }
-
-  return { userbaseId, userbaseAuthToken }
-}
 
 const validateUserbaseAuthToken = async ({ userbaseAuthToken, userbaseId }) => {
   try {
@@ -81,7 +54,7 @@ const handleUserCreated = async ({ userbaseId }) => {
 }
 
 const usersHandler = async (event) => {
-  const { userbaseAuthToken, userbaseId } = validateSchema(event)
+  const { userbaseAuthToken, userbaseId } = event.body
   await validateUserbaseAuthToken({ userbaseAuthToken, userbaseId })
   const result = await handleUserCreated({ userbaseId })
   return {
@@ -91,8 +64,21 @@ const usersHandler = async (event) => {
 }
 
 const handler = middy(usersHandler)
-  .use(validateHttpMethod(["POST"]))
+  .use(validateHttpMethod("POST"))
+  .use(
+    validateJoiParamsSchema({
+      context: Joi.string()
+        .valid("development", "preview_deploy", "production")
+        .required(),
+    })
+  )
   .use(jsonBodyParser()) // parses the request body when it's a JSON and converts it to an object
+  .use(
+    validateJoiBodySchema({
+      userbaseId: Joi.string().required(),
+      userbaseAuthToken: Joi.string().required(),
+    })
+  )
   .use(httpErrorHandler()) // handles common http errors and returns proper responses
 
 module.exports = { handler }
