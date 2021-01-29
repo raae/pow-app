@@ -1,3 +1,6 @@
+const middy = require("@middy/core")
+const jsonBodyParser = require("@middy/http-json-body-parser")
+const httpErrorHandler = require("@middy/http-error-handler")
 const Joi = require("joi")
 const createError = require("http-errors")
 const {
@@ -7,11 +10,16 @@ const {
 } = require("./utils/userbase")
 const { addConvertKitSubscriber } = require("./utils/convertkit")
 
-const validateHttpMethod = ({ httpMethod }, validHttpMethods) => {
-  if (!validHttpMethods.includes(httpMethod)) {
-    throw new createError.BadRequest(
-      `Only ${validHttpMethods} requests allowed`
-    )
+const validateHttpMethod = (validHttpMethods = []) => {
+  // might set default options in config
+  return {
+    before: ({ event }, next) => {
+      if (!validHttpMethods.includes(event.httpMethod)) {
+        throw new createError.BadRequest(
+          `Only ${validHttpMethods} requests allowed`
+        )
+      }
+    },
   }
 }
 
@@ -24,7 +32,7 @@ const validateSchema = ({ body }) => {
   const {
     value: { userbaseId, userbaseAuthToken },
     error: schemaError,
-  } = schema.validate(JSON.parse(body))
+  } = schema.validate(body)
 
   if (schemaError) {
     throw new createError.BadRequest(schemaError.message)
@@ -72,38 +80,19 @@ const handleUserCreated = async ({ userbaseId }) => {
   }
 }
 
-exports.handler = async (event) => {
-  try {
-    validateHttpMethod(event, ["POST"])
-    const { userbaseAuthToken, userbaseId } = validateSchema(event)
-
-    await validateUserbaseAuthToken({ userbaseAuthToken, userbaseId })
-
-    const result = await handleUserCreated({ userbaseId })
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(result),
-    }
-  } catch (error) {
-    if (!createError.isHttpError(error)) {
-      error = createError.InternalServerError(error.message)
-    }
-
-    const { statusCode, expose, message } = error
-
-    console.warn(message)
-
-    const body = {
-      error: {
-        statusCode,
-        ...(expose && { message }),
-      },
-    }
-
-    return {
-      statusCode,
-      body: JSON.stringify(body),
-    }
+const usersHandler = async (event) => {
+  const { userbaseAuthToken, userbaseId } = validateSchema(event)
+  await validateUserbaseAuthToken({ userbaseAuthToken, userbaseId })
+  const result = await handleUserCreated({ userbaseId })
+  return {
+    statusCode: 200,
+    body: JSON.stringify(result),
   }
 }
+
+const handler = middy(usersHandler)
+  .use(validateHttpMethod(["POST"]))
+  .use(jsonBodyParser()) // parses the request body when it's a JSON and converts it to an object
+  .use(httpErrorHandler()) // handles common http errors and returns proper responses
+
+module.exports = { handler }
