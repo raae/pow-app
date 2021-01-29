@@ -2,50 +2,56 @@ const middy = require("@middy/core")
 const jsonBodyParser = require("@middy/http-json-body-parser")
 const httpErrorHandler = require("@middy/http-error-handler")
 const Joi = require("joi")
+const format = require("date-fns/format")
 const createError = require("http-errors")
 const validateHttpMethod = require("./middleware/validateHttpMethod")
-const validateJoiParamsSchema = require("./middleware/validateJoiParamsSchema")
 const validateJoiBodySchema = require("./middleware/validateJoiBodySchema")
+const addParamsToBody = require("./middleware/addParamsToBody")
+const secretsManager = require("./middleware/secretsManager")
 
-const {
-  getUserbaseUser,
-  updateUserbaseProtectedProfile,
-  verifyUserbaseAuthToken,
-} = require("./utils/userbase")
-const { addConvertKitSubscriber } = require("./utils/convertkit")
+const Userbase = require("./utils/userbase")
+const ConvertKit = require("./utils/convertkit")
 
-const validateUserbaseAuthToken = async ({ userbaseAuthToken, userbaseId }) => {
-  try {
-    const { userId: validUserbaseId } = await verifyUserbaseAuthToken({
-      userbaseAuthToken,
-    })
-
-    if (validUserbaseId !== userbaseId) {
-      throw Error("userbaseAuthToken / userbaseId mismatch")
-    }
-  } catch (error) {
-    const { message } = error.response?.data || error.request?.data || error
-    throw new createError.Unauthorized("Userbase: " + message)
+const verifyUserbaseAuthToken = () => {
+  return {
+    before: async ({ event }) => {
+      const { body, context } = event
+      const userbase = Userbase(context.USERBASE_ADMIN_API_ACCESS_TOKEN)
+      try {
+        await userbase.verifyUserbaseAuthToken(body)
+      } catch (error) {
+        const { message } = error.response?.data || error.request?.data || error
+        throw new createError.Unauthorized("Userbase: " + message)
+      }
+    },
   }
 }
 
-const handleUserCreated = async ({ userbaseId }) => {
-  try {
-    const { email, creationDate } = await getUserbaseUser({ userbaseId })
-    const { id: convertKitId } = await addConvertKitSubscriber({
-      email,
-      userbaseId,
-      creationDate,
-    })
+const handleUserCreated = async (body, context) => {
+  const userbase = Userbase(context.USERBASE_ADMIN_API_ACCESS_TOKEN)
+  const convertKit = ConvertKit(context.CONVERTKIT_API_SECRET)
 
-    await updateUserbaseProtectedProfile({
-      userbaseId,
-      protectedProfile: { convertKitId: `${convertKitId}` },
+  try {
+    const userbaseUser = await userbase.getUserbaseUser(body)
+    const convertKitSubscriber = await convertKit.upsertConvertKitSubscriber({
+      formId: context.CONVERTKIT_FORM_ID,
+      email: userbaseUser.email,
+      fields: {
+        userbase_id: userbaseUser.userId,
+        user_created: format(new Date(userbaseUser.creationDate), "yyyy-MM-dd"),
+      },
+    })
+    const userbaseUserId = userbaseUser.userId
+    const convertKitSubscriberId = `${convertKitSubscriber.id}`
+
+    await userbase.updateUserbaseProtectedProfile({
+      userbaseUserId,
+      protectedProfile: { convertKitId: `${convertKitSubscriberId}` },
     })
 
     return {
-      userbaseId,
-      convertKitId,
+      userbaseUserId,
+      convertKitSubscriberId,
     }
   } catch (error) {
     const { message } = error.response?.data || error.request?.data || error
@@ -53,32 +59,38 @@ const handleUserCreated = async ({ userbaseId }) => {
   }
 }
 
-const usersHandler = async (event) => {
-  const { userbaseAuthToken, userbaseId } = event.body
-  await validateUserbaseAuthToken({ userbaseAuthToken, userbaseId })
-  const result = await handleUserCreated({ userbaseId })
+const userCreatedHandler = async ({ body, context }) => {
+  const result = await handleUserCreated(body, context)
   return {
     statusCode: 200,
     body: JSON.stringify(result),
   }
 }
 
-const handler = middy(usersHandler)
+const handler = middy(userCreatedHandler)
   .use(validateHttpMethod("POST"))
+  .use(jsonBodyParser()) // parses the request body when it's a JSON and converts it to an object
+  .use(addParamsToBody())
   .use(
-    validateJoiParamsSchema({
+    validateJoiBodySchema({
+      userbaseUserId: Joi.string().required(),
+      userbaseAuthToken: Joi.string().required(),
       context: Joi.string()
-        .valid("development", "preview_deploy", "production")
+        .valid("development", "deploy-preview", "production")
         .required(),
     })
   )
-  .use(jsonBodyParser()) // parses the request body when it's a JSON and converts it to an object
   .use(
-    validateJoiBodySchema({
-      userbaseId: Joi.string().required(),
-      userbaseAuthToken: Joi.string().required(),
+    secretsManager({
+      keys: [
+        "USERBASE_ADMIN_API_ACCESS_TOKEN",
+        "CONVERTKIT_API_SECRET",
+        "CONVERTKIT_FORM_ID",
+      ],
+      contextPath: "event.body.context",
     })
   )
+  .use(verifyUserbaseAuthToken())
   .use(httpErrorHandler()) // handles common http errors and returns proper responses
 
 module.exports = { handler }

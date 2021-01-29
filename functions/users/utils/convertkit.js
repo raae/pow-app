@@ -1,29 +1,29 @@
 const axios = require("axios")
-const format = require("date-fns/format")
 
-const { CONVERTKIT_FORM_ID, CONVERTKIT_API_SECRET } = process.env
-
-const addConvertKitSubscriber = async ({ email, userbaseId, creationDate }) => {
-  const { data } = await axios.post(
-    `https://api.convertkit.com/v3/forms/${CONVERTKIT_FORM_ID}/subscribe`,
-    {
-      api_secret: CONVERTKIT_API_SECRET,
-      email,
-      fields: {
-        userbase_id: userbaseId,
-        user_created: format(new Date(creationDate), "yyyy-MM-dd"),
-      },
-    }
-  )
-
-  const convertKitId = data?.subscription?.subscriber?.id
-
-  console.log("ConvertKit Subscriber added", {
-    convertKitId,
-    userbaseId,
+module.exports = (apiSecret) => {
+  const convertKitApi = axios.create({
+    baseURL: "https://api.convertkit.com/v3",
   })
 
-  return data.subscription.subscriber
-}
+  const log = (...args) => {
+    console.log("ConvertKit", ...args)
+  }
 
-exports.addConvertKitSubscriber = addConvertKitSubscriber
+  const upsertConvertKitSubscriber = async ({ email, formId, fields }) => {
+    const { data } = await convertKitApi.post(`forms/${formId}/subscribe`, {
+      api_secret: apiSecret,
+      email,
+      fields,
+    })
+
+    const subscriber = data?.subscription?.subscriber
+
+    log("ConvertKit Subscriber added/updated", subscriber)
+
+    return subscriber
+  }
+
+  return {
+    upsertConvertKitSubscriber,
+  }
+}
