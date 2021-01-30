@@ -13,6 +13,7 @@
     "http-errors": "1.8.0",
     "joi": "17.3.0",
     "morgan": "1.10.0",
-    "serverless-http": "2.7.0"
+    "serverless-http": "2.7.0",
+    "stripe": "8.132.0"
   }
 }
