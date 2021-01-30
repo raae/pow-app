@@ -1,8 +1,8 @@
 const format = require("date-fns/format")
 const createError = require("http-errors")
 
-const Userbase = require("../../utils/userbase")
-const ConvertKit = require("../../utils/convertkit")
+const Userbase = require("../../services/userbase")
+const ConvertKit = require("../../services/convertkit")
 
 module.exports = async ({ body, context }) => {
   const userbase = Userbase(context.USERBASE_ADMIN_API_ACCESS_TOKEN)
