@@ -27,6 +27,6 @@ router.use(
   })
 )
 
-router.use("/", userCreated)
+router.use("/created", userCreated)
 
 module.exports = router

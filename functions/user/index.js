@@ -7,6 +7,6 @@ const app = express()
 app.use(helmet())
 app.use(express.json())
 
-app.use("/.netlify/functions/users", router)
+app.use("/.netlify/functions/user", router)
 
 module.exports.handler = serverless(app)
