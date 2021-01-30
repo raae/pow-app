@@ -4,7 +4,7 @@ const createError = require("http-errors")
 const Userbase = require("../utils/userbase")
 const ConvertKit = require("../utils/convertkit")
 
-module.exports = async (body, context) => {
+module.exports = async ({ body, context }) => {
   const userbase = Userbase(context.USERBASE_ADMIN_API_ACCESS_TOKEN)
   const convertKit = ConvertKit(context.CONVERTKIT_API_SECRET)
 
@@ -27,8 +27,11 @@ module.exports = async (body, context) => {
     })
 
     return {
-      userbaseUserId,
-      convertKitSubscriberId,
+      statusCode: 200,
+      body: {
+        userbaseUserId,
+        convertKitSubscriberId,
+      },
     }
   } catch (error) {
     const { message } = error.response?.data || error.request?.data || error

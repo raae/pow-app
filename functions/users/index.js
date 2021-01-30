@@ -1,7 +1,7 @@
 const middy = require("@middy/core")
-const jsonBodyParser = require("@middy/http-json-body-parser")
 const Joi = require("joi")
 
+const bodyTransformer = require("./middleware/bodyTransformer")
 const validateHttpMethod = require("./middleware/validateHttpMethod")
 const validateJoiBodySchema = require("./middleware/validateJoiBodySchema")
 const addParamsToBody = require("./middleware/addParamsToBody")
@@ -9,19 +9,12 @@ const secretsManager = require("./middleware/secretsManager")
 const verifyUserbaseAuthToken = require("./middleware/verifyUserbaseAuthToken")
 const httpErrorHandler = require("./middleware/httpErrorHandler")
 
-const handleUserCreated = require("./handlers/userCreated")
-
-const userCreatedHandler = async ({ body, context }) => {
-  const result = await handleUserCreated(body, context)
-  return {
-    statusCode: 200,
-    body: JSON.stringify(result),
-  }
-}
+const userCreatedHandler = require("./handlers/userCreated")
 
 const handler = middy(userCreatedHandler)
   .use(validateHttpMethod("POST"))
-  .use(jsonBodyParser())
+  .use(httpErrorHandler())
+  .use(bodyTransformer())
   .use(addParamsToBody())
   .use(
     validateJoiBodySchema({
@@ -43,6 +36,5 @@ const handler = middy(userCreatedHandler)
     })
   )
   .use(verifyUserbaseAuthToken())
-  .use(httpErrorHandler())
 
 module.exports = { handler }
