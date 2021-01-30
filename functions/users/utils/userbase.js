@@ -9,7 +9,7 @@ module.exports = (accessToken) => {
   })
 
   const log = (...args) => {
-    console.log("Userbase", ...args)
+    console.log("Userbase:", ...args)
   }
 
   const verifyUserbaseAuthToken = async ({

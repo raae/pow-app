@@ -6,7 +6,7 @@ module.exports = (apiSecret) => {
   })
 
   const log = (...args) => {
-    console.log("ConvertKit", ...args)
+    console.log("ConvertKit:", ...args)
   }
 
   const upsertConvertKitSubscriber = async ({ email, formId, fields }) => {

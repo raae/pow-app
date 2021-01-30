@@ -11,7 +11,7 @@ module.exports = () => {
 
       const { statusCode, expose, message } = error
 
-      console.warn(error.message)
+      console.warn("httpErrorHandler:", error.message)
 
       const body = {
         error: {
