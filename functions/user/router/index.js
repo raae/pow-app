@@ -2,7 +2,6 @@ const Joi = require("joi")
 const router = require("express").Router()
 
 const contextManager = require("../middleware/contextManager")
-const httpErrorHandler = require("../middleware/httpErrorHandler")
 const validateJoiRequestSchema = require("../middleware/validateJoiRequestSchema")
 
 const userCreated = require("./userCreated")
@@ -27,7 +26,5 @@ router.use(
 )
 
 router.use("/created", userCreated)
-
-router.use(httpErrorHandler())
 
 module.exports = router
