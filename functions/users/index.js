@@ -1,18 +1,12 @@
-const middy = require("@middy/core")
+const serverless = require("serverless-http")
+const express = require("express")
+const helmet = require("helmet")
+const router = require("./router")
+const app = express()
 
-const bodyTransformer = require("./middleware/bodyTransformer")
-const addParamsToBody = require("./middleware/addParamsToBody")
-const httpErrorHandler = require("./middleware/httpErrorHandler")
+app.use(helmet())
+app.use(express.json())
 
-const userCreatedHandler = require("./handlers/userCreated")
+app.use("/.netlify/functions/users", router)
 
-const router = (...arg) => {
-  return userCreatedHandler(...arg)
-}
-
-module.exports = {
-  handler: middy(router)
-    .use(httpErrorHandler())
-    .use(bodyTransformer())
-    .use(addParamsToBody()),
-}
+module.exports.handler = serverless(app)
