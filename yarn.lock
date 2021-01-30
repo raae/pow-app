@@ -2077,31 +2077,6 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-2.0.0-next.8.tgz#66ecc27b78e07a3ea2eb1a8fc5a99dfa0ba96690"
   integrity sha512-T0BcXmNzEunFkuxrO8BFw44htvTPuAoKbLvTG41otyZBDV1Rs+JMddcUuaP5vXpTWtgD3grhcrPEwyx88RUumQ==
 
-"@middy/core@2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@middy/core/-/core-2.0.0-alpha.3.tgz#10568573c6488417776d25d0839ba27133d08c88"
-  integrity sha512-/JiZWKUlwKWehvwEPkXpbhGlVjYEPIA+L6O51zR4hdUJPQyrnU1YZQ59YIBXYuVdnxkj+Lf7A8/FT3ITPueBUw==
-
-"@middy/http-error-handler@2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@middy/http-error-handler/-/http-error-handler-2.0.0-alpha.3.tgz#bb0cd86a000d4037aa9b84daa0e935b89de977f0"
-  integrity sha512-xk4Df+vRJ9qUdt0R6EoUqbCRqPHHRAVPT2QDlq5cDzN7cxFdbJsnAM1hVW+Kthh3YSCAW74cxGXXRZe2yqv/Mg==
-  dependencies:
-    "@middy/util" "^2.0.0-alpha.3"
-
-"@middy/http-json-body-parser@2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@middy/http-json-body-parser/-/http-json-body-parser-2.0.0-alpha.3.tgz#b77e7358a86ea752118322d2c51a6a976ae49155"
-  integrity sha512-YXhrRO0hX0lClUJl1sqzfAC3fQBeCz1PHwPzDVbzKQv1zQOioHnLYh6dp+PwFs0Yuech5hGToahHVRB9tmHQMQ==
-  dependencies:
-    content-type "^1.0.4"
-    http-errors "1.8.0"
-
-"@middy/util@^2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@middy/util/-/util-2.0.0-alpha.3.tgz#94854ce1d4d37655c8d73d616c05b4de529b799a"
-  integrity sha512-VmMdmIumc6q02kw214VNAiyEOyx15zuVW1HsEA+pBCG8FH41PsKR+PXVofEmLoW3nJ10xA8bemGa66PsVR/4Yg==
-
 "@mikaelkristiansson/domready@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@mikaelkristiansson/domready/-/domready-1.0.10.tgz#f6d69866c0857664e70690d7a0bfedb72143adb5"
@@ -8498,7 +8473,7 @@ http-errors@1.7.3, http-errors@~1.7.2:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
 
-http-errors@1.8.0, http-errors@^1.7.3:
+http-errors@^1.7.3:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.8.0.tgz#75d1bbe497e1044f51e4ee9e704a62f28d336507"
   integrity sha512-4I8r0C5JDhT5VkvI47QktDW75rNlGVsUf/8hzjCC/wkWI/jdTRmBb9aI7erSG82r1bjKY3F6k28WnsVxB1C73A==

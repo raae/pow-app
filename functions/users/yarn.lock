@@ -14,6 +14,11 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@middy/core@2.0.0-alpha.3":
+  version "2.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@middy/core/-/core-2.0.0-alpha.3.tgz#10568573c6488417776d25d0839ba27133d08c88"
+  integrity sha512-/JiZWKUlwKWehvwEPkXpbhGlVjYEPIA+L6O51zR4hdUJPQyrnU1YZQ59YIBXYuVdnxkj+Lf7A8/FT3ITPueBUw==
+
 "@sideway/address@^4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.0.tgz#0b301ada10ac4e0e3fa525c90615e0b61a72b78d"
