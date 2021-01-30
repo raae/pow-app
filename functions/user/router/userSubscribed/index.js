@@ -1,5 +1,6 @@
 const Joi = require("joi")
-const userCreatedRouter = require("express").Router()
+const router = require("express").Router()
+const asyncHandler = require("express-async-handler")
 
 const constructStripeBody = require("../../middleware/constructStripeBody")
 const validateJoiRequestSchema = require("../../middleware/validateJoiRequestSchema")
@@ -7,16 +8,20 @@ const validateJoiRequestSchema = require("../../middleware/validateJoiRequestSch
 const userSubscribed = require("./userSubscribed")
 
 const schema = Joi.object({
-  userbaseUserId: Joi.string().required(),
+  client_reference_id: Joi.string().required(),
 })
 
-userCreatedRouter.use(
+router.use(
   constructStripeBody({ secretKey: "STRIPE_WEBHOOK_SUBSCRIBED_SECRET" })
 )
-userCreatedRouter.use(validateJoiRequestSchema("body", schema))
+router.use(validateJoiRequestSchema("body", schema))
 
-userCreatedRouter.post("/", async (request, response) => {
-  response.json(await userSubscribed(request))
-})
+router.post(
+  "/",
+  asyncHandler(async (request, response) => {
+    const result = await userSubscribed(request)
+    response.json(result)
+  })
+)
 
-module.exports = userCreatedRouter
+module.exports = router

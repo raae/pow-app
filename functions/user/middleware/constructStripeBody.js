@@ -10,10 +10,10 @@ module.exports = ({ secretKey }) => {
       const event = stripe.webhooks.constructEvent(
         request.body,
         request.headers["stripe-signature"],
-        context[webhookSecretKey]
+        context[secretKey]
       )
 
-      request.body = event
+      request.body = event.data.object
       next()
     } catch (error) {
       const { message } = error.response?.data || error.request?.data || error

@@ -8,6 +8,8 @@ module.exports = () => {
 
     const { statusCode, expose, message } = error
 
+    console.error(error.message)
+
     response.status(statusCode).json({
       error: {
         statusCode,

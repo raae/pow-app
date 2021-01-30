@@ -10,7 +10,7 @@ module.exports = async ({ body, context }) => {
 
   try {
     const userbaseUser = await userbase.getUserbaseUser(body)
-    const convertKitSubscriber = await convertKit.upsertConvertKitSubscriber({
+    const convertKitSubscriber = await convertKit.addConvertKitSubscriber({
       formId: context.CONVERTKIT_FORM_ID,
       email: userbaseUser.email,
       fields: {
@@ -32,6 +32,6 @@ module.exports = async ({ body, context }) => {
     }
   } catch (error) {
     const { message } = error.response?.data || error.request?.data || error
-    throw new createError.InternalServerError(message)
+    throw new createError.InternalServerError("Router/userCreated: " + message)
   }
 }
