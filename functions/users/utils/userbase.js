@@ -1,67 +1,70 @@
 const axios = require("axios")
 
-const { USERBASE_ADMIN_API_ACCESS_TOKEN } = process.env
-
-const verifyUserbaseAuthToken = async ({ userbaseAuthToken }) => {
-  const { data } = await axios.get(
-    "https://v1.userbase.com/v1/admin/auth-tokens/" + userbaseAuthToken,
-    {
-      headers: {
-        Authorization: `Bearer ${USERBASE_ADMIN_API_ACCESS_TOKEN}`,
-      },
-    }
-  )
-  return data
-}
-
-const getUserbaseUser = async ({ userbaseId }) => {
-  const { data } = await axios.get(
-    "https://v1.userbase.com/v1/admin/users/" + userbaseId,
-    {
-      headers: {
-        Authorization: `Bearer ${USERBASE_ADMIN_API_ACCESS_TOKEN}`,
-      },
-    }
-  )
-
-  console.log("Userbase auth token verified", {
-    userbaseId: data.userId,
+module.exports = (accessToken) => {
+  const userbaseApi = axios.create({
+    baseURL: "https://v1.userbase.com/v1/admin",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
   })
 
-  return data
-}
+  const log = (...args) => {
+    console.log("Userbase:", ...args)
+  }
 
-const updateUserbaseProtectedProfile = async ({
-  userbaseId,
-  protectedProfile,
-}) => {
-  // Fetch this again to make sure we have the latest
-  const user = await getUserbaseUser({ userbaseId })
+  const verifyUserbaseAuthToken = async ({
+    userbaseAuthToken,
+    userbaseUserId,
+  }) => {
+    const { data } = await userbaseApi.get("auth-tokens/" + userbaseAuthToken)
 
-  // Updating the user has no response
-  await axios.post(
-    "https://v1.userbase.com/v1/admin/users/" + userbaseId,
-    {
+    log("Auth token verified", {
+      userbaseUserId: data.userId,
+    })
+
+    if (data.userId !== userbaseUserId) {
+      throw Error("userbaseAuthToken / userbaseUserId mismatch")
+    }
+
+    return data
+  }
+
+  const getUserbaseUser = async ({ userbaseUserId }) => {
+    const { data } = await userbaseApi.get("users/" + userbaseUserId)
+
+    log("Fetched user", {
+      userbaseUserId: data.userId,
+    })
+
+    return data
+  }
+
+  const updateUserbaseProtectedProfile = async ({
+    userbaseUserId,
+    protectedProfile,
+  }) => {
+    // Fetch this again to make sure we have the latest
+    const user = await getUserbaseUser({ userbaseUserId })
+
+    // Updating the user has no response
+    await userbaseApi.post("users/" + userbaseUserId, {
       protectedProfile: {
         ...user.protectedProfile,
         ...protectedProfile,
       },
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${USERBASE_ADMIN_API_ACCESS_TOKEN}`,
-      },
-    }
-  )
+    })
 
-  console.log("Userbase Protected Profile updated", {
-    userbaseId,
-    protectedProfile,
-  })
+    log("Protected Profile updated", {
+      userbaseUserId,
+      protectedProfile,
+    })
 
-  return { userbaseId }
+    return { userbaseUserId }
+  }
+
+  return {
+    verifyUserbaseAuthToken,
+    getUserbaseUser,
+    updateUserbaseProtectedProfile,
+  }
 }
-
-exports.verifyUserbaseAuthToken = verifyUserbaseAuthToken
-exports.getUserbaseUser = getUserbaseUser
-exports.updateUserbaseProtectedProfile = updateUserbaseProtectedProfile
