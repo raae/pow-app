@@ -1,27 +1,18 @@
 const createError = require("http-errors")
 
 module.exports = () => {
-  return {
-    onError: (handler) => {
-      let error = handler.error
+  return (error, request, response, next) => {
+    if (!createError.isHttpError(error)) {
+      error = createError.InternalServerError(error.message)
+    }
 
-      if (!createError.isHttpError(error)) {
-        error = createError.InternalServerError(error.message)
-      }
+    const { statusCode, expose, message } = error
 
-      const { statusCode, expose, message } = error
-
-      console.warn("httpErrorHandler:", error.message)
-
-      handler.response = {
+    response.status(statusCode).json({
+      error: {
         statusCode,
-        body: {
-          error: {
-            statusCode,
-            ...(expose && { message }),
-          },
-        },
-      }
-    },
+        ...(expose && { message }),
+      },
+    })
   }
 }

@@ -1,21 +1,21 @@
 const Joi = require("joi")
-const validator = require("express-joi-validation").createValidator({})
 const userCreatedRouter = require("express").Router()
 
 const verifyUserbaseAuthToken = require("../../middleware/verifyUserbaseAuthToken")
+const validateJoiRequestSchema = require("../../middleware/validateJoiRequestSchema")
+
 const userCreated = require("./userCreated")
 
 const schema = Joi.object({
   userbaseUserId: Joi.string().required(),
   userbaseAuthToken: Joi.string().required(),
-}).required()
+})
 
-userCreatedRouter.use(validator.body(schema))
+userCreatedRouter.use(validateJoiRequestSchema("body", schema))
 userCreatedRouter.use(verifyUserbaseAuthToken())
 
 userCreatedRouter.post("/", async (request, response) => {
-  const result = await userCreated(request)
-  response.json(result)
+  response.json(await userCreated(request))
 })
 
 module.exports = userCreatedRouter

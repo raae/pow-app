@@ -1,20 +1,19 @@
 const Joi = require("joi")
-const validator = require("express-joi-validation").createValidator({})
 const router = require("express").Router()
 
 const contextManager = require("../middleware/contextManager")
+const httpErrorHandler = require("../middleware/httpErrorHandler")
+const validateJoiRequestSchema = require("../middleware/validateJoiRequestSchema")
 
 const userCreated = require("./userCreated")
 
-router.use(
-  validator.query(
-    Joi.object({
-      context: Joi.string()
-        .valid("development", "deploy-preview", "production")
-        .required(),
-    })
-  )
-)
+const schema = Joi.object({
+  context: Joi.string()
+    .valid("development", "deploy-preview", "production")
+    .required(),
+})
+
+router.use(validateJoiRequestSchema("query", schema))
 
 router.use(
   contextManager({
@@ -28,5 +27,7 @@ router.use(
 )
 
 router.use("/created", userCreated)
+
+router.use(httpErrorHandler())
 
 module.exports = router

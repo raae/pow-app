@@ -16,16 +16,16 @@ module.exports = ({ keys, contextPath }) => {
     const context = get(request, contextPath)
 
     if (!context) {
-      throw new createError.BadRequest(`Context required at ${contextPath}`)
+      next(new createError.BadRequest(`Context required at ${contextPath}`))
+    } else {
+      const secrets = getEnvVariables(process.env, {
+        keys,
+        context,
+      })
+
+      request.context = secrets
+
+      next()
     }
-
-    const secrets = getEnvVariables(process.env, {
-      keys,
-      context,
-    })
-
-    request.context = secrets
-
-    next()
   }
 }

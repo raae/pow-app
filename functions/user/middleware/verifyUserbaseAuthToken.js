@@ -8,11 +8,10 @@ module.exports = () => {
 
     try {
       await userbase.verifyUserbaseAuthToken(body)
+      next()
     } catch (error) {
       const { message } = error.response?.data || error.request?.data || error
-      throw new createError.Unauthorized("Userbase: " + message)
+      next(new createError.Unauthorized("Userbase: " + message))
     }
-
-    next()
   }
 }
