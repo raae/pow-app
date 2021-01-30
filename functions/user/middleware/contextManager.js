@@ -12,22 +12,20 @@ const getEnvVariables = (variables, { keys, context = "" }) => {
 }
 
 module.exports = ({ keys, contextPath }) => {
-  return {
-    before: (handler) => {
-      const context = get(handler, contextPath)
+  return (request, response, next) => {
+    const context = get(request, contextPath)
 
-      if (!context) {
-        throw new createError.BadRequest(`Context required at ${contextPath}`)
-      }
-
+    if (!context) {
+      next(new createError.BadRequest(`Context required at ${contextPath}`))
+    } else {
       const secrets = getEnvVariables(process.env, {
         keys,
-        context: get(handler, contextPath),
+        context,
       })
 
-      handler.event.context = {
-        ...secrets,
-      }
-    },
+      request.context = secrets
+
+      next()
+    }
   }
 }
