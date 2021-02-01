@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
+import userbase from "userbase-js"
 import classNames from "classnames"
 
 import {
@@ -91,29 +92,30 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
-    stripe
-      .redirectToCheckout({
-        items: [{ plan: values.subscriptionPlan, quantity: 1 }],
-        clientReferenceId: userId,
-        successUrl: BASE_URL + "/timeline",
-        cancelUrl: BASE_URL + "/profile?payment=canceled",
-        // email: "rart",
-      })
-      .then((result) => {
-        if (result.error) {
-          setError(result.error)
-        } else {
-          setError()
-        }
-        setIsPending(false)
-      })
-      .catch((error) => {
-        setError(error)
-        setIsPending(false)
-      })
+    const purchaseSubscription = (priceId) => {
+      userbase
+        .purchaseSubscription({
+
+          successUrl: BASE_URL + "/timeline",
+          cancelUrl: BASE_URL + "/profile?payment=canceled",
+          priceId,
+        })
+        .then((result) => {
+          if (result.error) {
+            setError(result.error)
+          } else {
+            setError()
+          }
+          setIsPending(false)
+        })
+        .catch((error) => {
+          setError(error)
+          setIsPending(false)
+        })
+    }
   }
 
-  if (hasPaid) {
+  if (!hasPaid) {
     return (
       <>
         <Typography variant="body1" gutterBottom>
@@ -156,7 +158,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
             <RadioGroup
               aria-label="Subscription Plan"
               name="subscriptionPlan"
-              value={values.subscriptionPlan}
+              value={values.purchaseSubscription}
               onChange={handleChange("subscriptionPlan")}
             >
               <FormControlLabel
