@@ -99,6 +99,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           successUrl: BASE_URL + "/timeline",
           cancelUrl: BASE_URL + "/profile?payment=canceled",
           priceId,
+          // use context for what?
         })
         .then((result) => {
           if (result.error) {
