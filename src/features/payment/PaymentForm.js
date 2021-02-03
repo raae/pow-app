@@ -88,19 +88,25 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     })
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event, priceId) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
-    const purchaseSubscription = (priceId) => {
+
       userbase
         .purchaseSubscription({
 
           successUrl: BASE_URL + "/timeline",
           cancelUrl: BASE_URL + "/profile?payment=canceled",
           priceId,
-          // use context for what?
+          // Where is priceId coming from?
+          //Should priceId "be" something? Like for example:
+            // priceId: "bleh bleh-blehBleh ",
+          // use context for what? I will check the video at
+          // https://youtu.be/lc10pjc4Yoo?t=2705
         })
+        // should we keep all this error pending stuff?
+        // Or is userbase + stripe fixing that for us?
         .then((result) => {
           if (result.error) {
             setError(result.error)
@@ -113,10 +119,10 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           setError(error)
           setIsPending(false)
         })
-    }
+
   }
 
-  if (!hasPaid) {
+  if (hasPaid) {
     return (
       <>
         <Typography variant="body1" gutterBottom>
