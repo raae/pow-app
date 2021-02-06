@@ -66,6 +66,7 @@ module.exports = {
       options: {
         site: process.env.FATHOM_SITE,
         includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
+        loadType: "defer",
       },
     },
   ],
