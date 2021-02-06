@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import {
   Avatar,
   Button,
@@ -11,8 +11,9 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
-import { selectEntries, emptyEntries } from "../entries"
+import { selectEntries } from "../entries"
 import Papa from "papaparse"
+import { orderBy } from "lodash"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -26,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 const HouseKeepingCard = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const [isPending, setIsPending] = useState(false)
   const entries = useSelector(selectEntries)
 
@@ -34,14 +34,14 @@ const HouseKeepingCard = () => {
 
   let exportAllEntriesText = `Export all my entries`
 
-
   const exportAllEntries = async (event) => {
-    event.preventDefault();
-    alert(`You Exported Your POW! data 😺👍`)
+    setIsPending(true)
+    event.preventDefault()
+
     const convertToCsv = Papa.unparse(entries)
-    console.log(convertToCsv)
+    openSaveFileDialog(convertToCsv, "pow-export.csv", ".csv")
 
-
+    setIsPending(false)
   }
 
   return (
@@ -81,3 +81,31 @@ const HouseKeepingCard = () => {
 HouseKeepingCard.propTypes = {}
 
 export default HouseKeepingCard
+
+const openSaveFileDialog = (data, filename, mimetype) => {
+  // copied from https://github.com/mholt/PapaParse/issues/175#issuecomment-514922286
+  if (!data) return
+
+  var blob =
+    data.constructor !== Blob
+      ? new Blob([data], { type: mimetype || "application/octet-stream" })
+      : data
+
+  if (navigator.msSaveBlob) {
+    navigator.msSaveBlob(blob, filename)
+    return
+  }
+
+  var lnk = document.createElement("a"),
+    url = window.URL,
+    objectURL
+
+  if (mimetype) {
+    lnk.type = mimetype
+  }
+
+  lnk.download = filename || "untitled"
+  lnk.href = objectURL = url.createObjectURL(blob)
+  lnk.dispatchEvent(new MouseEvent("click"))
+  setTimeout(url.revokeObjectURL.bind(url, objectURL))
+}
