@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Tags = ({ date, className }) => {
+const Tags = ({ date, isFuture, className }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -32,12 +32,11 @@ const Tags = ({ date, className }) => {
   const handleAddTag = (tag) => (event) => {
     event.preventDefault()
 
-    let note = entryNote
-    if (textEndsWithTag(entryNote)) {
-      console.log("ends with tag", note)
+    let note = entryNote || ""
+    note = note.trim()
+    if (!note || textEndsWithTag(entryNote)) {
       note = `${entryNote} #${tag}`
     } else {
-      console.log("does not end with tag", note)
       note = `${entryNote} \n\n #${tag}`
     }
     dispatch(upsertEntry(date, { note }))
@@ -66,7 +65,7 @@ const Tags = ({ date, className }) => {
               size="small"
               key={tag}
               label={`#${tag}`}
-              {...(!logged && addProps)}
+              {...(!logged && !isFuture && addProps)}
             />
           )
         })}
