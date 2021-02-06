@@ -79,7 +79,7 @@ const HouseKeepingCard = () => {
         <Button
           disabled={disabled}
           variant="outlined"
-          color="primary"
+          color="secondary"
           onClick={exportAllEntries}
         >
           {exportAllEntriesText}
