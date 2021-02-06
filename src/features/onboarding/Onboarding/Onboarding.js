@@ -101,9 +101,8 @@ const Onboarding = () => {
     }
 
     if (values.lastStart) {
-      const entryId = entryIdFromDate(values.lastStart)
       await dispatch(
-        upsertEntry(entryId, {
+        upsertEntry(values.lastStart, {
           note: `#${values.tag}`,
         })
       )

@@ -24,10 +24,10 @@ const databaseName = ENTRIES_DATABASE.databaseName
 export const initEntries = () => openDatabase({ databaseName })
 export const emptyEntries = () => emptyDatabase({ databaseName })
 
-export const upsertEntry = (entryId, entry) => {
+export const upsertEntry = (date, entry) => {
   return upsertItem({
     databaseName,
-    itemId: entryId,
+    itemId: entryIdFromDate(date),
     item: entry,
   })
 }
