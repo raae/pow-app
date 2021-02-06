@@ -8,31 +8,24 @@ import {
   CardContent,
   Typography,
   Box,
-  makeStyles,
 } from "@material-ui/core"
-import { ErrorOutline as DangerIcon } from "@material-ui/icons"
+import { ImportExport as CardIcon } from "@material-ui/icons"
+
+import { Link } from "../navigation"
 import { selectEntries } from "../entries"
 import Papa from "papaparse"
 import { orderBy } from "lodash"
 
-const useStyles = makeStyles((theme) => ({
-  avatar: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  listItem: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-}))
-
 const HouseKeepingCard = () => {
-  const classes = useStyles()
   const [isPending, setIsPending] = useState(false)
   const entries = useSelector(selectEntries)
 
-  const disabled = isPending || entries.length === 1
+  const disabled = isPending || entries.length === 0
 
   let exportAllEntriesText = `Export all my entries`
+  if (entries.length === 0) {
+    exportAllEntriesText = `No entries to export`
+  }
 
   const exportAllEntries = async (event) => {
     setIsPending(true)
@@ -48,20 +41,38 @@ const HouseKeepingCard = () => {
     <Card>
       <CardHeader
         avatar={
-          <Avatar className={classes.avatar}>
-            <DangerIcon />
+          <Avatar>
+            <CardIcon />
           </Avatar>
         }
-        title="Export Zone"
+        title="Import / Export"
       />
 
       <CardContent>
         <Box mb={2}>
           <Typography variant="body1" component="h2">
-            Do you feel the need to Export your POW! data?
+            Import
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            It will be exported in plain text as a csv file.
+            Would you like to import data from another app? If so let us know by
+            getting in touch on{" "}
+            <Link
+              target="_blank"
+              href={`mailto:support@usepow.app?subject=Import&body=${MAILTO_BODY}`}
+            >
+              support@usepow.app
+            </Link>
+            .
+          </Typography>
+        </Box>
+
+        <Box mb={2} mt={4}>
+          <Typography variant="body1" component="h2">
+            Export
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            Export your POW! data as a .csv file with the columns: date, note
+            and tags.
           </Typography>
         </Box>
 
@@ -81,6 +92,13 @@ const HouseKeepingCard = () => {
 HouseKeepingCard.propTypes = {}
 
 export default HouseKeepingCard
+
+const MAILTO_BODY = `
+%0D%0AWe would love to offer imports, but to do so we need your help!
+%0D%0A%0D%0AIt would be great if you could tell us more about the import you need.
+%0D%0A%0D%0AWhat app would you like to import from?
+%0D%0AWould you be willing to provide us with an example file?
+`
 
 const transformAndSortEntries = (entries) => {
   const transformed = entries.map(({ entryId, note, tags }) => {
