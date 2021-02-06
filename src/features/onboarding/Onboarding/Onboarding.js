@@ -11,7 +11,6 @@ import {
 import { insertSetting } from "../../settings"
 import { upsertEntry } from "../../entries"
 
-import { entryIdFromDate } from "../../utils/days"
 import { cleanTag } from "../../utils/tags"
 
 import { SignUpForm } from "../../auth"
