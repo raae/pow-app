@@ -38,7 +38,7 @@ const HouseKeepingCard = () => {
     setIsPending(true)
     event.preventDefault()
 
-    const convertToCsv = Papa.unparse(entries)
+    const convertToCsv = Papa.unparse(transformAndSortEntries(entries))
     openSaveFileDialog(convertToCsv, "pow-export.csv", ".csv")
 
     setIsPending(false)
@@ -81,6 +81,18 @@ const HouseKeepingCard = () => {
 HouseKeepingCard.propTypes = {}
 
 export default HouseKeepingCard
+
+const transformAndSortEntries = (entries) => {
+  const transformed = entries.map(({ entryId, note, tags }) => {
+    return {
+      date: entryId,
+      note,
+      tags,
+    }
+  })
+
+  return orderBy(transformed, "date", "desc")
+}
 
 const openSaveFileDialog = (data, filename, mimetype) => {
   // copied from https://github.com/mholt/PapaParse/issues/175#issuecomment-514922286
