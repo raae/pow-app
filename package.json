@@ -37,6 +37,7 @@
     "gatsby-source-filesystem": "2.3.35",
     "gatsby-transformer-remark": "2.8.46",
     "lodash": "4.17.20",
+    "papaparse": "^5.3.0",
     "query-string": "6.13.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
