@@ -1,7 +1,12 @@
-/* globals fathom */
-
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
+
+import {
+  FATHOM_ONBOARDING_1,
+  FATHOM_ONBOARDING_2,
+  FATHOM_ONBOARDING_3,
+  FATHOM_ONBOARDING_4,
+} from "../../../constants"
 
 import { insertSetting } from "../../settings"
 import { upsertEntry } from "../../entries"
@@ -110,7 +115,7 @@ const Onboarding = () => {
 
   const trackGoal = (goalId) => {
     try {
-      fathom("trackGoal", goalId, 0)
+      window.fathom.trackGoal(goalId, 0)
     } catch (error) {
       console.log("No fathom, cannot track goal")
     }
@@ -123,7 +128,7 @@ const Onboarding = () => {
         <SignUpForm
           onSubmitFulfilled={(event) => {
             handleNext(event)
-            trackGoal("HGGOZCXZ")
+            trackGoal(FATHOM_ONBOARDING_1)
           }}
           elevation={0}
         />
@@ -141,7 +146,7 @@ const Onboarding = () => {
       submitOnly: true,
       handleSubmit: (event) => {
         handleSaveOnboardingTag(event)
-        trackGoal("2JMQXAFB")
+        trackGoal(FATHOM_ONBOARDING_2)
       },
       submitLabel: "Next",
     },
@@ -159,7 +164,7 @@ const Onboarding = () => {
       disabled: isPending,
       handleSubmit: (event) => {
         handleSaveOnboardingInitData(event)
-        trackGoal("OSGGXYF1")
+        trackGoal(FATHOM_ONBOARDING_3)
       },
       submitLabel: "Next",
     },
@@ -170,7 +175,7 @@ const Onboarding = () => {
           submitLabel="Take charge"
           standalone={false}
           onDone={(event) => {
-            trackGoal("BLBWSO16")
+            trackGoal(FATHOM_ONBOARDING_4)
           }}
         />
       ),
