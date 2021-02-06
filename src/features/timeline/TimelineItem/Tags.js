@@ -7,6 +7,7 @@ import { AddCircle as AddIcon } from "@material-ui/icons"
 
 import { selectTagsForDate } from "../../cycle"
 import { selectEntryNote, upsertEntry } from "../../entries"
+import { textEndsWithTag } from "../../utils/tags"
 
 const useStyles = makeStyles((theme) => ({
   tag: {
@@ -30,8 +31,15 @@ const Tags = ({ date, className }) => {
 
   const handleAddTag = (tag) => (event) => {
     event.preventDefault()
-    // if note ends with a tag keep adding, if not add a line break.
-    const note = `${entryNote} #${tag}`
+
+    let note = entryNote
+    if (textEndsWithTag(entryNote)) {
+      console.log("ends with tag", note)
+      note = `${entryNote} #${tag}`
+    } else {
+      console.log("does not end with tag", note)
+      note = `${entryNote} \n\n #${tag}`
+    }
     dispatch(upsertEntry(date, { note }))
   }
 
