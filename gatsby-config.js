@@ -16,14 +16,6 @@ module.exports = {
     image: "https://www.usepow.app/some.png",
   },
   plugins: [
-    {
-      resolve: `fathom-tracking`,
-      options: {
-        site: process.env.FATHOM_SITE,
-        spa: "auto",
-        includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
-      },
-    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-plugin-material-ui`,
@@ -67,6 +59,13 @@ module.exports = {
             "Access-Control-Allow-Origin: *",
           ],
         },
+      },
+    },
+    {
+      resolve: `@raae/gatsby-plugin-fathom`,
+      options: {
+        site: process.env.FATHOM_SITE,
+        includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
       },
     },
   ],
