@@ -11,11 +11,12 @@ import { textEndsWithTag } from "../../utils/tags"
 
 const useStyles = makeStyles((theme) => ({
   tag: {
+    borderStyle: "dashed",
     borderColor: "transparent",
-    borderStyle: "dotted",
+    color: theme.palette.text.primary,
   },
   predictedTag: {
-    borderColor: theme.palette.text.secondary,
+    borderColor: "rgba(0, 0, 0, 0.12)", // Same as paper outline
   },
   loggedTag: {
     fontWeight: theme.typography.fontWeightMedium,
@@ -33,8 +34,8 @@ const Tags = ({ date, isFuture, className }) => {
   const handleAddTag = (tag) => (event) => {
     event.preventDefault()
 
-    let note = entryNote
-    if (!note || textEndsWithTag(entryNote)) {
+    let note = entryNote || ""
+    if (!note || textEndsWithTag(note)) {
       note = `${entryNote} #${tag}`
     } else {
       note = `${entryNote} \n\n #${tag}`
@@ -64,7 +65,7 @@ const Tags = ({ date, isFuture, className }) => {
               variant="outlined"
               size="small"
               key={tag}
-              label={`#${tag}`}
+              label={`${tag}`}
               {...(!logged && !isFuture && addProps)}
             />
           )
