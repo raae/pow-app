@@ -1,4 +1,4 @@
-import { tagsFromText, cleanTag } from "./tags"
+import { tagsFromText, textEndsWithTag, cleanTag } from "./tags"
 
 describe("Tag utils", () => {
   describe("#tagsFromText", () => {
@@ -28,6 +28,30 @@ describe("Tag utils", () => {
         "fun",
         "sunnytimes",
       ])
+    })
+  })
+
+  describe("#textEndsWithTag", () => {
+    test("ends with tag + .", () => {
+      const text = "Text that almost ends with #tag."
+      expect(textEndsWithTag(text)).toEqual(false)
+    })
+
+    test("ends with tag", () => {
+      const text = "Text that ends with a #tag"
+      expect(textEndsWithTag(text)).toEqual(true)
+    })
+
+    test("ends with tag plus some whitespace", () => {
+      const text = "Text that ends with a #tag        "
+      expect(textEndsWithTag(text)).toEqual(true)
+    })
+
+    test("several lines does not end in tag", () => {
+      const text = `
+         Text with many #tag #tagagain that \n is also mulitline and does not end with a tag
+      `
+      expect(textEndsWithTag(text)).toEqual(false)
     })
   })
 

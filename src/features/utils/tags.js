@@ -9,6 +9,15 @@ export const tagsFromText = (text = "") => {
   }
 }
 
+export const textEndsWithTag = (text = "") => {
+  const match = text.trim().match(/#[^\s#.'!"$%&()*+,\-./:;<=>?@[\]^`{|}~]+$/g)
+  if (!match) {
+    return false
+  } else {
+    return true
+  }
+}
+
 export const cleanTag = (tag = "") => {
   const tagWithHash = `#${tag.trim()}`
   return first(tagsFromText(tagWithHash)) || ""

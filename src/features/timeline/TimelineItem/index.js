@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     // should show
     bottom: "2rem",
     width: "100%",
+    zIndex: -1,
     ...theme.mixins.toolbar,
   },
   header: {
@@ -80,7 +81,6 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.secondary.dark,
       theme.palette.action.hoverOpacity
     ),
-    zIndex: "-1",
     "& > *": {
       margin: theme.spacing(0.5),
     },
