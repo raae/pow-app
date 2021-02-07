@@ -42,6 +42,11 @@ describe("Tag utils", () => {
       expect(textEndsWithTag(text)).toEqual(true)
     })
 
+    test("ends with tag plus some whitespace", () => {
+      const text = "Text that ends with a #tag        "
+      expect(textEndsWithTag(text)).toEqual(true)
+    })
+
     test("several lines does not end in tag", () => {
       const text = `
          Text with many #tag #tagagain that \n is also mulitline and does not end with a tag

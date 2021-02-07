@@ -10,7 +10,7 @@ export const tagsFromText = (text = "") => {
 }
 
 export const textEndsWithTag = (text = "") => {
-  const match = text.match(/#[^\s#.'!"$%&()*+,\-./:;<=>?@[\]^`{|}~]+$/g)
+  const match = text.trim().match(/#[^\s#.'!"$%&()*+,\-./:;<=>?@[\]^`{|}~]+$/g)
   if (!match) {
     return false
   } else {
