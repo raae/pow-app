@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   predictedTag: {
-    borderColor: "rgba(0, 0, 0, 0.12)", // Same as paper outline
+    borderColor: "rgba(0, 0, 0, 0.23)",
   },
   loggedTag: {
     fontWeight: theme.typography.fontWeightMedium,
