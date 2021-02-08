@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
 import userbase from "userbase-js"
@@ -12,12 +12,7 @@ import {
 } from "../../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import {
-  selectIsPayingUser,
-  selectStripePlan,
-  selectUserId,
-  selectIsAuthenticated,
-} from "../auth"
+import { selectIsPayingUser, selectIsAuthenticated } from "../auth"
 
 import {
   FormControl,
@@ -33,11 +28,6 @@ import {
 import Alert from "@material-ui/lab/Alert"
 
 import { Link } from "../navigation"
-
-const PLAN_LABELS = {
-  [STRIPE_MONTHLY_PLAN_ID]: "monthly",
-  [STRIPE_YEARLY_PLAN_ID]: "yearly",
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,74 +51,50 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const paymentStatus = useQueryParam("payment")
 
   const isAuthenticated = useSelector(selectIsAuthenticated)
-  const userId = useSelector(selectUserId)
-  const hasPaid = useSelector(selectIsPayingUser)
-  const currentStripePlan = useSelector(selectStripePlan)
-  const currentStripePlanLabel = PLAN_LABELS[currentStripePlan]
+  const activeSubscription = useSelector(selectIsPayingUser)
 
-  console.log(PLAN_LABELS, currentStripePlan, currentStripePlanLabel)
-
-  const [values, setValues] = useState({
-    subscriptionPlan: STRIPE_YEARLY_PLAN_ID,
-  })
+  const [selectedPlan, setSelectedPlan] = useState(STRIPE_YEARLY_PLAN_ID)
   const [error, setError] = useState()
-  const [stripe, setStripe] = useState()
   const [isPending, setIsPending] = useState()
 
-  useEffect(() => {
-    loadStripe(STRIPE_KEY).then((stripe) => {
-      setStripe(stripe)
-    })
-  }, [])
-
-  const handleChange = (name) => (event) => {
-    setValues({
-      ...values,
-      [name]: event.target.value,
-    })
+  const handleSelectedPlanChange = (event) => {
+    setSelectedPlan(event.target.value)
   }
 
-  const handleSubmit = async (event, priceId) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
 
-      userbase
-        .purchaseSubscription({
+    try {
+      // Stripe needs to be loaded before using userbase.purchaseSubscription
+      await loadStripe(STRIPE_KEY)
 
-          successUrl: BASE_URL + "/timeline",
-          cancelUrl: BASE_URL + "/profile?payment=canceled",
-          priceId,
-          // Where is priceId coming from?
-          //Should priceId "be" something? Like for example:
-            // priceId: "bleh bleh-blehBleh ",
-          // use context for what? I will check the video at
-          // https://youtu.be/lc10pjc4Yoo?t=2705
-        })
-        // should we keep all this error pending stuff?
-        // Or is userbase + stripe fixing that for us?
-        .then((result) => {
-          if (result.error) {
-            setError(result.error)
-          } else {
-            setError()
-          }
-          setIsPending(false)
-        })
-        .catch((error) => {
-          setError(error)
-          setIsPending(false)
-        })
+      const result = await userbase.purchaseSubscription({
+        successUrl: BASE_URL + "/timeline",
+        cancelUrl: BASE_URL + "/profile?payment=canceled",
+        priceId: selectedPlan,
+      })
 
+      if (result.error) {
+        setError(result.error)
+      } else {
+        setError()
+      }
+    } catch (error) {
+      setError(error)
+    }
+
+    setIsPending(false)
   }
 
-  if (hasPaid) {
+  if (activeSubscription) {
     return (
       <>
-        <Typography variant="body1" gutterBottom>
-          You are subscribed to the <strong>{currentStripePlanLabel}</strong>{" "}
-          plan.
+        <Typography variant="body1" component="h2" gutterBottom>
+          Manage your subscription
         </Typography>
+
         <Typography variant="body2" color="textSecondary" gutterBottom>
           If you would like to cancel your subscription or change it, send an
           e-mail to{" "}
@@ -165,8 +131,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
             <RadioGroup
               aria-label="Subscription Plan"
               name="subscriptionPlan"
-              value={values.purchaseSubscription}
-              onChange={handleChange("subscriptionPlan")}
+              value={selectedPlan}
+              onChange={handleSelectedPlanChange}
             >
               <FormControlLabel
                 value={STRIPE_MONTHLY_PLAN_ID}
@@ -204,7 +170,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           )}
           <Button
             className={classes.space}
-            disabled={!isAuthenticated || !stripe || isPending}
+            disabled={!isAuthenticated || isPending}
             type="submit"
             fullWidth
             variant="contained"
