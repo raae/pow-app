@@ -171,10 +171,13 @@ export const selectUserEmail = createSelector(
 )
 
 export const selectIsPayingUser = createSelector(
-  [selectProtectedProfile],
-  (protectedProfile) => {
+  [selectProtectedProfile, selectAuthUser],
+  (protectedProfile, user) => {
+    // Old way of doing it
     const customerId = protectedProfile.stripeCustomerId
-    return Boolean(customerId)
+    // New way of doing it
+    const activeSubscription = user && user.subscriptionStatus === "active"
+    return Boolean(customerId) || activeSubscription
   }
 )
 
