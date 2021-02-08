@@ -1,18 +1,9 @@
 import React, { useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
+import { formatDistance, format } from "date-fns"
 import userbase from "userbase-js"
 import classNames from "classnames"
-
-import {
-  STRIPE_KEY,
-  STRIPE_MONTHLY_PLAN_ID,
-  STRIPE_YEARLY_PLAN_ID,
-  BASE_URL,
-} from "../../constants"
-
-import { useQueryParam } from "../utils/useQueryParam"
-import { selectIsPayingUser, selectIsAuthenticated } from "../auth"
 
 import {
   FormControl,
@@ -22,12 +13,29 @@ import {
   Typography,
   Button,
   Paper,
+  Box,
   makeStyles,
 } from "@material-ui/core"
 
 import Alert from "@material-ui/lab/Alert"
 
 import { Link } from "../navigation"
+
+import {
+  STRIPE_KEY,
+  STRIPE_MONTHLY_PLAN_ID,
+  STRIPE_YEARLY_PLAN_ID,
+  BASE_URL,
+} from "../../constants"
+
+import { useQueryParam } from "../utils/useQueryParam"
+import {
+  init,
+  selectIsPayingUser,
+  selectIsAuthenticated,
+  selectCancelSubscriptionAt,
+  selectHasActiveSubscription,
+} from "../auth"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,40 +55,68 @@ const useStyles = makeStyles((theme) => ({
 
 const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
   const paymentStatus = useQueryParam("payment")
 
   const isAuthenticated = useSelector(selectIsAuthenticated)
-  const activeSubscription = useSelector(selectIsPayingUser)
+  // hasPaid either through userbase or old way
+  const hasPaid = useSelector(selectIsPayingUser)
+  // hasActiveSubscription indicated paid through userbase
+  const hasActiveSubscription = useSelector(selectHasActiveSubscription)
+  const cancelSubscriptionAt = useSelector(selectCancelSubscriptionAt)
 
   const [selectedPlan, setSelectedPlan] = useState(STRIPE_YEARLY_PLAN_ID)
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
 
+  const isDisabled = !isAuthenticated || isPending
+
   const handleSelectedPlanChange = (event) => {
     setSelectedPlan(event.target.value)
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubscription = (variant) => async (event) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
 
     try {
-      // Stripe needs to be loaded before using userbase.purchaseSubscription
+      // Stripe needs to be loaded before using userbase subscription methods
       await loadStripe(STRIPE_KEY)
 
-      const result = await userbase.purchaseSubscription({
-        successUrl: BASE_URL + "/timeline",
-        cancelUrl: BASE_URL + "/profile?payment=canceled",
-        priceId: selectedPlan,
-      })
+      switch (variant) {
+        case "purchase":
+          await userbase.purchaseSubscription({
+            successUrl: BASE_URL + "/timeline",
+            cancelUrl: BASE_URL + "/profile?payment=canceled",
+            priceId: selectedPlan,
+          })
+          break
 
-      if (result.error) {
-        setError(result.error)
-      } else {
-        setError()
+        case "update":
+          await userbase.updatePaymentMethod({
+            successUrl: BASE_URL + "/profile",
+            cancelUrl: BASE_URL + "/profile",
+          })
+          break
+
+        case "cancel":
+          await userbase.cancelSubscription()
+          await dispatch(init())
+          break
+
+        case "resume":
+          await userbase.resumeSubscription()
+          await dispatch(init())
+          break
+
+        default:
+          console.warn("No valid handleSubscription variant", variant)
+          break
       }
+
+      setError()
     } catch (error) {
       setError(error)
     }
@@ -88,19 +124,80 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     setIsPending(false)
   }
 
-  if (activeSubscription) {
+  if (hasActiveSubscription) {
     return (
       <>
-        <Typography variant="body1" component="h2" gutterBottom>
-          Manage your subscription
-        </Typography>
+        {cancelSubscriptionAt ? (
+          <>
+            <Box mb={2}>
+              <Typography variant="body1" component="h2">
+                Your subscription expires in{" "}
+                {formatDistance(new Date(cancelSubscriptionAt), new Date())} on{" "}
+                {format(new Date(cancelSubscriptionAt), "MMMM do")}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                You may resume you subscription at any time until then.
+              </Typography>
+            </Box>
 
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          If you would like to cancel your subscription or change it, send an
-          e-mail to{" "}
-          <Link href="mailto://support@usepow.app">support@usepow.app</Link>.
-        </Typography>
+            <Button
+              disabled={isDisabled}
+              variant="outlined"
+              color="secondary"
+              onClick={handleSubscription("resume")}
+            >
+              Resume subscription
+            </Button>
+          </>
+        ) : (
+          <>
+            <Box mb={2}>
+              <Typography variant="body1" component="h2">
+                Update Subscription
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Do you need to change the card on file or your billing email
+                address?
+              </Typography>
+            </Box>
+
+            <Button
+              disabled={isDisabled}
+              variant="outlined"
+              color="secondary"
+              onClick={handleSubscription("update")}
+            >
+              Update subscription
+            </Button>
+
+            <Box mb={2} mt={4}>
+              <Typography variant="body1" component="h2">
+                Cancel Subscription
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                You will be able to access POW! and resume the subscription
+                until the end of the current billing period.
+              </Typography>
+            </Box>
+
+            <Button
+              disabled={isDisabled}
+              variant="outlined"
+              onClick={handleSubscription("cancel")}
+            >
+              Cancel subscription
+            </Button>
+          </>
+        )}
       </>
+    )
+  } else if (hasPaid) {
+    return (
+      <Typography variant="body2" color="textSecondary" gutterBottom>
+        If you would like to cancel your subscription or change it, send an
+        e-mail to{" "}
+        <Link href="mailto://support@usepow.app">support@usepow.app</Link>.
+      </Typography>
     )
   } else {
     return (
@@ -122,7 +219,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           })}
           elevation={standalone ? 1 : 0}
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={handleSubscription("purchase")}
         >
           <Typography className={classes.space} color="textSecondary">
             Choose between a monthly or a yearly plan.
@@ -170,7 +267,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           )}
           <Button
             className={classes.space}
-            disabled={!isAuthenticated || isPending}
+            disabled={isDisabled}
             type="submit"
             fullWidth
             variant="contained"
