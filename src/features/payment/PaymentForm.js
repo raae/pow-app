@@ -34,7 +34,13 @@ import {
   selectIsAuthenticated,
   selectCancelSubscriptionAt,
   selectHasActiveSubscription,
+  selectSubscriptionPlanId,
 } from "../auth"
+
+const PLAN_LABELS = {
+  [STRIPE_MONTHLY_PLAN_ID]: "monthly",
+  [STRIPE_YEARLY_PLAN_ID]: "yearly",
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +69,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   // hasActiveSubscription indicated paid through userbase
   const hasActiveSubscription = useSelector(selectHasActiveSubscription)
   const cancelSubscriptionAt = useSelector(selectCancelSubscriptionAt)
+  const subscriptionPlanId = useSelector(selectSubscriptionPlanId)
 
   const [selectedPlan, setSelectedPlan] = useState(STRIPE_YEARLY_PLAN_ID)
   const [error, setError] = useState()
@@ -130,7 +137,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           <>
             <Box mb={2}>
               <Typography variant="body1" component="h2">
-                Your subscription expires in{" "}
+                Your <strong>{PLAN_LABELS[subscriptionPlanId]}</strong>{" "}
+                subscription expires in{" "}
                 {formatDistance(new Date(cancelSubscriptionAt), new Date())} on{" "}
                 {format(new Date(cancelSubscriptionAt), "MMMM do")}
               </Typography>
@@ -151,8 +159,12 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
         ) : (
           <>
             <Box mb={2}>
-              <Typography variant="body1" component="h2">
-                Update Subscription
+              <Typography variant="body1">
+                You are subscribed to the{" "}
+                <strong>
+                  {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
+                </strong>{" "}
+                plan
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Do you need to change the card on file or your billing email
@@ -178,7 +190,6 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
                 until the end of the current billing period.
               </Typography>
             </Box>
-
             <Button
               disabled={isDisabled}
               variant="outlined"
@@ -192,11 +203,20 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     )
   } else if (hasPaid) {
     return (
-      <Typography variant="body2" color="textSecondary" gutterBottom>
-        If you would like to cancel your subscription or change it, send an
-        e-mail to{" "}
-        <Link href="mailto://support@usepow.app">support@usepow.app</Link>.
-      </Typography>
+      <>
+        <Typography variant="body1">
+          You are subscribed to the{" "}
+          <strong>
+            {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
+          </strong>{" "}
+          plan.
+        </Typography>
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          If you would like to cancel your subscription or change it, send an
+          e-mail to{" "}
+          <Link href="mailto://support@usepow.app">support@usepow.app</Link>.
+        </Typography>
+      </>
     )
   } else {
     return (

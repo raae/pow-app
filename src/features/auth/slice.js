@@ -194,10 +194,11 @@ export const selectCancelSubscriptionAt = createSelector(
   }
 )
 
-export const selectStripePlan = createSelector(
-  [selectProtectedProfile],
-  (protectedProfile) => {
-    return protectedProfile.stripePlanId
+export const selectSubscriptionPlanId = createSelector(
+  [selectProtectedProfile, selectAuthUser],
+  (protectedProfile, user) => {
+    const subscriptionPlanId = user && user.subscriptionPlanId
+    return protectedProfile.stripePlanId || subscriptionPlanId
   }
 )
 
