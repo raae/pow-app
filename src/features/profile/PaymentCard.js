@@ -30,7 +30,7 @@ const PaymentCard = () => {
             <PaymentIcon />
           </Avatar>
         }
-        title="Payment"
+        title="Subscription"
       />
       <CardContent>
         <PaymentForm />

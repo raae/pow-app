@@ -1,7 +1,25 @@
 import React, { useState, useEffect } from "react"
 import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
+import { formatDistance, format } from "date-fns"
+import userbase from "userbase-js"
 import classNames from "classnames"
+
+import {
+  FormControl,
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+  Typography,
+  Button,
+  Paper,
+  Box,
+  makeStyles,
+} from "@material-ui/core"
+
+import Alert from "@material-ui/lab/Alert"
+
+import { Link } from "../navigation"
 
 import {
   STRIPE_KEY,
@@ -13,25 +31,11 @@ import {
 import { useQueryParam } from "../utils/useQueryParam"
 import {
   selectIsPayingUser,
-  selectStripePlan,
-  selectUserId,
   selectIsAuthenticated,
+  selectCancelSubscriptionAt,
+  selectHasActiveSubscription,
+  selectSubscriptionPlanId,
 } from "../auth"
-
-import {
-  FormControl,
-  Radio,
-  FormControlLabel,
-  RadioGroup,
-  Typography,
-  Button,
-  Paper,
-  makeStyles,
-} from "@material-ui/core"
-
-import Alert from "@material-ui/lab/Alert"
-
-import { Link } from "../navigation"
 
 const PLAN_LABELS = {
   [STRIPE_MONTHLY_PLAN_ID]: "monthly",
@@ -60,64 +64,151 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const paymentStatus = useQueryParam("payment")
 
   const isAuthenticated = useSelector(selectIsAuthenticated)
-  const userId = useSelector(selectUserId)
+  // hasPaid either through userbase or old way
   const hasPaid = useSelector(selectIsPayingUser)
-  const currentStripePlan = useSelector(selectStripePlan)
-  const currentStripePlanLabel = PLAN_LABELS[currentStripePlan]
+  // hasActiveSubscription indicated paid through userbase
+  const hasActiveSubscription = useSelector(selectHasActiveSubscription)
+  const cancelSubscriptionAt = useSelector(selectCancelSubscriptionAt)
+  const subscriptionPlanId = useSelector(selectSubscriptionPlanId)
 
-  console.log(PLAN_LABELS, currentStripePlan, currentStripePlanLabel)
-
-  const [values, setValues] = useState({
-    subscriptionPlan: STRIPE_YEARLY_PLAN_ID,
-  })
+  const [selectedPlan, setSelectedPlan] = useState(STRIPE_YEARLY_PLAN_ID)
   const [error, setError] = useState()
-  const [stripe, setStripe] = useState()
   const [isPending, setIsPending] = useState()
 
-  useEffect(() => {
-    loadStripe(STRIPE_KEY).then((stripe) => {
-      setStripe(stripe)
-    })
-  }, [])
+  const isDisabled = !isAuthenticated || isPending
 
-  const handleChange = (name) => (event) => {
-    setValues({
-      ...values,
-      [name]: event.target.value,
-    })
+  const handleSelectedPlanChange = (event) => {
+    setSelectedPlan(event.target.value)
   }
 
-  const handleSubmit = async (event) => {
+  useEffect(() => {
+    setIsPending(false)
+  }, [cancelSubscriptionAt])
+
+  const handleSubscription = (variant) => async (event) => {
     event.preventDefault()
     onDone()
     setIsPending(true)
-    stripe
-      .redirectToCheckout({
-        items: [{ plan: values.subscriptionPlan, quantity: 1 }],
-        clientReferenceId: userId,
-        successUrl: BASE_URL + "/timeline",
-        cancelUrl: BASE_URL + "/profile?payment=canceled",
-        // email: "rart",
-      })
-      .then((result) => {
-        if (result.error) {
-          setError(result.error)
-        } else {
-          setError()
-        }
-        setIsPending(false)
-      })
-      .catch((error) => {
-        setError(error)
-        setIsPending(false)
-      })
+
+    try {
+      // Stripe needs to be loaded before using userbase subscription methods
+      await loadStripe(STRIPE_KEY)
+
+      switch (variant) {
+        case "purchase":
+          await userbase.purchaseSubscription({
+            successUrl: BASE_URL + "/timeline",
+            cancelUrl: BASE_URL + "/profile?payment=canceled",
+            priceId: selectedPlan,
+          })
+          break
+
+        case "update":
+          await userbase.updatePaymentMethod({
+            successUrl: BASE_URL + "/profile",
+            cancelUrl: BASE_URL + "/profile",
+          })
+          break
+
+        case "cancel":
+          await userbase.cancelSubscription()
+          break
+
+        case "resume":
+          await userbase.resumeSubscription()
+          break
+
+        default:
+          console.warn("No valid handleSubscription variant", variant)
+          break
+      }
+
+      setError()
+    } catch (error) {
+      setError(error)
+      setIsPending(false)
+    }
   }
 
-  if (hasPaid) {
+  if (hasActiveSubscription) {
     return (
       <>
-        <Typography variant="body1" gutterBottom>
-          You are subscribed to the <strong>{currentStripePlanLabel}</strong>{" "}
+        {cancelSubscriptionAt ? (
+          <>
+            <Box mb={2}>
+              <Typography variant="body1" component="h2">
+                Your <strong>{PLAN_LABELS[subscriptionPlanId]}</strong>{" "}
+                subscription expires in{" "}
+                {formatDistance(new Date(cancelSubscriptionAt), new Date())} on{" "}
+                {format(new Date(cancelSubscriptionAt), "MMMM do")}
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                You may resume you subscription at any time until then.
+              </Typography>
+            </Box>
+
+            <Button
+              disabled={isDisabled}
+              variant="outlined"
+              color="secondary"
+              onClick={handleSubscription("resume")}
+            >
+              Resume subscription
+            </Button>
+          </>
+        ) : (
+          <>
+            <Box mb={2}>
+              <Typography variant="body1">
+                You are subscribed to the{" "}
+                <strong>
+                  {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
+                </strong>{" "}
+                plan
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Do you need to change the card on file or your billing email
+                address?
+              </Typography>
+            </Box>
+
+            <Button
+              disabled={isDisabled}
+              variant="outlined"
+              color="secondary"
+              onClick={handleSubscription("update")}
+            >
+              Update subscription
+            </Button>
+
+            <Box mb={2} mt={4}>
+              <Typography variant="body1" component="h2">
+                Cancel Subscription
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                You will be able to access POW! and resume the subscription
+                until the end of the current billing period.
+              </Typography>
+            </Box>
+            <Button
+              disabled={isDisabled}
+              variant="outlined"
+              onClick={handleSubscription("cancel")}
+            >
+              Cancel subscription
+            </Button>
+          </>
+        )}
+      </>
+    )
+  } else if (hasPaid) {
+    return (
+      <>
+        <Typography variant="body1">
+          You are subscribed to the{" "}
+          <strong>
+            {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
+          </strong>{" "}
           plan.
         </Typography>
         <Typography variant="body2" color="textSecondary" gutterBottom>
@@ -147,7 +238,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           })}
           elevation={standalone ? 1 : 0}
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={handleSubscription("purchase")}
         >
           <Typography className={classes.space} color="textSecondary">
             Choose between a monthly or a yearly plan.
@@ -156,8 +247,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
             <RadioGroup
               aria-label="Subscription Plan"
               name="subscriptionPlan"
-              value={values.subscriptionPlan}
-              onChange={handleChange("subscriptionPlan")}
+              value={selectedPlan}
+              onChange={handleSelectedPlanChange}
             >
               <FormControlLabel
                 value={STRIPE_MONTHLY_PLAN_ID}
@@ -195,7 +286,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           )}
           <Button
             className={classes.space}
-            disabled={!isAuthenticated || !stripe || isPending}
+            disabled={isDisabled}
             type="submit"
             fullWidth
             variant="contained"
