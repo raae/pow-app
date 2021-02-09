@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState, useEffect } from "react"
+import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
 import { formatDistance, format } from "date-fns"
 import userbase from "userbase-js"
@@ -30,7 +30,6 @@ import {
 
 import { useQueryParam } from "../utils/useQueryParam"
 import {
-  init,
   selectIsPayingUser,
   selectIsAuthenticated,
   selectCancelSubscriptionAt,
@@ -55,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
 
 const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
   const paymentStatus = useQueryParam("payment")
 
@@ -75,6 +73,10 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const handleSelectedPlanChange = (event) => {
     setSelectedPlan(event.target.value)
   }
+
+  useEffect(() => {
+    setIsPending(false)
+  }, [cancelSubscriptionAt])
 
   const handleSubscription = (variant) => async (event) => {
     event.preventDefault()
@@ -103,12 +105,10 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
 
         case "cancel":
           await userbase.cancelSubscription()
-          await dispatch(init())
           break
 
         case "resume":
           await userbase.resumeSubscription()
-          await dispatch(init())
           break
 
         default:
@@ -119,9 +119,8 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
       setError()
     } catch (error) {
       setError(error)
+      setIsPending(false)
     }
-
-    setIsPending(false)
   }
 
   if (hasActiveSubscription) {
