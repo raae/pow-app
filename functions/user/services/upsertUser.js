@@ -1,4 +1,4 @@
-const format = require("date-fns/format")
+const { format } = require("date-fns/format")
 const createError = require("http-errors")
 
 const Userbase = require("./userbase")
