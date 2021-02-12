@@ -14,6 +14,7 @@ module.exports = ({ secretKey }) => {
       )
 
       request.body = event.data.object
+      console.log(request.body)
       next()
     } catch (error) {
       const { message } = error.response?.data || error.request?.data || error

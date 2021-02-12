@@ -30,13 +30,13 @@ module.exports = (accessToken) => {
   }
 
   const getUserbaseUser = async ({ userbaseUserId }) => {
-    const { data } = await userbaseApi.get("users/" + userbaseUserId)
+    const { data: user } = await userbaseApi.get("users/" + userbaseUserId)
 
     log("Fetched user", {
-      userbaseUserId: data.userId,
+      userbaseUserId: user.userId,
     })
 
-    return data
+    return user
   }
 
   const updateUserbaseProtectedProfile = async ({
@@ -59,7 +59,7 @@ module.exports = (accessToken) => {
       protectedProfile,
     })
 
-    return { userbaseUserId }
+    return user
   }
 
   return {
