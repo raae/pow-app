@@ -40,7 +40,7 @@ app.use(
   Sentry.Handlers.errorHandler({
     shouldHandleError(error) {
       // Capture all 404 and 500 errors
-      if (error.status === 401 || error.status >= 500) {
+      if (error.status >= 400) {
         return true
       }
       return false
