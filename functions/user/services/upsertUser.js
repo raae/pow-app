@@ -1,9 +1,10 @@
 const format = require("date-fns/format")
+const createError = require("http-errors")
 
-const Userbase = require("../services/userbase")
-const ConvertKit = require("../services/convertkit")
+const Userbase = require("./userbase")
+const ConvertKit = require("./convertkit")
 
-module.exports = async ({ userbaseUserId, subscriptionDate }) => {
+module.exports = async ({ userbaseUserId, subscriptionDate }, context) => {
   const {
     USERBASE_ADMIN_API_ACCESS_TOKEN,
     CONVERTKIT_API_SECRET,
@@ -41,7 +42,7 @@ module.exports = async ({ userbaseUserId, subscriptionDate }) => {
       })
     } else {
       var convertKitSubscriber = await convertKit.updateConvertKitSubscriber({
-        subscriberId: convertKitSubscriberId,
+        subscriberId: userbaseUser?.protectedProfile?.convertKitId,
         ...convertKitArgs,
       })
 
@@ -55,6 +56,6 @@ module.exports = async ({ userbaseUserId, subscriptionDate }) => {
     }
   } catch (error) {
     const { message } = error.response?.data || error.request?.data || error
-    throw new createError.InternalServerError("Router/userCreated: " + message)
+    throw new createError.InternalServerError("upsertUser: " + message)
   }
 }

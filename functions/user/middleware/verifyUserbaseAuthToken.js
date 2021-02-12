@@ -1,6 +1,6 @@
 const createError = require("http-errors")
 
-const Userbase = require("../utils/userbase")
+const Userbase = require("../services/userbase")
 
 module.exports = () => {
   return async ({ body, context }, response, next) => {
