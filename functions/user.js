@@ -1,12 +1,12 @@
 const serverless = require("serverless-http")
 const express = require("express")
 const helmet = require("helmet")
-const router = require("./router")
 const morgan = require("morgan")
 const Sentry = require("@sentry/node")
 const Tracing = require("@sentry/tracing")
+const httpErrorHandler = require("./user/middleware/httpErrorHandler")
 
-const httpErrorHandler = require("./middleware/httpErrorHandler")
+const router = require("./user/router")
 
 const app = express()
 
