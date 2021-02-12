@@ -41,7 +41,7 @@ export const defaultState = {
 }
 
 export const init = createAsyncThunk("init", async (arg, thunkAPI) => {
-  const response = await userbase.init({
+  const { user } = await userbase.init({
     appId: USERBASE_APP_ID,
     sessionLength: SESSION_LENGTH,
     updateUserHandler: ({ user }) => {
@@ -52,7 +52,8 @@ export const init = createAsyncThunk("init", async (arg, thunkAPI) => {
       })
     },
   })
-  return { user: response.user }
+
+  return { user }
 })
 
 export const updateUser = createAsyncThunk("user/update", async (payload) => {
@@ -137,7 +138,6 @@ const selectProtectedProfile = createSelector([selectAuthUser], (user) => {
     ? user.protectedProfile
     : defaultProtectedProfile
 })
-
 export const selectIsAuthenticated = createSelector(
   [selectAuthUser],
   (user) => {
@@ -166,18 +166,35 @@ export const selectUserEmail = createSelector(
   }
 )
 
-export const selectIsPayingUser = createSelector(
-  [selectProtectedProfile],
-  (protectedProfile) => {
-    const customerId = protectedProfile.stripeCustomerId
-    return Boolean(customerId)
+export const selectHasActiveSubscription = createSelector(
+  [selectAuthUser],
+  (user) => {
+    return Boolean(user && user.subscriptionStatus === "active")
   }
 )
 
-export const selectStripePlan = createSelector(
-  [selectProtectedProfile],
-  (protectedProfile) => {
-    return protectedProfile.stripePlanId
+export const selectIsPayingUser = createSelector(
+  [selectProtectedProfile, selectHasActiveSubscription],
+  (protectedProfile, hasActiveSubscription) => {
+    // Old way of doing it
+    const customerId = protectedProfile.stripeCustomerId
+    // New way of doing it
+    return Boolean(customerId || hasActiveSubscription)
+  }
+)
+
+export const selectCancelSubscriptionAt = createSelector(
+  [selectAuthUser],
+  (user) => {
+    return user && user.cancelSubscriptionAt
+  }
+)
+
+export const selectSubscriptionPlanId = createSelector(
+  [selectProtectedProfile, selectAuthUser],
+  (protectedProfile, user) => {
+    const subscriptionPlanId = user && user.subscriptionPlanId
+    return protectedProfile.stripePlanId || subscriptionPlanId
   }
 )
 
