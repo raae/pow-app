@@ -13,7 +13,7 @@
     "test-cli": "jest",
     "postinstall": "netlify-lambda install functions",
     "build:lambda": "netlify-lambda build functions",
-    "prod": "yarn build; yarn build:lambda"
+    "prod": "npm run build; npm run build:lambda"
   },
   "dependencies": {
     "@date-io/date-fns": "1.3.13",

@@ -1,7 +1,7 @@
 [build]
   publish = "public"
   functions = "lambda"
-  command = "npm prod"
+  command = "npm run prod"
 
 [[plugins]]
 package = 'netlify-plugin-contextual-env'
