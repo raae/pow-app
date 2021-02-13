@@ -94,10 +94,6 @@ const rejectedReducer = (state, { error }) => {
 const fulfilledReducer = (state, { payload }) => {
   state.status = AUTH_STATUS.IDLE
   state.user = payload.user
-  if (state.user) {
-    // To hide them from redux dev tools etc.
-    delete state.user.authToken
-  }
 }
 
 const authSlice = createSlice({
