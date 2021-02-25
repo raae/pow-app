@@ -17,6 +17,7 @@ import { useAppNavItem, useSignInNavItem, Link } from "../navigation"
 
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
+import RememberMeInput from "./RememberMe"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState()
   const [error, setError] = useState()
+  const [rememberMe, setRememberMe] = useState("local")
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -127,6 +129,13 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
         required
         fullWidth
       />
+
+
+      <RememberMeInput
+        value={rememberMe}
+        onChange={(value) => setRememberMe(value)}
+      />
+
 
       <PasswordNote />
 
