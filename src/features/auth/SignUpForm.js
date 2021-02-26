@@ -139,13 +139,6 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
 
       <PasswordNote />
 
-      <FormControlLabel
-        control={
-          <Checkbox id="rememberMeInput" value="local" color="primary" />
-        }
-        label="Remember me"
-      />
-
       <ErrorAlert error={error} />
 
       <Button
