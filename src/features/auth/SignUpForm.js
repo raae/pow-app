@@ -17,6 +17,7 @@ import { useAppNavItem, useSignInNavItem, Link } from "../navigation"
 
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
+import RememberMeInput from "./RememberMe"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState()
   const [error, setError] = useState()
+  const [rememberMe, setRememberMe] = useState("local")
 
   const appNavItem = useAppNavItem()
   const signInNavItem = useSignInNavItem()
@@ -56,9 +58,6 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
     const email = event.target.elements.emailInput.value
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
-    const rememberMe = event.target.elements.rememberMeInput.checked
-      ? "local"
-      : "session"
 
     const result = await dispatch(
       signUp({ email, username, password, rememberMe })
@@ -128,14 +127,12 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
         fullWidth
       />
 
-      <PasswordNote />
-
-      <FormControlLabel
-        control={
-          <Checkbox id="rememberMeInput" value="local" color="primary" />
-        }
-        label="Remember me"
+      <RememberMeInput
+        value={rememberMe}
+        onChange={(value) => setRememberMe(value)}
       />
+
+      <PasswordNote />
 
       <ErrorAlert error={error} />
 
