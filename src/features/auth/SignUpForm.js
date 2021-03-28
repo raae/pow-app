@@ -58,9 +58,6 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
     const email = event.target.elements.emailInput.value
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
-    const rememberMe = event.target.elements.rememberMeInput.checked
-      ? "local"
-      : "session"
 
     const result = await dispatch(
       signUp({ email, username, password, rememberMe })
@@ -130,12 +127,10 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
         fullWidth
       />
 
-
       <RememberMeInput
         value={rememberMe}
         onChange={(value) => setRememberMe(value)}
       />
-
 
       <PasswordNote />
 
