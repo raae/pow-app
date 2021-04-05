@@ -19,8 +19,6 @@ import {
 
 import Alert from "@material-ui/lab/Alert"
 
-import { Link } from "../navigation"
-
 import {
   STRIPE_KEY,
   STRIPE_MONTHLY_PLAN_ID,
@@ -30,11 +28,11 @@ import {
 
 import { useQueryParam } from "../utils/useQueryParam"
 import {
-  selectIsPayingUser,
   selectIsAuthenticated,
   selectCancelSubscriptionAt,
   selectHasActiveSubscription,
   selectSubscriptionPlanId,
+  selectHasUpdatableSubscription,
 } from "../auth"
 
 const PLAN_LABELS = {
@@ -64,10 +62,9 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const paymentStatus = useQueryParam("payment")
 
   const isAuthenticated = useSelector(selectIsAuthenticated)
-  // hasPaid either through userbase or old way
-  const hasPaid = useSelector(selectIsPayingUser)
   // hasActiveSubscription indicated paid through userbase
   const hasActiveSubscription = useSelector(selectHasActiveSubscription)
+  const hasUpdatableSubscription = useSelector(selectHasUpdatableSubscription)
   const cancelSubscriptionAt = useSelector(selectCancelSubscriptionAt)
   const subscriptionPlanId = useSelector(selectSubscriptionPlanId)
 
@@ -130,7 +127,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     }
   }
 
-  if (hasActiveSubscription) {
+  if (hasUpdatableSubscription) {
     return (
       <>
         {cancelSubscriptionAt ? (
@@ -158,6 +155,14 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           </>
         ) : (
           <>
+            {!hasActiveSubscription && (
+              <Box mb={4}>
+                <Alert className={classes.space} severity="warning">
+                  To continue using POW! update your billing information.
+                </Alert>
+              </Box>
+            )}
+
             <Box mb={2}>
               <Typography variant="body1">
                 You are subscribed to the{" "}
@@ -167,7 +172,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
                 plan
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                Do you need to change the card on file or your billing email
+                Do you need to change the card on file or the billing email
                 address?
               </Typography>
             </Box>
@@ -178,7 +183,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
               color="secondary"
               onClick={handleSubscription("update")}
             >
-              Update subscription
+              Update billing information
             </Button>
 
             <Box mb={2} mt={4}>
@@ -199,23 +204,6 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
             </Button>
           </>
         )}
-      </>
-    )
-  } else if (hasPaid) {
-    return (
-      <>
-        <Typography variant="body1">
-          You are subscribed to the{" "}
-          <strong>
-            {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
-          </strong>{" "}
-          plan.
-        </Typography>
-        <Typography variant="body2" color="textSecondary" gutterBottom>
-          If you would like to cancel your subscription or change it, send an
-          e-mail to{" "}
-          <Link href="mailto://support@usepow.app">support@usepow.app</Link>.
-        </Typography>
       </>
     )
   } else {

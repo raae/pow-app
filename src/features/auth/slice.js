@@ -166,6 +166,14 @@ export const selectUserEmail = createSelector(
   }
 )
 
+export const selectHasOldActiveSubscription = createSelector(
+  [selectProtectedProfile],
+  (protectedProfile) => {
+    const customerId = protectedProfile.stripeCustomerId
+    return Boolean(customerId)
+  }
+)
+
 export const selectHasActiveSubscription = createSelector(
   [selectAuthUser],
   (user) => {
@@ -174,12 +182,9 @@ export const selectHasActiveSubscription = createSelector(
 )
 
 export const selectIsPayingUser = createSelector(
-  [selectProtectedProfile, selectHasActiveSubscription],
-  (protectedProfile, hasActiveSubscription) => {
-    // Old way of doing it
-    const customerId = protectedProfile.stripeCustomerId
-    // New way of doing it
-    return Boolean(customerId || hasActiveSubscription)
+  [selectHasOldActiveSubscription, selectHasActiveSubscription],
+  (hasOldActiveSubscription, hasActiveSubscription) => {
+    return hasOldActiveSubscription || hasActiveSubscription
   }
 )
 
@@ -187,6 +192,16 @@ export const selectCancelSubscriptionAt = createSelector(
   [selectAuthUser],
   (user) => {
     return user && user.cancelSubscriptionAt
+  }
+)
+
+export const selectHasUpdatableSubscription = createSelector(
+  [selectAuthUser],
+  (user) => {
+    if (!user) return false
+
+    const UPDATABLE_STATUSES = ["incomplete", "active", "past_due"]
+    return UPDATABLE_STATUSES.includes(user.subscriptionStatus)
   }
 )
 
