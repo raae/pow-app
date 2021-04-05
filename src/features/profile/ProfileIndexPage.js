@@ -36,11 +36,9 @@ const ProfileIndexPage = () => {
       <AppPage className={classes.root}>
         {paymentStatus && (
           <Alert severity="warning">
-            Check the payment section at the bottom of the page.
+            Check the payment section further down the page.
           </Alert>
         )}
-
-
 
         <ProfileCard />
 
