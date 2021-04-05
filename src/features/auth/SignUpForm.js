@@ -5,8 +5,6 @@ import classNames from "classnames"
 import {
   Button,
   TextField,
-  Checkbox,
-  FormControlLabel,
   Paper,
   Typography,
   makeStyles,
