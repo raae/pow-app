@@ -1,9 +1,9 @@
 import { daysBetweenDates, makeDate } from "./days"
-import { startOfDay } from "date-fns"
+import { startOfDay, parseISO } from "date-fns"
 
 describe("#makeDate", () => {
   const testString = "2019-01-04"
-  const testDate = new Date(testString)
+  const testDate = parseISO(testString)
   const resultDate = startOfDay(testDate)
 
   test("Transform dates to start of date", () => {

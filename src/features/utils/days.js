@@ -9,12 +9,13 @@ import {
   eachDayOfInterval,
   addDays,
   startOfDay,
+  parseISO,
 } from "date-fns"
 
 export const makeDate = (input) => {
   let date = input
   if (!(date instanceof Date)) {
-    date = new Date(input)
+    date = parseISO(input)
   }
   if (!isValid(date)) {
     date = new Date()
