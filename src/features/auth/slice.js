@@ -28,11 +28,7 @@ const defaultProfile = {
   welcomeCompleted: "0",
 }
 
-const defaultProtectedProfile = {
-  stripeEmail: "",
-  stripeCustomerId: "",
-  stripePlanId: "",
-}
+const defaultProtectedProfile = {}
 
 export const defaultState = {
   user: null,
@@ -166,14 +162,6 @@ export const selectUserEmail = createSelector(
   }
 )
 
-export const selectHasOldActiveSubscription = createSelector(
-  [selectProtectedProfile],
-  (protectedProfile) => {
-    const customerId = protectedProfile.stripeCustomerId
-    return Boolean(customerId)
-  }
-)
-
 export const selectHasActiveSubscription = createSelector(
   [selectAuthUser],
   (user) => {
@@ -182,9 +170,9 @@ export const selectHasActiveSubscription = createSelector(
 )
 
 export const selectIsPayingUser = createSelector(
-  [selectHasOldActiveSubscription, selectHasActiveSubscription],
-  (hasOldActiveSubscription, hasActiveSubscription) => {
-    return hasOldActiveSubscription || hasActiveSubscription
+  [selectHasActiveSubscription],
+  (hasActiveSubscription) => {
+    return hasActiveSubscription
   }
 )
 
@@ -207,9 +195,9 @@ export const selectHasUpdatableSubscription = createSelector(
 
 export const selectSubscriptionPlanId = createSelector(
   [selectProtectedProfile, selectAuthUser],
-  (protectedProfile, user) => {
+  (user) => {
     const subscriptionPlanId = user && user.subscriptionPlanId
-    return protectedProfile.stripePlanId || subscriptionPlanId
+    return subscriptionPlanId
   }
 )
 
