@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import { selectAuthIsPending, selectIsAuthenticated } from "../features/auth"
+import { useAuth } from "../features/auth"
 import { selectAreEntriesLoading } from "../features/entries"
 import { selectAreSettingsLoading } from "../features/settings"
 
@@ -16,18 +16,18 @@ import {
 } from "../features/profile"
 
 const ProfilePage = () => {
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-  const authIsPending = useSelector(selectAuthIsPending)
+  const { isAuthenticated, isUnauthenticated, isAuthPending } = useAuth()
+
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
   const settingsAreLoading = useSelector(selectAreSettingsLoading)
 
   const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
-    if (!isAuthenticated && !authIsPending) {
+    if (isUnauthenticated) {
       navigate("/login")
     }
-  }, [isAuthenticated, authIsPending])
+  }, [isAuthenticated, isAuthPending])
 
   if (!isAuthenticated || dataIsLoading) {
     return (

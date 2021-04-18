@@ -1,9 +1,9 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { selectUserEmail, updateUser, selectProfile } from "../auth"
+import { updateUser, useUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,9 +16,11 @@ const Welcome = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const userEmail = useSelector(selectUserEmail)
-  const profile = useSelector(selectProfile)
+  const { user } = useUser()
 
+  if (!user) return null
+
+  const { email, profile } = user
   const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
   const newsletterCompleted = profile.newsletter !== undefined
 
@@ -29,7 +31,7 @@ const Welcome = () => {
       case "welcome":
         dispatch(
           updateUser({
-            email: userEmail,
+            email,
             profile: {
               ...profile,
               welcomeCompleted: "1",
@@ -41,7 +43,7 @@ const Welcome = () => {
       case "newsletterOff":
         dispatch(
           updateUser({
-            email: userEmail,
+            email,
             profile: {
               ...profile,
               newsletter: "0",
@@ -53,7 +55,7 @@ const Welcome = () => {
       case "newsletterOn":
         dispatch(
           updateUser({
-            email: userEmail,
+            email,
             profile: {
               ...profile,
               newsletter: "1",

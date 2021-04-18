@@ -5,7 +5,7 @@ import { navigate } from "gatsby"
 import { TextField, Typography, makeStyles } from "@material-ui/core"
 
 import { AppLayout, AppEditToolbar, AppPage } from "../app"
-import { updateUser } from "../auth"
+import { updateUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({
   helperText: {

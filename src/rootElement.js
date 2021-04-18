@@ -1,5 +1,5 @@
 import React from "react"
-import { Provider, useDispatch, useSelector } from "react-redux"
+import { Provider, useDispatch } from "react-redux"
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
@@ -10,8 +10,13 @@ import {
   reducer as authReducer,
   name as authSliceName,
   init as authInit,
-  selectUserId,
 } from "./features/auth"
+
+import {
+  reducer as userReducer,
+  name as userSliceName,
+  useUser,
+} from "./features/user"
 
 import {
   reducer as databaseReducer,
@@ -27,13 +32,15 @@ const store = configureStore({
   reducer: combineReducers({
     [appSliceName]: appReducer,
     [authSliceName]: authReducer,
+    [userSliceName]: userReducer,
     [databaseSliceName]: databaseReducer,
   }),
 })
 
 const Init = () => {
   const dispatch = useDispatch()
-  const userId = useSelector(selectUserId)
+  const { user } = useUser()
+  const userId = user?.userId
 
   useEffect(() => {
     dispatch(authInit())

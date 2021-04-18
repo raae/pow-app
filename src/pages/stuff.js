@@ -1,15 +1,14 @@
 import React, { useState } from "react"
-import { useSelector } from "react-redux"
 import userbase from "userbase-js"
 import { Button, TextField, FormHelperText } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
-import { selectAuthIsPending } from "../features/auth"
+import { useAuth } from "../features/auth"
 import PageTemplate from "../templates/page"
 
 const StuffPage = () => {
-  const authIsPending = useSelector(selectAuthIsPending)
+  const { authIsPending } = useAuth
 
   const [status, setStatus] = useState("INITIAL")
   const [error, setError] = useState(null)

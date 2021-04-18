@@ -1,6 +1,6 @@
 import React from "react"
 import { Link as GatsbyLink } from "gatsby"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 
 import {
   Avatar,
@@ -18,39 +18,13 @@ import {
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 
-import {
-  selectUsername,
-  selectProfile,
-  selectIsAuthenticated,
-  selectUserEmail,
-  updateUser,
-} from "../auth"
+import { useUser, updateUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({}))
 
 const ProfileCard = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-
-  const username = useSelector(selectUsername) || ""
-  const userEmail = useSelector(selectUserEmail) || ""
-  const userProfile = useSelector(selectProfile) || {}
-
-  const handleChange = (name) => (event) => {
-    // Handle newsletter subscription change
-
-    const profile = {
-      [name]: event.target.checked ? "1" : "0",
-    }
-
-    dispatch(
-      updateUser({
-        email: userEmail,
-        profile: { ...userProfile, ...profile },
-      })
-    )
-  }
 
   // Open / close menu
 
@@ -64,7 +38,28 @@ const ProfileCard = () => {
     setMenuAnchorEl(null)
   }
 
-  if (!isAuthenticated) return null
+  // User functionality
+
+  const { user } = useUser()
+
+  if (!user) return null
+
+  const { email, profile, username } = user
+
+  const handleChange = (name) => (event) => {
+    // Handle newsletter subscription change
+
+    const newProfile = {
+      [name]: event.target.checked ? "1" : "0",
+    }
+
+    dispatch(
+      updateUser({
+        email,
+        profile: { ...profile, ...newProfile },
+      })
+    )
+  }
 
   return (
     <Card>
@@ -101,9 +96,9 @@ const ProfileCard = () => {
           </>
         }
         title={username}
-        subheader={userEmail}
+        subheader={email}
       />
-      {userEmail && (
+      {email && (
         <CardContent>
           <Typography variant="body2" gutterBottom>
             POW! is a very young app. To stay updated on its life and advances
@@ -112,7 +107,7 @@ const ProfileCard = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={userProfile.newsletter === "1" ? true : false}
+                checked={profile.newsletter === "1" ? true : false}
                 onChange={handleChange("newsletter")}
                 value="newsletter"
               />

@@ -1,11 +1,11 @@
 import React, { useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
 import { TextField, Typography, makeStyles } from "@material-ui/core"
 
 import { AppLayout, AppEditToolbar, AppPage } from "../app"
-import { updateUser, selectUserEmail } from "../auth"
+import { updateUser, useUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({
   helperText: {
@@ -18,7 +18,8 @@ const ProfileEditEmailPage = () => {
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState()
 
-  const currentEmail = useSelector(selectUserEmail)
+  const { user } = useUser()
+  const { email: currentEmail } = user || {}
 
   const createEmail = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
