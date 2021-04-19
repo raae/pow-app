@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import classNames from "classnames"
 import {
@@ -10,8 +9,9 @@ import {
   makeStyles,
 } from "@material-ui/core"
 
-import { signUp } from "./slice"
 import { useAppNavItem, useSignInNavItem, Link } from "../navigation"
+
+import { useAuth } from "./useAuth"
 
 import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
   const classes = useStyles()
 
-  const dispatch = useDispatch()
+  const { signUp } = useAuth()
   const [isPending, setIsPending] = useState()
   const [error, setError] = useState()
   const [rememberMe, setRememberMe] = useState("local")
@@ -57,9 +57,9 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
 
-    const result = await dispatch(
-      signUp({ email, username, password, rememberMe })
-    )
+    const result = await signUp({ email, username, password, rememberMe })
+
+    console.log({ result })
 
     if (result.error) {
       setIsPending(false)
@@ -75,6 +75,8 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
     }
   }
 
+  const disabled = isPending
+
   return (
     <Paper
       component="form"
@@ -86,6 +88,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       {...props}
     >
       <TextField
+        disabled={disabled}
         id="usernameInput"
         variant="outlined"
         margin="normal"
@@ -99,6 +102,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       />
 
       <TextField
+        disabled={disabled}
         id="emailInput"
         variant="outlined"
         margin="normal"
@@ -112,6 +116,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       />
 
       <TextField
+        disabled={disabled}
         id="passwordInput"
         variant="outlined"
         margin="normal"
@@ -126,6 +131,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       />
 
       <RememberMeInput
+        disabled={disabled}
         value={rememberMe}
         onChange={(value) => setRememberMe(value)}
       />
@@ -135,7 +141,7 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       <ErrorAlert error={error} />
 
       <Button
-        disabled={isPending}
+        disabled={disabled}
         type="submit"
         fullWidth
         variant="contained"

@@ -6,7 +6,7 @@ import {
   NavMenu,
   TIMELINE,
   PROFILE,
-  SIGNOUT,
+  SIGN_OUT,
   SUPPORT,
   TWITTER,
   CHANGELOG,
@@ -51,7 +51,7 @@ const AppDrawer = (props) => {
       <Divider />
       <NavMenu items={[TIMELINE, PROFILE]} onClick={handleCloseDrawer} />
       <Divider />
-      <NavMenu items={[SIGNOUT]} onClick={handleCloseDrawer} />
+      <NavMenu items={[SIGN_OUT]} onClick={handleCloseDrawer} />
 
       <Divider className={classes.pushDown} />
       <footer>

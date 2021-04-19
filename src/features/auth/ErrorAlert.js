@@ -9,7 +9,7 @@ import { useUser } from "../user"
 const ErrorAlert = ({ error }) => {
   const appNavItem = useAppNavItem()
   const signOutNavItem = useSignOutNavItem()
-  const { username } = useUser()
+  const { user } = useUser()
 
   if (!error) return null
 
@@ -18,8 +18,8 @@ const ErrorAlert = ({ error }) => {
       <Typography component="div" variant="body2">
         {error.name === "UserAlreadySignedIn" ? (
           <>
-            You are already logged in as <strong>{username}</strong>. Go to{" "}
-            <Link {...appNavItem}>app</Link> or{" "}
+            You are already logged in as <strong>{user?.username}</strong>. Go
+            to <Link {...appNavItem}>app</Link> or{" "}
             <Link {...signOutNavItem}>sign out</Link>.
           </>
         ) : (

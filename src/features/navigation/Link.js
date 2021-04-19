@@ -24,14 +24,14 @@ const prepareProps = (props) => {
   }
 }
 
-export const Link = ({ children, ...props }) => {
+export const Link = ({ children, label, ...props }) => {
   props = prepareProps(props)
 
-  return <MaterialLink {...props}>{children}</MaterialLink>
+  return <MaterialLink {...props}>{children || label}</MaterialLink>
 }
 
-export const ButtonLink = ({ children, ...props }) => {
+export const ButtonLink = ({ children, label, ...props }) => {
   props = prepareProps(props)
 
-  return <MaterialButton {...props}>{children}</MaterialButton>
+  return <MaterialButton {...props}>{children || label}</MaterialButton>
 }

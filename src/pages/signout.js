@@ -1,20 +1,17 @@
 import React, { useEffect } from "react"
-import { useDispatch } from "react-redux"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
 import PageTemplate from "../templates/page"
 
-import { useAuth, signOut } from "../features/auth"
+import { useAuth } from "../features/auth"
 
 const SignOutPage = () => {
-  const dispatch = useDispatch()
-
-  const { isAuthFailed, error } = useAuth()
+  const { isAuthFailed, error, signOut } = useAuth()
 
   useEffect(() => {
-    dispatch(signOut())
-  }, [dispatch])
+    signOut()
+  }, [signOut])
 
   return (
     <PageTemplate>

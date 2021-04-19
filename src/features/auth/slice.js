@@ -26,7 +26,7 @@ const dispatchUserUpdated = (thunkAPI, { user, args }) => {
   })
 }
 
-const auth = createAsyncThunk("auth", async (thunkArgs, thunkAPI) => {
+export const auth = createAsyncThunk("auth", async (thunkArgs, thunkAPI) => {
   const { func, ...args } = thunkArgs
   if (!["signIn", "signUp", "signOut", "init"].includes(func)) {
     throw new Error(`Auth func not supported: ${args.func}`)
@@ -52,18 +52,6 @@ const auth = createAsyncThunk("auth", async (thunkArgs, thunkAPI) => {
   }
 })
 
-export const signUp = (payload) => {
-  return auth({ func: "signUp", ...payload })
-}
-
-export const signIn = (payload) => {
-  return auth({ func: "signIn", ...payload })
-}
-
-export const signOut = (payload) => {
-  return auth({ func: "signOut", ...payload })
-}
-
 export const init = () => {
   return auth({ func: "init" })
 }
@@ -73,9 +61,10 @@ const authSlice = createSlice({
   initialState: defaultState,
   reducers: {},
   extraReducers: {
-    [auth.pending]: (state) => {
+    [auth.pending]: (state, action) => {
       state.error = null
       state.status = AUTH_STATUS.PENDING
+      console.log({ action })
     },
     [auth.fulfilled]: (state, { payload: { lastUsedUsername, user } }) => {
       state.error = null
@@ -87,7 +76,8 @@ const authSlice = createSlice({
         state.status = AUTH_STATUS.UNAUTHENTICATED
       }
     },
-    [auth.rejected]: (state, { error }) => {
+    [auth.rejected]: (state, { error, ...rest }) => {
+      console.log({ rest })
       state.error = error
       state.status = AUTH_STATUS.FAILED
     },
@@ -103,6 +93,7 @@ export const selectAuthState = createSelector([selectAuthSlice], (slice) => {
     isAuthPending: status === AUTH_STATUS.PENDING,
     isAuthenticated: status === AUTH_STATUS.AUTHENTICATED,
     isUnauthenticated: status === AUTH_STATUS.UNAUTHENTICATED,
+    isAuthFailed: status === AUTH_STATUS.FAILED,
   }
 })
 

@@ -1,6 +1,4 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import { navigate } from "gatsby"
 import classNames from "classnames"
 import {
   Button,
@@ -10,9 +8,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 
-import { signIn } from "./slice"
-import { useAppNavItem, useSignUpNavItem } from "../navigation"
-import { Link } from "../navigation"
+import { useAuth } from "./useAuth"
+import { SIGN_IN, SIGN_UP, Link } from "../navigation"
 
 import ErrorAlert from "./ErrorAlert"
 import RememberMeInput from "./RememberMe"
@@ -33,40 +30,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
+const SignInForm = ({ className, redirect, ...props }) => {
   const classes = useStyles()
 
-  const dispatch = useDispatch()
-  const [isPending, setIsPending] = useState()
-  const [error, setError] = useState()
+  const { isAuthPending, error, signIn } = useAuth()
+
   const [rememberMe, setRememberMe] = useState("local")
 
-  const appNavItem = useAppNavItem()
-  const signUpNavItem = useSignUpNavItem()
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-
-    setIsPending(true)
-    setError(null)
 
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
 
-    const result = await dispatch(signIn({ username, password, rememberMe }))
-
-    if (result.error) {
-      setIsPending(false)
-      setError(result.error)
-    } else {
-      if (onSubmitFulfilled) {
-        onSubmitFulfilled()
-      } else {
-        navigate(appNavItem.to)
-      }
-      setIsPending(false)
-    }
+    signIn({
+      username,
+      password,
+      rememberMe,
+    })
   }
+
+  const disabled = isAuthPending
 
   return (
     <Paper
@@ -76,6 +60,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       {...props}
     >
       <TextField
+        disabled={disabled}
         id="usernameInput"
         variant="outlined"
         margin="normal"
@@ -89,6 +74,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       />
 
       <TextField
+        disabled={disabled}
         id="passwordInput"
         variant="outlined"
         margin="normal"
@@ -103,6 +89,7 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       />
 
       <RememberMeInput
+        disabled={disabled}
         value={rememberMe}
         onChange={(value) => setRememberMe(value)}
       />
@@ -110,18 +97,18 @@ const SignInForm = ({ className, onSubmitFulfilled, ...props }) => {
       <ErrorAlert error={error} />
 
       <Button
-        disabled={isPending}
+        disabled={disabled}
         type="submit"
         fullWidth
         variant="contained"
         color="primary"
       >
-        Log In
+        {SIGN_IN.label}
       </Button>
 
       <Typography variant="body2" align="right">
         Not registered yet?&nbsp;
-        <Link {...signUpNavItem} />
+        <Link {...SIGN_UP}>{SIGN_UP.primary}</Link>
       </Typography>
     </Paper>
   )
