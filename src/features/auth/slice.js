@@ -1,8 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 
 import { USERBASE_APP_ID, SESSION_LENGTH } from "../../constants"
-import { useSelector } from "react-redux"
 
 export const AUTH_STATUS = {
   PENDING: "[Auth] Pending",
@@ -45,8 +44,6 @@ const auth = createAsyncThunk("auth", async (thunkArgs, thunkAPI) => {
     sessionLength: SESSION_LENGTH,
     ...(func === "init" && initArgs),
   })
-
-  console.log("TEST", response)
 
   if (func === "init") {
     return { ...response }
@@ -99,15 +96,15 @@ const authSlice = createSlice({
 
 const selectAuthSlice = (state) => state[authSlice.name]
 
-export const useAuth = () => {
-  const { status, error } = useSelector(selectAuthSlice)
+export const selectAuthState = createSelector([selectAuthSlice], (slice) => {
+  const { status } = slice
   return {
-    error,
+    ...slice,
     isAuthPending: status === AUTH_STATUS.PENDING,
     isAuthenticated: status === AUTH_STATUS.AUTHENTICATED,
     isUnauthenticated: status === AUTH_STATUS.UNAUTHENTICATED,
   }
-}
+})
 
 export const name = authSlice.name
 export default authSlice.reducer

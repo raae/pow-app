@@ -98,6 +98,12 @@ export const SIGNOUT = {
   ...INTERNAL,
 }
 
+export const SIGN_IN = {
+  primary: "Log in",
+  to: "/login",
+  ...INTERNAL,
+}
+
 export const PROFILE = {
   primary: "Profile",
   icon: <ProfileIcon />,

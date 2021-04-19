@@ -1,6 +1,5 @@
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
@@ -11,15 +10,11 @@ import { useAuth, signOut } from "../features/auth"
 const SignOutPage = () => {
   const dispatch = useDispatch()
 
-  const { isUnauthenticated, isAuthFailed, error } = useAuth()
+  const { isAuthFailed, error } = useAuth()
 
   useEffect(() => {
-    if (isUnauthenticated) {
-      navigate("/")
-    } else {
-      dispatch(signOut())
-    }
-  }, [dispatch, isUnauthenticated])
+    dispatch(signOut())
+  }, [dispatch])
 
   return (
     <PageTemplate>

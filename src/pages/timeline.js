@@ -12,7 +12,7 @@ import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
 import { SEO, Loading } from "../features/app"
 
 const CyclePage = () => {
-  const { isAuthenticated, isUnauthenticated, isAuthPending } = useAuth()
+  const { isAuthenticated, isAuthPending } = useAuth()
   const { isSubscribed } = useSubscription()
 
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
@@ -21,12 +21,10 @@ const CyclePage = () => {
   const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
-    if (isUnauthenticated) {
-      navigate("/login")
-    } else if (isAuthenticated && !isSubscribed) {
+    if (isAuthenticated && !isSubscribed) {
       navigate("/profile?payment=unfinished")
     }
-  }, [isAuthenticated, isUnauthenticated, isSubscribed])
+  }, [isAuthenticated, isSubscribed])
 
   if (isAuthPending || dataIsLoading) {
     return (
