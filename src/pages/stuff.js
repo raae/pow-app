@@ -20,13 +20,11 @@ const StuffPage = () => {
     try {
       const username = event.target.elements.usernameInput.value
       setStatus("PENDING")
-      const user = await userbase.forgotPassword({
+      await userbase.forgotPassword({
         username,
       })
-      console.log(user)
       setStatus("EMAIL_SENT")
     } catch (error) {
-      console.log(error)
       setStatus("ERROR")
       setError(error)
     }
@@ -46,7 +44,7 @@ const StuffPage = () => {
       <h2>Password Recovery</h2>
       <p>
         This might work if you are using the same device and browser you have
-        logged in with before, and you choose remember me the last time you
+        logged in with before, and you choose "remember me" the last time you
         successfully logged in.
       </p>
       <form onSubmit={handleTemporaryPassword}>

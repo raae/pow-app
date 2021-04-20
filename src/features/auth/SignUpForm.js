@@ -59,8 +59,6 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
 
     const result = await signUp({ email, username, password, rememberMe })
 
-    console.log({ result })
-
     if (result.error) {
       setIsPending(false)
       setError(result.error)

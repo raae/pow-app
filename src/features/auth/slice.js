@@ -18,7 +18,6 @@ export const defaultState = {
 
 const dispatchUserUpdated = (thunkAPI, { user, args }) => {
   // Will be dealt with in the user slice
-  console.log("user", user)
   thunkAPI.dispatch({
     type: "user/updated",
     payload: { user },
@@ -64,7 +63,6 @@ const authSlice = createSlice({
     [auth.pending]: (state, action) => {
       state.error = null
       state.status = AUTH_STATUS.PENDING
-      console.log({ action })
     },
     [auth.fulfilled]: (state, { payload: { lastUsedUsername, user } }) => {
       state.error = null
@@ -76,8 +74,7 @@ const authSlice = createSlice({
         state.status = AUTH_STATUS.UNAUTHENTICATED
       }
     },
-    [auth.rejected]: (state, { error, ...rest }) => {
-      console.log({ rest })
+    [auth.rejected]: (state, { error }) => {
       state.error = error
       state.status = AUTH_STATUS.FAILED
     },
