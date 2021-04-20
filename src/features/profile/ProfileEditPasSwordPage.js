@@ -1,11 +1,10 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
 import { TextField, Typography, makeStyles } from "@material-ui/core"
 
 import { AppLayout, AppEditToolbar, AppPage } from "../app"
-import { updateUser } from "../user"
+import { useUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({
   helperText: {
@@ -15,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEditPasSwordPage = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const { updateUser } = useUser()
   const [isPending, setIsPending] = useState()
 
-  const createEmail = async (event) => {
+  const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
 
     event.preventDefault()
@@ -27,14 +26,15 @@ const ProfileEditPasSwordPage = () => {
 
     // 2. Listen for those PasSwords from those inputs
 
-    const oldPasSword = event.target.elements.emailInput.value
-    const newPasSword = event.target.elements.newPasSwordInput.value
+    const oldPassword = event.target.elements.currentPasswordInput.value
+    const newPassword = event.target.elements.newPasswordInput.value
 
     // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
 
-    const { error } = await dispatch(
-      updateUser({ currentPassword: oldPasSword, newPassword: newPasSword })
-    )
+    const { error } = await updateUser({
+      currentPassword: oldPassword,
+      newPassword: newPassword,
+    })
 
     // 3. Do somethings like, send that customer back to /profile or give alert if error
     if (error) {
@@ -45,7 +45,7 @@ const ProfileEditPasSwordPage = () => {
     }
   }
 
-  const createReset = (event) => {
+  const handleReset = (event) => {
     event.preventDefault()
     navigate(`/profile`)
   }
@@ -54,24 +54,24 @@ const ProfileEditPasSwordPage = () => {
     <AppLayout>
       <form
         className={classes.form}
-        onSubmit={createEmail}
-        onReset={createReset}
+        onSubmit={handleSubmit}
+        onReset={handleReset}
       >
         <AppPage withPaper>
           <TextField
             disabled={isPending}
-            id="emailInput"
+            id="currentPasswordInput"
             type="password"
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            label="Old Password"
-            name="Old password"
+            label="Current Password"
+            name="Current password"
           />
           <TextField
             disabled={isPending}
-            id="newPasSwordInput"
+            id="newPasswordInput"
             type="password"
             variant="outlined"
             margin="normal"

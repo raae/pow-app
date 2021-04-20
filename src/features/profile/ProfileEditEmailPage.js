@@ -1,11 +1,10 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 
 import { TextField, Typography, makeStyles } from "@material-ui/core"
 
 import { AppLayout, AppEditToolbar, AppPage } from "../app"
-import { updateUser, useUser } from "../user"
+import { useUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({
   helperText: {
@@ -15,13 +14,11 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEditEmailPage = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const [isPending, setIsPending] = useState()
 
-  const { user } = useUser()
-  const { email: currentEmail } = user || {}
+  const { user, updateUser } = useUser()
 
-  const createEmail = async (event) => {
+  const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
 
     event.preventDefault()
@@ -31,11 +28,11 @@ const ProfileEditEmailPage = () => {
 
     // 2. Get that email from the input
 
-    const email = event.target.elements.emailInput.value
+    const newEmail = event.target.elements.emailInput.value
 
     // 3. Send that email to Daniel V.'s Userbase
 
-    const { error } = await dispatch(updateUser({ email: email }))
+    const { error } = await updateUser({ email: newEmail })
 
     // 4. Send that customer back to /profile or give alert if error
     if (error) {
@@ -46,7 +43,7 @@ const ProfileEditEmailPage = () => {
     }
   }
 
-  const createReset = (event) => {
+  const handleReset = (event) => {
     event.preventDefault()
     navigate(`/profile`)
   }
@@ -55,8 +52,8 @@ const ProfileEditEmailPage = () => {
     <AppLayout>
       <form
         className={classes.form}
-        onSubmit={createEmail}
-        onReset={createReset}
+        onSubmit={handleSubmit}
+        onReset={handleReset}
       >
         <AppPage withPaper>
           <TextField
@@ -74,7 +71,7 @@ const ProfileEditEmailPage = () => {
             FormHelperTextProps={{ className: classes.helperText }}
             helperText={
               <>
-                Your current POW! email is <strong>{currentEmail}</strong>.
+                Your current POW! email is <strong>{user?.email}</strong>.
               </>
             }
           />

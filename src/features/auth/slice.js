@@ -87,9 +87,9 @@ const authSlice = createSlice({
 const selectAuthSlice = (state) => state[authSlice.name]
 
 export const selectAuthState = createSelector([selectAuthSlice], (slice) => {
-  const { status } = slice
+  const { status, ...state } = slice
   return {
-    ...slice,
+    ...state,
     isAuthPending: status === AUTH_STATUS.PENDING,
     isAuthenticated: status === AUTH_STATUS.AUTHENTICATED,
     isUnauthenticated: status === AUTH_STATUS.UNAUTHENTICATED,

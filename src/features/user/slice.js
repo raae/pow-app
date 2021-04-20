@@ -1,31 +1,40 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 
-import { useSelector } from "react-redux"
-
 export const USER_STATUS = {
   UPDATING: "[User] Updating",
   IDLE: "[User] Idle",
 }
 
-const defaultProfile = {
-  newsletter: "0",
-  welcomeCompleted: "0",
+const DEFAULT_PROFILE = {
+  newsletter: "-1",
+  welcomeCompleted: "-1",
 }
 
-export const defaultState = {
+export const DEFAULT_STATE = {
   status: USER_STATUS.IDLE,
   user: null,
   error: null,
 }
 
-export const updateUser = createAsyncThunk("user/update", async (payload) => {
-  await userbase.updateUser(payload)
-})
+export const updateUser = createAsyncThunk(
+  "user/update",
+  async (args, thunkAPI) => {
+    const state = thunkAPI.getState()
+    const { user } = selectUserState(state)
+
+    await userbase.updateUser({
+      ...args,
+      // Merge new profile data with old profile data,
+      // so we do have to do this everywhere we update the user
+      profile: { ...user?.profile, ...args.profile },
+    })
+  }
+)
 
 const userSlice = createSlice({
   name: "user",
-  initialState: defaultState,
+  initialState: DEFAULT_STATE,
   reducers: {},
   extraReducers: {
     "user/updated": (state, { payload: { user } }) => {
@@ -51,45 +60,21 @@ const userSlice = createSlice({
 
 const selectUserSlice = (state) => state[userSlice.name]
 
-const selectUser = createSelector([selectUserSlice], ({ user }) => {
-  if (!user) return defaultState.user
-
-  return { ...user, profile: user.profile || defaultProfile }
-})
-
-export const useUser = () => {
-  const { error, status } = useSelector(selectUserSlice)
-  const user = useSelector(selectUser)
+export const selectUserState = createSelector([selectUserSlice], (slice) => {
+  const { user, status, ...state } = slice
 
   return {
-    user,
-    error,
+    ...state,
+    user: {
+      ...user,
+      profile: {
+        ...DEFAULT_PROFILE,
+        ...user?.profile,
+      },
+    },
     isUpdating: status === USER_STATUS.UPDATING,
   }
-}
-
-export const useSubscription = () => {
-  const UPDATABLE_STATUSES = ["incomplete", "active", "past_due"]
-  const user = useSelector(selectUser)
-
-  if (!user) {
-    return {
-      isSubscribed: false,
-      isSubscriptionUpdatable: false,
-      cancelSubscriptionAt: undefined,
-      subscriptionPlanId: undefined,
-    }
-  } else {
-    return {
-      isSubscribed: user.subscriptionStatus === "active",
-      isSubscriptionUpdatable: UPDATABLE_STATUSES.includes(
-        user.subscriptionStatus
-      ),
-      cancelSubscriptionAt: user.cancelSubscriptionAt,
-      subscriptionPlanId: user.subscriptionPlanId,
-    }
-  }
-}
+})
 
 export const name = userSlice.name
 export default userSlice.reducer

@@ -1,6 +1,5 @@
 import React from "react"
 import { Link as GatsbyLink } from "gatsby"
-import { useDispatch } from "react-redux"
 
 import {
   Avatar,
@@ -11,20 +10,19 @@ import {
   Typography,
   Menu,
   MenuItem,
-  FormControlLabel,
-  Switch,
   makeStyles,
 } from "@material-ui/core"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MoreVertIcon from "@material-ui/icons/MoreVert"
 
-import { useUser, updateUser } from "../user"
+import { useUser } from "../user"
+
+import NewsletterSwitch from "./NewsletterSwitch"
 
 const useStyles = makeStyles((theme) => ({}))
 
 const ProfileCard = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
   // Open / close menu
 
@@ -41,25 +39,6 @@ const ProfileCard = () => {
   // User functionality
 
   const { user } = useUser()
-
-  if (!user) return null
-
-  const { email, profile, username } = user
-
-  const handleChange = (name) => (event) => {
-    // Handle newsletter subscription change
-
-    const newProfile = {
-      [name]: event.target.checked ? "1" : "0",
-    }
-
-    dispatch(
-      updateUser({
-        email,
-        profile: { ...profile, ...newProfile },
-      })
-    )
-  }
 
   return (
     <Card>
@@ -95,25 +74,16 @@ const ProfileCard = () => {
             </Menu>
           </>
         }
-        title={username}
-        subheader={email}
+        title={user?.username}
+        subheader={user?.email}
       />
-      {email && (
+      {user?.email && (
         <CardContent>
           <Typography variant="body2" gutterBottom>
             POW! is a very young app. To stay updated on its life and advances
             sign up for the newsletter. You may cancel at any time.
           </Typography>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={profile.newsletter === "1" ? true : false}
-                onChange={handleChange("newsletter")}
-                value="newsletter"
-              />
-            }
-            label="I would like to receive the POW! Newsletter"
-          />
+          <NewsletterSwitch />
         </CardContent>
       )}
     </Card>
