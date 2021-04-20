@@ -1,3 +1,5 @@
-export { default as ProfileIndexPage } from "./ProfileIndexPage"
-export { default as ProfileEditEmailPage } from "./ProfileEditEmailPage"
-export { default as ProfileEditPasswordPage } from "./ProfileEditPasSwordPage"
+export { default as BetaCard } from "./BetaCard"
+export { default as DangerCard } from "./DangerCard"
+export { default as HouseKeepingCard } from "./HouseKeepingCard"
+export { default as PaymentCard } from "./PaymentCard"
+export { default as ProfileCard } from "./ProfileCard"

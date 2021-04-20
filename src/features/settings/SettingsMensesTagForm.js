@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
 import { useDispatch, useSelector } from "react-redux"
 
 import {
@@ -29,11 +30,7 @@ const textFieldProps = {
   margin: "normal",
 }
 
-const SettingsMensesTagForm = ({
-  component: Component = "form",
-  onDone,
-  children,
-}) => {
+const SettingsMensesTagForm = ({ title, onDone, Component }) => {
   const classes = useStyles()
 
   const dispatch = useDispatch()
@@ -55,28 +52,33 @@ const SettingsMensesTagForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    setIsPending(true)
-    const { error } = await dispatch(addMensesTag({ tag: newTag }))
-    if (error) {
-      setError(error)
+    if (!newTag) {
+      onDone()
     } else {
-      setNewTag("")
-      setIsPending(false)
-      onDone && onDone()
+      setIsPending(true)
+      const { error } = await dispatch(addMensesTag({ tag: newTag }))
+      if (error) {
+        setError(error)
+      } else {
+        setNewTag("")
+        setIsPending(false)
+        onDone()
+      }
     }
   }
 
   const handleReset = () => {
     setNewTag("")
-    onDone && onDone()
+    onDone()
   }
 
   return (
     <Component
-      onSubmit={!isPending && newTag && handleSubmit}
-      onReset={!isPending && handleReset}
-      title="Menstruation tag"
+      onSubmit={handleSubmit}
+      onReset={handleReset}
+      title={title}
       className={classes.root}
+      disabled={isPending}
     >
       {error && <Alert severity="warning">{error.message}</Alert>}
 
@@ -105,10 +107,20 @@ const SettingsMensesTagForm = ({
           </FormHelperText>
         )}
       </FormGroup>
-
-      {children}
     </Component>
   )
+}
+
+SettingsMensesTagForm.propTypes = {
+  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["form"])])
+    .isRequired,
+  title: PropTypes.string,
+  onDone: PropTypes.func,
+}
+
+SettingsMensesTagForm.defaultProps = {
+  Component: "form",
+  onDone: () => {},
 }
 
 export default SettingsMensesTagForm

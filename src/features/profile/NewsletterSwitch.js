@@ -3,7 +3,7 @@ import React from "react"
 import { FormControlLabel, Switch } from "@material-ui/core"
 import { useUser } from "../user"
 
-const NewsletterSwitch = () => {
+const NewsletterSwitch = (props) => {
   const { user, updateUser } = useUser()
 
   const handleChange = (name) => (event) => {
@@ -25,6 +25,7 @@ const NewsletterSwitch = () => {
           checked={user?.profile?.newsletter === "1" ? true : false}
           onChange={handleChange("newsletter")}
           value="newsletter"
+          {...props}
         />
       }
       label="I would like to receive the POW! Newsletter"
