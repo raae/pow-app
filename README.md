@@ -119,4 +119,4 @@ Check out the official [POW! Backstage](https://ko-fi.com/usepow) where you may 
 
 ---
 
-![Logo](https://my.usepow.app/logo.png | width=100)
+![Logo](https://my.usepow.app/logo.png)
