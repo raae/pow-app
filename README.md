@@ -61,7 +61,7 @@ User facing changes are documented at [usepow.app/changelog](usepow.app/changelo
 
 ## Deployment
 
-Netlify is continuously deploying the `master` branch.
+Netlify is continuously deploying the `main` branch.
 It is also possible to trigger a build manually through the
 Netlify interface for those who have access.
 
