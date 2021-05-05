@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 
-import { Loading, SEO } from "../features/app"
+import { Loading, Seo } from "../features/app"
 import { TIMELINE } from "../features/navigation"
 import { useAuth } from "../features/auth"
 
@@ -16,7 +16,7 @@ const IndexPage = () => {
 
   return (
     <>
-      <SEO title="Loading..." />
+      <Seo title="Loading..." />
       <Loading fullScreen />
     </>
   )

@@ -19,7 +19,7 @@ const useSiteMetadata = () => {
   return data.site.siteMetadata
 }
 
-const SEO = ({ title }) => {
+const Seo = ({ title }) => {
   const siteMeta = useSiteMetadata()
 
   const pageTitle = title || siteMeta.title
@@ -72,4 +72,4 @@ const SEO = ({ title }) => {
   )
 }
 
-export default SEO
+export default Seo
