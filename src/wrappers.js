@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Provider, useDispatch } from "react-redux"
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
@@ -9,14 +9,11 @@ import { reducer as appReducer, name as appSliceName } from "./features/app"
 import {
   reducer as authReducer,
   name as authSliceName,
-  init as authInit,
+  useAuth,
+  AuthGateway,
 } from "./features/auth"
 
-import {
-  reducer as userReducer,
-  name as userSliceName,
-  useUser,
-} from "./features/user"
+import { reducer as userReducer, name as userSliceName } from "./features/user"
 
 import {
   reducer as databaseReducer,
@@ -26,7 +23,7 @@ import {
 import { initSettings } from "./features/settings"
 import { initEntries } from "./features/entries"
 
-import { useEffect } from "react"
+import { withTheme } from "./theme"
 
 const store = configureStore({
   reducer: combineReducers({
@@ -37,14 +34,15 @@ const store = configureStore({
   }),
 })
 
-const Init = () => {
+const InitStore = ({ isSSR }) => {
   const dispatch = useDispatch()
-  const { user } = useUser()
-  const userId = user?.userId
+  const { userId, init } = useAuth()
 
   useEffect(() => {
-    dispatch(authInit())
-  }, [dispatch])
+    if (!isSSR) {
+      init()
+    }
+  }, [isSSR, init])
 
   useEffect(() => {
     if (userId) {
@@ -56,10 +54,10 @@ const Init = () => {
   return null
 }
 
-export const RootElement = ({ children }) => {
+const RootElement = ({ children }) => {
   return (
     <Provider store={store}>
-      <Init />
+      <InitStore />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {children}
       </MuiPickersUtilsProvider>
@@ -67,6 +65,12 @@ export const RootElement = ({ children }) => {
   )
 }
 
-export const withRoot = ({ element }) => {
-  return <RootElement>{element}</RootElement>
+export const withPage = ({ element }) => {
+  return withTheme({
+    element: <AuthGateway> {element}</AuthGateway>,
+  })
+}
+
+export const withRoot = ({ element, isSSR }) => {
+  return <RootElement isSSR={isSSR}>{element}</RootElement>
 }

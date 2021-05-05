@@ -12,6 +12,7 @@ export const AUTH_STATUS = {
 
 export const defaultState = {
   status: AUTH_STATUS.PENDING,
+  userId: null,
   lastUsedUsername: null,
   error: null,
 }
@@ -51,16 +52,12 @@ export const auth = createAsyncThunk("auth", async (thunkArgs, thunkAPI) => {
   }
 })
 
-export const init = () => {
-  return auth({ func: "init" })
-}
-
 const authSlice = createSlice({
   name: "auth",
   initialState: defaultState,
   reducers: {},
   extraReducers: {
-    [auth.pending]: (state, action) => {
+    [auth.pending]: (state) => {
       state.error = null
       state.status = AUTH_STATUS.PENDING
     },
@@ -70,8 +67,10 @@ const authSlice = createSlice({
 
       if (user) {
         state.status = AUTH_STATUS.AUTHENTICATED
+        state.userId = user.userId
       } else {
         state.status = AUTH_STATUS.UNAUTHENTICATED
+        state.userId = null
       }
     },
     [auth.rejected]: (state, { error }) => {
