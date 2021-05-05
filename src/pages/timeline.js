@@ -9,7 +9,7 @@ import { selectAreEntriesLoading } from "../features/entries"
 import { selectAreSettingsLoading } from "../features/settings"
 import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
 
-import { SEO, Loading } from "../features/app"
+import { Seo, Loading } from "../features/app"
 
 const CyclePage = () => {
   const { isAuthenticated, isAuthPending } = useAuth()
@@ -29,7 +29,7 @@ const CyclePage = () => {
   if (isAuthPending || dataIsLoading) {
     return (
       <>
-        <SEO title="Loading..." />
+        <Seo title="Loading..." />
         <Loading fullScreen />
       </>
     )
@@ -37,7 +37,7 @@ const CyclePage = () => {
 
   return (
     <>
-      <SEO title="Cycle" />
+      <Seo title="Cycle" />
       <Router basepath="/timeline">
         <TimelineIndexPage path="/" />
         <TimelineIndexPage path=":entryId" />

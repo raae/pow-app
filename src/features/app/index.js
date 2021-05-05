@@ -1,5 +1,5 @@
 export { default as Loading } from "./Loading"
-export { default as SEO } from "./Seo"
+export { default as Seo } from "./Seo"
 export { default as AppLayout } from "./AppLayout"
 export { default as AppAuthLayout } from "./AppAuthLayout"
 export { default as AppMainToolbar } from "./AppMainToolbar"

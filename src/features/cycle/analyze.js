@@ -2,7 +2,7 @@ import { compact, sum, round, last, intersection } from "lodash"
 
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 
-export default ({ sortedEntries, initialDaysBetween, menstruationTags }) => {
+const analyze = ({ sortedEntries, initialDaysBetween, menstruationTags }) => {
   let cycleIndex = 0
 
   const cycle = {
@@ -64,3 +64,5 @@ export default ({ sortedEntries, initialDaysBetween, menstruationTags }) => {
     nextStartDate,
   }
 }
+
+export default analyze

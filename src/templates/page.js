@@ -1,7 +1,7 @@
 import React from "react"
 import { Container, makeStyles } from "@material-ui/core"
 
-import { SEO, Logo } from "../features/app"
+import { Seo, Logo } from "../features/app"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +14,7 @@ const PageTemplate = ({ children }) => {
   return (
     <div className={classes.root}>
       <Container maxWidth="sm">
-        <SEO />
+        <Seo />
 
         <h1>
           <Logo component="a" href="https://usepow.app">

@@ -3,7 +3,7 @@ import userbase from "userbase-js"
 import { Button, TextField, FormGroup } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { SEO, Loading } from "../features/app"
+import { Seo, Loading } from "../features/app"
 import { useAuth } from "../features/auth"
 import { HOME } from "../features/navigation"
 import PageTemplate from "../templates/page"
@@ -48,7 +48,7 @@ const StuffPage = () => {
 
   return (
     <PageTemplate>
-      <SEO title="Reset" />
+      <Seo title="Reset" />
 
       <h1>Reset password</h1>
 

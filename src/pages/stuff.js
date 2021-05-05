@@ -3,7 +3,7 @@ import userbase from "userbase-js"
 import { Button, TextField, FormHelperText } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { SEO, Loading } from "../features/app"
+import { Seo, Loading } from "../features/app"
 import { useAuth } from "../features/auth"
 import PageTemplate from "../templates/page"
 
@@ -36,7 +36,7 @@ const StuffPage = () => {
 
   return (
     <PageTemplate>
-      <SEO title="Secret" />
+      <Seo title="Secret" />
       <h1>Support Stuff</h1>
       <Alert severity="warning">
         This page should only be used if directed here by POW! support.
