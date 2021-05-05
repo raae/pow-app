@@ -1,19 +1,16 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
-import { navigate } from "gatsby"
 import classNames from "classnames"
 import {
   Button,
   TextField,
-  Paper,
   Typography,
+  Paper,
   makeStyles,
 } from "@material-ui/core"
 
-import { signUp } from "./slice"
-import { useAppNavItem, useSignInNavItem, Link } from "../navigation"
+import { useAuth } from "../useAuth"
+import { SIGN_IN, SIGN_UP, Link } from "../../navigation"
 
-import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
 import RememberMeInput from "./RememberMe"
 
@@ -22,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     padding: theme.spacing(3, 4),
     "& > .MuiAlert-root": {
-      margin: theme.spacing(2, 0),
+      marginTop: theme.spacing(1),
     },
     "& > label": {
       margin: theme.spacing(0),
@@ -31,61 +28,39 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2, 0),
     },
   },
-  noElevation: {
-    padding: 0,
-  },
 }))
 
-const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
+const SignInForm = ({ className, redirect, ...props }) => {
   const classes = useStyles()
 
-  const dispatch = useDispatch()
-  const [isPending, setIsPending] = useState()
-  const [error, setError] = useState()
+  const { isAuthPending, error, signIn } = useAuth()
+
   const [rememberMe, setRememberMe] = useState("local")
 
-  const appNavItem = useAppNavItem()
-  const signInNavItem = useSignInNavItem()
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
 
-    setIsPending(true)
-    setError(null)
-
-    const email = event.target.elements.emailInput.value
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
 
-    const result = await dispatch(
-      signUp({ email, username, password, rememberMe })
-    )
-
-    if (result.error) {
-      setIsPending(false)
-      setError(result.error)
-    } else {
-      if (onSubmitFulfilled) {
-        onSubmitFulfilled()
-      } else {
-        navigate(appNavItem.to)
-      }
-
-      setIsPending(false)
-    }
+    signIn({
+      username,
+      password,
+      rememberMe,
+    })
   }
+
+  const disabled = isAuthPending
 
   return (
     <Paper
       component="form"
-      className={classNames(className, classes.root, {
-        [classes.noElevation]: elevation === 0,
-      })}
+      className={classNames(className, classes.root)}
       onSubmit={handleSubmit}
-      elevation={elevation}
       {...props}
     >
       <TextField
+        disabled={disabled}
         id="usernameInput"
         variant="outlined"
         margin="normal"
@@ -99,26 +74,14 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       />
 
       <TextField
-        id="emailInput"
-        variant="outlined"
-        margin="normal"
-        label="Email"
-        name="email"
-        placeholder="unicorn@usepow.app"
-        autoComplete="email"
-        InputLabelProps={{ shrink: true }}
-        required
-        fullWidth
-      />
-
-      <TextField
+        disabled={disabled}
         id="passwordInput"
         variant="outlined"
         margin="normal"
         name="password"
         label="Password"
         type="password"
-        autoComplete="new-password"
+        autoComplete="current-password"
         placeholder="glitter-rainbow-butterfly-kitty"
         InputLabelProps={{ shrink: true }}
         required
@@ -126,29 +89,29 @@ const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
       />
 
       <RememberMeInput
+        disabled={disabled}
         value={rememberMe}
         onChange={(value) => setRememberMe(value)}
       />
 
-      <PasswordNote />
-
       <ErrorAlert error={error} />
 
       <Button
-        disabled={isPending}
+        disabled={disabled}
         type="submit"
         fullWidth
         variant="contained"
         color="primary"
       >
-        Create account
+        {SIGN_IN.label}
       </Button>
+
       <Typography variant="body2" align="right">
-        Already have an account?&nbsp;
-        <Link {...signInNavItem} />
+        Not registered yet?&nbsp;
+        <Link {...SIGN_UP}>{SIGN_UP.primary}</Link>
       </Typography>
     </Paper>
   )
 }
 
-export default SignUpForm
+export default SignInForm

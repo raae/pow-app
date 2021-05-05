@@ -6,13 +6,15 @@ import {
   NavMenu,
   TIMELINE,
   PROFILE,
-  SIGNOUT,
+  SIGN_OUT,
   SUPPORT,
   TWITTER,
   CHANGELOG,
 } from "../navigation"
+import { useAuth } from "../auth"
 
 import { selectIsDrawerOpen, actions } from "./slice"
+
 const { closeDrawer } = actions
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +35,7 @@ const AppDrawer = (props) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const isDrawerOpen = useSelector(selectIsDrawerOpen)
+  const { isAuthenticated } = useAuth()
 
   const handleCloseDrawer = () => dispatch(closeDrawer(false))
 
@@ -49,9 +52,17 @@ const AppDrawer = (props) => {
         </Link>
       </Toolbar>
       <Divider />
-      <NavMenu items={[TIMELINE, PROFILE]} onClick={handleCloseDrawer} />
+      <NavMenu
+        items={[TIMELINE, PROFILE]}
+        disabled={!isAuthenticated}
+        onClick={handleCloseDrawer}
+      />
       <Divider />
-      <NavMenu items={[SIGNOUT]} onClick={handleCloseDrawer} />
+      <NavMenu
+        items={[SIGN_OUT]}
+        onClick={handleCloseDrawer}
+        disabled={!isAuthenticated}
+      />
 
       <Divider className={classes.pushDown} />
       <footer>

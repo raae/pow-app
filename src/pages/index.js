@@ -2,14 +2,17 @@ import React, { useEffect } from "react"
 import { navigate } from "gatsby"
 
 import { Loading, SEO } from "../features/app"
-import { useSignInNavItem } from "../features/navigation"
+import { TIMELINE } from "../features/navigation"
+import { useAuth } from "../features/auth"
 
 const IndexPage = () => {
-  const signInNavItem = useSignInNavItem()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
-    navigate(signInNavItem.to)
-  }, [signInNavItem.to])
+    if (isAuthenticated) {
+      navigate(TIMELINE.to)
+    }
+  }, [isAuthenticated])
 
   return (
     <>

@@ -1,16 +1,15 @@
 import React from "react"
-import { useSelector } from "react-redux"
 import { Typography } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { Link, useAppNavItem, useSignOutNavItem } from "../navigation"
+import { Link, useAppNavItem, useSignOutNavItem } from "../../navigation"
 
-import { selectUsername } from "./slice"
+import { useUser } from "../../user"
 
 const ErrorAlert = ({ error }) => {
   const appNavItem = useAppNavItem()
   const signOutNavItem = useSignOutNavItem()
-  const username = useSelector(selectUsername)
+  const { user } = useUser()
 
   if (!error) return null
 
@@ -19,8 +18,8 @@ const ErrorAlert = ({ error }) => {
       <Typography component="div" variant="body2">
         {error.name === "UserAlreadySignedIn" ? (
           <>
-            You are already logged in as <strong>{username}</strong>. Go to{" "}
-            <Link {...appNavItem}>app</Link> or{" "}
+            You are already logged in as <strong>{user?.username}</strong>. Go
+            to <Link {...appNavItem}>app</Link> or{" "}
             <Link {...signOutNavItem}>sign out</Link>.
           </>
         ) : (

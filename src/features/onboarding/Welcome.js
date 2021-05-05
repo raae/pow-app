@@ -1,9 +1,8 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { selectUserEmail, updateUser, selectProfile } from "../auth"
+import { useUser } from "../user"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,52 +13,40 @@ const useStyles = makeStyles((theme) => ({
 
 const Welcome = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
-  const userEmail = useSelector(selectUserEmail)
-  const profile = useSelector(selectProfile)
+  const { user, updateUser } = useUser()
 
-  const welcomeCompleted = Boolean(parseInt(profile.welcomeCompleted))
-  const newsletterCompleted = profile.newsletter !== undefined
+  if (!user) return null
+
+  const welcomeCompleted = parseInt(user?.profile?.welcomeCompleted) > 0
+  const newsletterCompleted = parseInt(user?.profile?.newsletter) > 0
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
 
     switch (name) {
       case "welcome":
-        dispatch(
-          updateUser({
-            email: userEmail,
-            profile: {
-              ...profile,
-              welcomeCompleted: "1",
-            },
-          })
-        )
+        updateUser({
+          profile: {
+            welcomeCompleted: "1",
+          },
+        })
         break
 
       case "newsletterOff":
-        dispatch(
-          updateUser({
-            email: userEmail,
-            profile: {
-              ...profile,
-              newsletter: "0",
-            },
-          })
-        )
+        updateUser({
+          profile: {
+            newsletter: "0",
+          },
+        })
         break
 
       case "newsletterOn":
-        dispatch(
-          updateUser({
-            email: userEmail,
-            profile: {
-              ...profile,
-              newsletter: "1",
-            },
-          })
-        )
+        updateUser({
+          profile: {
+            newsletter: "1",
+          },
+        })
         break
 
       default:

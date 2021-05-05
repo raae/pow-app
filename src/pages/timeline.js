@@ -3,11 +3,8 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Router } from "@reach/router"
 
-import {
-  selectIsPayingUser,
-  selectAuthIsPending,
-  selectIsAuthenticated,
-} from "../features/auth"
+import { useAuth } from "../features/auth"
+import { useSubscription } from "../features/user"
 import { selectAreEntriesLoading } from "../features/entries"
 import { selectAreSettingsLoading } from "../features/settings"
 import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
@@ -15,27 +12,21 @@ import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
 import { SEO, Loading } from "../features/app"
 
 const CyclePage = () => {
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-  const authIsPending = useSelector(selectAuthIsPending)
+  const { isAuthenticated, isAuthPending } = useAuth()
+  const { isSubscribed } = useSubscription()
 
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
   const settingsAreLoading = useSelector(selectAreSettingsLoading)
 
-  const isPayingUser = useSelector(selectIsPayingUser)
-
   const dataIsLoading = entriesAreLoading || settingsAreLoading
 
   useEffect(() => {
-    if (!authIsPending) {
-      if (!isAuthenticated) {
-        navigate("/login")
-      } else if (!isPayingUser) {
-        navigate("/profile?payment=unfinished")
-      }
+    if (isAuthenticated && !isSubscribed) {
+      navigate("/profile?payment=unfinished")
     }
-  }, [isAuthenticated, authIsPending, isPayingUser])
+  }, [isAuthenticated, isSubscribed])
 
-  if (!isAuthenticated || !isPayingUser || dataIsLoading) {
+  if (isAuthPending || dataIsLoading) {
     return (
       <>
         <SEO title="Loading..." />

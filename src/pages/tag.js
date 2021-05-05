@@ -8,7 +8,8 @@ const Tag = () => {
   return (
     <AppLayout>
       <SettingsMensesTagForm
-        component={AppPageForm}
+        Component={AppPageForm}
+        title="Add menses tag"
         onDone={() => navigate(PROFILE.to)}
       />
     </AppLayout>

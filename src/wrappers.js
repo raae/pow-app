@@ -1,5 +1,5 @@
-import React from "react"
-import { Provider, useDispatch, useSelector } from "react-redux"
+import React, { useEffect } from "react"
+import { Provider, useDispatch } from "react-redux"
 import { configureStore, combineReducers } from "@reduxjs/toolkit"
 import { MuiPickersUtilsProvider } from "@material-ui/pickers"
 import DateFnsUtils from "@date-io/date-fns"
@@ -9,9 +9,11 @@ import { reducer as appReducer, name as appSliceName } from "./features/app"
 import {
   reducer as authReducer,
   name as authSliceName,
-  init as authInit,
-  selectUserId,
+  useAuth,
+  AuthGateway,
 } from "./features/auth"
+
+import { reducer as userReducer, name as userSliceName } from "./features/user"
 
 import {
   reducer as databaseReducer,
@@ -21,23 +23,26 @@ import {
 import { initSettings } from "./features/settings"
 import { initEntries } from "./features/entries"
 
-import { useEffect } from "react"
+import { withTheme } from "./theme"
 
 const store = configureStore({
   reducer: combineReducers({
     [appSliceName]: appReducer,
     [authSliceName]: authReducer,
+    [userSliceName]: userReducer,
     [databaseSliceName]: databaseReducer,
   }),
 })
 
-const Init = () => {
+const InitStore = ({ isSSR }) => {
   const dispatch = useDispatch()
-  const userId = useSelector(selectUserId)
+  const { userId, init } = useAuth()
 
   useEffect(() => {
-    dispatch(authInit())
-  }, [dispatch])
+    if (!isSSR) {
+      init()
+    }
+  }, [isSSR, init])
 
   useEffect(() => {
     if (userId) {
@@ -49,10 +54,10 @@ const Init = () => {
   return null
 }
 
-export const RootElement = ({ children }) => {
+const RootElement = ({ children }) => {
   return (
     <Provider store={store}>
-      <Init />
+      <InitStore />
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {children}
       </MuiPickersUtilsProvider>
@@ -60,6 +65,12 @@ export const RootElement = ({ children }) => {
   )
 }
 
-export const withRoot = ({ element }) => {
-  return <RootElement>{element}</RootElement>
+export const withPage = ({ element }) => {
+  return withTheme({
+    element: <AuthGateway> {element}</AuthGateway>,
+  })
+}
+
+export const withRoot = ({ element, isSSR }) => {
+  return <RootElement isSSR={isSSR}>{element}</RootElement>
 }

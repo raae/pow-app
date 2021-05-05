@@ -1,7 +1,7 @@
 import React from "react"
 import { Typography } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
-import { Link } from "../navigation"
+import { Link } from "../../navigation"
 
 const PasswordNote = () => {
   return (

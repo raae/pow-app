@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { useSelector } from "react-redux"
 import userbase from "userbase-js"
 import { Button, TextField, FormGroup } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
-import { selectAuthIsPending, selectIsAuthenticated } from "../features/auth"
+import { useAuth } from "../features/auth"
 import { HOME } from "../features/navigation"
 import PageTemplate from "../templates/page"
 import { navigate } from "gatsby"
@@ -16,8 +15,7 @@ const STATUS = {
 }
 
 const StuffPage = () => {
-  const authIsPending = useSelector(selectAuthIsPending)
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const { isAuthenticated: isAuthFulfilled, isAuthPending } = useAuth()
 
   const [status, setStatus] = useState(STATUS.IDLE)
   const disabled = status === STATUS.PENDING
@@ -39,12 +37,12 @@ const StuffPage = () => {
   }
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthFulfilled) {
       navigate(HOME.to)
     }
-  }, [isAuthenticated])
+  }, [isAuthFulfilled])
 
-  if (authIsPending || isAuthenticated) {
+  if (isAuthPending || isAuthFulfilled) {
     return <Loading fullScreen />
   }
 

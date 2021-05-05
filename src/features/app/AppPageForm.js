@@ -4,11 +4,18 @@ import { Typography } from "@material-ui/core"
 import AppPage from "./AppPage"
 import AppEditToolbar from "./AppEditToolbar"
 
-const AppPageForm = ({ className, title, onSubmit, onReset, children }) => {
+const AppPageForm = ({
+  className,
+  title,
+  onSubmit,
+  onReset,
+  disabled,
+  children,
+}) => {
   return (
     <form className={className} onSubmit={onSubmit} onReset={onReset}>
       <AppPage withPaper>{children}</AppPage>
-      <AppEditToolbar isSubmitDisabled={!onSubmit} isResetDisabled={!onReset}>
+      <AppEditToolbar disabled={disabled}>
         <Typography variant="h6">{title}</Typography>
       </AppEditToolbar>
     </form>

@@ -91,11 +91,26 @@ export const TIMELINE = {
   ...INTERNAL,
 }
 
-export const SIGNOUT = {
+export const SIGN_OUT = {
   primary: "Log out",
   icon: <SignOutIcon />,
   to: "/signout",
   ...INTERNAL,
+}
+
+export const SIGN_IN = {
+  label: "Log in",
+  primary: "Log in",
+  to: "/login",
+  ...INTERNAL,
+}
+
+export const SIGN_UP = {
+  label: "Create account",
+  primary: "Sign up",
+  href: "https://usepow.app/signup",
+  to: "/signup",
+  ...EXTERNAL,
 }
 
 export const PROFILE = {

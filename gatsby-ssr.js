@@ -1,10 +1,9 @@
-import { withTheme } from "./src/theme"
-import { withRoot } from "./src/rootElement"
+import { withRoot, withPage } from "./src/wrappers"
 
 export const wrapPageElement = ({ element }) => {
-  return withTheme({ element })
+  return withPage({ element })
 }
 
 export const wrapRootElement = ({ element }) => {
-  return withRoot({ element })
+  return withRoot({ element, isSSR: false })
 }

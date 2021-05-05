@@ -1,37 +1,21 @@
 import React, { useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { navigate } from "gatsby"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
 import PageTemplate from "../templates/page"
 
-import {
-  selectAuthIsPending,
-  selectAuthError,
-  selectIsAuthenticated,
-  signOut,
-} from "../features/auth"
+import { useAuth } from "../features/auth"
 
 const SignOutPage = () => {
-  const dispatch = useDispatch()
-
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-  const isPending = useSelector(selectAuthIsPending)
-  const error = useSelector(selectAuthError)
+  const { isAuthFailed, error, signOut } = useAuth()
 
   useEffect(() => {
-    if (isAuthenticated && !isPending) {
-      dispatch(signOut())
-    }
-    if (!isAuthenticated) {
-      navigate("/")
-    }
-  }, [dispatch, isPending, isAuthenticated])
+    signOut()
+  }, [signOut])
 
   return (
     <PageTemplate>
-      {error ? (
+      {isAuthFailed ? (
         <>
           <SEO title="Sign out" />
           <h1>Sign out failed</h1>

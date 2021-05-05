@@ -18,12 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const AppEditToolbar = ({
-  children,
-  disabled,
-  isSubmitDisabled,
-  isResetDisabled,
-}) => {
+const AppEditToolbar = ({ children, disabled }) => {
   const classes = useStyles()
   return (
     <AppBar>
@@ -33,7 +28,7 @@ const AppEditToolbar = ({
           edge="end"
           variant="contained"
           color="primary"
-          disabled={disabled || isSubmitDisabled}
+          disabled={disabled}
         >
           Done
         </Button>
@@ -45,7 +40,7 @@ const AppEditToolbar = ({
           edge="start"
           color="inherit"
           aria-label="cancel"
-          disabled={disabled || isResetDisabled}
+          disabled={disabled}
         >
           <ArrowBackIcon />
         </IconButton>

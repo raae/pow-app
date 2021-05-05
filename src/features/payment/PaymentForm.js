@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { useSelector } from "react-redux"
 import { loadStripe } from "@stripe/stripe-js"
 import { formatDistance, format } from "date-fns"
 import userbase from "userbase-js"
@@ -27,13 +26,8 @@ import {
 } from "../../constants"
 
 import { useQueryParam } from "../utils/useQueryParam"
-import {
-  selectIsAuthenticated,
-  selectCancelSubscriptionAt,
-  selectHasActiveSubscription,
-  selectSubscriptionPlanId,
-  selectHasUpdatableSubscription,
-} from "../auth"
+import { useSubscription } from "../user"
+import { useAuth } from "../auth"
 
 const PLAN_LABELS = {
   [STRIPE_MONTHLY_PLAN_ID]: "monthly",
@@ -61,25 +55,28 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
 
   const paymentStatus = useQueryParam("payment")
 
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-  // hasActiveSubscription indicated paid through userbase
-  const hasActiveSubscription = useSelector(selectHasActiveSubscription)
-  const hasUpdatableSubscription = useSelector(selectHasUpdatableSubscription)
-  const cancelSubscriptionAt = useSelector(selectCancelSubscriptionAt)
-  const subscriptionPlanId = useSelector(selectSubscriptionPlanId)
+  const { isAuthenticated: isAuthFulfilled } = useAuth()
+  const {
+    isSubscribed,
+    isSubscriptionUpdatable,
+    cancelSubscriptionAt,
+    subscriptionPlanId,
+  } = useSubscription()
 
   const [selectedPlan, setSelectedPlan] = useState(STRIPE_YEARLY_PLAN_ID)
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
 
-  const isDisabled = !isAuthenticated || isPending
+  const isDisabled = !isAuthFulfilled || isPending
 
   const handleSelectedPlanChange = (event) => {
     setSelectedPlan(event.target.value)
   }
 
   useEffect(() => {
-    setIsPending(false)
+    if (cancelSubscriptionAt) {
+      setIsPending(false)
+    }
   }, [cancelSubscriptionAt])
 
   const handleSubscription = (variant) => async (event) => {
@@ -127,7 +124,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
     }
   }
 
-  if (hasUpdatableSubscription) {
+  if (isSubscriptionUpdatable) {
     return (
       <>
         {cancelSubscriptionAt ? (
@@ -155,7 +152,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           </>
         ) : (
           <>
-            {!hasActiveSubscription && (
+            {!isSubscribed && (
               <Box mb={4}>
                 <Alert className={classes.space} severity="warning">
                   To continue using POW! update your billing information.

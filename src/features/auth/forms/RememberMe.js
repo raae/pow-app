@@ -56,7 +56,7 @@ const RememberMeInput = ({ value, onChange }) => {
 }
 
 RememberMeInput.propTypes = {
-  value: PropTypes.oneOf("local, session, none").isRequired,
+  value: PropTypes.oneOf(["local", "session", "none"]).isRequired,
   onChange: PropTypes.func.isRequired,
 }
 

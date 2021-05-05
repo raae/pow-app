@@ -1,15 +1,14 @@
 import React, { useState } from "react"
-import { useSelector } from "react-redux"
 import userbase from "userbase-js"
 import { Button, TextField, FormHelperText } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
 import { SEO, Loading } from "../features/app"
-import { selectAuthIsPending } from "../features/auth"
+import { useAuth } from "../features/auth"
 import PageTemplate from "../templates/page"
 
 const StuffPage = () => {
-  const authIsPending = useSelector(selectAuthIsPending)
+  const { authIsPending } = useAuth
 
   const [status, setStatus] = useState("INITIAL")
   const [error, setError] = useState(null)
@@ -21,13 +20,11 @@ const StuffPage = () => {
     try {
       const username = event.target.elements.usernameInput.value
       setStatus("PENDING")
-      const user = await userbase.forgotPassword({
+      await userbase.forgotPassword({
         username,
       })
-      console.log(user)
       setStatus("EMAIL_SENT")
     } catch (error) {
-      console.log(error)
       setStatus("ERROR")
       setError(error)
     }
@@ -47,7 +44,7 @@ const StuffPage = () => {
       <h2>Password Recovery</h2>
       <p>
         This might work if you are using the same device and browser you have
-        logged in with before, and you choose remember me the last time you
+        logged in with before, and you choose "remember me" the last time you
         successfully logged in.
       </p>
       <form onSubmit={handleTemporaryPassword}>
