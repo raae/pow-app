@@ -1,16 +1,19 @@
 import React, { useState } from "react"
+import { navigate } from "gatsby"
 import classNames from "classnames"
 import {
   Button,
   TextField,
-  Typography,
   Paper,
+  Typography,
   makeStyles,
 } from "@material-ui/core"
 
-import { useAuth } from "./useAuth"
-import { SIGN_IN, SIGN_UP, Link } from "../navigation"
+import { useAppNavItem, useSignInNavItem, Link } from "../../navigation"
 
+import { useAuth } from "../useAuth"
+
+import PasswordNote from "./PasswordNote"
 import ErrorAlert from "./ErrorAlert"
 import RememberMeInput from "./RememberMe"
 
@@ -19,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%", // Fix IE 11 issue.
     padding: theme.spacing(3, 4),
     "& > .MuiAlert-root": {
-      marginTop: theme.spacing(1),
+      margin: theme.spacing(2, 0),
     },
     "& > label": {
       margin: theme.spacing(0),
@@ -28,35 +31,58 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(2, 0),
     },
   },
+  noElevation: {
+    padding: 0,
+  },
 }))
 
-const SignInForm = ({ className, redirect, ...props }) => {
+const SignUpForm = ({ className, onSubmitFulfilled, elevation, ...props }) => {
   const classes = useStyles()
 
-  const { isAuthPending, error, signIn } = useAuth()
-
+  const { signUp } = useAuth()
+  const [isPending, setIsPending] = useState()
+  const [error, setError] = useState()
   const [rememberMe, setRememberMe] = useState("local")
 
-  const handleSubmit = (event) => {
+  const appNavItem = useAppNavItem()
+  const signInNavItem = useSignInNavItem()
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
+    setIsPending(true)
+    setError(null)
+
+    const email = event.target.elements.emailInput.value
     const username = event.target.elements.usernameInput.value
     const password = event.target.elements.passwordInput.value
 
-    signIn({
-      username,
-      password,
-      rememberMe,
-    })
+    const result = await signUp({ email, username, password, rememberMe })
+
+    if (result.error) {
+      setIsPending(false)
+      setError(result.error)
+    } else {
+      if (onSubmitFulfilled) {
+        onSubmitFulfilled()
+      } else {
+        navigate(appNavItem.to)
+      }
+
+      setIsPending(false)
+    }
   }
 
-  const disabled = isAuthPending
+  const disabled = isPending
 
   return (
     <Paper
       component="form"
-      className={classNames(className, classes.root)}
+      className={classNames(className, classes.root, {
+        [classes.noElevation]: elevation === 0,
+      })}
       onSubmit={handleSubmit}
+      elevation={elevation}
       {...props}
     >
       <TextField
@@ -75,13 +101,27 @@ const SignInForm = ({ className, redirect, ...props }) => {
 
       <TextField
         disabled={disabled}
+        id="emailInput"
+        variant="outlined"
+        margin="normal"
+        label="Email"
+        name="email"
+        placeholder="unicorn@usepow.app"
+        autoComplete="email"
+        InputLabelProps={{ shrink: true }}
+        required
+        fullWidth
+      />
+
+      <TextField
+        disabled={disabled}
         id="passwordInput"
         variant="outlined"
         margin="normal"
         name="password"
         label="Password"
         type="password"
-        autoComplete="current-password"
+        autoComplete="new-password"
         placeholder="glitter-rainbow-butterfly-kitty"
         InputLabelProps={{ shrink: true }}
         required
@@ -94,6 +134,8 @@ const SignInForm = ({ className, redirect, ...props }) => {
         onChange={(value) => setRememberMe(value)}
       />
 
+      <PasswordNote />
+
       <ErrorAlert error={error} />
 
       <Button
@@ -103,15 +145,14 @@ const SignInForm = ({ className, redirect, ...props }) => {
         variant="contained"
         color="primary"
       >
-        {SIGN_IN.label}
+        Create account
       </Button>
-
       <Typography variant="body2" align="right">
-        Not registered yet?&nbsp;
-        <Link {...SIGN_UP}>{SIGN_UP.primary}</Link>
+        Already have an account?&nbsp;
+        <Link {...signInNavItem} />
       </Typography>
     </Paper>
   )
 }
 
-export default SignInForm
+export default SignUpForm

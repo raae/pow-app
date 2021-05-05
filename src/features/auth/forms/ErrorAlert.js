@@ -2,9 +2,9 @@ import React from "react"
 import { Typography } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { Link, useAppNavItem, useSignOutNavItem } from "../navigation"
+import { Link, useAppNavItem, useSignOutNavItem } from "../../navigation"
 
-import { useUser } from "../user"
+import { useUser } from "../../user"
 
 const ErrorAlert = ({ error }) => {
   const appNavItem = useAppNavItem()
