@@ -24,7 +24,7 @@ export const useSignInNavItem = () => {
   return {
     children: "Log in",
     component: Link,
-    to: "/timeline",
+    to: "/timeline/",
   }
 }
 
@@ -32,7 +32,7 @@ export const useSignOutNavItem = () => {
   return {
     children: "Sign out",
     component: Link,
-    to: "/signout",
+    to: "/signout/",
   }
 }
 
@@ -40,7 +40,7 @@ export const useProfileNavItem = () => {
   return {
     children: "Profile",
     component: Link,
-    to: "/profile",
+    to: "/profile/",
   }
 }
 
@@ -48,7 +48,7 @@ export const useAppNavItem = () => {
   return {
     children: "Timeline",
     component: Link,
-    to: "/timeline",
+    to: "/timeline/",
   }
 }
 
@@ -56,7 +56,7 @@ export const useBetaNavItem = () => {
   return {
     children: "Beta",
     component: Link,
-    to: "/beta",
+    to: "/beta/",
   }
 }
 
@@ -87,21 +87,21 @@ export const HOME = {
 export const TIMELINE = {
   primary: "Timeline",
   icon: <TimelineIcon />,
-  to: "/timeline",
+  to: "/timeline/",
   ...INTERNAL,
 }
 
 export const SIGN_OUT = {
   primary: "Log out",
   icon: <SignOutIcon />,
-  to: "/signout",
+  to: "/signout/",
   ...INTERNAL,
 }
 
 export const SIGN_IN = {
   label: "Log in",
   primary: "Log in",
-  to: "/login",
+  to: "/login/",
   ...INTERNAL,
 }
 
@@ -109,14 +109,14 @@ export const SIGN_UP = {
   label: "Create account",
   primary: "Sign up",
   href: "https://usepow.app/signup",
-  to: "/signup",
+  to: "/signup/",
   ...EXTERNAL,
 }
 
 export const PROFILE = {
   primary: "Profile",
   icon: <ProfileIcon />,
-  to: "/profile",
+  to: "/profile/",
   ...INTERNAL,
 }
 
