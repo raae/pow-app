@@ -9,7 +9,8 @@ export const permanentDrawerWidth = "35%"
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    minHeight: "100vh",
+    height: "100vh",
+    overflowY: "scroll",
     flexDirection: "row-reverse",
     justifyContent: "flex-end",
     "& main": {
