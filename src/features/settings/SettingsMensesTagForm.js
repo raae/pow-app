@@ -56,7 +56,7 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
       onDone()
     } else {
       setIsPending(true)
-      const { error } = await dispatch(addMensesTag({ tag: newTag }))
+      const { error } = await dispatch(addMensesTag(newTag))
       if (error) {
         setError(error)
       } else {
