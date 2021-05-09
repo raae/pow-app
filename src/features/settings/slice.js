@@ -88,7 +88,7 @@ export const setInitialCycleLength = createAsyncThunk(
 
     await userbase.insertItem({
       databaseName: DB_NAME,
-      itemId: DB_MENSES_TAG_KEY,
+      itemId: DB_CYCLE_LENGTH_KEY,
       item: length,
     })
   }
@@ -157,10 +157,10 @@ export const selectMainMensesTag = createSelector(
 )
 
 export const selectInitialDaysBetween = (state) => {
-  const daysBetween = selectSetting(state, "daysBetween")
-  if (daysBetween) {
+  const length = selectSetting(state, DB_CYCLE_LENGTH_KEY)
+  if (length) {
     // Will for some be saved as string
-    return parseInt(DB_CYCLE_LENGTH_KEY, 10)
+    return parseInt(length, 10)
   }
 }
 
