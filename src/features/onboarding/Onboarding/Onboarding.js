@@ -8,7 +8,7 @@ import {
   FATHOM_ONBOARDING_4,
 } from "../../../constants"
 
-import { insertSetting } from "../../settings"
+import { setInitialCycleLength, addMensesTag } from "../../settings"
 import { upsertEntry } from "../../entries"
 
 import { cleanTag } from "../../utils/tags"
@@ -82,7 +82,7 @@ const Onboarding = () => {
       event.preventDefault()
     }
 
-    await dispatch(insertSetting("tag", values.tag))
+    await dispatch(addMensesTag(values.tag))
 
     handleNext()
     setIsPending(false)
@@ -96,7 +96,7 @@ const Onboarding = () => {
     }
 
     if (values.daysBetween) {
-      await dispatch(insertSetting("daysBetween", values.daysBetween))
+      await dispatch(setInitialCycleLength(values.daysBetween))
     }
 
     if (values.lastStart) {
