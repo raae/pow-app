@@ -16,14 +16,10 @@ const DB_MENSES_TAG_KEY = "tag"
 const DB_CYCLE_LENGTH_KEY = "daysBetween"
 
 export const SETTINGS_STATUS = {
-  INITIAL: "[Settings] Initial",
-  OPENING: "[Settings] Opening",
-  OPENED: "[Settings] Opened",
-  FAILED: "[Settings] Failed",
-}
-
-export const SETTING_STATUS = {
-  PENDING: "[Setting] Pending",
+  INITIAL: `[${DB_NAME}] Initial`,
+  OPENING: `[${DB_NAME}] Opening`,
+  OPENED: `[${DB_NAME}] Opened`,
+  FAILED: `[${DB_NAME}] Failed`,
 }
 
 // Adaptor
