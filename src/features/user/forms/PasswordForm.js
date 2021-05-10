@@ -53,6 +53,8 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         fullWidth
         label="Current Password"
         name="Current password"
+        autoComplete="current-password"
+
       />
       <TextField
         disabled={disabled}
@@ -64,6 +66,7 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         fullWidth
         label="New Password"
         name="New Password"
+        autoComplete="new-password"
       />
     </Component>
   )
