@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LastDateInput = ({ onChange, value, inputProps = {} }) => {
+const LastDateInput = ({ onChange, label, value, inputProps = {} }) => {
   const classes = useStyles()
 
   return (
@@ -31,7 +31,7 @@ const LastDateInput = ({ onChange, value, inputProps = {} }) => {
         format="MMMM do"
         id="date-picker-inline"
         value={value}
-        label="First day of your last period"
+        label={label || "First day of your last period"}
         placeholder="Select date"
         onChange={onChange}
         InputProps={{

@@ -1,17 +1,15 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
-
+import LastPeriodAsk from "./LastPeriodAsk"
 import { makeDate, entryIdFromDate } from "../utils/days"
-
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
-
 import { selectDaysBetween } from "../cycle"
-
+import { selectEntries } from "../entries"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
@@ -28,6 +26,7 @@ const CycleIndexPage = ({ entryId }) => {
 
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
+  const entries = useSelector(selectEntries)
 
   const range = eachDayOfInterval({
     start: addDays(selectedDate, calculatedDaysBetween * -1.5),
@@ -44,31 +43,42 @@ const CycleIndexPage = ({ entryId }) => {
     })
   }, [selectedDate])
 
+  const hasPlacedPeriod =
+    !entries.length || !entries.filter((s) => s.tags.length).length
   return (
     <AppLayout>
-      <AppMainToolbar>
-        <DatePicker date={selectedDate} />
-        <IconButton
-          aria-label="Scroll to today"
-          onClick={(event) => {
-            navigate(`/timeline`)
-          }}
-          style={{ marginLeft: "auto" }}
-        >
-          <Today />
-        </IconButton>
-      </AppMainToolbar>
-
       <AppPage>
-        <List className={classes.timeline}>
-          {range.map((date) => {
-            return (
-              <TimelineItem key={date} date={date} selectedDate={selectedDate}>
-                {isToday(date) && <Welcome key="welcome" />}
-              </TimelineItem>
-            )
-          })}
-        </List>
+        {hasPlacedPeriod ? (
+          <LastPeriodAsk />
+        ) : (
+          <>
+            <AppMainToolbar>
+              <DatePicker date={selectedDate} />
+              <IconButton
+                aria-label="Scroll to today"
+                onClick={(event) => {
+                  navigate(`/timeline`)
+                }}
+                style={{ marginLeft: "auto" }}
+              >
+                <Today />
+              </IconButton>
+            </AppMainToolbar>
+            <List className={classes.timeline}>
+              {range.map((date) => {
+                return (
+                  <TimelineItem
+                    key={date}
+                    date={date}
+                    selectedDate={selectedDate}
+                  >
+                    {isToday(date) && <Welcome key="welcome" />}
+                  </TimelineItem>
+                )
+              })}
+            </List>
+          </>
+        )}
       </AppPage>
     </AppLayout>
   )
