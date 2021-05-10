@@ -40,6 +40,8 @@ export const initSettings = createAsyncThunk(
     await userbase.openDatabase({
       databaseName: DB_NAME,
       changeHandler: (items) => {
+        // Anytime there are changes to settings
+        // on the server changeHandler will be called.
         thunkAPI.dispatch({
           type: `${DB_NAME}/changed`,
           payload: { items },
@@ -62,12 +64,15 @@ export const addMensesTag = createAsyncThunk(
         item: tag,
       })
     } else {
+      // Add new tag and make sure we only store valid values,
+      // even potentially cleaning up invalid values already stored.
       const tags = [tag, ...textToTagArray(current.item)]
+      const updatedItem = tagArrayToText(tags)
 
       await userbase.updateItem({
         databaseName: DB_NAME,
         itemId: DB_MENSES_TAG_KEY,
-        item: tagArrayToText(tags),
+        item: updatedItem,
       })
     }
   }
@@ -155,7 +160,7 @@ export const selectMainMensesTag = createSelector(
 export const selectInitialDaysBetween = (state) => {
   const length = selectSetting(state, DB_CYCLE_LENGTH_KEY)
   if (length) {
-    // Will for some be saved as string
+    // Will for some early users be stored as a string
     return parseInt(length, 10)
   }
 }
