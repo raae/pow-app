@@ -37,12 +37,11 @@ const Incomplete = () => {
       setError(true)
     }
   }
-  console.log(error)
   return (
     <AppLayout>
       <AppMainToolbar>
         <Typography variant="h6" component="h1">
-          Oh no
+          Just one more step
         </Typography>
       </AppMainToolbar>
       <AppPage withPaper>
@@ -59,7 +58,7 @@ const Incomplete = () => {
               color="secondary"
               variant="contained"
             >
-              Submit
+              Calculate
             </Button>
           </Box>
         </Box>
