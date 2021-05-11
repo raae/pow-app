@@ -43,42 +43,37 @@ const CycleIndexPage = ({ entryId }) => {
     })
   }, [selectedDate])
 
-  const hasPlacedPeriod =
+  const notHasPlacedPeriod =
     !entries.length || !entries.filter((s) => s.tags.length).length
+
+  if (notHasPlacedPeriod) {
+    return <LastPeriodAsk />
+  }
+
   return (
     <AppLayout>
       <AppPage>
-        {hasPlacedPeriod ? (
-          <LastPeriodAsk />
-        ) : (
-          <>
-            <AppMainToolbar>
-              <DatePicker date={selectedDate} />
-              <IconButton
-                aria-label="Scroll to today"
-                onClick={(event) => {
-                  navigate(`/timeline`)
-                }}
-                style={{ marginLeft: "auto" }}
-              >
-                <Today />
-              </IconButton>
-            </AppMainToolbar>
-            <List className={classes.timeline}>
-              {range.map((date) => {
-                return (
-                  <TimelineItem
-                    key={date}
-                    date={date}
-                    selectedDate={selectedDate}
-                  >
-                    {isToday(date) && <Welcome key="welcome" />}
-                  </TimelineItem>
-                )
-              })}
-            </List>
-          </>
-        )}
+        <AppMainToolbar>
+          <DatePicker date={selectedDate} />
+          <IconButton
+            aria-label="Scroll to today"
+            onClick={(event) => {
+              navigate(`/timeline`)
+            }}
+            style={{ marginLeft: "auto" }}
+          >
+            <Today />
+          </IconButton>
+        </AppMainToolbar>
+        <List className={classes.timeline}>
+          {range.map((date) => {
+            return (
+              <TimelineItem key={date} date={date} selectedDate={selectedDate}>
+                {isToday(date) && <Welcome key="welcome" />}
+              </TimelineItem>
+            )
+          })}
+        </List>
       </AppPage>
     </AppLayout>
   )
