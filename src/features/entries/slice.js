@@ -5,7 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { keyBy, sortBy, uniq, first, isUndefined } from "lodash"
+import { keyBy, sortBy, uniq, isUndefined, last } from "lodash"
 
 import { selectMensesTagText } from "../settings"
 
@@ -79,21 +79,46 @@ export const upsertEntry = createAsyncThunk(
       itemId: entryId,
       item: { note },
     }
+
     if (isUndefined(current)) {
-      await userbase.insertItem(userbasePayload)
+      return await userbase.insertItem(userbasePayload)
     } else {
-      await userbase.updateItem(userbasePayload)
+      return await userbase.updateItem(userbasePayload)
     }
   }
 )
 
 // Store
 
+const upsertChange = (state, { meta, error }) => {
+  const {
+    requestId,
+    requestStatus,
+    arg: { date, note },
+  } = meta
+
+  const index = state.changes.findIndex(
+    (change) => change.requestId === requestId
+  )
+  if (index !== -1) {
+    state.changes[index].requestStatus = requestStatus
+    state.changes[index].error = error
+  } else {
+    state.changes.push({
+      requestId,
+      requestStatus,
+      itemId: entryIdFromDate(date),
+      item: { note },
+    })
+  }
+}
+
 const entriesSlice = createSlice({
   name: SLICE_NAME,
   initialState: entriesAdaptor.getInitialState({
     status: DB_STATUS.INITIAL,
-    pending: {},
+    error: null,
+    changes: [],
   }),
   reducers: {},
   extraReducers: {
@@ -106,6 +131,15 @@ const entriesSlice = createSlice({
     [initEntries.rejected]: (state, { error }) => {
       state.status = DB_STATUS.FAILED
       state.error = error
+    },
+    [upsertEntry.pending]: (state, action) => {
+      upsertChange(state, action)
+    },
+    [upsertEntry.fulfilled]: (state, action) => {
+      upsertChange(state, action)
+    },
+    [upsertEntry.rejected]: (state, action) => {
+      upsertChange(state, action)
     },
     [`${DB_NAME}/changed`]: (state, { payload }) => {
       entriesAdaptor.setAll(state, payload.items)
@@ -141,10 +175,9 @@ export const selectAreEntriesLoading = createSelector(
   }
 )
 
-const selectPendingItemsById = (state) => {
-  // TODO: Support again
-  return []
-}
+const selectChanges = createSelector([selectEntriesSlice], (slice) => {
+  return slice.changes
+})
 
 export const selectEntries = createSelector([selectAll], (items) => {
   return items.map(transformItemToEntry)
@@ -164,21 +197,22 @@ export const selectEntriesSortedByDate = createSelector(
   }
 )
 
-export const selectIsEntryPending = createSelector(
-  [selectPendingItemsById, selectEntryId],
-  (pendingByItemId, entryId) => {
-    const pendingItem = first(pendingByItemId[entryId])
-    return !!pendingItem
+export const selectPendingEntry = createSelector(
+  [selectChanges, selectEntryId],
+  (changes, entryId) => {
+    const pendingEntries = changes.filter((change) => {
+      return change.requestStatus === "pending" && change.itemId === entryId
+    })
+    if (pendingEntries.length > 0) {
+      return transformItemToEntry(last(pendingEntries))
+    }
   }
 )
 
-export const selectPendingEntry = createSelector(
-  [selectPendingItemsById, selectEntryId],
-  (pendingByItemId, entryId) => {
-    const pendingItem = first(pendingByItemId[entryId])
-    if (pendingItem) {
-      return transformItemToEntry(pendingItem)
-    }
+export const selectIsEntryPending = createSelector(
+  [selectPendingEntry],
+  (pendingEntry) => {
+    return !!pendingEntry
   }
 )
 
