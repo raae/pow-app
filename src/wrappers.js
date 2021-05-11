@@ -20,7 +20,11 @@ import {
   name as databaseSliceName,
 } from "./features/database"
 
-import { initSettings } from "./features/settings"
+import {
+  initSettings,
+  reducer as settingsReducer,
+  name as settingsSliceName,
+} from "./features/settings"
 import { initEntries } from "./features/entries"
 
 import { withTheme } from "./theme"
@@ -31,6 +35,7 @@ const store = configureStore({
     [authSliceName]: authReducer,
     [userSliceName]: userReducer,
     [databaseSliceName]: databaseReducer,
+    [settingsSliceName]: settingsReducer,
   }),
 })
 

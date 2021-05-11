@@ -1,87 +1,152 @@
-import { createSelector, createAsyncThunk } from "@reduxjs/toolkit"
-import { keyBy, first, compact, uniq } from "lodash"
-
-import { SETTINGS_DATABASE } from "../../constants"
-
-import { cleanTag } from "../utils/tags"
-
 import {
-  insertItem,
-  upsertItem,
-  openDatabase,
-  selectDatabaseItems,
-  selectIsDatabaseLoading,
-} from "../database"
+  createSelector,
+  createAsyncThunk,
+  createEntityAdapter,
+  createSlice,
+} from "@reduxjs/toolkit"
+import userbase from "userbase-js"
+import { first, isNumber, isUndefined } from "lodash"
 
-const databaseName = SETTINGS_DATABASE.databaseName
+import { tagArrayToText, textToTagArray } from "./utils"
 
-// Actions
+const SLICE_NAME = "settings"
+const DB_NAME = SLICE_NAME
+const DB_ITEM = "setting"
+const DB_MENSES_TAG_KEY = "tag"
+const DB_CYCLE_LENGTH_KEY = "daysBetween"
 
-export const initSettings = () => openDatabase({ databaseName })
-
-export const insertSetting = (id, setting) => {
-  return insertItem({
-    databaseName,
-    itemId: id,
-    item: setting,
-  })
+export const SETTINGS_STATUS = {
+  INITIAL: `[${DB_NAME}] Initial`,
+  OPENING: `[${DB_NAME}] Opening`,
+  OPENED: `[${DB_NAME}] Opened`,
+  FAILED: `[${DB_NAME}] Failed`,
 }
 
-export const upsertSetting = (id, setting) => {
-  return upsertItem({
-    databaseName,
-    itemId: id,
-    item: setting,
-  })
-}
+// Adaptor
 
-export const upsertMensesTags = (tags) => {
-  const validTags = uniq(compact(tags.map((tag) => cleanTag(tag))))
-  return upsertSetting("tag", validTags.join(","))
-}
+const settingsAdaptor = createEntityAdapter({
+  selectId: (setting) => setting.itemId,
+})
 
-export const addMensesTag = createAsyncThunk(
-  "mensesTags/add",
-  async (arg, { getState, dispatch }) => {
-    const { tag } = arg
-    const mensesTags = selectMensesTags(getState())
-    return dispatch(upsertMensesTags([tag, ...mensesTags]))
+const { selectById } = settingsAdaptor.getSelectors(
+  (state) => state[SLICE_NAME]
+)
+
+// Thunks
+
+export const initSettings = createAsyncThunk(
+  `${DB_NAME}/init`,
+  async (_, thunkAPI) => {
+    await userbase.openDatabase({
+      databaseName: DB_NAME,
+      changeHandler: (items) => {
+        // Anytime there are changes to settings
+        // on the server changeHandler will be called.
+        thunkAPI.dispatch({
+          type: `${DB_NAME}/changed`,
+          payload: { items },
+        })
+      },
+    })
   }
 )
+
+export const addMensesTag = createAsyncThunk(
+  `${DB_ITEM}/upsert`,
+  async (payload, thunkAPI) => {
+    const tag = payload
+    const current = selectById(thunkAPI.getState(), DB_MENSES_TAG_KEY)
+
+    if (isUndefined(current)) {
+      await userbase.insertItem({
+        databaseName: DB_NAME,
+        itemId: DB_MENSES_TAG_KEY,
+        item: tag,
+      })
+    } else {
+      // Add new tag and make sure we only store valid values,
+      // even potentially cleaning up invalid values already stored.
+      const tags = [tag, ...textToTagArray(current.item)]
+      const updatedItem = tagArrayToText(tags)
+
+      await userbase.updateItem({
+        databaseName: DB_NAME,
+        itemId: DB_MENSES_TAG_KEY,
+        item: updatedItem,
+      })
+    }
+  }
+)
+
+export const setInitialCycleLength = createAsyncThunk(
+  `${DB_ITEM}/upsert`,
+  async (payload) => {
+    const length = parseInt(payload)
+
+    if (!isNumber(length)) {
+      throw new Error("Length is not a number")
+    }
+
+    await userbase.insertItem({
+      databaseName: DB_NAME,
+      itemId: DB_CYCLE_LENGTH_KEY,
+      item: length,
+    })
+  }
+)
+
+// Store
+
+const settingsSlice = createSlice({
+  name: SLICE_NAME,
+  initialState: settingsAdaptor.getInitialState({
+    status: SETTINGS_STATUS.INITIAL,
+  }),
+  reducers: {},
+  extraReducers: {
+    [initSettings.pending]: (state) => {
+      state.status = SETTINGS_STATUS.OPENING
+    },
+    [initSettings.fulfilled]: (state) => {
+      state.status = SETTINGS_STATUS.OPENED
+    },
+    [initSettings.rejected]: (state, { error }) => {
+      state.status = SETTINGS_STATUS.FAILED
+      state.error = error
+    },
+    [`${DB_NAME}/changed`]: (state, { payload }) => {
+      settingsAdaptor.setAll(state, payload.items)
+    },
+  },
+})
 
 // Selectors
 
-export const selectAreSettingsLoading = (state) => {
-  return selectIsDatabaseLoading(state, {
-    databaseName,
-  })
-}
+const selectSettingsSlice = (state) => state[SLICE_NAME]
 
-const selectId = (state, props) => props.id
-
-const selectItems = (state) => {
-  return selectDatabaseItems(state, { databaseName })
-}
-
-export const selectSettingsById = createSelector([selectItems], (items) => {
-  return keyBy(items, "itemId")
-})
-
-export const selectSetting = createSelector(
-  [selectSettingsById, selectId],
-  (settingsById, id) => {
-    return settingsById[id] && settingsById[id].item
+export const selectAreSettingsLoading = createSelector(
+  [selectSettingsSlice],
+  (slice) => {
+    return [SETTINGS_STATUS.INITIAL, SETTINGS_STATUS.OPENING].includes(
+      slice.status
+    )
   }
 )
 
+export const selectSetting = createSelector([selectById], (setting) => {
+  if (setting) {
+    return setting.item
+  }
+})
+
 export const selectMensesTagText = (state) => {
-  return selectSetting(state, { id: "tag" }) || ""
+  return selectSetting(state, DB_MENSES_TAG_KEY) || ""
 }
 
 export const selectMensesTags = createSelector(
   [selectMensesTagText],
   (mensesTagText) => {
-    return uniq(compact(mensesTagText.split(",").map((tag) => cleanTag(tag))))
+    return textToTagArray(mensesTagText)
   }
 )
 
@@ -93,9 +158,12 @@ export const selectMainMensesTag = createSelector(
 )
 
 export const selectInitialDaysBetween = (state) => {
-  const daysBetween = selectSetting(state, { id: "daysBetween" })
-  if (daysBetween) {
-    // Will for some be saved as string
-    return parseInt(daysBetween, 10)
+  const length = selectSetting(state, DB_CYCLE_LENGTH_KEY)
+  if (length) {
+    // Will for some early users be stored as a string
+    return parseInt(length, 10)
   }
 }
+
+export const name = settingsSlice.name
+export default settingsSlice.reducer
