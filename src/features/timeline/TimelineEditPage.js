@@ -50,7 +50,7 @@ const CycleEditPage = ({ entryId }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    dispatch(upsertEntry(date, { note }))
+    dispatch(upsertEntry({ date, note }))
     navigate(`/timeline/${entryId}`)
   }
 
