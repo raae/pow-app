@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
-import LastPeriodAsk from "./LastPeriodAsk"
 import { makeDate, entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
@@ -46,9 +45,11 @@ const CycleIndexPage = ({ entryId }) => {
   const notHasPlacedPeriod =
     !entries.length || !entries.filter((s) => s.tags.length).length
 
-  if (notHasPlacedPeriod) {
-    return <LastPeriodAsk />
-  }
+  useEffect(() => {
+    if (notHasPlacedPeriod) {
+      navigate("/incomplete")
+    }
+  }, [notHasPlacedPeriod])
 
   return (
     <AppLayout>

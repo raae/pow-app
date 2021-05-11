@@ -1,29 +1,43 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, Button, Typography } from "@material-ui/core"
+import { navigate } from "gatsby"
 import { useDispatch, useSelector } from "react-redux"
-import { upsertEntry } from "../entries"
-import LastDateInput from "../onboarding/Onboarding/LastDateInput"
-import { selectMainMensesTag } from "../settings"
-import { AppLayout, AppMainToolbar, AppPage } from "../app"
+import { selectEntries, upsertEntry } from "../features/entries"
+import { selectMainMensesTag } from "../features/settings"
+import LastDateInput from "../features/onboarding/Onboarding/LastDateInput"
+import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
+import Toast from "../features/app/Toast"
 
-const LastPeriodAsk = () => {
+const Incomplete = () => {
   const dispatch = useDispatch()
   const [lastPeriod, setLastPeriod] = useState(new Date())
+  const [error, setError] = useState(false)
   const mainMensesTag = useSelector(selectMainMensesTag)
+  const entries = useSelector(selectEntries)
+  const notHasPlacedPeriod =
+    !entries.length || !entries.filter((s) => s.tags.length).length
+
+  useEffect(() => {
+    if (!notHasPlacedPeriod) {
+      navigate("/timeline")
+    }
+  })
 
   const calculatePeriodDate = async () => {
+    setError(false)
+
     try {
       await dispatch(
         upsertEntry(lastPeriod, {
           note: `#${mainMensesTag}`,
         })
       )
+      navigate("/timeline")
     } catch (e) {
-      // install a toast library?
-      // https://react-hot-toast.com/
-      console.log(e)
+      setError(true)
     }
   }
+  console.log(error)
   return (
     <AppLayout>
       <AppMainToolbar>
@@ -50,8 +64,9 @@ const LastPeriodAsk = () => {
           </Box>
         </Box>
       </AppPage>
+      <Toast open={error}>There has been a problem adding your date</Toast>
     </AppLayout>
   )
 }
 
-export default LastPeriodAsk
+export default Incomplete
