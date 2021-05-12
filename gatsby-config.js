@@ -61,13 +61,15 @@ module.exports = {
         },
       },
     },
-    {
-      resolve: `@raae/gatsby-plugin-fathom`,
-      options: {
-        site: process.env.FATHOM_SITE,
-        includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
-        loadType: "defer",
-      },
-    },
+    // {
+    //   resolve: `@raae/gatsby-plugin-fathom`,
+    //   options: {
+    //     site: process.env.FATHOM_SITE,
+    //     includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
+    //     loadType: "defer",
+    //   },
+    // },
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
   ],
 }
