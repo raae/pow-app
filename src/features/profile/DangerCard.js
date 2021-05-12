@@ -11,7 +11,7 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
-import { selectEntries, emptyEntries } from "../entries"
+import { selectEntries, deleteAllEntries } from "../entries"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -38,7 +38,7 @@ const DangerCard = () => {
     deleteAllEntriesText = "Deleting entries"
   }
 
-  const deleteAllEntries = async () => {
+  const handleDeleteAllEntries = async () => {
     const CONFIRMATION_STRING = "DELETE"
 
     setIsPending(true)
@@ -54,7 +54,7 @@ const DangerCard = () => {
         )
       }
     } else {
-      const { error } = await dispatch(emptyEntries())
+      const { error } = await dispatch(deleteAllEntries())
 
       if (error) {
         alert(`Oopsie (${error.message}), please try again.`)
@@ -91,7 +91,7 @@ const DangerCard = () => {
           disabled={disabled}
           variant="outlined"
           color="primary"
-          onClick={deleteAllEntries}
+          onClick={handleDeleteAllEntries}
         >
           {deleteAllEntriesText}
         </Button>
