@@ -23,7 +23,11 @@ export const DB_STATUS = {
   FAILED: `[${DB_NAME}] Failed`,
 }
 
-// Adaptor
+// =========================================================
+//
+//  Adaptor
+//
+// =========================================================
 
 const entriesAdaptor = createEntityAdapter({
   selectId: (entry) => entry.itemId,
@@ -33,7 +37,11 @@ const { selectById, selectIds, selectAll } = entriesAdaptor.getSelectors(
   (state) => state[SLICE_NAME]
 )
 
-// Thunks
+// =========================================================
+//
+//  Thunks / Actions
+//
+// =========================================================
 
 export const initEntries = createAsyncThunk(
   `${DB_NAME}/init`,
@@ -88,7 +96,11 @@ export const upsertEntry = createAsyncThunk(
   }
 )
 
-// Store
+// =========================================================
+//
+//  Reducer
+//
+// =========================================================
 
 const upsertChange = (state, { meta, error }) => {
   const {
@@ -147,7 +159,11 @@ const entriesSlice = createSlice({
   },
 })
 
-// Selectors
+// =========================================================
+//
+//  Selectors
+//
+// =========================================================
 
 const transformItemToEntry = ({ itemId, item }) => {
   return {
@@ -238,6 +254,12 @@ export const selectIsMenstruationForDate = createSelector(
     return tags.includes(menstruationTag)
   }
 )
+
+// =========================================================
+//
+//  Default exports
+//
+// =========================================================
 
 export const name = entriesSlice.name
 export default entriesSlice.reducer
