@@ -213,27 +213,20 @@ export const selectEntriesSortedByDate = createSelector(
   }
 )
 
-export const selectPendingEntry = createSelector(
+const selectPendingChange = createSelector(
   [selectChanges, selectEntryId],
   (changes, entryId) => {
-    const pendingEntries = changes.filter((change) => {
+    const pendingChanges = changes.filter((change) => {
       return change.requestStatus === "pending" && change.itemId === entryId
     })
-    if (pendingEntries.length > 0) {
-      return transformItemToEntry(last(pendingEntries))
+    if (pendingChanges.length > 0) {
+      return transformItemToEntry(last(pendingChanges))
     }
   }
 )
 
-export const selectIsEntryPending = createSelector(
-  [selectPendingEntry],
-  (pendingEntry) => {
-    return !!pendingEntry
-  }
-)
-
 export const selectEntry = createSelector(
-  [selectEntriesById, selectPendingEntry, selectEntryId],
+  [selectEntriesById, selectPendingChange, selectEntryId],
   (entriesById, pendingEntry, id) => {
     return pendingEntry || entriesById[id]
   }
