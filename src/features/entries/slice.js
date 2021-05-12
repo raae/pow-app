@@ -52,7 +52,7 @@ export const initEntries = createAsyncThunk(
   }
 )
 
-export const emptyEntries = createAsyncThunk(
+export const deleteAllEntries = createAsyncThunk(
   `${DB_NAME}/empty`,
   async (_, thunkAPI) => {
     const ids = selectIds(thunkAPI.getState())
