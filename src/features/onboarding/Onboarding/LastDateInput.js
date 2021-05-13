@@ -34,7 +34,13 @@ const LastDateInput = ({ onChange, label, value, inputProps = {} }) => {
         label={label || "First day of your last or current period"}
         placeholder="Select date"
         onChange={onChange}
+        InputLabelProps={{
+          color: "secondary",
+        }}
         InputProps={{
+          color: "secondary",
+          variant: "outlined",
+          margin: "normal",
           startAdornment: (
             <InputAdornment position="start">
               <EventIcon
