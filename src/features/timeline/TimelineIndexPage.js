@@ -11,6 +11,7 @@ import { selectDaysBetween } from "../cycle"
 import { selectEntries } from "../entries"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
+import { INCOMPLETE, TIMELINE } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -47,7 +48,7 @@ const CycleIndexPage = ({ entryId }) => {
 
   useEffect(() => {
     if (notHasPlacedPeriod) {
-      navigate("/incomplete")
+      navigate(INCOMPLETE.to)
     }
   }, [notHasPlacedPeriod])
 
@@ -58,9 +59,7 @@ const CycleIndexPage = ({ entryId }) => {
           <DatePicker date={selectedDate} />
           <IconButton
             aria-label="Scroll to today"
-            onClick={(event) => {
-              navigate(`/timeline`)
-            }}
+            onClick={() => navigate(TIMELINE.to)}
             style={{ marginLeft: "auto" }}
           >
             <Today />

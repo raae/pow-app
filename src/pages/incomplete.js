@@ -7,6 +7,7 @@ import { selectMainMensesTag } from "../features/settings"
 import LastDateInput from "../features/onboarding/Onboarding/LastDateInput"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
+import { TIMELINE } from "../features/navigation"
 
 const Incomplete = () => {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ const Incomplete = () => {
 
   useEffect(() => {
     if (!notHasPlacedPeriod) {
-      navigate("/timeline")
+      navigate(TIMELINE.to)
     }
   })
 
@@ -32,7 +33,7 @@ const Incomplete = () => {
           note: `#${mainMensesTag}`,
         })
       )
-      navigate("/timeline")
+      navigate(TIMELINE.to)
     } catch (e) {
       setError(true)
     }
