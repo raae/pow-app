@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit"
-import { first, last, countBy, toPairs } from "lodash"
+import { first, last, countBy, toPairs, intersection } from "lodash"
 
-import { selectEntriesSortedByDate, selectEntryTags } from "../entries"
+import { selectAllEntries, selectEntryTags } from "../entries"
 import { selectMensesTags, selectInitialDaysBetween } from "../settings"
 
 import {
@@ -9,6 +9,7 @@ import {
   isDateBefore,
   isDateAfter,
   isDateEqual,
+  makeDate,
 } from "../utils/days"
 
 import analyze from "./analyze"
@@ -17,12 +18,26 @@ const selectDate = (state, props) => {
   return props.date
 }
 
+export const selectAllAnalyticsEntries = createSelector(
+  [selectAllEntries, selectMensesTags],
+  (entries, mensesTags) => {
+    return entries.map((entry) => {
+      const isMenses = intersection(entry.tags, mensesTags).length > 0
+      const date = makeDate(entry.entryId)
+      return {
+        ...entry,
+        date,
+        isMenses,
+      }
+    })
+  }
+)
+
 const selectAnalytics = createSelector(
-  [selectEntriesSortedByDate, selectMensesTags, selectInitialDaysBetween],
-  (sortedEntries, menstruationTags, initialDaysBetween) => {
+  [selectAllAnalyticsEntries, selectInitialDaysBetween],
+  (entries, initialDaysBetween) => {
     const analytics = analyze({
-      sortedEntries,
-      menstruationTags,
+      sortedEntries: entries,
       initialDaysBetween,
     })
 
@@ -64,6 +79,7 @@ export const selectTagsForDate = createSelector(
     const cycleDay = cycleDayForDate(date, analytics)
     const predictedTags = analytics.tags[cycleDay] || []
     const predictedTagsCount = countBy(predictedTags)
+
     return toPairs(predictedTagsCount).map(([tag, count]) => {
       return {
         tag,

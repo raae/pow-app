@@ -1,8 +1,8 @@
-import { compact, sum, round, last, intersection } from "lodash"
+import { compact, sum, round, last } from "lodash"
 
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 
-const analyze = ({ sortedEntries, initialDaysBetween, menstruationTags }) => {
+const analyze = ({ sortedEntries, initialDaysBetween }) => {
   let cycleIndex = 0
 
   const cycle = {
@@ -15,11 +15,7 @@ const analyze = ({ sortedEntries, initialDaysBetween, menstruationTags }) => {
     const lastStartDate = cycle.startDates[cycleIndex]
     let difference = daysBetweenDates(entry.date, lastStartDate)
 
-    // This misses everything before start of first cycle
-    const entryIncludesMenstruationTag =
-      intersection(entry.tags, menstruationTags).length > 0
-
-    if (entryIncludesMenstruationTag) {
+    if (entry.isMenses) {
       if (difference > 14) {
         // Entry is start of new cycle
         cycleIndex++
