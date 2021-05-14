@@ -5,11 +5,11 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { keyBy, sortBy, uniq, isUndefined, last } from "lodash"
+import { uniq, isUndefined, last } from "lodash"
 
 import { selectMensesTagText } from "../settings"
 
-import { makeDate, entryIdFromDate } from "../utils/days"
+import { entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
 
 const SLICE_NAME = "entries"
@@ -30,7 +30,9 @@ export const DB_STATUS = {
 // =========================================================
 
 const entriesAdaptor = createEntityAdapter({
-  selectId: (entry) => entry.itemId,
+  selectId: (entry) => entry.entryId,
+  // Sort from oldest to newest
+  sortComparer: (a, b) => a.entryId.localeCompare(b.entryId),
 })
 
 const { selectById, selectIds, selectAll } = entriesAdaptor.getSelectors(
@@ -43,6 +45,16 @@ const { selectById, selectIds, selectAll } = entriesAdaptor.getSelectors(
 //
 // =========================================================
 
+const transformItemToEntry = ({ itemId, item, ...rest }) => {
+  const tags = uniq(tagsFromText(item.note))
+  return {
+    entryId: itemId,
+    ...item,
+    ...rest,
+    tags,
+  }
+}
+
 export const initEntries = createAsyncThunk(
   `${DB_NAME}/init`,
   async (_, thunkAPI) => {
@@ -53,7 +65,7 @@ export const initEntries = createAsyncThunk(
         // on the server changeHandler will be called.
         thunkAPI.dispatch({
           type: `${DB_NAME}/changed`,
-          payload: { items },
+          payload: { items: items.map(transformItemToEntry) },
         })
       },
     })
@@ -119,8 +131,8 @@ const upsertChange = (state, { meta, error }) => {
     state.changes.push({
       requestId,
       requestStatus,
-      itemId: entryIdFromDate(date),
-      item: { note },
+      entryId: entryIdFromDate(date),
+      note,
     })
   }
 }
@@ -165,23 +177,6 @@ const entriesSlice = createSlice({
 //
 // =========================================================
 
-const transformItemToEntry = ({ itemId, item }) => {
-  return {
-    entryId: itemId,
-    date: makeDate(itemId),
-    note: item.note,
-    tags: uniq(tagsFromText(item.note)),
-  }
-}
-
-const selectEntryId = (state, props) => {
-  if (props.date) {
-    return entryIdFromDate(props.date)
-  } else {
-    return props.entryId
-  }
-}
-
 const selectEntriesSlice = (state) => state[SLICE_NAME]
 
 export const selectAreEntriesLoading = createSelector(
@@ -191,53 +186,42 @@ export const selectAreEntriesLoading = createSelector(
   }
 )
 
-const selectChanges = createSelector([selectEntriesSlice], (slice) => {
+const selectAllChanges = createSelector([selectEntriesSlice], (slice) => {
   return slice.changes
 })
 
-export const selectEntries = createSelector([selectAll], (items) => {
-  return items.map(transformItemToEntry)
-})
+export const selectAllEntries = selectAll
 
-export const selectEntriesById = createSelector([selectEntries], (entries) => {
-  // TODO: Use selectEntities, but then the transformation needs to happen in the reducer first
-  return keyBy(entries, "entryId")
-})
+const selectStableEntryById = selectById
 
-export const selectEntriesSortedByDate = createSelector(
-  [selectEntries],
-  (entries) => {
-    // TODO: Replace with selectEntries since they are already sorted by date,
-    // but then the transformation needs to happen in the reducer first
-    return sortBy(entries, "date")
-  }
-)
-
-const selectPendingChange = createSelector(
-  [selectChanges, selectEntryId],
+const selectPendingChangeById = createSelector(
+  [selectAllChanges, (state, entryId) => entryId],
   (changes, entryId) => {
     const pendingChanges = changes.filter((change) => {
       return change.requestStatus === "pending" && change.itemId === entryId
     })
     if (pendingChanges.length > 0) {
-      return transformItemToEntry(last(pendingChanges))
+      return last(pendingChanges)
     }
   }
 )
 
-export const selectEntry = createSelector(
-  [selectEntriesById, selectPendingChange, selectEntryId],
-  (entriesById, pendingEntry, id) => {
-    return pendingEntry || entriesById[id]
-  }
-)
+export const selectEntry = (state, props) => {
+  const entryId = props.date ? entryIdFromDate(props.date) : props.entryId
+
+  const entry = selectStableEntryById(state, entryId)
+  const pendingChange = selectPendingChangeById(state, entryId)
+
+  return pendingChange || entry
+}
 
 export const selectEntryNote = createSelector([selectEntry], (entry) => {
-  return entry ? entry.note : ""
+  return entry?.note || ""
 })
 
+const DEFAULT_TAGS = []
 export const selectEntryTags = createSelector([selectEntry], (entry) => {
-  return entry && entry.tags
+  return entry?.tags || DEFAULT_TAGS
 })
 
 export const selectIsMenstruationForDate = createSelector(

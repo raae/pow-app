@@ -12,13 +12,13 @@ import {
 import { ImportExport as CardIcon } from "@material-ui/icons"
 
 import { Link } from "../navigation"
-import { selectEntries } from "../entries"
+import { selectAllEntries } from "../entries"
 import Papa from "papaparse"
 import { orderBy } from "lodash"
 
 const HouseKeepingCard = () => {
   const [isPending, setIsPending] = useState(false)
-  const entries = useSelector(selectEntries)
+  const entries = useSelector(selectAllEntries)
 
   const disabled = isPending || entries.length === 0
 
