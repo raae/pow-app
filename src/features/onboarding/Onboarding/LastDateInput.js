@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "3px",
     marginTop: "2px",
   },
+  label: {
+    width: "104%",
+  },
 }))
 
 const LastDateInput = ({ onChange, label, value, inputProps = {} }) => {
@@ -23,10 +26,8 @@ const LastDateInput = ({ onChange, label, value, inputProps = {} }) => {
       <DatePicker
         disableToolbar
         fullWidth
-        {...inputProps}
         disableFuture={true}
         variant="inline"
-        inputVariant={inputProps.variant}
         autoOk={true}
         format="MMMM do"
         id="date-picker-inline"
@@ -36,10 +37,11 @@ const LastDateInput = ({ onChange, label, value, inputProps = {} }) => {
         onChange={onChange}
         InputLabelProps={{
           color: "secondary",
+          className: classes.label,
         }}
+        inputVariant="outlined"
         InputProps={{
           color: "secondary",
-          variant: "outlined",
           margin: "normal",
           startAdornment: (
             <InputAdornment position="start">
