@@ -1,13 +1,8 @@
 import React from "react"
 
-import {
-  TextField,
-  InputAdornment,
-  Typography,
-  makeStyles,
-} from "@material-ui/core"
-
+import { Typography, makeStyles } from "@material-ui/core"
 import LastDateInput from "./LastDateInput"
+import DaysBetweenInput from "./DaysBetweenInput"
 
 const useStyles = makeStyles(() => ({
   cycle: {
@@ -17,13 +12,6 @@ const useStyles = makeStyles(() => ({
     },
   },
 }))
-
-const placeholders = {
-  tag: "period",
-  lastStart: null,
-  daysBetween: "28",
-  menstruationLength: "4",
-}
 
 const Cycle = ({ values, onChange, textFieldProps }) => {
   const classes = useStyles()
@@ -36,22 +24,12 @@ const Cycle = ({ values, onChange, textFieldProps }) => {
           onChange={onChange("lastStart")}
           inputProps={textFieldProps}
         />
-        <div>
-          <TextField
-            {...textFieldProps}
-            label="Days between menstruations"
-            value={values.daysBetween}
-            type="number"
-            onChange={onChange("daysBetween")}
-            placeholder={placeholders.daysBetween}
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">#</InputAdornment>
-              ),
-            }}
-          />
-        </div>
+
+        <DaysBetweenInput
+          onChange={onChange}
+          values={values}
+          textFieldProps={textFieldProps}
+        />
       </div>
       <Typography component="div" color="textSecondary">
         <p>
