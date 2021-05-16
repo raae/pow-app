@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { useDispatch, useSelector } from "react-redux"
 
 import {
   TextField,
@@ -12,8 +11,8 @@ import {
 
 import Alert from "@material-ui/lab/Alert"
 
-import { addMensesTag, selectMainMensesTag } from "./slice"
 import { cleanTag } from "../utils/tags"
+import { useSettings } from "./useSettings"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,9 +32,7 @@ const textFieldProps = {
 const SettingsMensesTagForm = ({ title, onDone, Component }) => {
   const classes = useStyles()
 
-  const dispatch = useDispatch()
-
-  const mainMensesTag = useSelector(selectMainMensesTag)
+  const { mainMensesTag, addMensesTag } = useSettings()
   const [newTag, setNewTag] = useState("")
 
   const [error, setError] = useState()
@@ -56,14 +53,16 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
       onDone()
     } else {
       setIsPending(true)
-      const { error } = await dispatch(addMensesTag(newTag))
+      const { error } = await addMensesTag(newTag)
+
       if (error) {
         setError(error)
       } else {
         setNewTag("")
-        setIsPending(false)
         onDone()
       }
+
+      setIsPending(false)
     }
   }
 

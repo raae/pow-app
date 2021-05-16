@@ -23,11 +23,11 @@ const CYCLE_LENGTH_KEY = {
   SLICE: "initialCycleLength",
 }
 
-export const DB_STATUS = {
-  INITIAL: `[${DB_NAME}] Initial`,
-  OPENING: `[${DB_NAME}] Opening`,
-  OPENED: `[${DB_NAME}] Opened`,
-  FAILED: `[${DB_NAME}] Failed`,
+export const STATUS = {
+  INITIAL: `[${SLICE_NAME}] Initial`,
+  OPENING: `[${SLICE_NAME}] Opening`,
+  OPENED: `[${SLICE_NAME}] Opened`,
+  FAILED: `[${SLICE_NAME}] Failed`,
 }
 
 // =========================================================
@@ -40,7 +40,7 @@ const settingsAdaptor = createEntityAdapter({
   selectId: (setting) => setting.key,
 })
 
-const { selectById } = settingsAdaptor.getSelectors(
+const { selectById, selectEntities } = settingsAdaptor.getSelectors(
   (state) => state[SLICE_NAME]
 )
 
@@ -92,8 +92,8 @@ export const addMensesTag = createAsyncThunk(
   `${DB_ITEM}/upsert`,
   async (payload, thunkAPI) => {
     const tag = payload
-    const current = selectById(thunkAPI.getState(), MENSES_TAG_KEY.DB)
-
+    const current = selectById(thunkAPI.getState(), MENSES_TAG_KEY.SLICE)
+    console.log({ current })
     if (isUndefined(current)) {
       await userbase.insertItem({
         databaseName: DB_NAME,
@@ -103,7 +103,7 @@ export const addMensesTag = createAsyncThunk(
     } else {
       // Add new tag and make sure we only store valid values,
       // even potentially cleaning up invalid values already stored.
-      const tags = [tag, ...textToTagArray(current.item)]
+      const tags = [tag, ...current.value]
       const updatedItem = tagArrayToText(tags)
 
       await userbase.updateItem({
@@ -141,18 +141,18 @@ export const setInitialCycleLength = createAsyncThunk(
 const settingsSlice = createSlice({
   name: SLICE_NAME,
   initialState: settingsAdaptor.getInitialState({
-    status: DB_STATUS.INITIAL,
+    status: STATUS.INITIAL,
   }),
   reducers: {},
   extraReducers: {
     [initSettings.pending]: (state) => {
-      state.status = DB_STATUS.OPENING
+      state.status = STATUS.OPENING
     },
     [initSettings.fulfilled]: (state) => {
-      state.status = DB_STATUS.OPENED
+      state.status = STATUS.OPENED
     },
     [initSettings.rejected]: (state, { error }) => {
-      state.status = DB_STATUS.FAILED
+      state.status = STATUS.FAILED
       state.error = error
     },
     [`${DB_NAME}/changed`]: (state, { payload }) => {
@@ -169,10 +169,17 @@ const settingsSlice = createSlice({
 
 const selectSettingsSlice = (state) => state[SLICE_NAME]
 
+export const selectSettingsStatus = createSelector(
+  [selectSettingsSlice],
+  (slice) => {
+    return slice.status
+  }
+)
+
 export const selectAreSettingsLoading = createSelector(
   [selectSettingsSlice],
   (slice) => {
-    return [DB_STATUS.INITIAL, DB_STATUS.OPENING].includes(slice.status)
+    return [STATUS.INITIAL, STATUS.OPENING].includes(slice.status)
   }
 )
 
@@ -197,6 +204,16 @@ export const selectMainMensesTag = createSelector(
 export const selectInitialDaysBetween = (state) => {
   return selectSetting(state, CYCLE_LENGTH_KEY.SLICE)
 }
+
+export const selectSettings = createSelector([selectEntities], (entities) => {
+  const mensesTags = entities[MENSES_TAG_KEY.SLICE]?.value
+  const initialCycleLength = entities[CYCLE_LENGTH_KEY.SLICE]?.value
+  return {
+    mensesTags: mensesTags || DEFAULT_MENSES_TAGS,
+    mainMensesTag: first(mensesTags),
+    initialCycleLength,
+  }
+})
 
 // =========================================================
 //
