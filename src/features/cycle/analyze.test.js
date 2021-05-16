@@ -25,14 +25,17 @@ describe("#analyzeEntries", () => {
       {
         date: new Date("2019-08-02"),
         tags: ["flo"],
+        isMenses: true,
       },
       {
         date: new Date("2019-08-03"),
         tags: ["flo"],
+        isMenses: true,
       },
       {
         date: new Date("2019-08-06"),
         tags: ["flo"],
+        isMenses: true,
       },
       {
         date: new Date("2019-08-08"),
@@ -40,7 +43,6 @@ describe("#analyzeEntries", () => {
       },
     ]
     const initialDaysBetween = 23
-    const menstruationTags = ["flo"]
 
     const result = {
       startDates: [new Date("2019-08-02")],
@@ -56,9 +58,9 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
-    ).toEqual(result)
+    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+      result
+    )
   })
 
   test("simple two cycle starts", () => {
@@ -66,22 +68,25 @@ describe("#analyzeEntries", () => {
       {
         date: new Date("2019-08-02"),
         tags: ["menstruation"],
+        isMenses: true,
       },
       {
         date: new Date("2019-08-03"),
         tags: ["hungry", "happy"],
+        isMenses: false,
       },
       {
         date: new Date("2019-08-25"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-08-26"),
         tags: ["happy"],
+        isMenses: false,
       },
     ]
     const initialDaysBetween = undefined
-    const menstruationTags = ["menstruation", "period"]
 
     const result = {
       startDates: [new Date("2019-08-02"), new Date("2019-08-25")],
@@ -95,9 +100,9 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
-    ).toEqual(result)
+    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+      result
+    )
   })
 
   test("simple three cycles", () => {
@@ -105,30 +110,35 @@ describe("#analyzeEntries", () => {
       {
         date: new Date("2019-06-04"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-05"),
         tags: ["period", "hungry"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-08"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-25"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-26"),
         tags: ["period", "hungry", "angry"],
+        isMenses: true,
       },
       {
         date: new Date("2019-07-16"),
         tags: ["period"],
+        isMenses: true,
       },
     ]
     const initialDaysBetween = 23
-    const menstruationTags = ["period"]
 
     const result = {
       startDates: [
@@ -147,9 +157,9 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
-    ).toEqual(result)
+    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+      result
+    )
   })
 
   test("complex cycles", () => {
@@ -158,48 +168,57 @@ describe("#analyzeEntries", () => {
       {
         date: new Date("2019-06-01"),
         tags: ["period", "angry"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-03"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-06"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-14"),
         tags: ["exhausted"],
+        isMenses: false,
       },
       {
         date: new Date("2019-06-15"),
         tags: ["exhausted"],
+        isMenses: false,
       },
       // First day
       {
         date: new Date("2019-06-20"),
         tags: ["period", "angry"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-21"),
         tags: ["period"],
+        isMenses: true,
       },
       {
         date: new Date("2019-06-30"),
         tags: ["happy"],
+        isMenses: false,
       },
       {
         date: new Date("2019-07-01"),
         tags: ["hungry"],
+        isMenses: false,
       },
       // First day
       {
         date: new Date("2019-07-10"),
         tags: ["period", "tired"],
+        isMenses: true,
       },
     ]
     const initialDaysBetween = undefined
-    const menstruationTags = ["period"]
 
     const result = {
       startDates: [
@@ -222,8 +241,8 @@ describe("#analyzeEntries", () => {
         14: ["exhausted"],
       },
     }
-    expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
-    ).toEqual(result)
+    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+      result
+    )
   })
 })
