@@ -93,7 +93,7 @@ export const addMensesTag = createAsyncThunk(
   async (payload, thunkAPI) => {
     const tag = payload
     const current = selectById(thunkAPI.getState(), MENSES_TAG_KEY.SLICE)
-    console.log({ current })
+
     if (isUndefined(current)) {
       await userbase.insertItem({
         databaseName: DB_NAME,
