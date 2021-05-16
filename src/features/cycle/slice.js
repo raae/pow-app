@@ -21,12 +21,12 @@ const selectDate = (state, props) => {
 export const selectAllAnalyticsEntries = createSelector(
   [selectAllEntries, selectMensesTags],
   (entries, mensesTags) => {
-    return entries.map((entry) => {
-      const isMenses = intersection(entry.tags, mensesTags).length > 0
-      const date = makeDate(entry.entryId)
+    return entries.map(({ entryId, tags }) => {
+      const isMenses = intersection(tags, mensesTags).length > 0
+      const date = makeDate(entryId)
       return {
-        ...entry,
         date,
+        tags,
         isMenses,
       }
     })
