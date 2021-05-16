@@ -224,14 +224,6 @@ export const selectEntryTags = createSelector([selectEntry], (entry) => {
   return entry?.tags || DEFAULT_TAGS
 })
 
-export const selectIsMenstruationForDate = createSelector(
-  [selectEntryTags, selectMensesTagText],
-  (tags = [], menstruationTag) => {
-    // TODO: If this is in use then needs to check for all menstruation tags
-    return tags.includes(menstruationTag)
-  }
-)
-
 // =========================================================
 //
 //  Default exports
