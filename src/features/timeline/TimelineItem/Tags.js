@@ -40,7 +40,7 @@ const Tags = ({ date, isFuture, className }) => {
     } else {
       note = `${entryNote} \n\n #${tag}`
     }
-    dispatch(upsertEntry(date, { note }))
+    dispatch(upsertEntry({ date, note }))
   }
 
   if (tags.length === 0) return null

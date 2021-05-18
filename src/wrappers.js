@@ -16,16 +16,15 @@ import {
 import { reducer as userReducer, name as userSliceName } from "./features/user"
 
 import {
-  reducer as databaseReducer,
-  name as databaseSliceName,
-} from "./features/database"
-
-import {
   initSettings,
   reducer as settingsReducer,
   name as settingsSliceName,
 } from "./features/settings"
-import { initEntries } from "./features/entries"
+import {
+  initEntries,
+  reducer as entriesReducer,
+  name as entriesSliceName,
+} from "./features/entries"
 
 import { withTheme } from "./theme"
 
@@ -34,7 +33,7 @@ const store = configureStore({
     [appSliceName]: appReducer,
     [authSliceName]: authReducer,
     [userSliceName]: userReducer,
-    [databaseSliceName]: databaseReducer,
+    [entriesSliceName]: entriesReducer,
     [settingsSliceName]: settingsReducer,
   }),
 })
