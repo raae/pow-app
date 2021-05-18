@@ -10,6 +10,7 @@ import { selectAreSettingsLoading } from "../features/settings"
 import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
 
 import { Seo, Loading } from "../features/app"
+import { INCOMPLETE } from "../features/navigation"
 
 const CyclePage = () => {
   const { isAuthenticated, isAuthPending } = useAuth()
@@ -22,7 +23,7 @@ const CyclePage = () => {
 
   useEffect(() => {
     if (isAuthenticated && !isSubscribed) {
-      navigate("/profile?payment=unfinished")
+      navigate(INCOMPLETE.to)
     }
   }, [isAuthenticated, isSubscribed])
 
