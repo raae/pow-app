@@ -17,11 +17,11 @@ import { TIMELINE } from "../features/navigation"
 import { useSubscription } from "../features/user"
 import { PaymentForm } from "../features/payment"
 import { useAuth } from "../features/auth"
+import NoPayment from "../features/profile/Incomplete/NoPayment"
+import IncompleteSettings from "../features/profile/Incomplete/IncompleteSettings"
 
 const Incomplete = () => {
   const dispatch = useDispatch()
-  const [lastPeriod, setLastPeriod] = useState(new Date())
-  const [tag, setTag] = useState()
   const [error, setError] = useState(false)
   const mainMensesTag = useSelector(selectMainMensesTag)
   const entries = useSelector(selectAllEntries)
@@ -34,8 +34,7 @@ const Incomplete = () => {
       navigate(TIMELINE.to)
     }
   })
-  const calculatePeriodDate = async (e) => {
-    e.preventDefault()
+  const onSubmit = async ({ tag, lastPeriod }) => {
     setError(false)
 
     if (!mainMensesTag) {
@@ -62,55 +61,12 @@ const Incomplete = () => {
       </AppMainToolbar>
       <AppPage withPaper>
         {!isSubscribed ? (
-          <>
-            <p>
-              Seems you have not yet subscribed to our service, please fill in
-              the details below so you can start taking charge of your menstrual
-              cycle.
-            </p>
-            <PaymentForm standalone={false} />
-          </>
+          <NoPayment />
         ) : (
-          <>
-            <p>
-              Seems you have not yet told us when your last period was and
-              unfortunately we need that to calculate the next one.
-            </p>
-            <p>No rush, please tell us whenever you can.</p>
-            <form onSubmit={calculatePeriodDate}>
-              <Box mt={4}>
-                {!mainMensesTag && (
-                  <Box mb={2}>
-                    <TextField
-                      color="secondary"
-                      variant="outlined"
-                      margin="normal"
-                      label="Your menstruation tag"
-                      placeholder="period"
-                      value={tag}
-                      onChange={(e) => setTag(e.target.value)}
-                      required
-                      inputProps={{
-                        autoCorrect: "off",
-                        autoCapitalize: "none",
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">#</InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
-                )}
-                <LastDateInput value={lastPeriod} onChange={setLastPeriod} />
-                <Box mt={2}>
-                  <Button type="submit" color="secondary" variant="contained">
-                    Calculate
-                  </Button>
-                </Box>
-              </Box>
-            </form>
-          </>
+          <IncompleteSettings
+            mainMensesTag={mainMensesTag}
+            onSubmit={onSubmit}
+          />
         )}
       </AppPage>
       <Toast open={error}>There has been a problem adding your date</Toast>
