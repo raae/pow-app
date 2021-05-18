@@ -84,6 +84,11 @@ export const HOME = {
   ...INTERNAL,
 }
 
+export const INCOMPLETE = {
+  to: "/incomplete/",
+  ...INTERNAL,
+}
+
 export const TIMELINE = {
   primary: "Timeline",
   icon: <TimelineIcon />,
