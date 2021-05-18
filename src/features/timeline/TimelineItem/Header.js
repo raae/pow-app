@@ -4,7 +4,6 @@ import { useSelector } from "react-redux"
 import { format } from "date-fns"
 import { Typography } from "@material-ui/core"
 
-import { selectIsMenstruationForDate } from "../../entries"
 import {
   selectCycleDayForDate,
   selectPredictedMenstruationForDate,
@@ -15,15 +14,11 @@ const TimelineHeader = ({ date, isSelected, isToday, isFuture, className }) => {
     selectCycleDayForDate(state, { date })
   )
 
-  const isLoggedMenstruation = useSelector((state) =>
-    selectIsMenstruationForDate(state, { date })
-  )
-
   const isPredictedMenstruation = useSelector((state) =>
     selectPredictedMenstruationForDate(state, { date })
   )
 
-  const isMenstruation = isLoggedMenstruation || isPredictedMenstruation
+  const isMenstruation = isPredictedMenstruation
 
   const textColor = isToday || isFuture ? "textPrimary" : "textSecondary"
 

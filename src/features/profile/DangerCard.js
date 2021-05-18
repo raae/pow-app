@@ -11,7 +11,7 @@ import {
   makeStyles,
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
-import { selectEntries, deleteAllEntries } from "../entries"
+import { selectAllEntries, deleteAllEntries } from "../entries"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -27,7 +27,7 @@ const DangerCard = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState(false)
-  const entries = useSelector(selectEntries)
+  const entries = useSelector(selectAllEntries)
 
   const disabled = isPending || entries.length === 0
 
