@@ -101,7 +101,7 @@ const Onboarding = () => {
 
     if (values.lastStart) {
       await dispatch(
-        upsertEntry(values.lastStart, {
+        upsertEntry({
           date: values.lastStart,
           note: `#${values.tag}`,
         })
