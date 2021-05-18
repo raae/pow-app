@@ -10,8 +10,8 @@ import { first, isNumber, isUndefined } from "lodash"
 import { tagArrayToText, textToTagArray } from "./utils"
 
 const SLICE_NAME = "settings"
+const SLICE_ENTITY = "setting"
 const DB_NAME = SLICE_NAME
-const DB_ITEM = "setting"
 
 const MENSES_TAG_KEY = {
   DB: "tag",
@@ -89,7 +89,7 @@ export const initSettings = createAsyncThunk(
 )
 
 export const addMensesTag = createAsyncThunk(
-  `${DB_ITEM}/upsert`,
+  `${SLICE_ENTITY}/upsert`,
   async (payload, thunkAPI) => {
     const tag = payload
     const current = selectById(thunkAPI.getState(), MENSES_TAG_KEY.SLICE)
@@ -116,19 +116,28 @@ export const addMensesTag = createAsyncThunk(
 )
 
 export const setInitialCycleLength = createAsyncThunk(
-  `${DB_ITEM}/upsert`,
-  async (payload) => {
+  `${SLICE_ENTITY}/upsert`,
+  async (payload, thunkAPI) => {
     const length = parseInt(payload)
+    const current = selectById(thunkAPI.getState(), CYCLE_LENGTH_KEY.SLICE)
 
     if (!isNumber(length)) {
-      throw new Error(`Initial cycle length must be a number, not ${length}`)
+      throw new Error(
+        `Initial cycle length must be a number, not ${typeof length}`
+      )
     }
 
-    await userbase.insertItem({
+    const userbaseParams = {
       databaseName: DB_NAME,
       itemId: CYCLE_LENGTH_KEY.DB,
       item: length,
-    })
+    }
+
+    if (isUndefined(current)) {
+      await userbase.insertItem(userbaseParams)
+    } else {
+      await userbase.updateItem(userbaseParams)
+    }
   }
 )
 
