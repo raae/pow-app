@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LastDateInput = ({ onChange, label, value, inputProps = {} }) => {
+const LastDateInput = ({ onChange, label, value }) => {
   const classes = useStyles()
 
   return (

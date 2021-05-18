@@ -29,7 +29,8 @@ const Incomplete = () => {
 
     try {
       await dispatch(
-        upsertEntry(lastPeriod, {
+        upsertEntry({
+          date: lastPeriod,
           note: `#${mainMensesTag}`,
         })
       )
