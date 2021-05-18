@@ -6,32 +6,23 @@ const minMax = {
   max: 60,
 }
 
-const placeholder = "28"
+const placeholder = 28
 
 const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
   const [value, setValue] = useState(values.daysBetween)
 
   const onChangeDaysBetween = (e) => {
-    const currentValue = e.target.value.length
-    if (
-      currentValue.length > 1 &&
-      (parseInt(currentValue) < minMax.min ||
-        parseInt(currentValue) > minMax.max)
-    ) {
-      return
+    const currentValue = parseInt(e.target.value, 10)
+    if (currentValue === -1) {
+      setValue(placeholder - 1)
+    } else if (currentValue === 1) {
+      setValue(placeholder + 1)
+    } else {
+      setValue(currentValue)
     }
-    onChange("daysBetween")(e)
-  }
 
-  const onFocus = (e) => {
-    if (!value) {
-      setValue(placeholder)
-    }
+    onChange("daysBetween")(value)
   }
-
-  useEffect(() => {
-    setValue(values.daysBetween)
-  }, [values.daysBetween])
 
   return (
     <div>
@@ -40,10 +31,10 @@ const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
         label="Days between menstruations"
         value={value}
         type="number"
-        required
-        onFocus={onFocus}
         onChange={onChangeDaysBetween}
         placeholder={placeholder}
+        min={minMax.min}
+        max={minMax.max}
         fullWidth
         InputProps={{
           startAdornment: <InputAdornment position="start">#</InputAdornment>,
