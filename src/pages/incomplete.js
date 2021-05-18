@@ -29,7 +29,7 @@ const Incomplete = () => {
     setError(false)
 
     if (!mainMensesTag) {
-      await dispatch(dispatch(addMensesTag(tag)))
+      await dispatch(addMensesTag(tag))
     }
 
     try {

@@ -2,23 +2,43 @@ import { Box, Button, InputAdornment, TextField } from "@material-ui/core"
 import React, { useState } from "react"
 import LastDateInput from "../../onboarding/Onboarding/LastDateInput"
 
-const IncompleteSettings = ({ onSubmit, mainMensesTag }) => {
-  const [tag, setTag] = useState()
-  const [lastPeriod, setLastPeriod] = useState(new Date())
+const Text = ({ mainMensesTag }) => {
+  if (mainMensesTag) {
+    return (
+      <>
+        <p>
+          Seems you have not yet told us when your last period was and
+          unfortunately we need that to calculate the next one.
+        </p>
+        <p>No rush, please tell us whenever you can.</p>
+      </>
+    )
+  }
   return (
     <>
       <p>
-        Seems you have not yet told us when your last period was and
-        unfortunately we need that to calculate the next one.
+        Seems you have not yet told us when your last period was and also what
+        tag you want to use to track it.
       </p>
       <p>No rush, please tell us whenever you can.</p>
+    </>
+  )
+}
+
+const IncompleteSettings = ({ onSubmit, mainMensesTag }) => {
+  const [tag, setTag] = useState()
+  const [lastPeriod, setLastPeriod] = useState(new Date())
+
+  return (
+    <>
+      <Text mainMensesTag={mainMensesTag} />
       <form
         onSubmit={(e) => {
           e.preventDefault()
           onSubmit({ tag, lastPeriod })
         }}
       >
-        <Box mt={4}>
+        <Box mt={2}>
           {!mainMensesTag && (
             <Box mb={2}>
               <TextField
