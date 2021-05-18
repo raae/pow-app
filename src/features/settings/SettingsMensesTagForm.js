@@ -13,6 +13,7 @@ import Alert from "@material-ui/lab/Alert"
 
 import { cleanTag } from "../utils/tags"
 import { useSettings } from "./useSettings"
+import { MensesTags } from "./MensesTags"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,7 +33,7 @@ const textFieldProps = {
 const SettingsMensesTagForm = ({ title, onDone, Component }) => {
   const classes = useStyles()
 
-  const { mainMensesTag, addMensesTag } = useSettings()
+  const { mainMensesTag, mensesTags, addMensesTag } = useSettings()
   const [newTag, setNewTag] = useState("")
 
   const [error, setError] = useState()
@@ -102,7 +103,10 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
         />
         {mainMensesTag && (
           <FormHelperText className={classes.helper}>
-            Your current menstruation tag: <strong>#{mainMensesTag}</strong>
+            {mensesTags.length === 1
+              ? "Your current menstruation tag: "
+              : "Your current and past menstruation tags: "}
+            <MensesTags withMainTag />
           </FormHelperText>
         )}
       </FormGroup>

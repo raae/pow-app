@@ -14,6 +14,7 @@ import { Settings as SettingsIcon } from "@material-ui/icons"
 
 import { useSettings } from "./useSettings"
 import SettingsMensesTagForm from "./SettingsMensesTagForm"
+import { MensesTags } from "./MensesTags"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {},
@@ -22,18 +23,6 @@ const useStyles = makeStyles((theme) => ({
 const SettingsCard = ({ editNavItem }) => {
   const classes = useStyles()
   const { mainMensesTag, mensesTags } = useSettings()
-  const restTagJsx = mensesTags
-    .filter((tag) => tag !== mainMensesTag)
-    .map((tag, index, restTags) => {
-      const tagJsx = <strong key={index}>{tag}</strong>
-      if (index === 0) {
-        return tagJsx
-      } else if (index < restTags.length - 1) {
-        return [", ", tagJsx]
-      } else {
-        return [" and ", tagJsx]
-      }
-    })
 
   return (
     <Card>
@@ -72,7 +61,7 @@ const SettingsCard = ({ editNavItem }) => {
                   gutterBottom
                 >
                   However these past menstruation tags still indicate a
-                  menstruation day: {restTagJsx}.
+                  menstruation day: <MensesTags />.
                 </Typography>
               )}
             </>
