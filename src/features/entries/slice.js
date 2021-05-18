@@ -7,8 +7,6 @@ import {
 import userbase from "userbase-js"
 import { uniq, isUndefined, last } from "lodash"
 
-import { selectMensesTagText } from "../settings"
-
 import { entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
 
