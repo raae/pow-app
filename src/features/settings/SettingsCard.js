@@ -1,7 +1,5 @@
 import React from "react"
-import { useSelector } from "react-redux"
 import PropTypes from "prop-types"
-import { tail } from "lodash"
 import {
   Avatar,
   Button,
@@ -14,8 +12,7 @@ import {
 } from "@material-ui/core"
 import { Settings as SettingsIcon } from "@material-ui/icons"
 
-import { selectMensesTags, selectMainMensesTag } from "./slice"
-
+import { useSettings } from "./useSettings"
 import SettingsMensesTagForm from "./SettingsMensesTagForm"
 
 const useStyles = makeStyles((theme) => ({
@@ -24,10 +21,19 @@ const useStyles = makeStyles((theme) => ({
 
 const SettingsCard = ({ editNavItem }) => {
   const classes = useStyles()
-
-  const mainMensesTag = useSelector(selectMainMensesTag)
-  const mensesTags = useSelector(selectMensesTags)
-  const restTags = tail(mensesTags)
+  const { mainMensesTag, mensesTags } = useSettings()
+  const restTagJsx = mensesTags
+    .filter((tag) => tag !== mainMensesTag)
+    .map((tag, index, restTags) => {
+      const tagJsx = <strong key={index}>{tag}</strong>
+      if (index === 0) {
+        return tagJsx
+      } else if (index < restTags.length - 1) {
+        return [", ", tagJsx]
+      } else {
+        return [" and ", tagJsx]
+      }
+    })
 
   return (
     <Card>
@@ -54,25 +60,19 @@ const SettingsCard = ({ editNavItem }) => {
           ) : (
             <>
               <Typography variant="body1" color="textPrimary" gutterBottom>
-                <strong>#{mainMensesTag}</strong> is your chosen menstruation
-                tag
+                <strong>{mainMensesTag}</strong> is your current chosen
+                menstruation tag
               </Typography>
 
-              {restTags.length > 0 && (
+              {mensesTags.length > 1 && (
                 <Typography
                   className={classes.space}
                   variant="caption"
                   color="textSecondary"
                   gutterBottom
                 >
-                  But these past menstruation tags also indicate a menstruation
-                  day:{" "}
-                  {restTags.map((tag, index) => [
-                    index > 0 &&
-                      (index === restTags.length - 1 ? " and " : ", "),
-                    <strong key={index}>#{tag}</strong>,
-                  ])}
-                  .
+                  However these past menstruation tags still indicate a
+                  menstruation day: {restTagJsx}.
                 </Typography>
               )}
             </>
