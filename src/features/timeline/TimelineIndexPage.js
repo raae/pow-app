@@ -8,7 +8,7 @@ import { makeDate, entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 import { selectDaysBetween } from "../cycle"
-import { selectEntries } from "../entries"
+import { selectAllEntries } from "../entries"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 import { INCOMPLETE, TIMELINE } from "../navigation"
@@ -26,7 +26,7 @@ const CycleIndexPage = ({ entryId }) => {
 
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
-  const entries = useSelector(selectEntries)
+  const entries = useSelector(selectAllEntries)
 
   const range = eachDayOfInterval({
     start: addDays(selectedDate, calculatedDaysBetween * -1.5),
