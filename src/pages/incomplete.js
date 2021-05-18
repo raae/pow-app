@@ -16,8 +16,7 @@ const Incomplete = () => {
   const [error, setError] = useState(false)
   const mainMensesTag = useSelector(selectMainMensesTag)
   const entries = useSelector(selectAllEntries)
-  const notHasPlacedPeriod =
-    !entries.length || !entries.filter((s) => s.tags.length).length
+  const notHasPlacedPeriod = !entries.length
   const { isSubscribed } = useSubscription()
 
   useEffect(() => {
@@ -25,6 +24,7 @@ const Incomplete = () => {
       navigate(TIMELINE.to)
     }
   })
+
   const onSubmit = async ({ tag, lastPeriod }) => {
     setError(false)
 
@@ -61,7 +61,9 @@ const Incomplete = () => {
           />
         )}
       </AppPage>
-      <Toast open={error}>There has been a problem adding your date</Toast>
+      <Toast open={error}>
+        There has been a problem adding your information
+      </Toast>
     </AppLayout>
   )
 }
