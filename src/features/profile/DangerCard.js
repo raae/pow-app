@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
 import { selectAllEntries, deleteAllEntries } from "../entries"
+// import {clearMensenTags} from "../settings"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -92,6 +93,17 @@ const DangerCard = () => {
           variant="outlined"
           color="primary"
           onClick={handleDeleteAllEntries}
+        >
+          {deleteAllEntriesText}
+        </Button>
+
+        <Button
+          // true if entrie.length > 0
+          disabled={disabled}
+          // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
+          variant="outlined"
+          color="primary"
+          // onClick={clearMensenTags}
         >
           {deleteAllEntriesText}
         </Button>
