@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from "react"
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@material-ui/core"
+import { Typography } from "@material-ui/core"
 import { navigate } from "gatsby"
 import { useDispatch, useSelector } from "react-redux"
 import { selectAllEntries, upsertEntry } from "../features/entries"
 import { addMensesTag, selectMainMensesTag } from "../features/settings"
-import LastDateInput from "../features/onboarding/Onboarding/LastDateInput"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
 import { TIMELINE } from "../features/navigation"
 import { useSubscription } from "../features/user"
-import { PaymentForm } from "../features/payment"
-import { useAuth } from "../features/auth"
 import NoPayment from "../features/profile/Incomplete/NoPayment"
 import IncompleteSettings from "../features/profile/Incomplete/IncompleteSettings"
 
