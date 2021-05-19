@@ -69,5 +69,7 @@ module.exports = {
         loadType: "defer",
       },
     },
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
   ],
 }
