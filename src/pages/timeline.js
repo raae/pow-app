@@ -6,7 +6,7 @@ import { Router } from "@reach/router"
 import { useAuth } from "../features/auth"
 import { useSubscription } from "../features/user"
 import { selectAreEntriesLoading } from "../features/entries"
-import { selectAreSettingsLoading } from "../features/settings"
+import { useSettings } from "../features/settings"
 import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
 
 import { Seo, Loading } from "../features/app"
@@ -14,11 +14,11 @@ import { Seo, Loading } from "../features/app"
 const CyclePage = () => {
   const { isAuthenticated, isAuthPending } = useAuth()
   const { isSubscribed } = useSubscription()
+  const { isLoading: settingsIsLoading } = useSettings()
 
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
-  const settingsAreLoading = useSelector(selectAreSettingsLoading)
 
-  const dataIsLoading = entriesAreLoading || settingsAreLoading
+  const dataIsLoading = entriesAreLoading || settingsIsLoading
 
   useEffect(() => {
     if (isAuthenticated && !isSubscribed) {
