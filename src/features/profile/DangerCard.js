@@ -105,7 +105,7 @@ const DangerCard = () => {
           color="primary"
           // onClick={clearMensenTags}
         >
-          {deleteAllEntriesText}
+          Button
         </Button>
       </CardContent>
     </Card>
