@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { Box, Button, Typography } from "@material-ui/core"
 import { navigate } from "gatsby"
-import { useDispatch, useSelector } from "react-redux"
 import { selectAllEntries, upsertEntry } from "../features/entries"
-import { selectMainMensesTag } from "../features/settings"
+import { useSettings } from "../features/settings"
 import LastDateInput from "../features/onboarding/Onboarding/LastDateInput"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
@@ -11,9 +11,12 @@ import { TIMELINE } from "../features/navigation"
 
 const Incomplete = () => {
   const dispatch = useDispatch()
+
   const [lastPeriod, setLastPeriod] = useState(new Date())
   const [error, setError] = useState(false)
-  const mainMensesTag = useSelector(selectMainMensesTag)
+
+  const { mainMensesTag } = useSettings()
+
   const entries = useSelector(selectAllEntries)
   const notHasPlacedPeriod =
     !entries.length || !entries.filter((s) => s.tags.length).length

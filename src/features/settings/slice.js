@@ -10,29 +10,66 @@ import { first, isNumber, isUndefined } from "lodash"
 import { tagArrayToText, textToTagArray } from "./utils"
 
 const SLICE_NAME = "settings"
+const SLICE_ENTITY = "setting"
 const DB_NAME = SLICE_NAME
-const DB_ITEM = "setting"
-const DB_MENSES_TAG_KEY = "tag"
-const DB_CYCLE_LENGTH_KEY = "daysBetween"
 
-export const SETTINGS_STATUS = {
-  INITIAL: `[${DB_NAME}] Initial`,
-  OPENING: `[${DB_NAME}] Opening`,
-  OPENED: `[${DB_NAME}] Opened`,
-  FAILED: `[${DB_NAME}] Failed`,
+const MENSES_TAG_KEY = {
+  DB: "tag",
+  SLICE: "mensesTags",
 }
 
-// Adaptor
+const CYCLE_LENGTH_KEY = {
+  DB: "daysBetween",
+  SLICE: "initialCycleLength",
+}
+
+export const STATUS = {
+  INITIAL: `[${SLICE_NAME}] Initial`,
+  OPENING: `[${SLICE_NAME}] Opening`,
+  OPENED: `[${SLICE_NAME}] Opened`,
+  FAILED: `[${SLICE_NAME}] Failed`,
+}
+
+// =========================================================
+//
+//  Adaptor
+//
+// =========================================================
 
 const settingsAdaptor = createEntityAdapter({
-  selectId: (setting) => setting.itemId,
+  selectId: (setting) => setting.key,
 })
 
-const { selectById } = settingsAdaptor.getSelectors(
+const { selectById, selectEntities } = settingsAdaptor.getSelectors(
   (state) => state[SLICE_NAME]
 )
 
-// Thunks
+// =========================================================
+//
+//  Thunks / Actions
+//
+// =========================================================
+
+const transformItemToSetting = ({ itemId, item, ...rest }) => {
+  let key = itemId
+  let value = item
+
+  if (itemId === MENSES_TAG_KEY.DB) {
+    // Stored as a comma separated string
+    key = MENSES_TAG_KEY.SLICE
+    value = textToTagArray(value)
+  } else if (itemId === CYCLE_LENGTH_KEY.DB) {
+    // Will for some early users be stored as a string
+    key = CYCLE_LENGTH_KEY.SLICE
+    value = parseInt(value, 10)
+  }
+
+  return {
+    key,
+    value,
+    ...rest,
+  }
+}
 
 export const initSettings = createAsyncThunk(
   `${DB_NAME}/init`,
@@ -44,7 +81,7 @@ export const initSettings = createAsyncThunk(
         // on the server changeHandler will be called.
         thunkAPI.dispatch({
           type: `${DB_NAME}/changed`,
-          payload: { items },
+          payload: { items: items.map(transformItemToSetting) },
         })
       },
     })
@@ -52,26 +89,26 @@ export const initSettings = createAsyncThunk(
 )
 
 export const addMensesTag = createAsyncThunk(
-  `${DB_ITEM}/upsert`,
+  `${SLICE_ENTITY}/upsert`,
   async (payload, thunkAPI) => {
     const tag = payload
-    const current = selectById(thunkAPI.getState(), DB_MENSES_TAG_KEY)
+    const current = selectById(thunkAPI.getState(), MENSES_TAG_KEY.SLICE)
 
     if (isUndefined(current)) {
       await userbase.insertItem({
         databaseName: DB_NAME,
-        itemId: DB_MENSES_TAG_KEY,
+        itemId: MENSES_TAG_KEY.DB,
         item: tag,
       })
     } else {
       // Add new tag and make sure we only store valid values,
       // even potentially cleaning up invalid values already stored.
-      const tags = [tag, ...textToTagArray(current.item)]
+      const tags = [tag, ...current.value]
       const updatedItem = tagArrayToText(tags)
 
       await userbase.updateItem({
         databaseName: DB_NAME,
-        itemId: DB_MENSES_TAG_KEY,
+        itemId: MENSES_TAG_KEY.DB,
         item: updatedItem,
       })
     }
@@ -79,39 +116,52 @@ export const addMensesTag = createAsyncThunk(
 )
 
 export const setInitialCycleLength = createAsyncThunk(
-  `${DB_ITEM}/upsert`,
-  async (payload) => {
+  `${SLICE_ENTITY}/upsert`,
+  async (payload, thunkAPI) => {
     const length = parseInt(payload)
+    const current = selectById(thunkAPI.getState(), CYCLE_LENGTH_KEY.SLICE)
 
     if (!isNumber(length)) {
-      throw new Error("Length is not a number")
+      throw new Error(
+        `Initial cycle length must be a number, not ${typeof length}`
+      )
     }
 
-    await userbase.insertItem({
+    const userbaseParams = {
       databaseName: DB_NAME,
-      itemId: DB_CYCLE_LENGTH_KEY,
+      itemId: CYCLE_LENGTH_KEY.DB,
       item: length,
-    })
+    }
+
+    if (isUndefined(current)) {
+      await userbase.insertItem(userbaseParams)
+    } else {
+      await userbase.updateItem(userbaseParams)
+    }
   }
 )
 
-// Store
+// =========================================================
+//
+//  Reducer
+//
+// =========================================================
 
 const settingsSlice = createSlice({
   name: SLICE_NAME,
   initialState: settingsAdaptor.getInitialState({
-    status: SETTINGS_STATUS.INITIAL,
+    status: STATUS.INITIAL,
   }),
   reducers: {},
   extraReducers: {
     [initSettings.pending]: (state) => {
-      state.status = SETTINGS_STATUS.OPENING
+      state.status = STATUS.OPENING
     },
     [initSettings.fulfilled]: (state) => {
-      state.status = SETTINGS_STATUS.OPENED
+      state.status = STATUS.OPENED
     },
     [initSettings.rejected]: (state, { error }) => {
-      state.status = SETTINGS_STATUS.FAILED
+      state.status = STATUS.FAILED
       state.error = error
     },
     [`${DB_NAME}/changed`]: (state, { payload }) => {
@@ -120,35 +170,38 @@ const settingsSlice = createSlice({
   },
 })
 
-// Selectors
+// =========================================================
+//
+//  Selectors
+//
+// =========================================================
 
 const selectSettingsSlice = (state) => state[SLICE_NAME]
+
+export const selectSettingsStatus = createSelector(
+  [selectSettingsSlice],
+  (slice) => {
+    return slice.status
+  }
+)
 
 export const selectAreSettingsLoading = createSelector(
   [selectSettingsSlice],
   (slice) => {
-    return [SETTINGS_STATUS.INITIAL, SETTINGS_STATUS.OPENING].includes(
-      slice.status
-    )
+    return [STATUS.INITIAL, STATUS.OPENING].includes(slice.status)
   }
 )
 
 export const selectSetting = createSelector([selectById], (setting) => {
   if (setting) {
-    return setting.item
+    return setting.value
   }
 })
 
-export const selectMensesTagText = (state) => {
-  return selectSetting(state, DB_MENSES_TAG_KEY) || ""
+const DEFAULT_MENSES_TAGS = []
+export const selectMensesTags = (state) => {
+  return selectSetting(state, MENSES_TAG_KEY.SLICE) || DEFAULT_MENSES_TAGS
 }
-
-export const selectMensesTags = createSelector(
-  [selectMensesTagText],
-  (mensesTagText) => {
-    return textToTagArray(mensesTagText)
-  }
-)
 
 export const selectMainMensesTag = createSelector(
   [selectMensesTags],
@@ -158,12 +211,24 @@ export const selectMainMensesTag = createSelector(
 )
 
 export const selectInitialDaysBetween = (state) => {
-  const length = selectSetting(state, DB_CYCLE_LENGTH_KEY)
-  if (length) {
-    // Will for some early users be stored as a string
-    return parseInt(length, 10)
-  }
+  return selectSetting(state, CYCLE_LENGTH_KEY.SLICE)
 }
+
+export const selectSettings = createSelector([selectEntities], (entities) => {
+  const mensesTags = entities[MENSES_TAG_KEY.SLICE]?.value
+  const initialCycleLength = entities[CYCLE_LENGTH_KEY.SLICE]?.value
+  return {
+    mensesTags: mensesTags || DEFAULT_MENSES_TAGS,
+    mainMensesTag: first(mensesTags),
+    initialCycleLength,
+  }
+})
+
+// =========================================================
+//
+//  Default exports
+//
+// =========================================================
 
 export const name = settingsSlice.name
 export default settingsSlice.reducer
