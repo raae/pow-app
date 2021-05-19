@@ -4,16 +4,14 @@ import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
-
 import { makeDate, entryIdFromDate } from "../utils/days"
-
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
-
 import { selectDaysBetween } from "../cycle"
-
+import { selectAllEntries } from "../entries"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
+import { INCOMPLETE, TIMELINE } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -28,6 +26,7 @@ const CycleIndexPage = ({ entryId }) => {
 
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
+  const entries = useSelector(selectAllEntries)
 
   const range = eachDayOfInterval({
     start: addDays(selectedDate, calculatedDaysBetween * -1.5),
@@ -44,22 +43,28 @@ const CycleIndexPage = ({ entryId }) => {
     })
   }, [selectedDate])
 
+  const notHasPlacedPeriod =
+    !entries.length || !entries.filter((s) => s.tags.length).length
+
+  useEffect(() => {
+    if (notHasPlacedPeriod) {
+      navigate(INCOMPLETE.to)
+    }
+  }, [notHasPlacedPeriod])
+
   return (
     <AppLayout>
-      <AppMainToolbar>
-        <DatePicker date={selectedDate} />
-        <IconButton
-          aria-label="Scroll to today"
-          onClick={(event) => {
-            navigate(`/timeline`)
-          }}
-          style={{ marginLeft: "auto" }}
-        >
-          <Today />
-        </IconButton>
-      </AppMainToolbar>
-
       <AppPage>
+        <AppMainToolbar>
+          <DatePicker date={selectedDate} />
+          <IconButton
+            aria-label="Scroll to today"
+            onClick={() => navigate(TIMELINE.to)}
+            style={{ marginLeft: "auto" }}
+          >
+            <Today />
+          </IconButton>
+        </AppMainToolbar>
         <List className={classes.timeline}>
           {range.map((date) => {
             return (

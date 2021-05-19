@@ -48,7 +48,7 @@ const Onboarding = () => {
       value = cleanTag(event.target.value)
     } else if (name === "newsletter") {
       value = event.target.checked
-    } else if (name === "lastStart") {
+    } else if (name === "lastStart" || name === "daysBetween") {
       value = event
     } else {
       value = event.target.value
@@ -101,7 +101,7 @@ const Onboarding = () => {
 
     if (values.lastStart) {
       await dispatch(
-        upsertEntry(values.lastStart, {
+        upsertEntry({
           date: values.lastStart,
           note: `#${values.tag}`,
         })
