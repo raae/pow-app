@@ -29,6 +29,8 @@ const NotFoundPage = () => {
             <p>Nothing to see here, go back to <a href={HOME.to}>POW!</a></p>
             <StaticImage
               src="../images/Photo_by_Teo_Zac_unsplash_com_at_teo_2.jpeg"
+              alt="Lost little LEGO Batman"
+
             />
             <p>Photo by <a href="https://unsplash.com/@teo">Teo Zac</a> on <a href="https://unsplash.com/@teo">Unsplash</a>.</p>
 
