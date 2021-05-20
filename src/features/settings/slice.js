@@ -185,12 +185,6 @@ export const selectSettingsStatus = createSelector(
   }
 )
 
-export const selectSetting = createSelector([selectById], (setting) => {
-  if (setting) {
-    return setting.value
-  }
-})
-
 const DEFAULT_MENSES_TAGS = []
 export const selectSettings = createSelector([selectEntities], (entities) => {
   const mensesTags = entities[MENSES_TAG_KEY.SLICE]?.value
