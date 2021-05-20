@@ -3,11 +3,9 @@ import PropTypes from "prop-types"
 import {
   Avatar,
   Button,
-  Box,
   Card,
   CardHeader,
   CardContent,
-  Typography,
   makeStyles,
 } from "@material-ui/core"
 import { Settings as SettingsIcon } from "@material-ui/icons"
@@ -15,6 +13,7 @@ import { Settings as SettingsIcon } from "@material-ui/icons"
 import { useSettings } from "./useSettings"
 import SettingsMensesTagForm from "./SettingsMensesTagForm"
 import { MensesTags } from "./MensesTags"
+import { CardContentSection } from "../../components"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {},
@@ -35,49 +34,38 @@ const SettingsCard = ({ editNavItem }) => {
         title="Settings"
       />
       <CardContent>
-        <Box mb={2}>
-          {!mainMensesTag ? (
-            <>
-              <Typography variant="body1" color="textPrimary" gutterBottom>
-                POW! tracks your cycles using hashtags
-              </Typography>
-              <Typography variant="body2" color="textPrimary" gutterBottom>
-                Input the term you would like to use to indicate menstruation
-                days.
-              </Typography>
-            </>
-          ) : (
-            <>
-              <Typography variant="body1" color="textPrimary" gutterBottom>
+        {!mainMensesTag ? (
+          <CardContentSection
+            title="POW! tracks your cycles using hashtags"
+            subheader="Input the term you would like to use to indicate menstruation
+                days."
+          >
+            <SettingsMensesTagForm>
+              <Button type="submit" color="secondary" variant="outlined">
+                Save
+              </Button>
+            </SettingsMensesTagForm>
+          </CardContentSection>
+        ) : (
+          <CardContentSection
+            title={
+              <>
                 <strong>{mainMensesTag}</strong> is your current chosen
                 menstruation tag
-              </Typography>
-
-              {mensesTags.length > 1 && (
-                <Typography
-                  className={classes.space}
-                  variant="caption"
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  However these past menstruation tags still indicate a
-                  menstruation day: <MensesTags />.
-                </Typography>
-              )}
-            </>
-          )}
-        </Box>
-
-        {!mainMensesTag && (
-          <SettingsMensesTagForm>
-            <Button type="submit" color="secondary" variant="outlined">
-              Save
-            </Button>
-          </SettingsMensesTagForm>
-        )}
-
-        {mainMensesTag && editNavItem && (
-          <Button {...editNavItem} variant="outlined" color="secondary" />
+              </>
+            }
+            subheader={
+              <>
+                However these past tag{mensesTags.length > 1 ? "s" : ""} still
+                indicate menstruation <MensesTags />, so please do not reuse
+                them for other purposes.
+              </>
+            }
+          >
+            {editNavItem && (
+              <Button {...editNavItem} variant="outlined" color="secondary" />
+            )}
+          </CardContentSection>
         )}
       </CardContent>
     </Card>

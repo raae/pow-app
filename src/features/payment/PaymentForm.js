@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { formatDistance, format } from "date-fns"
 import userbase from "userbase-js"
@@ -15,8 +15,8 @@ import {
   Box,
   makeStyles,
 } from "@material-ui/core"
-
 import Alert from "@material-ui/lab/Alert"
+import { CardContentSection } from "../../components"
 
 import {
   STRIPE_KEY,
@@ -66,6 +66,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   const [selectedPlan, setSelectedPlan] = useState(STRIPE_YEARLY_PLAN_ID)
   const [error, setError] = useState()
   const [isPending, setIsPending] = useState()
+  const cancelSubscriptionAtRef = useRef(cancelSubscriptionAt)
 
   const isDisabled = !isAuthFulfilled || isPending
 
@@ -74,9 +75,10 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   }
 
   useEffect(() => {
-    if (cancelSubscriptionAt) {
+    if (cancelSubscriptionAtRef.current !== cancelSubscriptionAt) {
       setIsPending(false)
     }
+    cancelSubscriptionAtRef.current = cancelSubscriptionAt
   }, [cancelSubscriptionAt])
 
   const handleSubscription = (variant) => async (event) => {
@@ -117,7 +119,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
           break
       }
 
-      setError()
+      setError(null)
     } catch (error) {
       setError(error)
       setIsPending(false)
@@ -129,26 +131,28 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
       <>
         {cancelSubscriptionAt ? (
           <>
-            <Box mb={2}>
-              <Typography variant="body1">
-                Your <strong>{PLAN_LABELS[subscriptionPlanId]}</strong>{" "}
-                subscription expires in{" "}
-                {formatDistance(new Date(cancelSubscriptionAt), new Date())} on{" "}
-                {format(new Date(cancelSubscriptionAt), "MMMM do")}
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                You may resume you subscription at any time until then.
-              </Typography>
-            </Box>
-
-            <Button
-              disabled={isDisabled}
-              variant="outlined"
-              color="secondary"
-              onClick={handleSubscription("resume")}
+            <CardContentSection
+              title={
+                <>
+                  Your <strong>{PLAN_LABELS[subscriptionPlanId]}</strong>{" "}
+                  subscription expires in{" "}
+                  {formatDistance(new Date(cancelSubscriptionAt), new Date())}{" "}
+                  on {format(new Date(cancelSubscriptionAt), "MMMM do")}
+                </>
+              }
+              subheader={
+                "You may resume you subscription at any time until then."
+              }
             >
-              Resume subscription
-            </Button>
+              <Button
+                disabled={isDisabled}
+                variant="outlined"
+                color="secondary"
+                onClick={handleSubscription("resume")}
+              >
+                Resume subscription
+              </Button>
+            </CardContentSection>
           </>
         ) : (
           <>
@@ -160,45 +164,40 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
               </Box>
             )}
 
-            <Box mb={2}>
-              <Typography variant="body1" component="h3">
-                You are subscribed to the{" "}
-                <strong>
-                  {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
-                </strong>{" "}
-                plan
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                Do you need to change the card on file or the billing email
-                address?
-              </Typography>
-            </Box>
-
-            <Button
-              disabled={isDisabled}
-              variant="outlined"
-              color="secondary"
-              onClick={handleSubscription("update")}
+            <CardContentSection
+              title={
+                <>
+                  You are subscribed to the{" "}
+                  <strong>
+                    {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
+                  </strong>{" "}
+                  plan
+                </>
+              }
+              subheader="Do you need to change the card on file or the billing email address?"
             >
-              Update billing information
-            </Button>
+              <Button
+                disabled={isDisabled}
+                variant="outlined"
+                color="secondary"
+                onClick={handleSubscription("update")}
+              >
+                Update billing information
+              </Button>
+            </CardContentSection>
 
-            <Box mb={2} mt={4}>
-              <Typography variant="body1" component="h3">
-                Cancel Subscription
-              </Typography>
-              <Typography variant="body2" color="textSecondary">
-                You will be able to access POW! and resume the subscription
-                until the end of the current billing period.
-              </Typography>
-            </Box>
-            <Button
-              disabled={isDisabled}
-              variant="outlined"
-              onClick={handleSubscription("cancel")}
+            <CardContentSection
+              title="Cancel Subscription"
+              subheader="You will be able to access POW! and resume the subscription until the end of the current billing period."
             >
-              Cancel subscription
-            </Button>
+              <Button
+                disabled={isDisabled}
+                variant="outlined"
+                onClick={handleSubscription("cancel")}
+              >
+                Cancel subscription
+              </Button>
+            </CardContentSection>
           </>
         )}
       </>

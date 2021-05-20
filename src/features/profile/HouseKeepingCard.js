@@ -1,20 +1,20 @@
 import React, { useState } from "react"
 import { useSelector } from "react-redux"
+import Papa from "papaparse"
+import { orderBy } from "lodash"
 import {
   Avatar,
   Button,
   Card,
   CardHeader,
   CardContent,
-  Typography,
-  Box,
 } from "@material-ui/core"
 import { ImportExport as CardIcon } from "@material-ui/icons"
 
+import { CardContentSection } from "../../components"
+
 import { Link } from "../navigation"
 import { selectAllEntries } from "../entries"
-import Papa from "papaparse"
-import { orderBy } from "lodash"
 
 const HouseKeepingCard = () => {
   const [isPending, setIsPending] = useState(false)
@@ -49,41 +49,37 @@ const HouseKeepingCard = () => {
       />
 
       <CardContent>
-        <Box mb={2}>
-          <Typography variant="body1" component="h3">
-            Import
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Would you like to import data from another app? If so let us know by
-            getting in touch on{" "}
-            <Link
-              target="_blank"
-              href={`mailto:support@usepow.app?subject=Import&body=${MAILTO_BODY}`}
-            >
-              support@usepow.app
-            </Link>
-            .
-          </Typography>
-        </Box>
+        <CardContentSection
+          title="Import"
+          subheader={
+            <>
+              Would you like to import data from another app? If so let us know
+              by getting in touch on{" "}
+              <Link
+                target="_blank"
+                href={`mailto:support@usepow.app?subject=Import&body=${MAILTO_BODY}`}
+              >
+                support@usepow.app
+              </Link>
+              .
+            </>
+          }
+        />
 
-        <Box mb={2} mt={4}>
-          <Typography variant="body1" component="h3">
-            Export
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Export your POW! data as a .csv file with the columns: date, note
-            and tags.
-          </Typography>
-        </Box>
-
-        <Button
-          disabled={disabled}
-          variant="outlined"
-          color="secondary"
-          onClick={exportAllEntries}
+        <CardContentSection
+          title="Export"
+          subheader=" Export your POW! data as a .csv file with the columns: date, note
+            and tags."
         >
-          {exportAllEntriesText}
-        </Button>
+          <Button
+            disabled={disabled}
+            variant="outlined"
+            color="secondary"
+            onClick={exportAllEntries}
+          >
+            {exportAllEntriesText}
+          </Button>
+        </CardContentSection>
       </CardContent>
     </Card>
   )

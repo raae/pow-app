@@ -6,7 +6,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Typography,
   Menu,
   MenuItem,
   makeStyles,
@@ -18,6 +17,7 @@ import { useUser } from "../user"
 
 import NewsletterSwitch from "./NewsletterSwitch"
 import { Skeleton } from "@material-ui/lab"
+import { CardContentSection } from "../../components"
 
 const useStyles = makeStyles((theme) => ({}))
 
@@ -71,11 +71,12 @@ const ProfileCard = ({ menuItems }) => {
         subheader={user?.email || <Skeleton width={50} />}
       />
       <CardContent>
-        <Typography variant="body2" gutterBottom>
-          POW! is a very young app. To stay updated on its life and advances
-          sign up for the newsletter. You may cancel at any time.
-        </Typography>
-        <NewsletterSwitch disabled={!user?.email} />
+        <CardContentSection
+          subheader="POW! is a very young app. To stay updated on its life and advances
+          sign up for the newsletter. You may cancel at any time."
+        >
+          <NewsletterSwitch disabled={!user?.email} />
+        </CardContentSection>
       </CardContent>
     </Card>
   )
