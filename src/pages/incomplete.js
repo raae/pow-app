@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Typography } from "@material-ui/core"
-import { navigate } from "gatsby"
 import { useDispatch, useSelector } from "react-redux"
+import { navigate } from "gatsby"
 import { selectAllEntries, upsertEntry } from "../features/entries"
-import { addMensesTag, selectMainMensesTag } from "../features/settings"
+import { addMensesTag } from "../features/settings"
+import { useSettings } from "../features/settings"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
 import { TIMELINE } from "../features/navigation"
@@ -14,7 +15,9 @@ import IncompleteSettings from "../features/profile/Incomplete/IncompleteSetting
 const Incomplete = () => {
   const dispatch = useDispatch()
   const [error, setError] = useState(false)
-  const mainMensesTag = useSelector(selectMainMensesTag)
+
+  const { mainMensesTag } = useSettings()
+
   const entries = useSelector(selectAllEntries)
   const notHasPlacedPeriod = !entries.length
   const { isSubscribed } = useSubscription()
