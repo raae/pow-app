@@ -79,7 +79,7 @@ const DangerCard = () => {
 
       <CardContent>
         <Box mb={2}>
-          <Typography variant="body1" component="h2">
+          <Typography variant="body1" component="h3">
             In need of a fresh start?
           </Typography>
           <Typography variant="body2" color="textSecondary">

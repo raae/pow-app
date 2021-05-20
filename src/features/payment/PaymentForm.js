@@ -130,7 +130,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
         {cancelSubscriptionAt ? (
           <>
             <Box mb={2}>
-              <Typography variant="body1" component="h2">
+              <Typography variant="body1">
                 Your <strong>{PLAN_LABELS[subscriptionPlanId]}</strong>{" "}
                 subscription expires in{" "}
                 {formatDistance(new Date(cancelSubscriptionAt), new Date())} on{" "}
@@ -161,7 +161,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
             )}
 
             <Box mb={2}>
-              <Typography variant="body1">
+              <Typography variant="body1" component="h3">
                 You are subscribed to the{" "}
                 <strong>
                   {PLAN_LABELS[subscriptionPlanId] || subscriptionPlanId}
@@ -184,7 +184,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
             </Button>
 
             <Box mb={2} mt={4}>
-              <Typography variant="body1" component="h2">
+              <Typography variant="body1" component="h3">
                 Cancel Subscription
               </Typography>
               <Typography variant="body2" color="textSecondary">

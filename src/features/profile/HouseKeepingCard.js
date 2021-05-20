@@ -50,7 +50,7 @@ const HouseKeepingCard = () => {
 
       <CardContent>
         <Box mb={2}>
-          <Typography variant="body1" component="h2">
+          <Typography variant="body1" component="h3">
             Import
           </Typography>
           <Typography variant="body2" color="textSecondary">
@@ -67,7 +67,7 @@ const HouseKeepingCard = () => {
         </Box>
 
         <Box mb={2} mt={4}>
-          <Typography variant="body1" component="h2">
+          <Typography variant="body1" component="h3">
             Export
           </Typography>
           <Typography variant="body2" color="textSecondary">
