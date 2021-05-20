@@ -185,35 +185,7 @@ export const selectSettingsStatus = createSelector(
   }
 )
 
-export const selectAreSettingsLoading = createSelector(
-  [selectSettingsSlice],
-  (slice) => {
-    return [STATUS.INITIAL, STATUS.OPENING].includes(slice.status)
-  }
-)
-
-export const selectSetting = createSelector([selectById], (setting) => {
-  if (setting) {
-    return setting.value
-  }
-})
-
 const DEFAULT_MENSES_TAGS = []
-export const selectMensesTags = (state) => {
-  return selectSetting(state, MENSES_TAG_KEY.SLICE) || DEFAULT_MENSES_TAGS
-}
-
-export const selectMainMensesTag = createSelector(
-  [selectMensesTags],
-  (mensesTags) => {
-    return first(mensesTags)
-  }
-)
-
-export const selectInitialDaysBetween = (state) => {
-  return selectSetting(state, CYCLE_LENGTH_KEY.SLICE)
-}
-
 export const selectSettings = createSelector([selectEntities], (entities) => {
   const mensesTags = entities[MENSES_TAG_KEY.SLICE]?.value
   const initialCycleLength = entities[CYCLE_LENGTH_KEY.SLICE]?.value
