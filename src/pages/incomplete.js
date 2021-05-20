@@ -3,7 +3,6 @@ import { Typography } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { selectAllEntries, upsertEntry } from "../features/entries"
-import { addMensesTag } from "../features/settings"
 import { useSettings } from "../features/settings"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
@@ -16,7 +15,7 @@ const Incomplete = () => {
   const dispatch = useDispatch()
   const [error, setError] = useState(false)
 
-  const { mainMensesTag } = useSettings()
+  const { mainMensesTag, addMensesTag } = useSettings()
 
   const entries = useSelector(selectAllEntries)
   const notHasPlacedPeriod = !entries.length
@@ -32,14 +31,14 @@ const Incomplete = () => {
     setError(false)
 
     if (!mainMensesTag) {
-      await dispatch(addMensesTag(tag))
+      await addMensesTag(tag)
     }
 
     try {
       await dispatch(
         upsertEntry({
           date: lastPeriod,
-          note: `#${mainMensesTag}`,
+          note: `#${tag}`,
         })
       )
       navigate(TIMELINE.to)
