@@ -34,12 +34,12 @@ theme.props = {
     component: "section",
     variant: "outlined",
   },
-  MuiPaper: {
-    component: "section",
-  },
   MuiCardHeader: {
     component: "header",
     titleTypographyProps: { component: "h2" },
+  },
+  MuiPaper: {
+    component: "section",
   },
   MuiLink: {
     color: "secondary",
