@@ -39,6 +39,7 @@ theme.props = {
   },
   MuiCardHeader: {
     component: "header",
+    titleTypographyProps: { component: "h2" },
   },
   MuiLink: {
     color: "secondary",
