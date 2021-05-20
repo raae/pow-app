@@ -66,8 +66,18 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
+  const disabled2 = entries.length > 0
+  const clearMensesTags = () => {}
+  const handleClearMensesTags = async (event) => {
+    // 1. Go get that form and prevent it from naughtily self-submitting
+       event.preventDefault()
+    // 2. Listen for the click on that button
+    // 3. Do something like, clear those MensesTags inside Daniel's and  ...'s Userbase
 
-  return (
+       alert(`Clearing tags with ${clearMensesTags}`)
+    // 4. Send that customer back to /profile or give alert if error
+  }
+         return (
     <Card>
       <CardHeader
         avatar={
@@ -77,7 +87,6 @@ const DangerCard = () => {
         }
         title="Danger Zone"
       />
-
       <CardContent>
         <Box mb={2}>
           <Typography variant="body1" component="h2">
@@ -87,7 +96,16 @@ const DangerCard = () => {
             Use with caution as your entries will be lost forever.
           </Typography>
         </Box>
-
+        <Button
+          // true if entries.length > 0
+          disabled={disabled2}
+          // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
+          variant="outlined"
+          color="primary"
+          onClick={handleClearMensesTags}
+        >
+          Clear choosen tag(s)
+        </Button>
         <Button
           disabled={disabled}
           variant="outlined"
@@ -95,17 +113,6 @@ const DangerCard = () => {
           onClick={handleDeleteAllEntries}
         >
           {deleteAllEntriesText}
-        </Button>
-
-        <Button
-          // true if entrie.length > 0
-          disabled={disabled}
-          // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
-          variant="outlined"
-          color="primary"
-          // onClick={clearMensenTags}
-        >
-          Button
         </Button>
       </CardContent>
     </Card>
