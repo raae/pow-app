@@ -96,6 +96,15 @@ const DangerCard = () => {
             Use with caution as your entries will be lost forever.
           </Typography>
         </Box>
+
+        <Button
+          disabled={disabled}
+          variant="outlined"
+          color="primary"
+          onClick={handleDeleteAllEntries}
+        >
+          {deleteAllEntriesText}
+        </Button>
         <Button
           // true if entries.length > 0
           disabled={disabled2}
@@ -105,14 +114,6 @@ const DangerCard = () => {
           onClick={handleClearMensesTags}
         >
           Clear choosen tag(s)
-        </Button>
-        <Button
-          disabled={disabled}
-          variant="outlined"
-          color="primary"
-          onClick={handleDeleteAllEntries}
-        >
-          {deleteAllEntriesText}
         </Button>
       </CardContent>
     </Card>
