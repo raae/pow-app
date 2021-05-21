@@ -10,8 +10,8 @@ const NavMenu = ({ items, disabled, onClick }) => {
           key={index}
           {...item}
           onClick={() => {
-            onClick && onClick()
             itemOnClick && itemOnClick()
+            onClick && onClick()
           }}
           disabled={disabled}
           button

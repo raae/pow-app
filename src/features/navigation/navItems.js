@@ -135,7 +135,7 @@ export const PROFILE = {
 }
 
 export const SUPPORT = {
-  primary: "Need help?",
+  primary: "Support",
   secondary: "support@usepow.app",
   icon: <SupportIcon />,
   href: "mailto:support@usepow.app",
