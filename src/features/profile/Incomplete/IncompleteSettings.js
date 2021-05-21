@@ -53,7 +53,7 @@ const IncompleteSettings = ({ onSubmit, mainMensesTag }) => {
         <LastDateInput value={lastPeriod} onChange={setLastPeriod} />
         <Box mt={2}>
           <Button type="submit" color="secondary" variant="contained">
-            {!mainMensesTag ? "Save" : "Calculate"}
+            Calculate
           </Button>
         </Box>
       </form>
