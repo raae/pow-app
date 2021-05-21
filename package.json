@@ -12,7 +12,7 @@
     "serve": "gatsby serve",
     "test": "jest --watch",
     "test-cli": "jest",
-    "postinstall": "netlify-lambda install functions",
+    "prebuild": "netlify-lambda install functions",
     "build:lambda": "netlify-lambda build functions",
     "prod": "npm run build; npm run build:lambda"
   },
