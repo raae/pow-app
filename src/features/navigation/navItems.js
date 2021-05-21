@@ -5,13 +5,21 @@ import {
   AccountCircle as ProfileIcon,
   List as TimelineIcon,
   OpenInNew as WebsiteIcon,
-  // Help as SupportIcon,
+  Help as SupportIcon,
   Telegram as FeedbackIcon,
   Face as TwitterIcon,
   HighlightOff as SignOutIcon,
   PhoneAndroid as ChatIcon,
   PlaylistAddCheck as ChangelogIcon,
 } from "@material-ui/icons"
+
+import {
+  FATHOM_CHANGELOG,
+  FATHOM_FEEDBACK,
+  FATHOM_MADE_BY,
+  FATHOM_SUPPORT,
+} from "../../constants"
+import { trackGoal } from "../tracking"
 
 export const useSignUpNavItem = () => {
   return {
@@ -126,19 +134,21 @@ export const PROFILE = {
   ...INTERNAL,
 }
 
-// export const SUPPORT = {
-//   primary: "Need help?",
-//   secondary: "support@usepow.app",
-//   icon: <SupportIcon />,
-//   href: "mailto:support@usepow.app",
-//   ...EXTERNAL,
-// }
+export const SUPPORT = {
+  primary: "Need help?",
+  secondary: "support@usepow.app",
+  icon: <SupportIcon />,
+  href: "mailto:support@usepow.app",
+  onClick: () => trackGoal(FATHOM_SUPPORT),
+  ...EXTERNAL,
+}
 
 export const FEEDBACK = {
   primary: "hello@usepow.app",
   secondary: "Send us your questions and/or feedback",
   icon: <FeedbackIcon />,
   href: "mailto:hello@usepow.app",
+  onClick: () => trackGoal(FATHOM_FEEDBACK),
   ...EXTERNAL,
 }
 
@@ -147,6 +157,7 @@ export const TWITTER = {
   secondary: "by @raae and family",
   icon: <TwitterIcon />,
   href: "https://twitter.com/raae",
+  onClick: () => trackGoal(FATHOM_MADE_BY),
   ...EXTERNAL,
 }
 
@@ -161,6 +172,7 @@ export const CHANGELOG = {
   primary: "Changelog",
   icon: <ChangelogIcon />,
   href: "https://usepow.app/changelog",
+  onClick: () => trackGoal(FATHOM_CHANGELOG),
   ...EXTERNAL,
 }
 

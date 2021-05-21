@@ -5,16 +5,19 @@ import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core"
 const NavMenu = ({ items, disabled, onClick }) => {
   return (
     <List>
-      {items.map(({ icon, ...props }, index) => (
+      {items.map(({ icon, onClick: itemOnClick, ...item }, index) => (
         <ListItem
           key={index}
-          {...props}
-          onClick={onClick}
+          {...item}
+          onClick={() => {
+            onClick && onClick()
+            itemOnClick && itemOnClick()
+          }}
           disabled={disabled}
           button
         >
           {icon && <ListItemIcon>{icon}</ListItemIcon>}
-          <ListItemText {...props} />
+          <ListItemText {...item} />
         </ListItem>
       ))}
     </List>
