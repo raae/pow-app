@@ -2,30 +2,36 @@ import React, { useEffect, useState } from "react"
 import { Typography } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { navigate } from "gatsby"
-import { selectAllEntries, upsertEntry } from "../features/entries"
+import { upsertEntry, selectAreEntriesLoading } from "../features/entries"
 import { useSettings } from "../features/settings"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
 import { TIMELINE } from "../features/navigation"
+import { useAuth } from "../features/auth"
 import { useSubscription } from "../features/user"
 import NoPayment from "../features/profile/Incomplete/NoPayment"
 import IncompleteSettings from "../features/profile/Incomplete/IncompleteSettings"
+import { selectHasMensesStartDate } from "../features/cycle"
+
+import { Seo, Loading } from "../features/app"
 
 const Incomplete = () => {
   const dispatch = useDispatch()
   const [error, setError] = useState(false)
 
-  const { mainMensesTag, addMensesTag } = useSettings()
-
-  const entries = useSelector(selectAllEntries)
-  const notHasPlacedPeriod = !entries.length
+  const { isAuthenticated, isAuthPending } = useAuth()
   const { isSubscribed } = useSubscription()
+  const {
+    mainMensesTag,
+    addMensesTag,
+    isLoading: settingsIsLoading,
+  } = useSettings()
 
-  useEffect(() => {
-    if (!notHasPlacedPeriod) {
-      navigate(TIMELINE.to)
-    }
-  })
+  const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const hasMensesStartDate = useSelector(selectHasMensesStartDate)
+
+  const dataIsLoading = entriesAreLoading || settingsIsLoading
+  const isIncomplete = !hasMensesStartDate || !isSubscribed
 
   const onSubmit = async ({ tag, lastPeriod }) => {
     setError(false)
@@ -46,6 +52,22 @@ const Incomplete = () => {
       setError(true)
     }
   }
+
+  useEffect(() => {
+    if (isAuthenticated && !dataIsLoading && !isIncomplete) {
+      navigate(TIMELINE.to)
+    }
+  }, [isAuthenticated, dataIsLoading, isIncomplete])
+
+  if (isAuthPending || dataIsLoading) {
+    return (
+      <>
+        <Seo title="Loading..." />
+        <Loading fullScreen />
+      </>
+    )
+  }
+
   return (
     <AppLayout>
       <AppMainToolbar>

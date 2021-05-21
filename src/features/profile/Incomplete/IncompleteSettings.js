@@ -15,7 +15,7 @@ const Text = ({ mainMensesTag }) => {
 }
 
 const IncompleteSettings = ({ onSubmit, mainMensesTag }) => {
-  const [tag, setTag] = useState("")
+  const [tag, setTag] = useState(mainMensesTag)
   const [lastPeriod, setLastPeriod] = useState(new Date())
 
   return (

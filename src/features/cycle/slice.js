@@ -113,6 +113,13 @@ export const selectIsDateCurrentCycle = createSelector(
   }
 )
 
+export const selectHasMensesStartDate = createSelector(
+  [selectAnalytics],
+  ({ startDates }) => {
+    return startDates && startDates.length > 0
+  }
+)
+
 // HELPERS
 
 export const cycleDayForDate = (date, { daysBetween, startDates }) => {

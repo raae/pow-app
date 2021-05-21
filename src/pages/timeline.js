@@ -8,7 +8,7 @@ import { useSubscription } from "../features/user"
 import { selectAreEntriesLoading } from "../features/entries"
 import { useSettings } from "../features/settings"
 import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
-
+import { selectHasMensesStartDate } from "../features/cycle"
 import { Seo, Loading } from "../features/app"
 import { INCOMPLETE } from "../features/navigation"
 
@@ -18,14 +18,16 @@ const CyclePage = () => {
   const { isLoading: settingsIsLoading } = useSettings()
 
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const hasMensesStartDate = useSelector(selectHasMensesStartDate)
 
   const dataIsLoading = entriesAreLoading || settingsIsLoading
+  const isIncomplete = !hasMensesStartDate || !isSubscribed
 
   useEffect(() => {
-    if (isAuthenticated && !isSubscribed) {
+    if (isAuthenticated && !dataIsLoading && isIncomplete) {
       navigate(INCOMPLETE.to)
     }
-  }, [isAuthenticated, isSubscribed])
+  }, [isAuthenticated, dataIsLoading, isIncomplete])
 
   if (isAuthPending || dataIsLoading) {
     return (
