@@ -66,7 +66,7 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
-  const disabled2 = entries.length > 0
+  const disabledMensenTags = entries.length > 0
   const clearMensesTags = () => {}
   const handleClearMensesTags = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
@@ -107,7 +107,7 @@ const DangerCard = () => {
         </Button>
         <Button
           // true if entries.length > 0
-          disabled={disabled2}
+          disabled={disabledMensenTags}
           // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
           variant="outlined"
           color="primary"
