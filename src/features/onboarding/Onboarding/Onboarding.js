@@ -8,6 +8,8 @@ import {
   FATHOM_ONBOARDING_4,
 } from "../../../constants"
 
+import { trackGoal } from "../../tracking"
+
 import { useSettings } from "../../settings"
 import { upsertEntry } from "../../entries"
 
@@ -112,14 +114,6 @@ const Onboarding = () => {
 
     handleNext()
     setIsPending(false)
-  }
-
-  const trackGoal = (goalId) => {
-    try {
-      window.fathom.trackGoal(goalId, 0)
-    } catch (error) {
-      console.log("No fathom, cannot track goal")
-    }
   }
 
   const steps = [
