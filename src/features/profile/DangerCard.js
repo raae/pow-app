@@ -6,20 +6,17 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Typography,
-  Box,
   makeStyles,
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
+
+import { CardContentSection } from "../../components"
+
 import { selectAllEntries, deleteAllEntries } from "../entries"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.primary.main,
-  },
-  listItem: {
-    display: "flex",
-    flexWrap: "wrap",
   },
 }))
 
@@ -78,23 +75,19 @@ const DangerCard = () => {
       />
 
       <CardContent>
-        <Box mb={2}>
-          <Typography variant="body1" component="h2">
-            In need of a fresh start?
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Use with caution as your entries will be lost forever.
-          </Typography>
-        </Box>
-
-        <Button
-          disabled={disabled}
-          variant="outlined"
-          color="primary"
-          onClick={handleDeleteAllEntries}
+        <CardContentSection
+          title="In need of a fresh start?"
+          subheader="Use with caution as your entries will be lost forever."
         >
-          {deleteAllEntriesText}
-        </Button>
+          <Button
+            disabled={disabled}
+            variant="outlined"
+            color="primary"
+            onClick={handleDeleteAllEntries}
+          >
+            {deleteAllEntriesText}
+          </Button>
+        </CardContentSection>
       </CardContent>
     </Card>
   )
