@@ -94,7 +94,7 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
         case "purchase":
           await userbase.purchaseSubscription({
             successUrl: BASE_URL + "/timeline",
-            cancelUrl: BASE_URL + "/profile?payment=canceled",
+            cancelUrl: BASE_URL + "/incomplete?payment=canceled",
             priceId: selectedPlan,
           })
           break
@@ -205,11 +205,6 @@ const PaymentForm = ({ standalone = true, submitLabel, onDone = () => {} }) => {
   } else {
     return (
       <>
-        {paymentStatus === "unfinished" && (
-          <Alert className={classes.space} severity="warning">
-            Payment is required before starting to use POW!
-          </Alert>
-        )}
         {paymentStatus === "canceled" && (
           <Alert className={classes.space} severity="error">
             Payment was canceled, please try again.
