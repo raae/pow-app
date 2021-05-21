@@ -5,7 +5,8 @@ import {
   AccountCircle as ProfileIcon,
   List as TimelineIcon,
   OpenInNew as WebsiteIcon,
-  Email as SupportIcon,
+  // Help as SupportIcon,
+  Telegram as FeedbackIcon,
   Face as TwitterIcon,
   HighlightOff as SignOutIcon,
   PhoneAndroid as ChatIcon,
@@ -125,11 +126,19 @@ export const PROFILE = {
   ...INTERNAL,
 }
 
-export const SUPPORT = {
-  primary: "Support",
-  secondary: "support@usepow.app",
-  icon: <SupportIcon />,
-  href: "mailto:support@usepow.app",
+// export const SUPPORT = {
+//   primary: "Need help?",
+//   secondary: "support@usepow.app",
+//   icon: <SupportIcon />,
+//   href: "mailto:support@usepow.app",
+//   ...EXTERNAL,
+// }
+
+export const FEEDBACK = {
+  primary: "hello@usepow.app",
+  secondary: "Send us your questions and/or feedback",
+  icon: <FeedbackIcon />,
+  href: "mailto:hello@usepow.app",
   ...EXTERNAL,
 }
 
