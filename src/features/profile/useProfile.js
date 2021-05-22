@@ -1,6 +1,15 @@
 import { useCallback } from "react"
 import { useUser } from "../user"
 
+const validate = (value) => {
+  const isValid = ["-1", "0", "1"].includes(value)
+  if (!isValid) {
+    throw new Error(`Invalid value: ${value}`)
+  } else {
+    return value
+  }
+}
+
 export const useProfile = () => {
   const {
     user: { profile },
@@ -9,17 +18,19 @@ export const useProfile = () => {
   } = useUser()
 
   const handleSetNewsletterStatus = useCallback(
-    // Value here is "-1", "0" or "1"
     (value) => {
-      updateUser({ profile: { newsletter: value } })
+      updateUser({
+        profile: { newsletter: validate(value) },
+      })
     },
     [updateUser]
   )
 
   const handleSetWelcomeStatus = useCallback(
-    // Value here is "-1", "0" or "1"
     (value) => {
-      updateUser({ profile: { welcomeCompleted: value } })
+      updateUser({
+        profile: { welcomeCompleted: validate(value) },
+      })
     },
     [updateUser]
   )
