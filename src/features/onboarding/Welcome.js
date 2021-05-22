@@ -2,7 +2,7 @@ import React from "react"
 import { Typography, Button, makeStyles } from "@material-ui/core"
 import { Alert, AlertTitle } from "@material-ui/lab"
 
-import { useUser } from "../user"
+import { useProfile } from "../profile"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,39 +14,31 @@ const useStyles = makeStyles((theme) => ({
 const Welcome = () => {
   const classes = useStyles()
 
-  const { user, updateUser } = useUser()
+  const {
+    isLoading,
+    newsletterStatus,
+    welcomeStatus,
+    setWelcomeStatus,
+    setNewsletterStatus,
+  } = useProfile()
 
-  if (!user) return null
-
-  const welcomeCompleted = parseInt(user?.profile?.welcomeCompleted) > 0
-  const newsletterCompleted = parseInt(user?.profile?.newsletter) > 0
+  const welcomeCompleted = parseInt(welcomeStatus) > -1
+  const newsletterCompleted = parseInt(newsletterStatus) > -1
 
   const handleClose = (name) => (event) => {
     event.preventDefault()
 
     switch (name) {
       case "welcome":
-        updateUser({
-          profile: {
-            welcomeCompleted: "1",
-          },
-        })
+        setWelcomeStatus("1")
         break
 
       case "newsletterOff":
-        updateUser({
-          profile: {
-            newsletter: "0",
-          },
-        })
+        setNewsletterStatus("0")
         break
 
       case "newsletterOn":
-        updateUser({
-          profile: {
-            newsletter: "1",
-          },
-        })
+        setNewsletterStatus("1")
         break
 
       default:
@@ -54,6 +46,7 @@ const Welcome = () => {
     }
   }
 
+  if (isLoading) return null
   if (welcomeCompleted && newsletterCompleted) return null
 
   return (
