@@ -66,16 +66,26 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
-  const disabledMensenTags = entries.length > 0
+  // Why is the button grey?
+  // true if entries.length > 0, meaning true if entries are larger than 0
+  // Are entries the right thing? Shouldn't we have tags?
+  const disabledMensenTags = isPending || entries.length === 0
   const clearMensesTags = () => {}
   const handleClearMensesTags = async (event) => {
-    // 1. Go get that form and prevent it from naughtily self-submitting
+    // 1. Go get: that form and prevent it from naughtily self-submitting
        event.preventDefault()
-    // 2. Listen for the click on that button
-    // 3. Do something like, clear those MensesTags inside Daniel's and  ...'s Userbase
-
-       alert(`Clearing tags with ${clearMensesTags}`)
-    // 4. Send that customer back to /profile or give alert if error
+    // 2. Listen for: the click on that button
+    // 3. Do: clear those MensesTags inside Daniel's and  ...'s Userbase
+       alert(`Clearing tags ${clearMensesTags}`)
+       setIsPending(true)
+       const { error } = await dispatch(clearMensesTags())
+       if (error) {
+         alert(`Oopsie (${error.message}), please try again.`)
+       } else {
+         alert(`Success, all your tags were deleted.`)
+       }
+    // 4. Escape: Send that customer back to /profile or give alert if error
+       setIsPending(false)
   }
          return (
     <Card>
@@ -96,6 +106,16 @@ const DangerCard = () => {
             Use with caution as your entries will be lost forever.
           </Typography>
         </Box>
+        <Button
+
+          disabled={disabledMensenTags}
+          // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
+          variant="outlined"
+          color="primary"
+          onClick={handleClearMensesTags}
+        >
+          Clear choosen tag(s)
+        </Button>
 
         <Button
           disabled={disabled}
@@ -104,16 +124,6 @@ const DangerCard = () => {
           onClick={handleDeleteAllEntries}
         >
           {deleteAllEntriesText}
-        </Button>
-        <Button
-          // true if entries.length > 0
-          disabled={disabledMensenTags}
-          // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
-          variant="outlined"
-          color="primary"
-          onClick={handleClearMensesTags}
-        >
-          Clear choosen tag(s)
         </Button>
       </CardContent>
     </Card>
