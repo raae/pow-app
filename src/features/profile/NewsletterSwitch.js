@@ -1,31 +1,23 @@
 import React from "react"
-
 import { FormControlLabel, Switch } from "@material-ui/core"
-import { useUser } from "../user"
 
-const NewsletterSwitch = (props) => {
-  const { user, updateUser } = useUser()
+import { useProfile } from "./useProfile"
 
-  const handleChange = (name) => (event) => {
-    // Handle newsletter subscription change
+const NewsletterSwitch = () => {
+  const { isLoading, newsletterStatus, setNewsletterStatus } = useProfile()
 
-    const profileChange = {
-      [name]: event.target.checked ? "1" : "0",
-    }
-
-    updateUser({
-      profile: profileChange,
-    })
+  const handleChangeNewsletterStatus = async (event) => {
+    const status = event.target.checked ? "1" : "0"
+    await setNewsletterStatus(status)
   }
 
   return (
     <FormControlLabel
       control={
         <Switch
-          checked={user?.profile?.newsletter === "1" ? true : false}
-          onChange={handleChange("newsletter")}
-          value="newsletter"
-          {...props}
+          checked={newsletterStatus === "1" ? true : false}
+          onChange={handleChangeNewsletterStatus}
+          disabled={isLoading}
         />
       }
       label="I would like to receive the POW! Newsletter"

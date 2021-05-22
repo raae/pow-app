@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({}))
 
 const ProfileCard = ({ menuItems }) => {
   const classes = useStyles()
-  const { user } = useUser()
+  const { isLoading, user } = useUser()
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null)
 
@@ -49,6 +49,7 @@ const ProfileCard = ({ menuItems }) => {
               <IconButton
                 aria-label="settings"
                 aria-controls="simple-menu"
+                disabled={isLoading}
                 onClick={handleOpenMenu}
               >
                 <MoreVertIcon />
@@ -75,7 +76,7 @@ const ProfileCard = ({ menuItems }) => {
           subheader="POW! is a very young app. To stay updated on its life and advances
           sign up for the newsletter. You may cancel at any time."
         >
-          <NewsletterSwitch disabled={!user?.email} />
+          <NewsletterSwitch />
         </CardContentSection>
       </CardContent>
     </Card>
