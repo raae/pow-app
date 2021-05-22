@@ -68,7 +68,7 @@ const DangerCard = () => {
   }
   // Why is the button grey?
   // true if entries.length > 0, meaning true if entries are larger than 0
-  // Are entries the right thing? Shouldn't we have tags?
+
   const disabledMensenTags = isPending || entries.length === 0
   const clearMensesTags = () => {}
   const handleClearMensesTags = async (event) => {
@@ -107,6 +107,14 @@ const DangerCard = () => {
           </Typography>
         </Box>
         <Button
+          disabled={disabled}
+          variant="outlined"
+          color="primary"
+          onClick={handleDeleteAllEntries}
+        >
+          {deleteAllEntriesText}
+        </Button>
+        <Button
 
           disabled={disabledMensenTags}
           // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
@@ -115,15 +123,6 @@ const DangerCard = () => {
           onClick={handleClearMensesTags}
         >
           Clear choosen tag(s)
-        </Button>
-
-        <Button
-          disabled={disabled}
-          variant="outlined"
-          color="primary"
-          onClick={handleDeleteAllEntries}
-        >
-          {deleteAllEntriesText}
         </Button>
       </CardContent>
     </Card>
