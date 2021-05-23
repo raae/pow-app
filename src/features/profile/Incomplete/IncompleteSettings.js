@@ -3,11 +3,12 @@ import React, { useState } from "react"
 import LastDateInput from "../../onboarding/Onboarding/LastDateInput"
 
 const Text = ({ mainMensesTag }) => {
-  const topLine = mainMensesTag
+  const topLine = !mainMensesTag
     ? "Seems you have not yet told us when your last period was and also what tag you want to use to track it."
     : "Seems you have not yet told us when your last period was and unfortunately we need that to calculate the next one."
+
   return (
-    <Box mb={2}>
+    <Box mb={3}>
       <p>{topLine}</p>
       <p>No rush, please tell us whenever you can.</p>
     </Box>
