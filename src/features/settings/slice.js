@@ -5,7 +5,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { first, isNumber, isUndefined } from "lodash"
+import { first, isUndefined, noConflict } from "lodash"
+import Joi from "joi"
 
 import { tagArrayToText, textToTagArray } from "./utils"
 
@@ -29,6 +30,14 @@ export const STATUS = {
   OPENED: `[${SLICE_NAME}] Opened`,
   FAILED: `[${SLICE_NAME}] Failed`,
 }
+
+// =========================================================
+//
+//  Schemas
+//
+// =========================================================
+
+const cycleLengthSchema = Joi.number().required().min(14).max(60)
 
 // =========================================================
 //
@@ -59,9 +68,10 @@ const transformItemToSetting = ({ itemId, item, ...rest }) => {
     key = MENSES_TAG_KEY.SLICE
     value = textToTagArray(value)
   } else if (itemId === CYCLE_LENGTH_KEY.DB) {
-    // Will for some early users be stored as a string
+    // Will for some early user have an invalid value
+    const { value: cycleLength } = cycleLengthSchema.validate(value)
     key = CYCLE_LENGTH_KEY.SLICE
-    value = parseInt(value, 10)
+    value = cycleLength
   }
 
   return {
@@ -121,16 +131,16 @@ export const setInitialCycleLength = createAsyncThunk(
     const length = parseInt(payload)
     const current = selectById(thunkAPI.getState(), CYCLE_LENGTH_KEY.SLICE)
 
-    if (!isNumber(length)) {
-      throw new Error(
-        `Initial cycle length must be a number, not ${typeof length}`
-      )
+    const { error, value: validLength } = cycleLengthSchema.validate(length)
+
+    if (error) {
+      throw error
     }
 
     const userbaseParams = {
       databaseName: DB_NAME,
       itemId: CYCLE_LENGTH_KEY.DB,
-      item: length,
+      item: validLength,
     }
 
     if (isUndefined(current)) {
