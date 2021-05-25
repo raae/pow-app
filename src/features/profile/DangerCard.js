@@ -66,28 +66,24 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
-  // Why is the button grey?
-  // true if entries.length > 0, meaning true if entries are larger than 0
-
-  const disabledMensenTags = isPending || entries.length === 0
-  const clearMensesTags = () => {}
+  const disabledMensenTags = isPending || entries.length > 0
+  const fakeFunctionClearMensesTags = () => {}
   const handleClearMensesTags = async (event) => {
     // 1. Go get: that form and prevent it from naughtily self-submitting
        event.preventDefault()
     // 2. Listen for: the click on that button
     // 3. Do: clear those MensesTags inside Daniel's and  ...'s Userbase
-       alert(`Clearing tags ${clearMensesTags}`)
+       alert(`Clearing tags ${fakeFunctionClearMensesTags}`)
        setIsPending(true)
-       const { error } = await dispatch(clearMensesTags())
+       const { error } = await dispatch(fakeFunctionClearMensesTags())
        if (error) {
          alert(`Oopsie (${error.message}), please try again.`)
        } else {
          alert(`Success, all your tags were deleted.`)
        }
-    // 4. Escape: Send that customer back to /profile or give alert if error
        setIsPending(false)
   }
-         return (
+  return (
     <Card>
       <CardHeader
         avatar={
@@ -115,7 +111,6 @@ const DangerCard = () => {
           {deleteAllEntriesText}
         </Button>
         <Button
-
           disabled={disabledMensenTags}
           // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
           variant="outlined"
