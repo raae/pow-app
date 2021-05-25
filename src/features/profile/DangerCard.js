@@ -75,7 +75,7 @@ const DangerCard = () => {
     // 3. Do: clear those MensesTags inside Daniel's and  ...'s Userbase
        alert(`Clearing tags ${fakeFunctionClearMensesTags}`)
        setIsPending(true)
-       const { error } = await dispatch(fakeFunctionClearMensesTags())
+       const { error } = await fakeFunctionClearMensesTags()
        if (error) {
          alert(`Oopsie (${error.message}), please try again.`)
        } else {
