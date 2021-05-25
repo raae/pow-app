@@ -45,6 +45,9 @@ theme.props = {
     color: "secondary",
   },
   MuiTextField: {
+    color: "secondary",
+    variant: "outlined",
+    margin: "normal",
     InputLabelProps: { shrink: true },
   },
 }
