@@ -13,22 +13,25 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-const Cycle = ({ values, onChange, textFieldProps }) => {
+const Cycle = ({
+  lastMensesDate,
+  onChangeLastMensesDate,
+  initialCycleLength,
+  onChangeInitialCycleLength,
+}) => {
   const classes = useStyles()
 
   return (
     <>
       <div className={classes.cycle}>
         <LastDateInput
-          value={values.lastStart}
-          onChange={onChange("lastStart")}
-          inputProps={textFieldProps}
+          value={lastMensesDate}
+          onChange={onChangeLastMensesDate}
         />
 
         <DaysBetweenInput
-          onChange={onChange}
-          values={values}
-          textFieldProps={textFieldProps}
+          onChange={onChangeInitialCycleLength}
+          value={initialCycleLength}
         />
       </div>
       <Typography component="div" color="textSecondary">

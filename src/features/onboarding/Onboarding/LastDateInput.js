@@ -36,13 +36,9 @@ const LastDateInput = ({ onChange, label, value }) => {
         placeholder="Select date"
         onChange={onChange}
         InputLabelProps={{
-          color: "secondary",
           className: classes.label,
         }}
-        inputVariant="outlined"
         InputProps={{
-          color: "secondary",
-          margin: "normal",
           startAdornment: (
             <InputAdornment position="start">
               <EventIcon

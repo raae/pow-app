@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { TextField, InputAdornment } from "@material-ui/core"
 
 const minMax = {
@@ -8,20 +8,18 @@ const minMax = {
 
 const placeholder = 28
 
-const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
-  const [value, setValue] = useState(values.daysBetween)
+const DaysBetweenInput = ({ onChange, value, textFieldProps }) => {
+  const handleOnChange = (event) => {
+    let currentValue = event.target.value
+    currentValue = currentValue ? parseInt(currentValue, 10) : ""
 
-  const onChangeDaysBetween = (e) => {
-    const currentValue = parseInt(e.target.value, 10)
     if (currentValue === -1) {
-      setValue(placeholder - 1)
+      currentValue = placeholder - 1
     } else if (currentValue === 1) {
-      setValue(placeholder + 1)
-    } else {
-      setValue(currentValue)
+      currentValue = placeholder + 1
     }
 
-    onChange("daysBetween")(value)
+    onChange(currentValue)
   }
 
   return (
@@ -31,13 +29,13 @@ const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
         label="Days between menstruations"
         value={value}
         type="number"
-        onChange={onChangeDaysBetween}
+        onChange={handleOnChange}
         placeholder={placeholder}
-        min={minMax.min}
-        max={minMax.max}
         fullWidth
         InputProps={{
           startAdornment: <InputAdornment position="start">#</InputAdornment>,
+          min: minMax.min,
+          max: minMax.max,
         }}
       />
     </div>

@@ -24,7 +24,7 @@ import Cycle from "./Cycle"
 
 const initialValues = {
   tag: "",
-  lastStart: null,
+  lastDate: null,
   daysBetween: "",
   subscriptionPlan: "yearly",
 }
@@ -52,7 +52,7 @@ const Onboarding = () => {
       value = cleanTag(event.target.value)
     } else if (name === "newsletter") {
       value = event.target.checked
-    } else if (name === "lastStart" || name === "daysBetween") {
+    } else if (name === "lastDate" || name === "daysBetween") {
       value = event
     } else {
       value = event.target.value
@@ -106,7 +106,7 @@ const Onboarding = () => {
     if (values.lastStart) {
       await dispatch(
         upsertEntry({
-          date: values.lastStart,
+          date: values.lastDate,
           note: `#${values.tag}`,
         })
       )
@@ -149,8 +149,10 @@ const Onboarding = () => {
       label: "Personalize",
       content: (
         <Cycle
-          values={values}
-          onChange={handleSettingsChange}
+          lastMensesDate={values.lastDate}
+          onChangeLastMensesDate={handleSettingsChange("lastDate")}
+          initialCycleLength={values.daysBetween}
+          onChangeInitialCycleLength={handleSettingsChange("daysBetween")}
           textFieldProps={textFieldProps}
         />
       ),

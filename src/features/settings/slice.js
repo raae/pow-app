@@ -5,7 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { first, isUndefined, noConflict } from "lodash"
+import { first, isUndefined } from "lodash"
 import Joi from "joi"
 
 import { tagArrayToText, textToTagArray } from "./utils"
