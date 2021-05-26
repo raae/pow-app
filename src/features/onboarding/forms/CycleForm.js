@@ -1,7 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useFormik } from "formik"
-import { findKey } from "lodash"
 import * as yup from "yup"
 
 import { cycleLengthSchema } from "../../settings"
@@ -12,17 +11,8 @@ import { useAuth } from "../../auth"
 import MensesDateField from "./MensesDateField"
 import CycleLengthField from "./CycleLengthField"
 
-export const CycleSettingsForm = ({
-  Component,
-  title,
-  description,
-  onDone,
-}) => {
-  const {
-    mainMensesTag,
-    setInitialCycleLength,
-    setInitialMensesDate,
-  } = useOnboarding()
+export const CycleSettingsForm = ({ Component, onDone, ...props }) => {
+  const { mainMensesTag, setInitialCycle } = useOnboarding()
 
   const { isAuthenticated } = useAuth()
 
@@ -46,29 +36,10 @@ export const CycleSettingsForm = ({
       cycleLength: null,
     },
     validationSchema: validationSchema,
-    onSubmit: async ({ mensesDate, cycleLength }) => {
-      const submitErrors = {
-        mensesDate: null,
-        cycleLength: null,
-      }
+    onSubmit: async (values) => {
+      const { errors: submitErrors } = await setInitialCycle(values)
 
-      if (mensesDate) {
-        const { error: dateError } = await setInitialMensesDate(mensesDate)
-        if (dateError) {
-          submitErrors.mensesDate = dateError.message
-        }
-      }
-
-      if (cycleLength) {
-        const { error: lengthError } = await setInitialCycleLength(cycleLength)
-        if (lengthError) {
-          submitErrors.cycleLength = lengthError.message
-        }
-      }
-
-      const hasError = findKey(submitErrors, (error) => Boolean(error))
-
-      if (hasError) {
+      if (submitErrors) {
         setErrors(submitErrors)
       } else {
         onDone()
@@ -83,8 +54,7 @@ export const CycleSettingsForm = ({
       onSubmit={handleSubmit}
       onReset={handleReset}
       disabled={disabled}
-      title={title}
-      description={description}
+      {...props}
     >
       <MensesDateField
         fullWidth
