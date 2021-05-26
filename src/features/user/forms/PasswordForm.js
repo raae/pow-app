@@ -68,6 +68,7 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         name="New Password"
         autoComplete="new-password"
       />
+      <TextField/>
     </Component>
   )
 }
