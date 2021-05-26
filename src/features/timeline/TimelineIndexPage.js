@@ -10,6 +10,7 @@ import { Welcome } from "../onboarding"
 import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
+import { Virtuoso } from "react-virtuoso"
 
 import { TIMELINE } from "../navigation"
 
@@ -28,8 +29,8 @@ const CycleIndexPage = ({ entryId }) => {
   const calculatedDaysBetween = useSelector(selectDaysBetween)
 
   const range = eachDayOfInterval({
-    start: addDays(selectedDate, calculatedDaysBetween * -1.5),
-    end: addDays(selectedDate, calculatedDaysBetween * 1.5),
+    start: addDays(selectedDate, calculatedDaysBetween * -60),
+    end: addDays(selectedDate, calculatedDaysBetween * 60),
   })
 
   useEffect(() => {
@@ -56,13 +57,26 @@ const CycleIndexPage = ({ entryId }) => {
           </IconButton>
         </AppMainToolbar>
         <List className={classes.timeline}>
-          {range.map((date) => {
-            return (
-              <TimelineItem key={date} date={date} selectedDate={selectedDate}>
-                {isToday(date) && <Welcome key="welcome" />}
-              </TimelineItem>
-            )
-          })}
+          <Virtuoso
+            style={{ height: "100vh" }}
+            totalCount={range.length}
+            initialTopMostItemIndex={
+              range.findIndex((date) => isToday(date)) - 1
+            }
+            itemContent={(index) => {
+              const date = range[index]
+
+              return (
+                <TimelineItem
+                  key={date}
+                  date={date}
+                  selectedDate={selectedDate}
+                >
+                  {isToday(date) && <Welcome key="welcome" />}
+                </TimelineItem>
+              )
+            }}
+          />
         </List>
       </AppPage>
     </AppLayout>
