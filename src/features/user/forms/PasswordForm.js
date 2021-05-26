@@ -68,7 +68,18 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         name="New Password"
         autoComplete="new-password"
       />
-      <TextField/>
+      <TextField
+        disabled={disabled}
+        id="newSameSwordInput"
+        type="password"
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        label="New Password"
+        name="New SameSword"
+        autoComplete="new-password"
+      />
     </Component>
   )
 }
