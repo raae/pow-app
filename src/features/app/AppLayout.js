@@ -48,12 +48,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function AppLayout({ children }) {
+function AppLayout({ children, mainClassName }) {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <main>{children}</main>
+      <main className={mainClassName}>{children}</main>
 
       <nav>
         <Hidden mdUp>

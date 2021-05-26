@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
-import { List, IconButton, makeStyles } from "@material-ui/core"
+import { IconButton, makeStyles, useTheme } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
 import { makeDate, entryIdFromDate } from "../utils/days"
@@ -20,11 +20,18 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(3),
     },
   },
+  root: { paddingRight: "0" },
+  page: { maxWidth: "100% !important" },
+  itemWrapper: {
+    paddingRight: 10,
+    [theme.breakpoints.up("lg")]: {
+      maxWidth: 600,
+    },
+  },
 }))
 
 const CycleIndexPage = ({ entryId }) => {
   const classes = useStyles()
-
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
 
@@ -44,29 +51,36 @@ const CycleIndexPage = ({ entryId }) => {
   }, [selectedDate])
 
   return (
-    <AppLayout>
-      <AppPage>
-        <AppMainToolbar>
-          <DatePicker date={selectedDate} />
-          <IconButton
-            aria-label="Scroll to today"
-            onClick={() => navigate(TIMELINE.to)}
-            style={{ marginLeft: "auto" }}
-          >
-            <Today />
-          </IconButton>
-        </AppMainToolbar>
-        <List className={classes.timeline}>
-          <Virtuoso
-            style={{ height: "100vh" }}
-            totalCount={range.length}
-            initialTopMostItemIndex={
-              range.findIndex((date) => isToday(date)) - 1
-            }
-            itemContent={(index) => {
-              const date = range[index]
-
+    <AppLayout mainClassName={classes.page}>
+      <AppPage className={classes.root}>
+        <Virtuoso
+          components={{
+            Header: () => {
               return (
+                <AppMainToolbar>
+                  <DatePicker date={selectedDate} />
+                  <IconButton
+                    aria-label="Scroll to today"
+                    onClick={() => navigate(TIMELINE.to)}
+                    style={{ marginLeft: "auto" }}
+                  >
+                    <Today />
+                  </IconButton>
+                </AppMainToolbar>
+              )
+            },
+          }}
+          style={{
+            height: "calc(100vh - 72px)",
+            width: "100%",
+          }}
+          totalCount={range.length}
+          initialTopMostItemIndex={range.findIndex((date) => isToday(date)) - 1}
+          itemContent={(index) => {
+            const date = range[index]
+
+            return (
+              <div className={classes.itemWrapper}>
                 <TimelineItem
                   key={date}
                   date={date}
@@ -74,10 +88,10 @@ const CycleIndexPage = ({ entryId }) => {
                 >
                   {isToday(date) && <Welcome key="welcome" />}
                 </TimelineItem>
-              )
-            }}
-          />
-        </List>
+              </div>
+            )
+          }}
+        />
       </AppPage>
     </AppLayout>
   )
