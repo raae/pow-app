@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
-import { IconButton, makeStyles, useTheme } from "@material-ui/core"
+import { IconButton, makeStyles } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
 import { makeDate, entryIdFromDate } from "../utils/days"
