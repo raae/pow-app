@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 import { first, isUndefined } from "lodash"
-import Joi from "joi"
+import * as yup from "yup"
 
 import { tagArrayToText, textToTagArray } from "./utils"
 
@@ -37,7 +37,10 @@ export const STATUS = {
 //
 // =========================================================
 
-const cycleLengthSchema = Joi.number().required().min(14).max(60)
+export const cycleLengthSchema = yup
+  .number()
+  .min(14, "Your cycle length should be larger than 14")
+  .max(60, "Your cycle length should be smaller than 60")
 
 // =========================================================
 //
@@ -69,9 +72,12 @@ const transformItemToSetting = ({ itemId, item, ...rest }) => {
     value = textToTagArray(value)
   } else if (itemId === CYCLE_LENGTH_KEY.DB) {
     // Will for some early user have an invalid value
-    const { value: cycleLength } = cycleLengthSchema.validate(value)
     key = CYCLE_LENGTH_KEY.SLICE
-    value = cycleLength
+    try {
+      value = cycleLengthSchema.validateSync(value)
+    } catch (error) {
+      value = undefined
+    }
   }
 
   return {
@@ -131,11 +137,7 @@ export const setInitialCycleLength = createAsyncThunk(
     const length = parseInt(payload)
     const current = selectById(thunkAPI.getState(), CYCLE_LENGTH_KEY.SLICE)
 
-    const { error, value: validLength } = cycleLengthSchema.validate(length)
-
-    if (error) {
-      throw error
-    }
+    const validLength = cycleLengthSchema.validateSync(length)
 
     const userbaseParams = {
       databaseName: DB_NAME,

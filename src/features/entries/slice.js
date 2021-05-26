@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
 import { chunk, uniq, isUndefined, last } from "lodash"
+import * as yup from "yup"
 
 import { entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
@@ -20,6 +21,14 @@ export const DB_STATUS = {
   OPENED: `[${DB_NAME}] Opened`,
   FAILED: `[${DB_NAME}] Failed`,
 }
+
+// =========================================================
+//
+//  Schemas
+//
+// =========================================================
+
+export const entryDateSchema = yup.date().max(new Date())
 
 // =========================================================
 //
@@ -102,7 +111,9 @@ export const upsertEntry = createAsyncThunk(
   `${DB_ITEM}/upsert`,
   async (payload, thunkAPI) => {
     const { date, note } = payload
-    const entryId = entryIdFromDate(date)
+    const validDate = entryDateSchema.validateSync(date)
+
+    const entryId = entryIdFromDate(validDate)
     const current = selectById(thunkAPI.getState(), entryId)
     const userbasePayload = {
       databaseName: DB_NAME,
@@ -131,19 +142,24 @@ const upsertChange = (state, { meta, error }) => {
     arg: { date, note },
   } = meta
 
-  const index = state.changes.findIndex(
-    (change) => change.requestId === requestId
-  )
-  if (index !== -1) {
-    state.changes[index].requestStatus = requestStatus
-    state.changes[index].error = error
-  } else {
-    state.changes.push({
-      requestId,
-      requestStatus,
-      entryId: entryIdFromDate(date),
-      note,
-    })
+  try {
+    const validDate = entryDateSchema.validateSync(date)
+    const index = state.changes.findIndex(
+      (change) => change.requestId === requestId
+    )
+    if (index !== -1) {
+      state.changes[index].requestStatus = requestStatus
+      state.changes[index].error = error
+    } else {
+      state.changes.push({
+        requestId,
+        requestStatus,
+        entryId: entryIdFromDate(validDate),
+        note,
+      })
+    }
+  } catch (error) {
+    // noop
   }
 }
 
