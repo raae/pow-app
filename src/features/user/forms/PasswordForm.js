@@ -14,18 +14,31 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     // 2. Listen for those PasSwords from those inputs
     const oldPassword = event.target.elements.currentPasswordInput.value
     const newPassword = event.target.elements.newPasswordInput.value
-
+    const newSameSword = event.target.elements.newSameSwordInput.value
+    // Before calling updateUser make sure the password in both of the new password inputs are the same
     // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
-    const { error } = await updateUser({
-      currentPassword: oldPassword,
-      newPassword: newPassword,
-    })
 
-    // 4. Send that customer back to /profile or give alert if error
-    if (error) {
-      alert(error.message)
+    if (newPassword !== newSameSword) {
+        alert(
+          `You typed your new password two ways, please try again.`
+        )
     } else {
-      onDone()
+      const { error } = await updateUser({
+        currentPassword: oldPassword,
+        newPassword: newPassword,
+      })
+    //   if (error) {
+    //     alert(`Oopsie (${error.message}), please try again.`)
+    //   } else {
+    //     alert(`Success, your new password is good to go.`)
+    //   }
+    // }
+    // 4. Send that customer back to /profile or give alert if error
+      if (error) {
+        alert(error.message)
+      } else {
+        onDone()
+      }
     }
   }
 
