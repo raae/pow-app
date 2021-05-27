@@ -11,7 +11,7 @@ import {
 import { Settings as SettingsIcon } from "@material-ui/icons"
 
 import { useSettings } from "./useSettings"
-import SettingsMensesTagForm from "./SettingsMensesTagForm"
+import { AddMensesTagForm } from "./forms/AddMensesTagForm"
 import { MensesTags } from "./MensesTags"
 import { CardContentSection } from "../../components"
 
@@ -40,11 +40,11 @@ const SettingsCard = ({ editNavItem }) => {
             subheader="Input the term you would like to use to indicate menstruation
                 days."
           >
-            <SettingsMensesTagForm>
+            <AddMensesTagForm>
               <Button type="submit" color="secondary" variant="outlined">
                 Save
               </Button>
-            </SettingsMensesTagForm>
+            </AddMensesTagForm>
           </CardContentSection>
         ) : (
           <CardContentSection

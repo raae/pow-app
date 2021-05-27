@@ -1,5 +1,7 @@
 export { default as SettingsCard } from "./SettingsCard"
-export { default as SettingsMensesTagForm } from "./SettingsMensesTagForm"
+
+export * from "./forms/AddMensesTagForm"
+export * from "./MensesTags"
 
 export { default as reducer } from "./slice"
 

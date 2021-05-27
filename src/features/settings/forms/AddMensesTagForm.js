@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-
+import { isFunction } from "lodash"
 import {
   TextField,
   InputAdornment,
@@ -11,9 +11,9 @@ import {
 
 import Alert from "@material-ui/lab/Alert"
 
-import { cleanTag } from "../utils/tags"
-import { useSettings } from "./useSettings"
-import { MensesTags } from "./MensesTags"
+import { cleanTag } from "../../utils/tags"
+import { useSettings } from "../useSettings"
+import { MensesTags } from "../MensesTags"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,10 +30,10 @@ const textFieldProps = {
   margin: "normal",
 }
 
-const SettingsMensesTagForm = ({ title, onDone, Component }) => {
+export const AddMensesTagForm = ({ title, description, onDone, Component }) => {
   const classes = useStyles()
 
-  const { mainMensesTag, mensesTags, addMensesTag } = useSettings()
+  const { isLoading, mainMensesTag, mensesTags, addMensesTag } = useSettings()
   const [newTag, setNewTag] = useState("")
 
   const [error, setError] = useState()
@@ -79,6 +79,14 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
       title={title}
       className={classes.root}
       disabled={isPending}
+      description={
+        isFunction(description)
+          ? description({
+              isLoading,
+              mensesTag: newTag || mainMensesTag,
+            })
+          : description
+      }
     >
       {error && <Alert severity="warning">{error.message}</Alert>}
 
@@ -86,9 +94,7 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
         <TextField
           {...textFieldProps}
           label={
-            mainMensesTag
-              ? "Change your chosen menstruation tag"
-              : "Your menstruation tag"
+            mainMensesTag ? "Change your chosen period tag" : "Your period tag"
           }
           value={newTag}
           onChange={handleChange}
@@ -104,8 +110,8 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
         {mainMensesTag && (
           <FormHelperText className={classes.helper}>
             {mensesTags.length === 1
-              ? "Your current menstruation tag: "
-              : "Your current and past menstruation tags: "}
+              ? "Your current period tag: "
+              : "Your current and past period tags: "}
             <MensesTags withMainTag />
           </FormHelperText>
         )}
@@ -114,16 +120,16 @@ const SettingsMensesTagForm = ({ title, onDone, Component }) => {
   )
 }
 
-SettingsMensesTagForm.propTypes = {
+AddMensesTagForm.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(["form"])])
     .isRequired,
   title: PropTypes.string,
   onDone: PropTypes.func,
+  description: PropTypes.func,
 }
 
-SettingsMensesTagForm.defaultProps = {
+AddMensesTagForm.defaultProps = {
   Component: "form",
   onDone: () => {},
+  description: () => {},
 }
-
-export default SettingsMensesTagForm

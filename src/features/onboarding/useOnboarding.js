@@ -3,14 +3,23 @@ import { useDispatch, useSelector } from "react-redux"
 import { isEmpty } from "lodash"
 
 import { selectHasMensesStartDate } from "../cycle"
-import { upsertEntry } from "../entries"
+import { selectAreEntriesLoading, upsertEntry } from "../entries"
 import { useSettings } from "../settings"
+import { useSubscription } from "../user"
 
 export const useOnboarding = () => {
   const dispatch = useDispatch()
 
-  const { mainMensesTag, setInitialCycleLength, addMensesTag } = useSettings()
+  const {
+    isLoading: isLoadingSettings,
+    mainMensesTag,
+    setInitialCycleLength,
+    addMensesTag,
+  } = useSettings()
+
+  const { isSubscribed } = useSubscription()
   const hasInitialCycle = useSelector(selectHasMensesStartDate)
+  const isLoadingEntries = useSelector(selectAreEntriesLoading)
 
   const handleSetInitialCycle = useCallback(
     async ({ mensesDate, cycleLength }) => {
@@ -34,10 +43,13 @@ export const useOnboarding = () => {
 
       return { errors: isEmpty(errors) ? null : errors }
     },
-    [dispatch, mainMensesTag]
+    [dispatch, mainMensesTag, setInitialCycleLength]
   )
 
   return {
+    isLoading: isLoadingSettings || isLoadingEntries,
+    isCompleted: mainMensesTag && hasInitialCycle && isSubscribed,
+    isSubscribed,
     setMensesTag: addMensesTag,
     setInitialCycle: handleSetInitialCycle,
     mainMensesTag,
