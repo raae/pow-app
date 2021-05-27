@@ -20,19 +20,16 @@ export const PasswordForm = ({ Component, title, onDone }) => {
 
     if (newPassword !== newSameSword) {
         alert(
-          `You typed your new password two ways, please try again.`
+          `You typed your "New Password Again" incorrectly, please try again.`
         )
     } else {
       const { error } = await updateUser({
         currentPassword: oldPassword,
         newPassword: newPassword,
       })
-    //   if (error) {
-    //     alert(`Oopsie (${error.message}), please try again.`)
-    //   } else {
-    //     alert(`Success, your new password is good to go.`)
-    //   }
-    // }
+
+      alert(`Success, your new password is good to go.`)
+
     // 4. Send that customer back to /profile or give alert if error
       if (error) {
         alert(error.message)
@@ -89,7 +86,7 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         margin="normal"
         required
         fullWidth
-        label="New Password"
+        label="New Password Again"
         name="New SameSword"
         autoComplete="new-password"
       />
