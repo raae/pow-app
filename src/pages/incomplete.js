@@ -1,37 +1,50 @@
 import React, { useEffect, useState } from "react"
-import { Box, Button, Typography } from "@material-ui/core"
-import { navigate } from "gatsby"
+import { Typography } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
-import { selectAllEntries, upsertEntry } from "../features/entries"
-import { selectMainMensesTag } from "../features/settings"
-import LastDateInput from "../features/onboarding/Onboarding/LastDateInput"
+import { navigate } from "gatsby"
+import { upsertEntry, selectAreEntriesLoading } from "../features/entries"
+import { useSettings } from "../features/settings"
 import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
 import Toast from "../features/app/Toast"
 import { TIMELINE } from "../features/navigation"
+import { useAuth } from "../features/auth"
+import { useSubscription } from "../features/user"
+import NoPayment from "../features/profile/Incomplete/NoPayment"
+import IncompleteSettings from "../features/profile/Incomplete/IncompleteSettings"
+import { selectHasMensesStartDate } from "../features/cycle"
+
+import { Seo, Loading } from "../features/app"
 
 const Incomplete = () => {
   const dispatch = useDispatch()
-  const [lastPeriod, setLastPeriod] = useState(new Date())
   const [error, setError] = useState(false)
-  const mainMensesTag = useSelector(selectMainMensesTag)
-  const entries = useSelector(selectAllEntries)
-  const notHasPlacedPeriod =
-    !entries.length || !entries.filter((s) => s.tags.length).length
 
-  useEffect(() => {
-    if (!notHasPlacedPeriod) {
-      navigate(TIMELINE.to)
-    }
-  })
+  const { isAuthenticated, isAuthPending } = useAuth()
+  const { isSubscribed } = useSubscription()
+  const {
+    mainMensesTag,
+    addMensesTag,
+    isLoading: settingsIsLoading,
+  } = useSettings()
 
-  const calculatePeriodDate = async () => {
+  const entriesAreLoading = useSelector(selectAreEntriesLoading)
+  const hasMensesStartDate = useSelector(selectHasMensesStartDate)
+
+  const dataIsLoading = entriesAreLoading || settingsIsLoading
+  const isIncomplete = !hasMensesStartDate || !isSubscribed
+
+  const onSubmit = async ({ tag, lastPeriod }) => {
     setError(false)
+
+    if (!mainMensesTag) {
+      await addMensesTag(tag)
+    }
 
     try {
       await dispatch(
         upsertEntry({
           date: lastPeriod,
-          note: `#${mainMensesTag}`,
+          note: `#${tag}`,
         })
       )
       navigate(TIMELINE.to)
@@ -39,6 +52,22 @@ const Incomplete = () => {
       setError(true)
     }
   }
+
+  useEffect(() => {
+    if (isAuthenticated && !dataIsLoading && !isIncomplete) {
+      navigate(TIMELINE.to)
+    }
+  }, [isAuthenticated, dataIsLoading, isIncomplete])
+
+  if (isAuthPending || dataIsLoading) {
+    return (
+      <>
+        <Seo title="Loading..." />
+        <Loading fullScreen />
+      </>
+    )
+  }
+
   return (
     <AppLayout>
       <AppMainToolbar>
@@ -47,25 +76,18 @@ const Incomplete = () => {
         </Typography>
       </AppMainToolbar>
       <AppPage withPaper>
-        <p>
-          Seems you have not yet told us when your last period was and
-          unfortunately we need that to calculate the next one.
-        </p>
-        <p>No rush, please tell us whenever you can.</p>
-        <Box mt={4}>
-          <LastDateInput value={lastPeriod} onChange={setLastPeriod} />
-          <Box mt={2}>
-            <Button
-              onClick={calculatePeriodDate}
-              color="secondary"
-              variant="contained"
-            >
-              Calculate
-            </Button>
-          </Box>
-        </Box>
+        {!isSubscribed ? (
+          <NoPayment />
+        ) : (
+          <IncompleteSettings
+            mainMensesTag={mainMensesTag}
+            onSubmit={onSubmit}
+          />
+        )}
       </AppPage>
-      <Toast open={error}>There has been a problem adding your date</Toast>
+      <Toast open={error}>
+        There has been a problem adding your information
+      </Toast>
     </AppLayout>
   )
 }

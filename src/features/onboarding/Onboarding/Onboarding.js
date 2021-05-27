@@ -8,7 +8,9 @@ import {
   FATHOM_ONBOARDING_4,
 } from "../../../constants"
 
-import { setInitialCycleLength, addMensesTag } from "../../settings"
+import { trackGoal } from "../../tracking"
+
+import { useSettings } from "../../settings"
 import { upsertEntry } from "../../entries"
 
 import { cleanTag } from "../../utils/tags"
@@ -40,6 +42,8 @@ const Onboarding = () => {
   const [activeStep, setActiveStep] = useState(0)
 
   const [isPending, setIsPending] = useState()
+
+  const { setInitialCycleLength, addMensesTag } = useSettings()
 
   const handleSettingsChange = (name) => (event) => {
     let value = null
@@ -82,7 +86,7 @@ const Onboarding = () => {
       event.preventDefault()
     }
 
-    await dispatch(addMensesTag(values.tag))
+    await addMensesTag(values.tag)
 
     handleNext()
     setIsPending(false)
@@ -96,7 +100,7 @@ const Onboarding = () => {
     }
 
     if (values.daysBetween) {
-      await dispatch(setInitialCycleLength(values.daysBetween))
+      await setInitialCycleLength(values.daysBetween)
     }
 
     if (values.lastStart) {
@@ -110,14 +114,6 @@ const Onboarding = () => {
 
     handleNext()
     setIsPending(false)
-  }
-
-  const trackGoal = (goalId) => {
-    try {
-      window.fathom.trackGoal(goalId, 0)
-    } catch (error) {
-      console.log("No fathom, cannot track goal")
-    }
   }
 
   const steps = [

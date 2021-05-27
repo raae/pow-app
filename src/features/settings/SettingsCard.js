@@ -1,22 +1,19 @@
 import React from "react"
-import { useSelector } from "react-redux"
 import PropTypes from "prop-types"
-import { tail } from "lodash"
 import {
   Avatar,
   Button,
-  Box,
   Card,
   CardHeader,
   CardContent,
-  Typography,
   makeStyles,
 } from "@material-ui/core"
 import { Settings as SettingsIcon } from "@material-ui/icons"
 
-import { selectMensesTags, selectMainMensesTag } from "./slice"
-
+import { useSettings } from "./useSettings"
 import SettingsMensesTagForm from "./SettingsMensesTagForm"
+import { MensesTags } from "./MensesTags"
+import { CardContentSection } from "../../components"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {},
@@ -24,10 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SettingsCard = ({ editNavItem }) => {
   const classes = useStyles()
-
-  const mainMensesTag = useSelector(selectMainMensesTag)
-  const mensesTags = useSelector(selectMensesTags)
-  const restTags = tail(mensesTags)
+  const { mainMensesTag, mensesTags } = useSettings()
 
   return (
     <Card>
@@ -40,55 +34,38 @@ const SettingsCard = ({ editNavItem }) => {
         title="Settings"
       />
       <CardContent>
-        <Box mb={2}>
-          {!mainMensesTag ? (
-            <>
-              <Typography variant="body1" color="textPrimary" gutterBottom>
-                POW! tracks your cycles using hashtags
-              </Typography>
-              <Typography variant="body2" color="textPrimary" gutterBottom>
-                Input the term you would like to use to indicate menstruation
-                days.
-              </Typography>
-            </>
-          ) : (
-            <>
-              <Typography variant="body1" color="textPrimary" gutterBottom>
-                <strong>#{mainMensesTag}</strong> is your chosen menstruation
-                tag
-              </Typography>
-
-              {restTags.length > 0 && (
-                <Typography
-                  className={classes.space}
-                  variant="caption"
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  But these past menstruation tags also indicate a menstruation
-                  day:{" "}
-                  {restTags.map((tag, index) => [
-                    index > 0 &&
-                      (index === restTags.length - 1 ? " and " : ", "),
-                    <strong key={index}>#{tag}</strong>,
-                  ])}
-                  .
-                </Typography>
-              )}
-            </>
-          )}
-        </Box>
-
-        {!mainMensesTag && (
-          <SettingsMensesTagForm>
-            <Button type="submit" color="secondary" variant="outlined">
-              Save
-            </Button>
-          </SettingsMensesTagForm>
-        )}
-
-        {mainMensesTag && editNavItem && (
-          <Button {...editNavItem} variant="outlined" color="secondary" />
+        {!mainMensesTag ? (
+          <CardContentSection
+            title="POW! tracks your cycles using hashtags"
+            subheader="Input the term you would like to use to indicate menstruation
+                days."
+          >
+            <SettingsMensesTagForm>
+              <Button type="submit" color="secondary" variant="outlined">
+                Save
+              </Button>
+            </SettingsMensesTagForm>
+          </CardContentSection>
+        ) : (
+          <CardContentSection
+            title={
+              <>
+                <strong>{mainMensesTag}</strong> is your current chosen
+                menstruation tag
+              </>
+            }
+            subheader={
+              <>
+                However these past tag{mensesTags.length > 1 ? "s" : ""} still
+                indicate menstruation <MensesTags />, so please do not reuse
+                them for other purposes.
+              </>
+            }
+          >
+            {editNavItem && (
+              <Button {...editNavItem} variant="outlined" color="secondary" />
+            )}
+          </CardContentSection>
         )}
       </CardContent>
     </Card>

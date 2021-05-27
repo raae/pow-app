@@ -8,10 +8,10 @@ import { makeDate, entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 import { selectDaysBetween } from "../cycle"
-import { selectAllEntries } from "../entries"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
-import { INCOMPLETE, TIMELINE } from "../navigation"
+
+import { TIMELINE } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -26,7 +26,6 @@ const CycleIndexPage = ({ entryId }) => {
 
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
-  const entries = useSelector(selectAllEntries)
 
   const range = eachDayOfInterval({
     start: addDays(selectedDate, calculatedDaysBetween * -1.5),
@@ -42,15 +41,6 @@ const CycleIndexPage = ({ entryId }) => {
       block: "start",
     })
   }, [selectedDate])
-
-  const notHasPlacedPeriod =
-    !entries.length || !entries.filter((s) => s.tags.length).length
-
-  useEffect(() => {
-    if (notHasPlacedPeriod) {
-      navigate(INCOMPLETE.to)
-    }
-  }, [notHasPlacedPeriod])
 
   return (
     <AppLayout>

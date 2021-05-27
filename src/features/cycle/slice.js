@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit"
 import { first, last, countBy, toPairs, intersection } from "lodash"
 
 import { selectAllEntries, selectEntryTags } from "../entries"
-import { selectMensesTags, selectInitialDaysBetween } from "../settings"
+import { selectSettings } from "../settings"
 
 import {
   daysBetweenDates,
@@ -19,8 +19,8 @@ const selectDate = (state, props) => {
 }
 
 export const selectAllAnalyticsEntries = createSelector(
-  [selectAllEntries, selectMensesTags],
-  (entries, mensesTags) => {
+  [selectAllEntries, selectSettings],
+  (entries, { mensesTags }) => {
     return entries.map(({ entryId, tags }) => {
       const isMenses = intersection(tags, mensesTags).length > 0
       const date = makeDate(entryId)
@@ -34,11 +34,11 @@ export const selectAllAnalyticsEntries = createSelector(
 )
 
 const selectAnalytics = createSelector(
-  [selectAllAnalyticsEntries, selectInitialDaysBetween],
-  (entries, initialDaysBetween) => {
+  [selectAllAnalyticsEntries, selectSettings],
+  (entries, { initialCycleLength }) => {
     const analytics = analyze({
       sortedEntries: entries,
-      initialDaysBetween,
+      initialDaysBetween: initialCycleLength,
     })
 
     return analytics
@@ -100,9 +100,9 @@ export const selectHasPredictionsForDate = createSelector(
 )
 
 export const selectPredictedMenstruationForDate = createSelector(
-  [selectTagsForDate, selectMensesTags],
-  (tags = [], menstruationTags = []) => {
-    return !!tags.find(({ tag }) => menstruationTags.includes(tag))
+  [selectTagsForDate, selectSettings],
+  (tags = [], { mensesTags }) => {
+    return !!tags.find(({ tag }) => mensesTags.includes(tag))
   }
 )
 
@@ -110,6 +110,13 @@ export const selectIsDateCurrentCycle = createSelector(
   [selectDate, selectAnalytics],
   (date, analytics) => {
     return isCurrentCycle(date, analytics)
+  }
+)
+
+export const selectHasMensesStartDate = createSelector(
+  [selectAnalytics],
+  ({ startDates }) => {
+    return startDates && startDates.length > 0
   }
 )
 

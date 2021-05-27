@@ -7,7 +7,7 @@ import {
   TIMELINE,
   PROFILE,
   SIGN_OUT,
-  SUPPORT,
+  FEEDBACK,
   TWITTER,
   CHANGELOG,
 } from "../navigation"
@@ -66,7 +66,7 @@ const AppDrawer = (props) => {
 
       <Divider className={classes.pushDown} />
       <footer>
-        <NavMenu items={[CHANGELOG, SUPPORT, TWITTER]} />
+        <NavMenu items={[CHANGELOG, FEEDBACK, TWITTER]} />
       </footer>
     </Drawer>
   )

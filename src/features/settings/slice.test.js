@@ -1,18 +1,43 @@
-import { selectMensesTags } from "./slice"
+import { selectSettings } from "./slice"
 
-describe("#analyzeEntries", () => {
-  test("Split menstruation tag setting", () => {
-    const state = {
-      settings: {
-        entities: {
-          tag: {
-            itemId: "tag",
-            item: "period,test,  menses",
+describe("settings/slice", () => {
+  describe("#selectSettings", () => {
+    test("Only menses tags", () => {
+      const state = {
+        settings: {
+          entities: {
+            mensesTags: {
+              key: "mensesTags",
+              value: ["period", "menses", "test"],
+            },
           },
         },
-      },
-    }
+      }
 
-    expect(selectMensesTags(state)).toEqual(["period", "test", "menses"])
+      expect(selectSettings(state)).toEqual({
+        mensesTags: ["period", "menses", "test"],
+        mainMensesTag: "period",
+        initialCycleLength: undefined,
+      })
+    })
+
+    test("Only initialCycleLength", () => {
+      const state = {
+        settings: {
+          entities: {
+            initialCycleLength: {
+              key: "initialCycleLength",
+              value: 28,
+            },
+          },
+        },
+      }
+
+      expect(selectSettings(state)).toEqual({
+        mensesTags: [],
+        mainMensesTag: undefined,
+        initialCycleLength: 28,
+      })
+    })
   })
 })
