@@ -24,7 +24,7 @@ const Incomplete = () => {
       } else if (!hasInitialCycle) {
         navigate("./cycle")
       } else if (!isSubscribed) {
-        // Add payment step
+        navigate("./payment")
       }
     }
   }, [isLoading, isSubscribed, isCompleted, mainMensesTag, hasInitialCycle])
