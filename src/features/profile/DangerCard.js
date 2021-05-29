@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import {
   Avatar,
@@ -13,7 +13,7 @@ import { ErrorOutline as DangerIcon } from "@material-ui/icons"
 import { CardContentSection } from "../../components"
 
 import { selectAllEntries, deleteAllEntries } from "../entries"
-// import {clearMensenTags} from "../settings"
+import { useSettings } from "../settings"
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -25,16 +25,20 @@ const DangerCard = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [isPending, setIsPending] = useState(false)
+  const [isDisabledByKey, setIsDisabledKey] = useState({
+    entries: true,
+    tags: true,
+  })
+
+  const { deleteAllMensesTags, mensesTags } = useSettings()
   const entries = useSelector(selectAllEntries)
 
-  const disabled = isPending || entries.length === 0
-
-  let deleteAllEntriesText = `Delete all my entries`
-  if (entries.length === 0) {
-    deleteAllEntriesText = "No entries to delete"
-  } else if (isPending) {
-    deleteAllEntriesText = "Deleting entries"
-  }
+  useEffect(() => {
+    setIsDisabledKey({
+      entries: entries.length === 0 || isPending,
+      tags: entries.length > 0 || mensesTags.length === 0 || isPending,
+    })
+  }, [entries, mensesTags, isPending])
 
   const handleDeleteAllEntries = async () => {
     const CONFIRMATION_STRING = "DELETE"
@@ -63,23 +67,38 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
-  const disabledMensenTags = isPending || entries.length > 0
-  const fakeFunctionClearMensesTags = () => {}
-  const handleClearMensesTags = async (event) => {
-    // 1. Go get: that form and prevent it from naughtily self-submitting
-       event.preventDefault()
-    // 2. Listen for: the click on that button
-    // 3. Do: clear those MensesTags inside Daniel's and  ...'s Userbase
-       alert(`Clearing tags ${fakeFunctionClearMensesTags}`)
-       setIsPending(true)
-       const { error } = await fakeFunctionClearMensesTags()
-       if (error) {
-         alert(`Oopsie (${error.message}), please try again.`)
-       } else {
-         alert(`Success, all your tags were deleted.`)
-       }
-       setIsPending(false)
+
+  const handleDeleteAllMensesTags = async (event) => {
+    setIsPending(true)
+
+    const { error } = await deleteAllMensesTags()
+
+    if (error) {
+      alert(`Oopsie (${error.message}), please try again.`)
+    } else {
+      alert(`Success, all your period tags were deleted.`)
+    }
+
+    setIsPending(false)
   }
+
+  const labels = {
+    entries: "Delete all my entries",
+    tags: "Delete my chosen period tag(s)",
+  }
+
+  if (entries.length === 0) {
+    labels.entries = "No entries to delete"
+  } else if (isPending.entries) {
+    labels.entries = "Deleting entries"
+  }
+
+  if (mensesTags.length === 0) {
+    labels.tags = "No period tags to delete"
+  } else if (isPending.tags) {
+    labels.tags = "Deleting tags"
+  }
+
   return (
     <Card>
       <CardHeader
@@ -96,22 +115,23 @@ const DangerCard = () => {
           subheader="Use with caution as your entries will be lost forever."
         >
           <Button
-            disabled={disabled}
+            disabled={isDisabledByKey.entries}
             variant="outlined"
             color="primary"
             onClick={handleDeleteAllEntries}
           >
-            {deleteAllEntriesText}
+            {labels.entries}
           </Button>
-          <Button
-            disabled={disabledMensenTags}
-            // alert "Clearing tags" when clicked. (This will later be replaced with proper functionality).
-            variant="outlined"
-            color="primary"
-            onClick={handleClearMensesTags}
-          >
-            Clear choosen tag(s)
-          </Button>
+          {entries.length === 0 && (
+            <Button
+              disabled={isDisabledByKey.tags}
+              variant="outlined"
+              color="primary"
+              onClick={handleDeleteAllMensesTags}
+            >
+              {labels.tags}
+            </Button>
+          )}
         </CardContentSection>
       </CardContent>
     </Card>
