@@ -115,6 +115,17 @@ export const addMensesTag = createAsyncThunk(
   }
 )
 
+export const deleteAllMensesTags = createAsyncThunk(
+  `${SLICE_ENTITY}/upsert`,
+  async () => {
+    // TODO: Throw error if entries is not empty
+    await userbase.deleteItem({
+      databaseName: DB_NAME,
+      itemId: MENSES_TAG_KEY.DB,
+    })
+  }
+)
+
 export const setInitialCycleLength = createAsyncThunk(
   `${SLICE_ENTITY}/upsert`,
   async (payload, thunkAPI) => {
