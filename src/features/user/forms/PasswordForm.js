@@ -14,11 +14,11 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     // 2. Listen for those PasSwords from those inputs
     const oldPassword = event.target.elements.currentPasswordInput.value
     const newPassword = event.target.elements.newPasswordInput.value
-    const newSameSword = event.target.elements.newSameSwordInput.value
+    const newSamePassword = event.target.elements.newSamePassword.value
     // Before calling updateUser make sure the password in both of the new password inputs are the same
     // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
 
-    if (newPassword !== newSameSword) {
+    if (newPassword !== newSamePassword) {
         alert(
           `You typed your "New Password Again" incorrectly, please try again.`
         )
@@ -80,14 +80,14 @@ export const PasswordForm = ({ Component, title, onDone }) => {
       />
       <TextField
         disabled={disabled}
-        id="newSameSwordInput"
+        id="newSamePassword"
         type="password"
         variant="outlined"
         margin="normal"
         required
         fullWidth
         label="New Password Again"
-        name="New SameSword"
+        name="New SamePassword"
         autoComplete="new-password"
       />
     </Component>
