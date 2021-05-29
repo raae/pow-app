@@ -10,10 +10,10 @@ import {
   selectIsDateCurrentCycle,
   selectNextStartDate,
 } from "../../cycle"
-import { selectMainMensesTag } from "../../settings"
+import { useSettings } from "../../settings"
 
 const Info = ({ date, isToday, className }) => {
-  const menstruationTag = useSelector(selectMainMensesTag)
+  const { mainMensesTag } = useSettings()
 
   const daysBetween = useSelector(selectDaysBetween)
   const isDaysBetweenCalculated = useSelector(selectIsDaysBetweenCalculated)
@@ -30,7 +30,7 @@ const Info = ({ date, isToday, className }) => {
   return (
     <Paper elevation={0} className={className}>
       <Typography variant="body2">
-        Next <strong>#{menstruationTag}</strong> {!isCurrentCycle && "was"}{" "}
+        Next <strong>{mainMensesTag}</strong> {!isCurrentCycle && "was"}{" "}
         estimated to arrive{" "}
         <strong>{format(nextStartDate, "EEEE, MMMM do")}</strong>, based on{" "}
         {isDaysBetweenCalculated ? "your average" : "a default"}{" "}

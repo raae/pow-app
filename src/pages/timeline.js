@@ -6,25 +6,28 @@ import { Router } from "@reach/router"
 import { useAuth } from "../features/auth"
 import { useSubscription } from "../features/user"
 import { selectAreEntriesLoading } from "../features/entries"
-import { selectAreSettingsLoading } from "../features/settings"
+import { useSettings } from "../features/settings"
 import { TimelineIndexPage, TimelineEditPage } from "../features/timeline"
-
+import { selectHasMensesStartDate } from "../features/cycle"
 import { Seo, Loading } from "../features/app"
+import { INCOMPLETE } from "../features/navigation"
 
 const CyclePage = () => {
   const { isAuthenticated, isAuthPending } = useAuth()
   const { isSubscribed } = useSubscription()
+  const { isLoading: settingsIsLoading } = useSettings()
 
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
-  const settingsAreLoading = useSelector(selectAreSettingsLoading)
+  const hasMensesStartDate = useSelector(selectHasMensesStartDate)
 
-  const dataIsLoading = entriesAreLoading || settingsAreLoading
+  const dataIsLoading = entriesAreLoading || settingsIsLoading
+  const isIncomplete = !hasMensesStartDate || !isSubscribed
 
   useEffect(() => {
-    if (isAuthenticated && !isSubscribed) {
-      navigate("/profile?payment=unfinished")
+    if (isAuthenticated && !dataIsLoading && isIncomplete) {
+      navigate(INCOMPLETE.to)
     }
-  }, [isAuthenticated, isSubscribed])
+  }, [isAuthenticated, dataIsLoading, isIncomplete])
 
   if (isAuthPending || dataIsLoading) {
     return (

@@ -5,9 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { uniq, isUndefined, last } from "lodash"
-
-import { selectMensesTagText } from "../settings"
+import { chunk, uniq, isUndefined, last } from "lodash"
 
 import { entryIdFromDate } from "../utils/days"
 import { tagsFromText } from "../utils/tags"
@@ -81,10 +79,22 @@ export const deleteAllEntries = createAsyncThunk(
       return { command: "Delete", itemId: id }
     })
 
-    await userbase.putTransaction({
-      databaseName: DB_NAME,
-      operations: deleteOperations,
-    })
+    const operationsChunks = chunk(deleteOperations, 10)
+
+    const results = await Promise.allSettled(
+      operationsChunks.map((chunk) => {
+        return userbase.putTransaction({
+          databaseName: DB_NAME,
+          operations: chunk,
+        })
+      })
+    )
+
+    const allFulfilled = !results.find((result) => result.status === "rejected")
+
+    if (!allFulfilled) {
+      throw new Error("A chunk of entries were not deleted")
+    }
   }
 )
 

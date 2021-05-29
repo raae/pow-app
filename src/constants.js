@@ -1,3 +1,5 @@
+export const ENV = process.env.ENV
+
 export const IS_SSG = typeof window === `undefined`
 
 export const BASE_URL = !IS_SSG ? window.location.origin : ""
@@ -15,6 +17,10 @@ export const FATHOM_ONBOARDING_1 = process.env.GATSBY_FATHOM_ONBOARDING_1
 export const FATHOM_ONBOARDING_2 = process.env.GATSBY_FATHOM_ONBOARDING_2
 export const FATHOM_ONBOARDING_3 = process.env.GATSBY_FATHOM_ONBOARDING_3
 export const FATHOM_ONBOARDING_4 = process.env.GATSBY_FATHOM_ONBOARDING_4
+export const FATHOM_FEEDBACK = process.env.GATSBY_FATHOM_FEEDBACK
+export const FATHOM_CHANGELOG = process.env.GATSBY_FATHOM_CHANGELOG
+export const FATHOM_MADE_BY = process.env.GATSBY_FATHOM_MADE_BY
+export const FATHOM_SUPPORT = process.env.GATSBY_FATHOM_SUPPORT
 
 export const ENTRIES_DATABASE = { databaseName: "entries", entity: "Entry" }
 export const SETTINGS_DATABASE = { databaseName: "settings", entity: "Setting" }

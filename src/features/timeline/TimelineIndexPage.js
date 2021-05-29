@@ -4,16 +4,14 @@ import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
 import { eachDayOfInterval, addDays, isToday } from "date-fns"
-
 import { makeDate, entryIdFromDate } from "../utils/days"
-
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
-
 import { selectDaysBetween } from "../cycle"
-
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
+
+import { TIMELINE } from "../navigation"
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -46,20 +44,17 @@ const CycleIndexPage = ({ entryId }) => {
 
   return (
     <AppLayout>
-      <AppMainToolbar>
-        <DatePicker date={selectedDate} />
-        <IconButton
-          aria-label="Scroll to today"
-          onClick={(event) => {
-            navigate(`/timeline`)
-          }}
-          style={{ marginLeft: "auto" }}
-        >
-          <Today />
-        </IconButton>
-      </AppMainToolbar>
-
       <AppPage>
+        <AppMainToolbar>
+          <DatePicker date={selectedDate} />
+          <IconButton
+            aria-label="Scroll to today"
+            onClick={() => navigate(TIMELINE.to)}
+            style={{ marginLeft: "auto" }}
+          >
+            <Today />
+          </IconButton>
+        </AppMainToolbar>
         <List className={classes.timeline}>
           {range.map((date) => {
             return (
