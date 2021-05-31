@@ -36,11 +36,15 @@ const HouseKeepingCard = () => {
   const exportAllEntries = async (event) => {
     setIsPending(true)
     event.preventDefault()
+
+    // The intent of the user is to export her fistful_of_Pieces_Of_Eight
+    trackGoal(FATHOM_EXPORT)
+    console.log("Track fathom goal", {FATHOM_EXPORT})
+
     const convertToCsv = Papa.unparse(transformAndSortEntries(entries))
     openSaveFileDialog(convertToCsv, "pow-export.csv", ".csv")
 
-    trackGoal(FATHOM_EXPORT)
-    console.log("Track fathom goal", {FATHOM_EXPORT})
+
 
     setIsPending(false)
   }
