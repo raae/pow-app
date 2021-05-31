@@ -17,6 +17,7 @@ import { Link } from "../navigation"
 import { selectAllEntries } from "../entries"
 
 import {FATHOM_EXPORT} from "../../../src/constants"
+import { trackGoal } from "../../../src/features/tracking/index";
 
 const HouseKeepingCard = () => {
   const [isPending, setIsPending] = useState(false)
@@ -31,7 +32,7 @@ const HouseKeepingCard = () => {
 
   // let FATHOM_EXPORT = "Pieces_Of_Eight"
 
-  const trackGoal = () => {};
+  // const trackGoal = () => {};
 
   const exportAllEntries = async (event) => {
     setIsPending(true)
