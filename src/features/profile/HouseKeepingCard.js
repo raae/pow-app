@@ -26,6 +26,10 @@ const HouseKeepingCard = () => {
   if (entries.length === 0) {
     exportAllEntriesText = `No entries to export`
   }
+  let FATHOM_EXPORT = "Another_day_another_fistful_of_Pieces_Of_Eight"
+  const trackGoal = () => {
+
+  };
 
   const exportAllEntries = async (event) => {
     setIsPending(true)
@@ -33,6 +37,7 @@ const HouseKeepingCard = () => {
 
     const convertToCsv = Papa.unparse(transformAndSortEntries(entries))
     openSaveFileDialog(convertToCsv, "pow-export.csv", ".csv")
+    trackGoal(FATHOM_EXPORT)
 
     setIsPending(false)
   }
