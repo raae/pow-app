@@ -16,6 +16,8 @@ import { CardContentSection } from "../../components"
 import { Link } from "../navigation"
 import { selectAllEntries } from "../entries"
 
+import {FATHOM_EXPORT} from "../../../src/constants"
+
 const HouseKeepingCard = () => {
   const [isPending, setIsPending] = useState(false)
   const entries = useSelector(selectAllEntries)
@@ -27,7 +29,7 @@ const HouseKeepingCard = () => {
     exportAllEntriesText = `No entries to export`
   }
 
-  let FATHOM_EXPORT = "Pieces_Of_Eight"
+  // let FATHOM_EXPORT = "Pieces_Of_Eight"
 
   const trackGoal = () => {};
 
