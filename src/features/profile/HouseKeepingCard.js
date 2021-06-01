@@ -30,8 +30,6 @@ const HouseKeepingCard = () => {
     exportAllEntriesText = `No entries to export`
   }
 
-  // let FATHOM_EXPORT = "Pieces_Of_Eight"
-  // const trackGoal = () => {};
   const exportAllEntries = async (event) => {
     setIsPending(true)
     event.preventDefault()
