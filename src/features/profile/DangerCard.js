@@ -39,12 +39,12 @@ const DangerCard = () => {
       tags: entries.length > 0 || mensesTags.length === 0 || isPending,
     })
   }, [entries, mensesTags, isPending])
-
+  const trackGoal = (FATHOM_EXPORT) => {}
   const handleDeleteAllEntries = async () => {
     const CONFIRMATION_STRING = "DELETE"
 
     setIsPending(true)
-
+    //here
     const confirmation = prompt(
       `Please type ${CONFIRMATION_STRING} to confirm deletion of all your entries.`
     )
