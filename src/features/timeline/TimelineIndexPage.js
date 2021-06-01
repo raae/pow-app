@@ -49,7 +49,7 @@ const CycleIndexPage = ({ entryId }) => {
           <DatePicker date={selectedDate} />
           <IconButton
             aria-label="Scroll to today"
-            onClick={() => navigate(TIMELINE.to)}
+            onClick={() => navigate(`/timeline/${entryIdFromDate(new Date())}`)}
             style={{ marginLeft: "auto" }}
           >
             <Today />
