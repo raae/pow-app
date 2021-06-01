@@ -1,22 +1,24 @@
 import React, { useState } from "react"
+import PropTypes from "prop-types"
 import { TextField, InputAdornment } from "@material-ui/core"
 
-const minMax = {
-  min: 15,
-  max: 60,
-}
+import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "../../settings"
 
-const placeholder = 28
-
-const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
+const DaysBetweenInput = ({
+  onChange,
+  values,
+  textFieldProps,
+  defaultLength,
+  minMax,
+}) => {
   const [value, setValue] = useState(values.daysBetween)
 
   const onChangeDaysBetween = (e) => {
     const currentValue = parseInt(e.target.value, 10)
     if (currentValue === -1) {
-      setValue(placeholder - 1)
+      setValue(defaultLength - 1)
     } else if (currentValue === 1) {
-      setValue(placeholder + 1)
+      setValue(defaultLength + 1)
     } else {
       setValue(currentValue)
     }
@@ -32,7 +34,7 @@ const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
         value={value}
         type="number"
         onChange={onChangeDaysBetween}
-        placeholder={placeholder}
+        placeholder={defaultLength}
         min={minMax.min}
         max={minMax.max}
         fullWidth
@@ -45,3 +47,16 @@ const DaysBetweenInput = ({ onChange, values, textFieldProps }) => {
 }
 
 export default DaysBetweenInput
+
+DaysBetweenInput.propTypes = {
+  defaultLength: PropTypes.number,
+  minMax: PropTypes.shape({
+    min: PropTypes.number,
+    max: PropTypes.number,
+  }),
+}
+
+DaysBetweenInput.defaultProps = {
+  defaultLength: DEFAULT_CYCLE_LENGTH,
+  minMax: CYCLE_LENGTH_MIN_MAX,
+}
