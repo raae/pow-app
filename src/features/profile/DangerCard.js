@@ -39,12 +39,16 @@ const DangerCard = () => {
       tags: entries.length > 0 || mensesTags.length === 0 || isPending,
     })
   }, [entries, mensesTags, isPending])
-  const trackGoal = (FATHOM_EXPORT) => {}
+
+  let fake_FATHOM_EXPORT = "Pieces_Of_Eight";
+  const fakeTrackGoal = (fake_FATHOM_EXPORT) => {};
+
   const handleDeleteAllEntries = async () => {
     const CONFIRMATION_STRING = "DELETE"
 
     setIsPending(true)
-    //here
+    // 1 call fakeTrackGoal here
+    // 2 import export and stuff
     const confirmation = prompt(
       `Please type ${CONFIRMATION_STRING} to confirm deletion of all your entries.`
     )
