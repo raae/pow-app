@@ -18,12 +18,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LastDateInput = ({ onChange, label, value }) => {
+const LastDateInput = ({ required, onChange, label, value }) => {
   const classes = useStyles()
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
+        required
         disableToolbar
         fullWidth
         disableFuture={true}
@@ -34,15 +35,13 @@ const LastDateInput = ({ onChange, label, value }) => {
         value={value}
         label={label || "First day of your last or current period"}
         placeholder="Select date"
+        color="secondary"
         onChange={onChange}
+        inputProps={{ required: true }}
         InputLabelProps={{
-          color: "secondary",
           className: classes.label,
         }}
-        inputVariant="outlined"
         InputProps={{
-          color: "secondary",
-          margin: "normal",
           startAdornment: (
             <InputAdornment position="start">
               <EventIcon
