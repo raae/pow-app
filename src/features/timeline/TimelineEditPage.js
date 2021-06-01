@@ -68,6 +68,9 @@ const CycleEditPage = ({ entryId }) => {
               label={entryNote ? "Edit entry" : "Add an entry"}
               onNoteChange={handleNoteChange}
               note={note}
+              margin="none"
+              variant="standard"
+              color="secondary"
             />
           </Paper>
         </AppPage>
