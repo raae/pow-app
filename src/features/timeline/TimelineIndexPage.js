@@ -68,6 +68,7 @@ const CycleIndexPage = ({ entryId }) => {
             Header,
           }}
           style={{
+            // 72px is the size of the header
             height: "calc(100vh - 72px)",
             width: "100%",
           }}
