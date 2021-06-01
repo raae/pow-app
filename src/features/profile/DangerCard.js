@@ -15,6 +15,10 @@ import { CardContentSection } from "../../components"
 import { selectAllEntries, deleteAllEntries } from "../entries"
 import { useSettings } from "../settings"
 
+import { FATHOM_DELETE_ALL_ENTRIES, FATHOM_DELETE_CONFIRMED } from "../../constants";
+import {trackGoal} from "../tracking"
+
+
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.primary.main,
@@ -48,7 +52,7 @@ const DangerCard = () => {
 
     setIsPending(true)
     // 1 call fakeTrackGoal here
-    fakeTrackGoal(fake_FATHOM_EXPORT);
+    trackGoal(FATHOM_DELETE_ALL_ENTRIES);
     console.log("Track fathom goal", {fake_FATHOM_EXPORT});
     // 2 import export and stuff
     const confirmation = prompt(
@@ -70,6 +74,7 @@ const DangerCard = () => {
         alert(`Success, all your entries were deleted.`)
       }
     }
+    // trackGoal(FATHOM_DELETE_CONFIRMED);
 
     setIsPending(false)
   }
