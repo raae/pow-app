@@ -13,15 +13,11 @@ import DatePicker from "./DatePicker"
 import { Virtuoso } from "react-virtuoso"
 
 const useStyles = makeStyles((theme) => ({
-  timeline: {
-    "& > *": {
-      marginBottom: theme.spacing(3),
-    },
-  },
   root: { paddingRight: "0" },
   page: { maxWidth: "100% !important" },
   itemWrapper: {
-    paddingRight: 10,
+    paddingRight: theme.spacing(6),
+    marginBottom: theme.spacing(3),
     [theme.breakpoints.up("lg")]: {
       maxWidth: 600,
     },
@@ -48,27 +44,36 @@ const CycleIndexPage = ({ entryId }) => {
     })
   }, [selectedDate])
 
+  const Header = () => (
+    <AppMainToolbar>
+      <DatePicker date={selectedDate} />
+      <IconButton
+        aria-label="Scroll to today"
+        onClick={() => navigate(`/timeline/${entryIdFromDate(new Date())}`)}
+        style={{ marginLeft: "auto" }}
+      >
+        <Today />
+      </IconButton>
+    </AppMainToolbar>
+  )
+
+  const Item = ({ index }) => {
+    const date = range[index]
+    return (
+      <div className={classes.itemWrapper}>
+        <TimelineItem key={date} date={date} selectedDate={selectedDate}>
+          {isToday(date) && <Welcome key="welcome" />}
+        </TimelineItem>
+      </div>
+    )
+  }
+
   return (
     <AppLayout mainClassName={classes.page}>
       <AppPage className={classes.root}>
         <Virtuoso
           components={{
-            Header: () => {
-              return (
-                <AppMainToolbar>
-                  <DatePicker date={selectedDate} />
-                  <IconButton
-                    aria-label="Scroll to today"
-                    onClick={() =>
-                      navigate(`/timeline/${entryIdFromDate(new Date())}`)
-                    }
-                    style={{ marginLeft: "auto" }}
-                  >
-                    <Today />
-                  </IconButton>
-                </AppMainToolbar>
-              )
-            },
+            Header,
           }}
           style={{
             height: "calc(100vh - 72px)",
@@ -76,21 +81,7 @@ const CycleIndexPage = ({ entryId }) => {
           }}
           totalCount={range.length}
           initialTopMostItemIndex={range.findIndex((date) => isToday(date)) - 1}
-          itemContent={(index) => {
-            const date = range[index]
-
-            return (
-              <div className={classes.itemWrapper}>
-                <TimelineItem
-                  key={date}
-                  date={date}
-                  selectedDate={selectedDate}
-                >
-                  {isToday(date) && <Welcome key="welcome" />}
-                </TimelineItem>
-              </div>
-            )
-          }}
+          itemContent={(index) => <Item index={index} />}
         />
       </AppPage>
     </AppLayout>
