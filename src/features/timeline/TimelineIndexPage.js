@@ -11,8 +11,6 @@ import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 
-import { TIMELINE } from "../navigation"
-
 const useStyles = makeStyles((theme) => ({
   timeline: {
     "& > *": {
