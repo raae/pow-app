@@ -48,6 +48,8 @@ const DangerCard = () => {
 
     setIsPending(true)
     // 1 call fakeTrackGoal here
+    fakeTrackGoal(fake_FATHOM_EXPORT);
+    console.log("Track fathom goal", {fake_FATHOM_EXPORT});
     // 2 import export and stuff
     const confirmation = prompt(
       `Please type ${CONFIRMATION_STRING} to confirm deletion of all your entries.`
