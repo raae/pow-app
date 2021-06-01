@@ -1,16 +1,17 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { IconButton, makeStyles } from "@material-ui/core"
 import { Today } from "@material-ui/icons"
-import { eachDayOfInterval, addDays, isToday } from "date-fns"
-import { makeDate, entryIdFromDate } from "../utils/days"
+import { eachDayOfInterval, isToday, addYears } from "date-fns"
+import { Virtuoso } from "react-virtuoso"
+import { entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
-import { Virtuoso } from "react-virtuoso"
+import { useScrollToDate } from "./useScrollToDate"
 
 const useStyles = makeStyles((theme) => ({
   root: { paddingRight: "0" },
@@ -26,23 +27,14 @@ const useStyles = makeStyles((theme) => ({
 
 const CycleIndexPage = ({ entryId }) => {
   const classes = useStyles()
-  const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
+  const selectedDate = useScrollToDate(entryId)
 
+  const YEARS = 2
   const range = eachDayOfInterval({
-    start: addDays(selectedDate, calculatedDaysBetween * -60),
-    end: addDays(selectedDate, calculatedDaysBetween * 60),
+    start: addYears(selectedDate, calculatedDaysBetween * -YEARS),
+    end: addYears(selectedDate, calculatedDaysBetween * YEARS),
   })
-
-  useEffect(() => {
-    const scrollToId = `scrollTo-${entryIdFromDate(selectedDate)}`
-    const node = document.getElementById(scrollToId)
-    if (!node) return
-
-    node.scrollIntoView({
-      block: "start",
-    })
-  }, [selectedDate])
 
   const Header = () => (
     <AppMainToolbar>
