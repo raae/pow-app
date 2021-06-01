@@ -44,17 +44,13 @@ const DangerCard = () => {
     })
   }, [entries, mensesTags, isPending])
 
-  let fake_FATHOM_EXPORT = "Pieces_Of_Eight";
-  const fakeTrackGoal = (fake_FATHOM_EXPORT) => {};
-
   const handleDeleteAllEntries = async () => {
     const CONFIRMATION_STRING = "DELETE"
 
     setIsPending(true)
-    // 1 call fakeTrackGoal here
+    // call trackGoal here, when the user tries to delete entries
     trackGoal(FATHOM_DELETE_ALL_ENTRIES);
-    console.log("Track fathom goal", {fake_FATHOM_EXPORT});
-    // 2 import export and stuff
+
     const confirmation = prompt(
       `Please type ${CONFIRMATION_STRING} to confirm deletion of all your entries.`
     )
@@ -74,7 +70,8 @@ const DangerCard = () => {
         alert(`Success, all your entries were deleted.`)
       }
     }
-    // trackGoal(FATHOM_DELETE_CONFIRMED);
+    // call trackGoal here, when the user succeeds in deleting entries
+    trackGoal(FATHOM_DELETE_CONFIRMED);
 
     setIsPending(false)
   }
