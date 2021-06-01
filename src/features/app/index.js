@@ -8,6 +8,7 @@ export { default as AppPage } from "./AppPage"
 export { default as AppPageForm } from "./AppPageForm"
 export { default as Logo } from "./Logo"
 export { default as Mdx } from "./Mdx"
+export { default as Toast } from "./Toast"
 
 export { default as reducer } from "./slice"
 export * from "./slice"
