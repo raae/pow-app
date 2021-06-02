@@ -1,0 +1,15 @@
+.calendar ul,
+.calendar ol {
+  display: grid;
+  grid-template-columns: repeat(7, calc(14.2% - 0.5em));
+  grid-gap: 1em;
+  margin: 0 auto;
+  padding: 5px;
+}
+
+@media all and (max-width: 800px) {
+  .calendar ul,
+  .calendar ol {
+    grid-gap: 0.25em;
+  }
+}
