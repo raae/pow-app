@@ -2,8 +2,8 @@ import React from "react"
 import { useSelector } from "react-redux"
 import PropTypes from "prop-types"
 import { format } from "date-fns"
-import { Paper, Typography } from "@material-ui/core"
-
+import { Typography } from "@material-ui/core"
+import getMonth from "date-fns/getMonth"
 import {
   selectDaysBetween,
   selectIsDaysBetweenCalculated,
@@ -11,7 +11,6 @@ import {
   selectNextStartDate,
 } from "../../cycle"
 import { useSettings } from "../../settings"
-import getMonth from "date-fns/getMonth"
 
 const Info = ({ date }) => {
   const { mainMensesTag } = useSettings()

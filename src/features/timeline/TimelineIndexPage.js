@@ -3,22 +3,16 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
 import { Today, CalendarViewDay } from "@material-ui/icons"
-import {
-  eachDayOfInterval,
-  addDays,
-  isToday,
-  getMonth,
-  getYear,
-  getDaysInMonth,
-} from "date-fns"
+import { eachDayOfInterval, addDays, isToday, getMonth } from "date-fns"
 import { makeDate, entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
-import "./temp.css"
 import Calendar from "./Calendar"
+
+import "./temp.css"
 
 const useStyles = makeStyles((theme) => ({
   timeline: {

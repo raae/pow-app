@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
 import { useSelector } from "react-redux"
-import { Typography, ButtonBase, Paper, Box } from "@material-ui/core"
+import { Typography, ButtonBase, Box } from "@material-ui/core"
 import { Add as AddNoteIcon } from "@material-ui/icons"
 
 import { entryIdFromDate } from "../../utils/days"

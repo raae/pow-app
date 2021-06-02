@@ -1,7 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { useSelector } from "react-redux"
-import { format } from "date-fns"
 import { Typography } from "@material-ui/core"
 
 import {
