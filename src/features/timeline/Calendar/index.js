@@ -1,12 +1,27 @@
 import { getYear } from "date-fns"
 import React from "react"
 import Info from "./Info"
-import { Box, Typography } from "@material-ui/core"
+import { Box, Typography, makeStyles } from "@material-ui/core"
 import Day from "./Day"
 
+const useStyles = makeStyles((theme) => ({
+  calendar: {
+    display: "grid",
+    gridTemplateColumns: `repeat(7, calc(14.2% - ${theme.spacing(2)}px))`,
+    gridGap: theme.spacing(2),
+    padding: theme.spacing(1),
+
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateColumns: `repeat(7, calc(14.2% - ${theme.spacing(1)}px))`,
+      gridGap: theme.spacing(1),
+    },
+  },
+}))
+
 const Calendar = ({ dates }) => {
+  const classes = useStyles()
   return (
-    <div class="calendar">
+    <Box>
       <Box
         component="header"
         display="flex"
@@ -21,12 +36,12 @@ const Calendar = ({ dates }) => {
         </Typography>
         <Info date={dates[0]} />
       </Box>
-      <ol class="day-grid">
+      <Box component="ol" className={classes.calendar}>
         {dates.map((date) => (
           <Day date={date} />
         ))}
-      </ol>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

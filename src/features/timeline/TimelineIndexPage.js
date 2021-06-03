@@ -13,8 +13,6 @@ import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
 import Calendar from "./Calendar"
 
-import "./temp.css"
-
 const useStyles = makeStyles((theme) => ({
   timeline: {
     "& > *": {
