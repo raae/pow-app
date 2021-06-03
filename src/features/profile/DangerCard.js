@@ -67,10 +67,11 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
-
+  let FAKE_FATHOM = "Pieces Of Eight"
+  const fakeTrackGoal = () => {}
   const handleDeleteAllMensesTags = async (event) => {
     setIsPending(true)
-
+    fakeTrackGoal(FAKE_FATHOM);
     const { error } = await deleteAllMensesTags()
 
     if (error) {
