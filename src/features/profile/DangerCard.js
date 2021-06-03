@@ -15,6 +15,9 @@ import { CardContentSection } from "../../components"
 import { selectAllEntries, deleteAllEntries } from "../entries"
 import { useSettings } from "../settings"
 
+import { FATHOM_DELETE_ALL_MENSES_TAGS, FATHOM_DELETE_TAGS_CONFIRMED } from "../../constants";
+import { trackGoal } from "../tracking";
+
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.primary.main,
@@ -67,12 +70,10 @@ const DangerCard = () => {
 
     setIsPending(false)
   }
-  let FAKE_FATHOM = "Pieces Of Eight"
-  const fakeTrackGoal = () => {}
+
   const handleDeleteAllMensesTags = async (event) => {
     setIsPending(true)
-    fakeTrackGoal(FAKE_FATHOM);
-    console.log({FAKE_FATHOM});
+    trackGoal(FATHOM_DELETE_ALL_MENSES_TAGS);
     const { error } = await deleteAllMensesTags()
 
     if (error) {
@@ -80,7 +81,8 @@ const DangerCard = () => {
     } else {
       alert(`Success, all your period tags were deleted.`)
     }
-
+    // Tags are deleted track
+    trackGoal(FATHOM_DELETE_TAGS_CONFIRMED);
     setIsPending(false)
   }
 
