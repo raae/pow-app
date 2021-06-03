@@ -26,8 +26,8 @@ const Cycle = ({ values, onChange, textFieldProps }) => {
         />
 
         <DaysBetweenInput
-          onChange={onChange}
-          values={values}
+          onChange={onChange("daysBetween")}
+          value={values.daysBetween}
           textFieldProps={textFieldProps}
         />
       </div>

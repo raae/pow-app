@@ -7,6 +7,7 @@ import {
   selectSettingsStatus,
   addMensesTag,
   setInitialCycleLength,
+  deleteAllMensesTags,
 } from "./slice"
 
 export const useSettings = () => {
@@ -21,6 +22,13 @@ export const useSettings = () => {
     [dispatch]
   )
 
+  const handleDeleteAllMensesTags = useCallback(
+    (tag) => {
+      return dispatch(deleteAllMensesTags(tag))
+    },
+    [dispatch]
+  )
+
   const handleSetInitialCycleLength = useCallback(
     (tag) => {
       return dispatch(setInitialCycleLength(tag))
@@ -31,6 +39,7 @@ export const useSettings = () => {
   return {
     isLoading: [STATUS.INITIAL, STATUS.OPENING].includes(status),
     addMensesTag: handleAddMensesTag,
+    deleteAllMensesTags: handleDeleteAllMensesTags,
     setInitialCycleLength: handleSetInitialCycleLength,
     mensesTags,
     mainMensesTag: first(mensesTags),

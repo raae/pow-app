@@ -5,7 +5,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { first, isNumber, isUndefined } from "lodash"
+import { first, isUndefined } from "lodash"
+import * as yup from "yup"
 
 import { tagArrayToText, textToTagArray } from "./utils"
 
@@ -29,6 +30,30 @@ export const STATUS = {
   OPENED: `[${SLICE_NAME}] Opened`,
   FAILED: `[${SLICE_NAME}] Failed`,
 }
+
+// =========================================================
+//
+//  Schemas
+//
+// =========================================================
+
+export const CYCLE_LENGTH_MIN_MAX = {
+  min: 14,
+  max: 60,
+}
+
+export const DEFAULT_CYCLE_LENGTH = 28
+
+export const cycleLengthSchema = yup
+  .number()
+  .min(
+    CYCLE_LENGTH_MIN_MAX.min,
+    `Your cycle length must be longer than ${CYCLE_LENGTH_MIN_MAX.min} days`
+  )
+  .max(
+    CYCLE_LENGTH_MIN_MAX.max,
+    `Your cycle length must be shorter than ${CYCLE_LENGTH_MIN_MAX.max} days`
+  )
 
 // =========================================================
 //
@@ -59,9 +84,15 @@ const transformItemToSetting = ({ itemId, item, ...rest }) => {
     key = MENSES_TAG_KEY.SLICE
     value = textToTagArray(value)
   } else if (itemId === CYCLE_LENGTH_KEY.DB) {
-    // Will for some early users be stored as a string
+    // Will for some early user have an invalid value,
+    // or be stored as string
     key = CYCLE_LENGTH_KEY.SLICE
-    value = parseInt(value, 10)
+    try {
+      value = parseInt(value, 10)
+      value = cycleLengthSchema.validateSync(value)
+    } catch (error) {
+      value = undefined
+    }
   }
 
   return {
@@ -115,22 +146,29 @@ export const addMensesTag = createAsyncThunk(
   }
 )
 
+export const deleteAllMensesTags = createAsyncThunk(
+  `${SLICE_ENTITY}/upsert`,
+  async () => {
+    // TODO: Throw error if entries is not empty
+    await userbase.deleteItem({
+      databaseName: DB_NAME,
+      itemId: MENSES_TAG_KEY.DB,
+    })
+  }
+)
+
 export const setInitialCycleLength = createAsyncThunk(
   `${SLICE_ENTITY}/upsert`,
   async (payload, thunkAPI) => {
     const length = parseInt(payload)
     const current = selectById(thunkAPI.getState(), CYCLE_LENGTH_KEY.SLICE)
 
-    if (!isNumber(length)) {
-      throw new Error(
-        `Initial cycle length must be a number, not ${typeof length}`
-      )
-    }
+    const validLength = cycleLengthSchema.validateSync(length)
 
     const userbaseParams = {
       databaseName: DB_NAME,
       itemId: CYCLE_LENGTH_KEY.DB,
-      item: length,
+      item: validLength,
     }
 
     if (isUndefined(current)) {
