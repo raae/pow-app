@@ -72,6 +72,7 @@ const DangerCard = () => {
   const handleDeleteAllMensesTags = async (event) => {
     setIsPending(true)
     fakeTrackGoal(FAKE_FATHOM);
+    console.log({FAKE_FATHOM});
     const { error } = await deleteAllMensesTags()
 
     if (error) {
