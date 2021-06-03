@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CycleIndexPage = ({ entryId, path }) => {
   const classes = useStyles()
-  const [calendarView] = useState(path.includes("/calendar"))
+  const calendarView = path.includes("/calendar")
 
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
@@ -43,7 +43,7 @@ const CycleIndexPage = ({ entryId, path }) => {
     })
   }, [selectedDate])
 
-  const a = range.reduce((acc, curr) => {
+  const daysInMonths = range.reduce((acc, curr) => {
     const month = getMonth(curr)
     if (acc[month]) {
       acc[month] = [...acc[month], curr]
@@ -52,8 +52,6 @@ const CycleIndexPage = ({ entryId, path }) => {
     }
     return acc
   }, {})
-
-  console.log(a)
 
   return (
     <AppLayout>
@@ -84,8 +82,8 @@ const CycleIndexPage = ({ entryId, path }) => {
           </IconButton>
         </AppMainToolbar>
         {calendarView ? (
-          Object.keys(a).map((monthNumber) => (
-            <Calendar dates={a[monthNumber]} />
+          Object.keys(daysInMonths).map((monthNumber) => (
+            <Calendar dates={daysInMonths[monthNumber]} />
           ))
         ) : (
           <List className={classes.timeline}>
