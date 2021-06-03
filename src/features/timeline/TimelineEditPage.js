@@ -30,10 +30,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CycleEditPage = ({ entryId }) => {
+const CycleEditPage = ({ entryId, path }) => {
   const classes = useStyles()
   const date = makeDate(entryId)
-
+  const redirectTo = path.includes("/calendar")
+    ? `/timeline/calendar/${entryId}`
+    : `/timeline/${entryId}`
   const dispatch = useDispatch()
   const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
   const [note, setNote] = useState(entryNote)
@@ -45,13 +47,13 @@ const CycleEditPage = ({ entryId }) => {
   const handleReset = (event) => {
     event.preventDefault()
     setNote(entryNote)
-    navigate(`/timeline/${entryId}`)
+    navigate(redirectTo)
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
     dispatch(upsertEntry({ date, note }))
-    navigate(`/timeline/${entryId}`)
+    navigate(redirectTo)
   }
 
   return (

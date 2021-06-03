@@ -11,7 +11,6 @@ import React from "react"
 import { entryIdFromDate } from "../../utils/days"
 import Header from "./Header"
 import Entry from "./Entry"
-import Tags from "./Tags"
 
 const Day = ({ date, ...props }) => {
   const hasPredictions = useSelector((state) =>
@@ -49,9 +48,9 @@ const Day = ({ date, ...props }) => {
             </Typography>
           ) : (
             <>
+              {" "}
               <Header {...itemProps} />
               <Entry {...itemProps} />
-              <Tags {...itemProps} />
             </>
           )}
         </Box>

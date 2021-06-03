@@ -44,6 +44,9 @@ const CyclePage = () => {
       <Router basepath="/timeline">
         <TimelineIndexPage path="/" />
         <TimelineIndexPage path=":entryId" />
+        <TimelineIndexPage path="/calendar" />
+        <TimelineIndexPage path="/calendar/:entryId" />
+        <TimelineEditPage path="/calendar/:entryId/edit" />
         <TimelineEditPage path=":entryId/edit" />
       </Router>
     </>

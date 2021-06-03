@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
 import { Today, CalendarViewDay } from "@material-ui/icons"
+import AppsIcon from "@material-ui/icons/Apps"
 import { eachDayOfInterval, addDays, isToday, getMonth } from "date-fns"
 import { makeDate, entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
@@ -22,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CycleIndexPage = ({ entryId }) => {
+const CycleIndexPage = ({ entryId, path }) => {
   const classes = useStyles()
-  const [calendarView, setCalendarView] = useState()
+  const [calendarView] = useState(path.includes("/calendar"))
 
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
@@ -63,17 +64,25 @@ const CycleIndexPage = ({ entryId }) => {
           <DatePicker date={selectedDate} />
           <IconButton
             aria-label="Scroll to today"
-            onClick={() => navigate(`/timeline/${entryIdFromDate(new Date())}`)}
+            onClick={() =>
+              navigate(
+                `/timeline/${calendarView ? "" : "calendar/"}${entryIdFromDate(
+                  new Date()
+                )}`
+              )
+            }
             style={{ marginLeft: "auto" }}
           >
             <Today />
           </IconButton>
           <IconButton
             aria-label="Scroll to today"
-            onClick={() => setCalendarView((c) => !c)}
+            onClick={() =>
+              navigate(`/timeline/${calendarView ? "" : "calendar/"}`)
+            }
             style={{ marginLeft: "auto" }}
           >
-            <CalendarViewDay />
+            {calendarView ? <CalendarViewDay /> : <AppsIcon />}
           </IconButton>
         </AppMainToolbar>
         {calendarView ? (

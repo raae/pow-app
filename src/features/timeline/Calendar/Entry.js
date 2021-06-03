@@ -10,7 +10,7 @@ import { selectEntryNote } from "../../entries"
 
 const Entry = ({ date, isPast, isToday, className }) => {
   const entryId = entryIdFromDate(date)
-  const editPath = `/timeline/${entryId}/edit`
+  const editPath = `/timeline/calendar/${entryId}/edit`
   const entryNote = useSelector((state) => selectEntryNote(state, { date }))
   const isEditable = isPast || isToday
 
@@ -21,7 +21,7 @@ const Entry = ({ date, isPast, isToday, className }) => {
       {entryNote ? (
         <Typography variant="body2">{entryNote}</Typography>
       ) : (
-        <Box display="flex">
+        <Box display="flex" alignItems="center">
           <AddNoteIcon fontSize="inherit" />
           <Typography variant="caption">Add note</Typography>
         </Box>
