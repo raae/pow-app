@@ -21,6 +21,7 @@ export const FATHOM_FEEDBACK = process.env.GATSBY_FATHOM_FEEDBACK
 export const FATHOM_CHANGELOG = process.env.GATSBY_FATHOM_CHANGELOG
 export const FATHOM_MADE_BY = process.env.GATSBY_FATHOM_MADE_BY
 export const FATHOM_SUPPORT = process.env.GATSBY_FATHOM_SUPPORT
+export const FATHOM_EXPORT = process.env.GATSBY_FATHOM_EXPORT
 
 export const ENTRIES_DATABASE = { databaseName: "entries", entity: "Entry" }
 export const SETTINGS_DATABASE = { databaseName: "settings", entity: "Setting" }

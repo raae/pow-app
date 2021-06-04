@@ -16,6 +16,9 @@ import { CardContentSection } from "../../components"
 import { Link } from "../navigation"
 import { selectAllEntries } from "../entries"
 
+import {FATHOM_EXPORT} from "../../constants"
+import { trackGoal } from "../tracking";
+
 const HouseKeepingCard = () => {
   const [isPending, setIsPending] = useState(false)
   const entries = useSelector(selectAllEntries)
@@ -30,9 +33,13 @@ const HouseKeepingCard = () => {
   const exportAllEntries = async (event) => {
     setIsPending(true)
     event.preventDefault()
+    // The intent of the user is to export her fistful_of_Pieces_Of_Eight
+    trackGoal(FATHOM_EXPORT)
 
     const convertToCsv = Papa.unparse(transformAndSortEntries(entries))
     openSaveFileDialog(convertToCsv, "pow-export.csv", ".csv")
+
+
 
     setIsPending(false)
   }

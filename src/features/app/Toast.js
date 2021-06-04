@@ -7,7 +7,7 @@ export default function Toast({
   children,
   severity = "error",
 }) {
-  const [open, setOpen] = useState(defaultOpen)
+  const [open, setOpen] = useState(Boolean(defaultOpen))
   const duration = 6000
 
   useEffect(() => {

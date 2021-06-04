@@ -65,7 +65,7 @@ module.exports = {
       resolve: `@raae/gatsby-plugin-fathom`,
       options: {
         site: process.env.FATHOM_SITE,
-        includedDomains: process.env.FATHOM_INCLUDED_DOMAINS,
+        includedDomains: process.env.FATHOM_INCLUDED_DOMAINS || "my.usepow.app",
         loadType: "defer",
       },
     },
