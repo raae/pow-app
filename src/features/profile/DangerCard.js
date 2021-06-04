@@ -68,10 +68,10 @@ const DangerCard = () => {
         alert(`Oopsie (${error.message}), please try again.`)
       } else {
         alert(`Success, all your entries were deleted.`)
+        // call trackGoal here, when the customer has succeeded in deleting her/his/their entries
+        trackGoal(FATHOM_DELETE_CONFIRMED);
       }
     }
-    // call trackGoal here, when the user succeeds in deleting entries
-    trackGoal(FATHOM_DELETE_CONFIRMED);
 
     setIsPending(false)
   }
