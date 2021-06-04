@@ -28,12 +28,11 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         newPassword: newPassword,
       })
 
-      alert(`Success, your new password is good to go.`)
-
     // 4. Send that customer back to /profile or give alert if error
       if (error) {
         alert(error.message)
       } else {
+        alert(`Success, your new password is good to go.`)
         onDone()
       }
     }
