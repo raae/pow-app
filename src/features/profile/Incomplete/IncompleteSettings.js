@@ -1,6 +1,8 @@
 import { Box, Button, InputAdornment, TextField } from "@material-ui/core"
 import React, { useState } from "react"
+import DaysBetweenInput from "../../onboarding/Onboarding/DaysBetweenInput"
 import LastDateInput from "../../onboarding/Onboarding/LastDateInput"
+import { cleanTag } from "../../utils/tags"
 
 const Text = ({ mainMensesTag }) => {
   const topLine = !mainMensesTag
@@ -15,9 +17,10 @@ const Text = ({ mainMensesTag }) => {
   )
 }
 
-const IncompleteSettings = ({ onSubmit, mainMensesTag }) => {
-  const [tag, setTag] = useState(mainMensesTag)
-  const [lastPeriod, setLastPeriod] = useState(new Date())
+const IncompleteSettings = ({ onSubmit, mainMensesTag, disabled }) => {
+  const [tag, setTag] = useState(mainMensesTag || "")
+  const [lastPeriod, setLastPeriod] = useState(null)
+  const [initialCycleLength, setInitialCycleLength] = useState("")
 
   return (
     <>
@@ -25,35 +28,39 @@ const IncompleteSettings = ({ onSubmit, mainMensesTag }) => {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          onSubmit({ tag, lastPeriod })
+          onSubmit({ tag, lastPeriod, initialCycleLength })
         }}
       >
-        {!mainMensesTag && (
-          <Box mb={2}>
-            <TextField
-              color="secondary"
-              variant="outlined"
-              margin="normal"
-              label="Your menstruation tag"
-              placeholder="period"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
-              required
-              inputProps={{
-                autoCorrect: "off",
-                autoCapitalize: "none",
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">#</InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-        )}
-        <LastDateInput value={lastPeriod} onChange={setLastPeriod} />
+        <TextField
+          required
+          color="secondary"
+          variant="outlined"
+          margin="normal"
+          label="Your menstruation tag"
+          placeholder="period"
+          value={tag}
+          onChange={(e) => setTag(cleanTag(e.target.value))}
+          inputProps={{
+            autoCorrect: "off",
+            autoCapitalize: "none",
+          }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">#</InputAdornment>,
+          }}
+        />
+        <LastDateInput required value={lastPeriod} onChange={setLastPeriod} />
+        <DaysBetweenInput
+          value={initialCycleLength}
+          onChange={setInitialCycleLength}
+          textFieldProps={{ color: "secondary" }}
+        />
         <Box mt={2}>
-          <Button type="submit" color="secondary" variant="contained">
+          <Button
+            type="submit"
+            color="secondary"
+            variant="contained"
+            disabled={disabled || !lastPeriod || !tag}
+          >
             Calculate
           </Button>
         </Box>

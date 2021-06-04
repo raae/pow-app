@@ -4,7 +4,7 @@ import { TextField } from "@material-ui/core"
 
 import { useSettings } from "../settings"
 
-const EntryNoteField = ({ onNoteChange, note, label }) => {
+const EntryNoteField = ({ onNoteChange, note, label, ...props }) => {
   const { mainMensesTag } = useSettings()
 
   const [placeholder, setPlaceholder] = useState()
@@ -45,8 +45,8 @@ const EntryNoteField = ({ onNoteChange, note, label }) => {
     <TextField
       multiline
       fullWidth
+      {...props}
       placeholder={placeholder}
-      color="secondary"
       label={label}
       value={note}
       onChange={onNoteChange}

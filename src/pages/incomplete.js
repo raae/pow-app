@@ -1,63 +1,79 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Typography } from "@material-ui/core"
 import { useDispatch, useSelector } from "react-redux"
 import { navigate } from "gatsby"
+
+import {
+  AppLayout,
+  AppMainToolbar,
+  AppPage,
+  Seo,
+  Loading,
+  Toast,
+} from "../features/app"
 import { upsertEntry, selectAreEntriesLoading } from "../features/entries"
 import { useSettings } from "../features/settings"
-import { AppLayout, AppMainToolbar, AppPage } from "../features/app"
-import Toast from "../features/app/Toast"
 import { TIMELINE } from "../features/navigation"
 import { useAuth } from "../features/auth"
 import { useSubscription } from "../features/user"
-import NoPayment from "../features/profile/Incomplete/NoPayment"
-import IncompleteSettings from "../features/profile/Incomplete/IncompleteSettings"
-import { selectHasMensesStartDate } from "../features/cycle"
-
-import { Seo, Loading } from "../features/app"
+import { NoPayment, IncompleteSettings } from "../features/profile"
 
 const Incomplete = () => {
   const dispatch = useDispatch()
   const [error, setError] = useState(false)
+  const [isPending, setIsPending] = useState(false)
 
-  const { isAuthenticated, isAuthPending } = useAuth()
+  const { isAuthPending } = useAuth()
   const { isSubscribed } = useSubscription()
   const {
     mainMensesTag,
     addMensesTag,
+    setInitialCycleLength,
     isLoading: settingsIsLoading,
   } = useSettings()
 
   const entriesAreLoading = useSelector(selectAreEntriesLoading)
-  const hasMensesStartDate = useSelector(selectHasMensesStartDate)
-
   const dataIsLoading = entriesAreLoading || settingsIsLoading
-  const isIncomplete = !hasMensesStartDate || !isSubscribed
 
-  const onSubmit = async ({ tag, lastPeriod }) => {
+  const onSubmit = async ({ tag, lastPeriod, initialCycleLength }) => {
     setError(false)
+    setIsPending(true)
 
-    if (!mainMensesTag) {
-      await addMensesTag(tag)
+    const errors = {}
+
+    if (tag) {
+      const { error } = await addMensesTag(tag)
+      errors.mensesTagError = error
     }
 
-    try {
-      await dispatch(
+    if (initialCycleLength) {
+      const { error } = await setInitialCycleLength(initialCycleLength)
+      errors.initialCycleError = error
+    }
+
+    if (lastPeriod) {
+      const { error } = await dispatch(
         upsertEntry({
           date: lastPeriod,
           note: `#${tag}`,
         })
       )
-      navigate(TIMELINE.to)
-    } catch (e) {
-      setError(true)
+      errors.lastPeriodError = error
     }
-  }
 
-  useEffect(() => {
-    if (isAuthenticated && !dataIsLoading && !isIncomplete) {
+    const firstError =
+      errors.mensesTagError ||
+      errors.lastPeriodError ||
+      errors.initialCycleError
+
+    if (firstError) {
+      setError(firstError)
+    } else {
       navigate(TIMELINE.to)
     }
-  }, [isAuthenticated, dataIsLoading, isIncomplete])
+
+    setIsPending(false)
+  }
 
   if (isAuthPending || dataIsLoading) {
     return (
@@ -82,11 +98,12 @@ const Incomplete = () => {
           <IncompleteSettings
             mainMensesTag={mainMensesTag}
             onSubmit={onSubmit}
+            disabled={isPending}
           />
         )}
       </AppPage>
       <Toast open={error}>
-        There has been a problem adding your information
+        {error.message || "There has been a problem adding your information"}
       </Toast>
     </AppLayout>
   )
