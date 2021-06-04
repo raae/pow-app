@@ -16,7 +16,7 @@ import { selectAllEntries, deleteAllEntries } from "../entries"
 import { useSettings } from "../settings"
 
 import { FATHOM_DELETE_ALL_ENTRIES, FATHOM_DELETE_CONFIRMED } from "../../constants";
-import {trackGoal} from "../tracking"
+import { trackGoal } from "../tracking"
 
 
 const useStyles = makeStyles((theme) => ({
