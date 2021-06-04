@@ -21,10 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CycleIndexPage = ({ entryId, path }) => {
+const CycleIndexPage = ({ entryId, calendar: calendarView }) => {
   const classes = useStyles()
-  const calendarView = path.includes("/calendar")
-
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
 
@@ -60,21 +58,18 @@ const CycleIndexPage = ({ entryId, path }) => {
           <DatePicker date={selectedDate} />
           <IconButton
             aria-label="Scroll to today"
-            onClick={() =>
-              navigate(
-                `/timeline/${calendarView ? "" : "calendar/"}${entryIdFromDate(
-                  new Date()
-                )}`
-              )
-            }
+            onClick={() => {
+              const link = calendarView ? "/calendar" : "/timeline"
+              navigate(`${link}/${entryIdFromDate(new Date())}`)
+            }}
             style={{ marginLeft: "auto" }}
           >
             <Today />
           </IconButton>
           <IconButton
-            aria-label="Scroll to today"
+            aria-label={calendarView ? "Timeline View" : "Calendar View"}
             onClick={() =>
-              navigate(`/timeline/${calendarView ? "" : "calendar/"}`)
+              navigate(`/${calendarView ? "timeline/" : "calendar/"}`)
             }
             style={{ marginLeft: "auto" }}
           >

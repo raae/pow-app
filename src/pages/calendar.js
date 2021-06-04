@@ -12,7 +12,7 @@ import { selectHasMensesStartDate } from "../features/cycle"
 import { Seo, Loading } from "../features/app"
 import { INCOMPLETE } from "../features/navigation"
 
-const CyclePage = () => {
+const CalendarView = () => {
   const { isAuthenticated, isAuthPending } = useAuth()
   const { isSubscribed } = useSubscription()
   const { isLoading: settingsIsLoading } = useSettings()
@@ -41,13 +41,13 @@ const CyclePage = () => {
   return (
     <>
       <Seo title="Cycle" />
-      <Router basepath="/timeline">
-        <TimelineIndexPage path="/" />
-        <TimelineIndexPage path=":entryId" />
-        <TimelineEditPage path=":entryId/edit" />
+      <Router basepath="/calendar">
+        <TimelineIndexPage calendar path="/" />
+        <TimelineIndexPage calendar path=":entryId" />
+        <TimelineEditPage calendar path=":entryId/edit" />
       </Router>
     </>
   )
 }
 
-export default CyclePage
+export default CalendarView

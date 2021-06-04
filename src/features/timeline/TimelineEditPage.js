@@ -30,12 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CycleEditPage = ({ entryId, path }) => {
+const CycleEditPage = ({ entryId, calendar }) => {
   const classes = useStyles()
   const date = makeDate(entryId)
-  const redirectTo = path.includes("/calendar")
-    ? `/timeline/calendar/${entryId}`
-    : `/timeline/${entryId}`
+  const redirectTo = calendar ? `/calendar/${entryId}` : `/${entryId}`
   const dispatch = useDispatch()
   const entryNote = useSelector((state) => selectEntryNote(state, { entryId }))
   const [note, setNote] = useState(entryNote)
