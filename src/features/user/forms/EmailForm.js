@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 export const EmailForm = ({ Component, title, onDone }) => {
   const classes = useStyles()
 
-  const { user, isUpdating, updateUser } = useUser()
+  const { user, isUpdating, isLoading, updateUser } = useUser()
 
   const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
@@ -38,7 +38,7 @@ export const EmailForm = ({ Component, title, onDone }) => {
     onDone()
   }
 
-  const disabled = isUpdating || !user?.userId
+  const disabled = isUpdating || isLoading
 
   return (
     <Component
