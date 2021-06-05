@@ -18,5 +18,6 @@ export const useUser = () => {
     user,
     updateUser: handleUpdateUser,
     isLoading: [STATUS.INITIAL].includes(status),
+    isUpdating: [STATUS.UPDATING].includes(status),
   }
 }

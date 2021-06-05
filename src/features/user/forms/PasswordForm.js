@@ -1,13 +1,11 @@
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { TextField } from "@material-ui/core"
 
 import { useUser } from "../useUser"
 
 export const PasswordForm = ({ Component, title, onDone }) => {
-  const { updateUser, user, isUpdating } = useUser()
-  const [isPending, setIsPending] = useState(false)
-
+  const { updateUser, isUpdating, isLoading } = useUser()
 
   const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
@@ -21,25 +19,21 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
 
     if (newPassword !== newSamePassword) {
-        alert(
-          `You typed your "New Password Again" incorrectly, please try again.`
-        )
+      alert(
+        `You typed your "New Password Again" incorrectly, please try again.`
+      )
     } else {
-      // ⚔️ The button is disabled while we're waiting for the pasSword to change into the new pasSword ⚔️
-      setIsPending(true);
       const { error } = await updateUser({
         currentPassword: oldPassword,
         newPassword: newPassword,
       })
 
-    // 4. Send that customer back to /profile or give alert if error
+      // 4. Send that customer back to /profile or give alert if error
       if (error) {
         alert(error.message)
       } else {
         alert(`Success, your new password is good to go.`)
         onDone()
-        // ⚔️ The button is not disabled anymore because the pasSword changed into the new pasSword ⚔️
-        setIsPending(false)
       }
     }
   }
@@ -49,7 +43,7 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     onDone()
   }
 
-  const disabled = isUpdating || !user?.userId
+  const disabled = isUpdating || isLoading
 
   return (
     <Component
@@ -69,7 +63,6 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         label="Current Password"
         name="Current password"
         autoComplete="current-password"
-
       />
       <TextField
         disabled={disabled}
