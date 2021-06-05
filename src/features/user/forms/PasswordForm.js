@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { TextField } from "@material-ui/core"
 
@@ -6,6 +6,8 @@ import { useUser } from "../useUser"
 
 export const PasswordForm = ({ Component, title, onDone }) => {
   const { updateUser, user, isUpdating } = useUser()
+  const [isPending, setIsPending] = useState(false)
+
 
   const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
@@ -23,6 +25,8 @@ export const PasswordForm = ({ Component, title, onDone }) => {
           `You typed your "New Password Again" incorrectly, please try again.`
         )
     } else {
+      // ⚔️ The button is disabled while we're waiting for the pasSword to change into the new pasSword ⚔️
+      setIsPending(true);
       const { error } = await updateUser({
         currentPassword: oldPassword,
         newPassword: newPassword,
@@ -34,6 +38,8 @@ export const PasswordForm = ({ Component, title, onDone }) => {
       } else {
         alert(`Success, your new password is good to go.`)
         onDone()
+        // ⚔️ The button is not disabled anymore because the pasSword changed into the new pasSword ⚔️
+        setIsPending(false)
       }
     }
   }
