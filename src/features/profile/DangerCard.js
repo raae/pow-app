@@ -15,6 +15,10 @@ import { CardContentSection } from "../../components"
 import { selectAllEntries, deleteAllEntries } from "../entries"
 import { useSettings } from "../settings"
 
+import { FATHOM_DELETE_ALL_ENTRIES, FATHOM_DELETE_ALL_ENTRIES_CONFIRMED } from "../../constants";
+import { trackGoal } from "../tracking"
+
+
 const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: theme.palette.primary.main,
@@ -44,6 +48,8 @@ const DangerCard = () => {
     const CONFIRMATION_STRING = "DELETE"
 
     setIsPending(true)
+    // call trackGoal here, when the user tries to delete entries
+    trackGoal(FATHOM_DELETE_ALL_ENTRIES);
 
     const confirmation = prompt(
       `Please type ${CONFIRMATION_STRING} to confirm deletion of all your entries.`
@@ -61,7 +67,10 @@ const DangerCard = () => {
       if (error) {
         alert(`Oopsie (${error.message}), please try again.`)
       } else {
+        // call trackGoal here, when the customer has succeeded in deleting her/his/their entries
+        trackGoal(FATHOM_DELETE_ALL_ENTRIES_CONFIRMED);
         alert(`Success, all your entries were deleted.`)
+
       }
     }
 
