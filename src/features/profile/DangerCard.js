@@ -15,7 +15,7 @@ import { CardContentSection } from "../../components"
 import { selectAllEntries, deleteAllEntries } from "../entries"
 import { useSettings } from "../settings"
 
-import { FATHOM_DELETE_ALL_MENSES_TAGS, FATHOM_DELETE_TAGS_CONFIRMED } from "../../constants";
+import { FATHOM_DELETE_ALL_MENSES_TAGS } from "../../constants";
 import { trackGoal } from "../tracking";
 
 const useStyles = makeStyles((theme) => ({
@@ -81,8 +81,6 @@ const DangerCard = () => {
     } else {
       alert(`Success, all your period tags were deleted.`)
     }
-    // Tags are deleted track
-    trackGoal(FATHOM_DELETE_TAGS_CONFIRMED);
     setIsPending(false)
   }
 
