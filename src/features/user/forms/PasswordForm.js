@@ -5,7 +5,7 @@ import { TextField } from "@material-ui/core"
 import { useUser } from "../useUser"
 
 export const PasswordForm = ({ Component, title, onDone }) => {
-  const { updateUser, user, isUpdating } = useUser()
+  const { updateUser, isUpdating, isLoading } = useUser()
 
   const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
@@ -34,7 +34,7 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     onDone()
   }
 
-  const disabled = isUpdating || !user?.userId
+  const disabled = isUpdating || isLoading
 
   return (
     <Component
@@ -54,7 +54,6 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         label="Current Password"
         name="Current password"
         autoComplete="current-password"
-
       />
       <TextField
         disabled={disabled}
