@@ -10,14 +10,13 @@ import {
 } from "@material-ui/core"
 import { ErrorOutline as DangerIcon } from "@material-ui/icons"
 
+import { FATHOM_DELETE_ALL_ENTRIES, FATHOM_DELETE_ALL_ENTRIES_CONFIRMED, FATHOM_DELETE_ALL_MENSES_TAGS } from "../../constants";
+
 import { CardContentSection } from "../../components"
 
 import { selectAllEntries, deleteAllEntries } from "../entries"
 import { useSettings } from "../settings"
-
-import { FATHOM_DELETE_ALL_ENTRIES, FATHOM_DELETE_ALL_ENTRIES_CONFIRMED } from "../../constants";
 import { trackGoal } from "../tracking"
-
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -79,7 +78,7 @@ const DangerCard = () => {
 
   const handleDeleteAllMensesTags = async (event) => {
     setIsPending(true)
-
+    trackGoal(FATHOM_DELETE_ALL_MENSES_TAGS);
     const { error } = await deleteAllMensesTags()
 
     if (error) {
@@ -87,7 +86,6 @@ const DangerCard = () => {
     } else {
       alert(`Success, all your period tags were deleted.`)
     }
-
     setIsPending(false)
   }
 
