@@ -23,9 +23,8 @@ export const FATHOM_MADE_BY = process.env.GATSBY_FATHOM_MADE_BY
 export const FATHOM_SUPPORT = process.env.GATSBY_FATHOM_SUPPORT
 export const FATHOM_EXPORT = process.env.GATSBY_FATHOM_EXPORT
 export const FATHOM_DELETE_ALL_MENSES_TAGS = process.env.GATSBY_FATHOM_DELETE_ALL_MENSES_TAGS
-
-
-
+export const FATHOM_DELETE_ALL_ENTRIES = process.env.GATSBY_FATHOM_DELETE_ALL_ENTRIES
+export const FATHOM_DELETE_ALL_ENTRIES_CONFIRMED = process.env.GATSBY_FATHOM_DELETE_ALL_ENTRIES_CONFIRMED
 
 export const ENTRIES_DATABASE = { databaseName: "entries", entity: "Entry" }
 export const SETTINGS_DATABASE = { databaseName: "settings", entity: "Setting" }
