@@ -1,14 +1,16 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
-import { useSelector } from "react-redux"
-import { Typography, ButtonBase, Box } from "@material-ui/core"
-import { Add as AddNoteIcon } from "@material-ui/icons"
 
+import { useSelector } from "react-redux"
+import { ButtonBase, Tooltip } from "@material-ui/core"
+import { Brightness1 as BrightnessIcon } from "@material-ui/icons"
+import { useTheme } from "@material-ui/core/styles"
 import { entryIdFromDate } from "../../utils/days"
 import { selectEntryNote } from "../../entries"
 
 const Entry = ({ date, isPast, isToday, className }) => {
+  const theme = useTheme()
   const entryId = entryIdFromDate(date)
   const editPath = `/calendar/${entryId}/edit`
   const entryNote = useSelector((state) => selectEntryNote(state, { date }))
@@ -19,13 +21,10 @@ const Entry = ({ date, isPast, isToday, className }) => {
   return (
     <ButtonBase component={Link} to={editPath} className={className}>
       {entryNote ? (
-        <Typography variant="body2">{entryNote}</Typography>
-      ) : (
-        <Box display="flex" alignItems="center">
-          <AddNoteIcon fontSize="inherit" />
-          <Typography variant="caption">Add note</Typography>
-        </Box>
-      )}
+        <Tooltip title={entryNote} aria-label={entryNote}>
+          <BrightnessIcon style={{ fill: theme.palette.info.main, width: 8 }} />
+        </Tooltip>
+      ) : null}
     </ButtonBase>
   )
 }
