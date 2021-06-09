@@ -2,14 +2,16 @@ import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { List, IconButton, makeStyles } from "@material-ui/core"
-import { Today } from "@material-ui/icons"
-import { eachDayOfInterval, addDays, isToday } from "date-fns"
+import { Today, CalendarViewDay } from "@material-ui/icons"
+import AppsIcon from "@material-ui/icons/Apps"
+import { eachDayOfInterval, addDays, isToday, getMonth } from "date-fns"
 import { makeDate, entryIdFromDate } from "../utils/days"
 import { AppLayout, AppMainToolbar, AppPage } from "../app"
 import { Welcome } from "../onboarding"
 import { selectDaysBetween } from "../cycle"
 import TimelineItem from "./TimelineItem"
 import DatePicker from "./DatePicker"
+import Calendar from "./Calendar"
 
 const useStyles = makeStyles((theme) => ({
   timeline: {
@@ -19,9 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const CycleIndexPage = ({ entryId }) => {
+const CycleIndexPage = ({ entryId, calendar: calendarView }) => {
   const classes = useStyles()
-
   const selectedDate = makeDate(entryId)
   const calculatedDaysBetween = useSelector(selectDaysBetween)
 
@@ -40,6 +41,16 @@ const CycleIndexPage = ({ entryId }) => {
     })
   }, [selectedDate])
 
+  const daysInMonths = range.reduce((acc, curr) => {
+    const month = getMonth(curr)
+    if (acc[month]) {
+      acc[month] = [...acc[month], curr]
+    } else {
+      acc[month] = [curr]
+    }
+    return acc
+  }, {})
+
   return (
     <AppLayout>
       <AppPage>
@@ -47,21 +58,43 @@ const CycleIndexPage = ({ entryId }) => {
           <DatePicker date={selectedDate} />
           <IconButton
             aria-label="Scroll to today"
-            onClick={() => navigate(`/timeline/${entryIdFromDate(new Date())}`)}
+            onClick={() => {
+              const link = calendarView ? "/calendar" : "/timeline"
+              navigate(`${link}/${entryIdFromDate(new Date())}`)
+            }}
             style={{ marginLeft: "auto" }}
           >
             <Today />
           </IconButton>
+          <IconButton
+            aria-label={calendarView ? "Timeline View" : "Calendar View"}
+            onClick={() =>
+              navigate(`/${calendarView ? "timeline/" : "calendar/"}`)
+            }
+            style={{ marginLeft: "auto" }}
+          >
+            {calendarView ? <CalendarViewDay /> : <AppsIcon />}
+          </IconButton>
         </AppMainToolbar>
-        <List className={classes.timeline}>
-          {range.map((date) => {
-            return (
-              <TimelineItem key={date} date={date} selectedDate={selectedDate}>
-                {isToday(date) && <Welcome key="welcome" />}
-              </TimelineItem>
-            )
-          })}
-        </List>
+        {calendarView ? (
+          Object.keys(daysInMonths).map((monthNumber) => (
+            <Calendar dates={daysInMonths[monthNumber]} />
+          ))
+        ) : (
+          <List className={classes.timeline}>
+            {range.map((date) => {
+              return (
+                <TimelineItem
+                  key={date}
+                  date={date}
+                  selectedDate={selectedDate}
+                >
+                  {isToday(date) && <Welcome key="welcome" />}
+                </TimelineItem>
+              )
+            })}
+          </List>
+        )}
       </AppPage>
     </AppLayout>
   )

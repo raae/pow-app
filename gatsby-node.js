@@ -4,6 +4,9 @@ exports.onCreatePage = async ({ page, actions }) => {
   if (page.path === "/timeline/") {
     page.matchPath = "/timeline/*"
     createPage(page)
+  } else if (page.path === "/calendar/") {
+    page.matchPath = "/calendar/*"
+    createPage(page)
   } else if (page.path === "/profile/") {
     page.matchPath = "/profile/*"
     createPage(page)
