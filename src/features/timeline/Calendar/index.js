@@ -1,6 +1,5 @@
 import { getYear } from "date-fns"
 import React from "react"
-import Info from "./Info"
 import { Box, Typography, makeStyles } from "@material-ui/core"
 import Day from "./Day"
 
@@ -34,7 +33,6 @@ const Calendar = ({ dates }) => {
           {dates[0].toLocaleString("default", { month: "long" })}{" "}
           {getYear(dates[0])}{" "}
         </Typography>
-        <Info date={dates[0]} />
       </Box>
       <Box component="ol" className={classes.calendar}>
         {dates.map((date) => (

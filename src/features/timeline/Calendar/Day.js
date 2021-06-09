@@ -1,18 +1,37 @@
 import { useSelector } from "react-redux"
-import { Box, Typography } from "@material-ui/core"
+import { Box, makeStyles, Typography } from "@material-ui/core"
 import {
   addDays,
   isFuture as dateIsFuture,
   isToday as dateIsToday,
   isPast as dateIsPast,
 } from "date-fns"
-import { selectHasPredictionsForDate } from "../../cycle"
+import {
+  selectHasPredictionsForDate,
+  selectPredictedMenstruationForDate,
+} from "../../cycle"
 import React from "react"
 import { entryIdFromDate } from "../../utils/days"
 import Header from "./Header"
 import Entry from "./Entry"
 
+const useStyles = makeStyles((theme) => ({
+  list: { listStyle: "none" },
+  day: {
+    minHeight: 100,
+    background: theme.palette.grey[200],
+    border: (props) =>
+      props.isPeriod
+        ? `2px solid ${theme.palette.error.light}`
+        : `2px solid ${theme.palette.grey[200]}`,
+  },
+}))
+
 const Day = ({ date, ...props }) => {
+  const isPredictedMenstruation = useSelector((state) =>
+    selectPredictedMenstruationForDate(state, { date })
+  )
+  const classes = useStyles({ isPeriod: isPredictedMenstruation })
   const hasPredictions = useSelector((state) =>
     selectHasPredictionsForDate(state, { date })
   )
@@ -25,13 +44,7 @@ const Day = ({ date, ...props }) => {
 
   return (
     <>
-      <Box
-        component="li"
-        py={1}
-        ml={0}
-        style={{ listStyle: "none", minHeight: 100, background: "#eaeaea" }}
-        {...props}
-      >
+      <Box component="li" py={1} ml={0} className={classes.list} {...props}>
         <div id={scrollToId} />
         <Box
           display="flex"
@@ -39,8 +52,10 @@ const Day = ({ date, ...props }) => {
           justifyContent={
             isFuture && !hasPredictions ? "center" : "space-between"
           }
+          className={classes.day}
           flexDirection="column"
           height={"100%"}
+          borderRadius={4}
         >
           {isFuture && !hasPredictions ? (
             <Typography variant="body2" color="textSecondary" display="block">
@@ -48,7 +63,6 @@ const Day = ({ date, ...props }) => {
             </Typography>
           ) : (
             <>
-              {" "}
               <Header {...itemProps} />
               <Entry {...itemProps} />
             </>
