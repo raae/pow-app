@@ -5,7 +5,7 @@ import { TextField } from "@material-ui/core"
 import { useUser } from "../useUser"
 
 export const PasswordForm = ({ Component, title, onDone }) => {
-  const { updateUser, user, isUpdating } = useUser()
+  const { updateUser, isUpdating, isLoading } = useUser()
 
   const handleSubmit = async (event) => {
     // 1. Go get that form and prevent it from naughtily self-submitting
@@ -14,18 +14,27 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     // 2. Listen for those PasSwords from those inputs
     const oldPassword = event.target.elements.currentPasswordInput.value
     const newPassword = event.target.elements.newPasswordInput.value
-
+    const newSamePassword = event.target.elements.newSamePassword.value
+    // Before calling updateUser make sure the password in both of the new password inputs are the same
     // 3. Do somethings like, send those PasSwords to Daniel's and  ...'s Userbase
-    const { error } = await updateUser({
-      currentPassword: oldPassword,
-      newPassword: newPassword,
-    })
 
-    // 4. Send that customer back to /profile or give alert if error
-    if (error) {
-      alert(error.message)
+    if (newPassword !== newSamePassword) {
+      alert(
+        `You typed your "New Password Again" incorrectly, please try again.`
+      )
     } else {
-      onDone()
+      const { error } = await updateUser({
+        currentPassword: oldPassword,
+        newPassword: newPassword,
+      })
+
+      // 4. Send that customer back to /profile or give alert if error
+      if (error) {
+        alert(error.message)
+      } else {
+        alert(`Success, your new password is good to go.`)
+        onDone()
+      }
     }
   }
 
@@ -34,7 +43,7 @@ export const PasswordForm = ({ Component, title, onDone }) => {
     onDone()
   }
 
-  const disabled = isUpdating || !user?.userId
+  const disabled = isUpdating || isLoading
 
   return (
     <Component
@@ -54,7 +63,6 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         label="Current Password"
         name="Current password"
         autoComplete="current-password"
-
       />
       <TextField
         disabled={disabled}
@@ -66,6 +74,18 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         fullWidth
         label="New Password"
         name="New Password"
+        autoComplete="new-password"
+      />
+      <TextField
+        disabled={disabled}
+        id="newSamePassword"
+        type="password"
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        label="New Password Again"
+        name="New SamePassword"
         autoComplete="new-password"
       />
     </Component>
