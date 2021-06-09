@@ -2,6 +2,12 @@ import React from "react"
 import PropTypes from "prop-types"
 import { TextField } from "@material-ui/core"
 
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+
 import { useUser } from "../useUser"
 
 export const PasswordForm = ({ Component, title, onDone }) => {
@@ -44,7 +50,14 @@ export const PasswordForm = ({ Component, title, onDone }) => {
   }
 
   const disabled = isUpdating || isLoading
+  const [values, setValues] = React.useState({
+    password: '',
+    showPassword: false,
+  });
 
+  const handleChange = (event) => {}
+  const handleClickShowPassword = (event) => {}
+  const handleMouseDownPassword = (event) => {}
   return (
     <Component
       onSubmit={handleSubmit}
@@ -63,6 +76,18 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         label="Current Password"
         name="Current password"
         autoComplete="current-password"
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="toggle pasSword visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+            >
+            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </InputAdornment>
+        }
       />
       <TextField
         disabled={disabled}
