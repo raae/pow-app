@@ -20,11 +20,15 @@ const Entry = ({ date, isPast, isToday, className }) => {
 
   return (
     <ButtonBase component={Link} to={editPath} className={className}>
-      {entryNote ? (
-        <Tooltip title={entryNote} aria-label={entryNote}>
-          <BrightnessIcon style={{ fill: theme.palette.info.main, width: 8 }} />
-        </Tooltip>
-      ) : null}
+      {entryNote
+        ? entryNote.split(" ").map((note) => (
+            <Tooltip title={note} aria-label={note}>
+              <BrightnessIcon
+                style={{ fill: theme.palette.info.main, width: 8 }}
+              />
+            </Tooltip>
+          ))
+        : null}
     </ButtonBase>
   )
 }
