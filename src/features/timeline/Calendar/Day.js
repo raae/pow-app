@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import { Box, makeStyles, Typography } from "@material-ui/core"
 import {
   addDays,
+  getDay,
   isFuture as dateIsFuture,
   isToday as dateIsToday,
   isPast as dateIsPast,
@@ -41,10 +42,30 @@ const Day = ({ date, ...props }) => {
   const isToday = dateIsToday(date)
   const itemProps = { date, isFuture, isToday, isPast, isSelected: false }
   const scrollToId = `scrollTo-${entryIdFromDate(addDays(date, 1))}`
+  const weekDay = props.isFirstOfMonth ? getDay(date) : null
+
+  const columnsForFirstDay = {
+    0: 7,
+    1: 0,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+  }
 
   return (
     <>
-      <Box component="li" py={1} ml={0} className={classes.list} {...props}>
+      <Box
+        component="li"
+        py={1}
+        ml={0}
+        className={classes.list}
+        {...props}
+        style={{
+          gridColumnStart: weekDay ? columnsForFirstDay[weekDay] : null,
+        }}
+      >
         <div id={scrollToId} />
         <Box
           display="flex"
