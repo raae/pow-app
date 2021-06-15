@@ -1,6 +1,6 @@
 import fetch from "node-fetch"
 
-export default async function postNewPersonHandler(req, res) {
+export default async function postPrincessEscHandler(req, res) {
   // POST data to an authenticated API
   const url = "https://example.com/people"
 
@@ -16,7 +16,7 @@ export default async function postNewPersonHandler(req, res) {
   }
 
   try {
-    const result = await fetch(url, {
+    const princessEsc = await fetch(url, {
       method: "POST",
       headers: headers,
       body: data,
@@ -24,7 +24,7 @@ export default async function postNewPersonHandler(req, res) {
       return res.json()
     })
 
-    res.json(result)
+    res.json(princessEsc)
   } catch (error) {
     res.status(500).send(error)
   }
