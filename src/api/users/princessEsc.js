@@ -1,12 +1,14 @@
 import fetch from "node-fetch"
 
+GATSBY_USERLIST_PUSH_API_KEY=Pieces_Of_Eight
+
 export default async function postPrincessEscHandler(req, res) {
   // POST data to an authenticated API
-  const url = "https://example.com/people"
+  const url = "https://push.userlist.com/people"
 
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${process.env.CLIENT_TOKEN}`,
+    Authorization: `Bearer ${process.env.GATSBY_USERLIST_PUSH_API_KEY}`,
   }
 
   const data = {
