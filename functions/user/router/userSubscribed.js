@@ -5,10 +5,10 @@ const asyncHandler = require("express-async-handler")
 const constructStripeBody = require("../middleware/constructStripeBody")
 const validateJoiRequestSchema = require("../middleware/validateJoiRequestSchema")
 
-const upsertUser = require("../services/upsertUser")
+const upsertUser = require("../controllers/upsertUser")
 
 const schema = Joi.object({
-  current_period_start: Joi.number().required(),
+  // Data from Stripe
   metadata: Joi.object({
     __userbase_user_id: Joi.string().required(),
   }).required(),
@@ -22,17 +22,8 @@ router.use(validateJoiRequestSchema("body", schema))
 router.post(
   "/",
   asyncHandler(async ({ body, context }, response) => {
-    const subscriptionUnixTimestamp = body["current_period_start"]
     const userbaseUserId = body.metadata["__userbase_user_id"]
-
-    const result = await upsertUser(
-      {
-        userbaseUserId,
-        subscriptionDate: new Date(subscriptionUnixTimestamp * 1000),
-      },
-      context
-    )
-
+    const result = await upsertUser(userbaseUserId, context)
     response.json(result)
   })
 )
