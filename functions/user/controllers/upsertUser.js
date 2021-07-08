@@ -54,10 +54,12 @@ module.exports = async (userbaseUserId, context) => {
 
     if (newsletter == "1") {
       // Matches both 1 and "1"
-      properties.newsletter = new Date(0)
-    } else if (newsletter) {
+      properties.newsletter_sub_at = new Date(0)
+    } else if (newsletter != "0") {
       // Hopefully a date
-      properties.newsletter = new Date(newsletter)
+      properties.newsletter_sub_at = new Date(newsletter)
+    } else if (newsletter == "0") {
+      properties.newsletter_sub_at = null
     }
 
     if (subscriptionId) {
