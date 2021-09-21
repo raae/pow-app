@@ -15,7 +15,6 @@ import DoneIcon from "@material-ui/icons/FiberManualRecord"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginLeft: theme.spacing(4) * -1,
     "& p + ul": {
       marginTop: "-1em",
     },

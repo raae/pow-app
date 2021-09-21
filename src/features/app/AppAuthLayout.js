@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const AppAuthLayout = ({ children, title }) => {
+const AppAuthLayout = ({ children, title, maxWidth = "xs" }) => {
   const classes = useStyles()
   return (
     <Box
@@ -28,6 +28,7 @@ const AppAuthLayout = ({ children, title }) => {
       flexDirection="column"
       justifyContent="center"
     >
+      <Box minHeight="10vmin" />
       <Box
         component="header"
         alignContent="center"
@@ -35,6 +36,7 @@ const AppAuthLayout = ({ children, title }) => {
         justifyContent="center"
         alignItems="center"
         mb={3}
+        mt={10}
       >
         <Box
           component="img"
@@ -49,7 +51,7 @@ const AppAuthLayout = ({ children, title }) => {
         </Typography>
       </Box>
 
-      <Container maxWidth="xs" component="main">
+      <Container maxWidth={maxWidth} component="main">
         {children}
       </Container>
 
@@ -63,6 +65,7 @@ const AppAuthLayout = ({ children, title }) => {
           support@usepow.app
         </Typography>
       </Box>
+      <Box minHeight="10vmin" />
     </Box>
   )
 }
