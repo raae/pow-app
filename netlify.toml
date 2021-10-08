@@ -7,3 +7,6 @@
 package = 'netlify-plugin-contextual-env'
   [plugins.inputs]
   mode = 'suffix'
+
+[[plugins]]
+package = "netlify-plugin-inline-functions-env"
