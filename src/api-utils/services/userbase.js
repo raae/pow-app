@@ -40,7 +40,7 @@ export const Userbase = (
     user.protectedProfile = user.protectedProfile || {}
     user.profile = user.profile || {}
 
-    log("Fetched user", { userbaseUserId: user.userId, user })
+    log("Fetched user", { userbaseUserId: user.userId })
 
     return user
   }
