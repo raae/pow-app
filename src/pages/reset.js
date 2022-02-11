@@ -54,6 +54,7 @@ const StuffPage = () => {
         <FormGroup>
           <TextField
             id="usernameInput"
+            color="secondary"
             type="text"
             variant="outlined"
             margin="normal"
