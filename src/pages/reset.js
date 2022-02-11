@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import userbase from "userbase-js"
 import { Button, TextField, FormGroup } from "@material-ui/core"
 import Alert from "@material-ui/lab/Alert"
 
-import { Seo, Loading } from "../features/app"
+import { Seo } from "../features/app"
 import { useAuth } from "../features/auth"
-import { HOME } from "../features/navigation"
 import PageTemplate from "../templates/page"
-import { navigate } from "gatsby"
 
 const STATUS = {
   PENDING: "Pending",
@@ -15,10 +13,10 @@ const STATUS = {
 }
 
 const StuffPage = () => {
-  const { isAuthenticated: isAuthFulfilled, isAuthPending } = useAuth()
+  const { isAuthPending } = useAuth()
 
   const [status, setStatus] = useState(STATUS.IDLE)
-  const disabled = status === STATUS.PENDING
+  const disabled = status === STATUS.PENDING || isAuthPending
 
   const handleTemporaryPassword = async (event) => {
     event.preventDefault()
@@ -36,19 +34,9 @@ const StuffPage = () => {
     }
   }
 
-  useEffect(() => {
-    if (isAuthFulfilled) {
-      navigate(HOME.to)
-    }
-  }, [isAuthFulfilled])
-
-  if (isAuthPending || isAuthFulfilled) {
-    return <Loading fullScreen />
-  }
-
   return (
     <PageTemplate>
-      <Seo title="Reset" />
+      <Seo title="Reset password" />
 
       <h1>Reset password</h1>
 
@@ -66,6 +54,7 @@ const StuffPage = () => {
         <FormGroup>
           <TextField
             id="usernameInput"
+            color="secondary"
             type="text"
             variant="outlined"
             margin="normal"

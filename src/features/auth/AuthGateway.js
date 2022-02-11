@@ -5,18 +5,19 @@ import { SIGN_IN, SIGN_UP, HOME } from "../navigation"
 
 import { useAuth } from "./useAuth"
 
-const UNAUTHENTICATED_PATHS = [SIGN_IN.to, SIGN_UP.to]
+const UNAUTHENTICATED_PATHS = [SIGN_IN.to, "/reset/"]
 
 export const AuthGateway = ({ unauthenticatedPaths, children }) => {
   const { pathname } = useLocation()
   const { isUnauthenticated, isAuthenticated } = useAuth()
 
   useEffect(() => {
-    if (isUnauthenticated && !unauthenticatedPaths.includes(pathname)) {
+    if (
+      isUnauthenticated &&
+      ![...UNAUTHENTICATED_PATHS, SIGN_UP.to].includes(pathname)
+    ) {
       navigate(SIGN_IN.to)
-    } else if (isAuthenticated && [SIGN_IN.to].includes(pathname)) {
-      // TODO: Change to unauthenticatedPaths.includes
-      // when onboarding is refactored
+    } else if (isAuthenticated && UNAUTHENTICATED_PATHS.includes(pathname)) {
       navigate(HOME.to)
     }
   }, [isUnauthenticated, isAuthenticated, pathname, unauthenticatedPaths])
