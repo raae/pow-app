@@ -5,7 +5,7 @@ import { SIGN_IN, SIGN_UP, HOME } from "../navigation"
 
 import { useAuth } from "./useAuth"
 
-const UNAUTHENTICATED_PATHS = [SIGN_IN.to, "/recover/"]
+const UNAUTHENTICATED_PATHS = [SIGN_IN.to, "/reset/"]
 
 export const AuthGateway = ({ unauthenticatedPaths, children }) => {
   const { pathname } = useLocation()
