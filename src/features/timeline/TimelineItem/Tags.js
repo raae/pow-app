@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   loggedTag: {
     fontWeight: theme.typography.fontWeightMedium,
     backgroundColor: theme.palette.background.paper,
+    borderStyle: "solid",
   },
 }))
 
