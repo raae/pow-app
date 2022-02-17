@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SettingsCard = ({ editNavItem }) => {
   const classes = useStyles()
-  const { mainMensesTag, mensesTags } = useSettings()
+  const { mainMensesTag, otherMensesTags } = useSettings()
 
   return (
     <Card>
@@ -56,9 +56,9 @@ const SettingsCard = ({ editNavItem }) => {
             }
             subheader={
               <>
-                However these past tag{mensesTags.length > 1 ? "s" : ""} still
-                indicate menstruation <MensesTags />, so please do not reuse
-                them for other purposes.
+                However these past tag{otherMensesTags.length > 1 ? "s" : ""}{" "}
+                still indicate menstruation <MensesTags />, so please do not
+                reuse them for other purposes.
               </>
             }
           >

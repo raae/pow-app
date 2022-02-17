@@ -1,19 +1,19 @@
-import { first } from "lodash"
 import { useCallback } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import {
   STATUS,
-  selectSettings,
-  selectSettingsStatus,
   addMensesTag,
   setInitialCycleLength,
   deleteAllMensesTags,
+  selectSettingsStatus,
+  selectSettings,
 } from "./slice"
 
 export const useSettings = () => {
   const dispatch = useDispatch()
-  const { mensesTags, initialCycleLength } = useSelector(selectSettings)
+
   const status = useSelector(selectSettingsStatus)
+  const settings = useSelector(selectSettings)
 
   const handleAddMensesTag = useCallback(
     (tag) => {
@@ -37,12 +37,10 @@ export const useSettings = () => {
   )
 
   return {
+    ...settings,
     isLoading: [STATUS.INITIAL, STATUS.OPENING].includes(status),
     addMensesTag: handleAddMensesTag,
     deleteAllMensesTags: handleDeleteAllMensesTags,
     setInitialCycleLength: handleSetInitialCycleLength,
-    mensesTags,
-    mainMensesTag: first(mensesTags),
-    initialCycleLength,
   }
 }
