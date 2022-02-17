@@ -9,6 +9,7 @@ import { first, isUndefined } from "lodash"
 import * as yup from "yup"
 
 import { tagArrayToText, textToTagArray } from "./utils"
+import { tail } from "lodash"
 
 const SLICE_NAME = "settings"
 const SLICE_ENTITY = "setting"
@@ -189,6 +190,17 @@ const settingsSlice = createSlice({
   name: SLICE_NAME,
   initialState: settingsAdaptor.getInitialState({
     status: STATUS.INITIAL,
+    ids: [MENSES_TAG_KEY.SLICE, CYCLE_LENGTH_KEY.SLICE],
+    entities: {
+      [MENSES_TAG_KEY.SLICE]: {
+        key: MENSES_TAG_KEY.SLICE,
+        value: [],
+      },
+      [MENSES_TAG_KEY.SLICE]: {
+        key: CYCLE_LENGTH_KEY.SLICE,
+        value: DEFAULT_CYCLE_LENGTH,
+      },
+    },
   }),
   reducers: {},
   extraReducers: {
@@ -223,13 +235,13 @@ export const selectSettingsStatus = createSelector(
   }
 )
 
-const DEFAULT_MENSES_TAGS = []
 export const selectSettings = createSelector([selectEntities], (entities) => {
   const mensesTags = entities[MENSES_TAG_KEY.SLICE]?.value
   const initialCycleLength = entities[CYCLE_LENGTH_KEY.SLICE]?.value
   return {
-    mensesTags: mensesTags || DEFAULT_MENSES_TAGS,
+    mensesTags: mensesTags,
     mainMensesTag: first(mensesTags),
+    otherMensesTags: tail(mensesTags),
     initialCycleLength,
   }
 })
