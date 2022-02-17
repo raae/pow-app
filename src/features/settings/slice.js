@@ -5,7 +5,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit"
 import userbase from "userbase-js"
-import { first, isUndefined } from "lodash"
+import { first } from "lodash"
 import * as yup from "yup"
 
 import { tagArrayToText, textToTagArray } from "./utils"
@@ -126,7 +126,7 @@ export const addMensesTag = createAsyncThunk(
     const tag = payload
     const current = selectById(thunkAPI.getState(), MENSES_TAG_KEY.SLICE)
 
-    if (isUndefined(current)) {
+    if (!current || !current.createdBy) {
       await userbase.insertItem({
         databaseName: DB_NAME,
         itemId: MENSES_TAG_KEY.DB,
@@ -151,9 +151,10 @@ export const deleteAllMensesTags = createAsyncThunk(
   `${SLICE_ENTITY}/upsert`,
   async () => {
     // TODO: Throw error if entries is not empty
-    await userbase.deleteItem({
+    await userbase.updateItem({
       databaseName: DB_NAME,
       itemId: MENSES_TAG_KEY.DB,
+      item: "",
     })
   }
 )
@@ -172,7 +173,7 @@ export const setInitialCycleLength = createAsyncThunk(
       item: validLength,
     }
 
-    if (isUndefined(current)) {
+    if (!current) {
       await userbase.insertItem(userbaseParams)
     } else {
       await userbase.updateItem(userbaseParams)
@@ -196,7 +197,7 @@ const settingsSlice = createSlice({
         key: MENSES_TAG_KEY.SLICE,
         value: [],
       },
-      [MENSES_TAG_KEY.SLICE]: {
+      [CYCLE_LENGTH_KEY.SLICE]: {
         key: CYCLE_LENGTH_KEY.SLICE,
         value: DEFAULT_CYCLE_LENGTH,
       },
@@ -215,7 +216,7 @@ const settingsSlice = createSlice({
       state.error = error
     },
     [`${DB_NAME}/changed`]: (state, { payload }) => {
-      settingsAdaptor.setAll(state, payload.items)
+      settingsAdaptor.upsertMany(state, payload.items)
     },
   },
 })

@@ -22,12 +22,9 @@ export const useSettings = () => {
     [dispatch]
   )
 
-  const handleDeleteAllMensesTags = useCallback(
-    (tag) => {
-      return dispatch(deleteAllMensesTags(tag))
-    },
-    [dispatch]
-  )
+  const handleDeleteAllMensesTags = useCallback(() => {
+    return dispatch(deleteAllMensesTags())
+  }, [dispatch])
 
   const handleSetInitialCycleLength = useCallback(
     (tag) => {
