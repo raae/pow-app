@@ -51,7 +51,14 @@ const SignInForm = ({ className, redirect, ...props }) => {
   }
 
   const disabled = isAuthPending
-
+  const [values, setValues] = useState({
+    showPasSword: false,
+  })
+  const handlePeekABoo = () => {
+    setValues({
+      showPasSword: !values.showPasSword,
+    })
+  }
   return (
     <Paper
       component="form"
@@ -72,7 +79,6 @@ const SignInForm = ({ className, redirect, ...props }) => {
         required
         fullWidth
       />
-
       <TextField
         disabled={disabled}
         id="passwordInput"
@@ -80,13 +86,14 @@ const SignInForm = ({ className, redirect, ...props }) => {
         margin="normal"
         name="password"
         label="Password"
-        type="password"
+        type={values.showPasSword ? "text" : "password"}
         autoComplete="current-password"
         placeholder="glitter-rainbow-butterfly-kitty"
         InputLabelProps={{ shrink: true }}
         required
         fullWidth
       />
+      <button onClick={handlePeekABoo}>👁️‍🗨️🎩</button>
 
       <RememberMeInput
         disabled={disabled}
