@@ -13,6 +13,7 @@ import { SIGN_IN, SIGN_UP, Link } from "../../navigation"
 
 import ErrorAlert from "./ErrorAlert"
 import RememberMeInput from "./RememberMe"
+import PasSwordForm from "./PasSwordForm"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,8 +94,8 @@ const SignInForm = ({ className, redirect, ...props }) => {
         required
         fullWidth
       />
-      <button onClick={handlePeekABoo}>👁️‍🗨️🎩</button>
 
+      <PasSwordForm />
       <RememberMeInput
         disabled={disabled}
         value={rememberMe}
