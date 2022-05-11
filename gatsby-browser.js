@@ -10,7 +10,7 @@ export const wrapRootElement = ({ element }) => {
 }
 
 export const shouldUpdateScroll = ({ routerProps: { location } }) => {
-  const regex = /timeline\/?(\d\d\d\d-\d\d-\d\d)?$/
+  const regex = /(timeline|calendar)\/?(\d\d\d\d-\d\d-\d\d)?$/
   const results = location.pathname.match(regex)
 
   if (results) {
