@@ -38,7 +38,7 @@
     "gatsby-plugin-react-helmet": "4.4.0",
     "gatsby-plugin-sharp": "^3.5.0",
     "gatsby-source-filesystem": "3.4.0",
-    "gatsby-transformer-remark": "4.1.0",
+    "gatsby-transformer-remark": "5.25.1",
     "joi": "17.4.2",
     "lodash": "4.17.21",
     "netlify-lambda": "2.0.6",
