@@ -16,11 +16,20 @@ import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "./constants"
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
 
-const typicalValue = (values) => {
-  const sorted = sortBy(values)
-  if (sorted.length >= TRIMMED_MEAN_MIN_COUNT) return mean(sorted.slice(1, -1))
+const median = (sorted) => {
   const middle = (sorted.length - 1) / 2
   return (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
+}
+
+const trimmedMean = (sorted) => {
+  const trimmed = sorted.slice(1, -1)
+  return mean(trimmed)
+}
+
+const typicalValue = (values) => {
+  const sorted = sortBy(values)
+  if (sorted.length >= TRIMMED_MEAN_MIN_COUNT) return trimmedMean(sorted)
+  return median(sorted)
 }
 
 const analyze = ({ sortedEntries, initialDaysBetween }) => {
