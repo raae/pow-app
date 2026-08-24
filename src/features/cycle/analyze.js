@@ -1,33 +1,26 @@
-import { compact, round, last, sum, takeRight } from "lodash"
+import { last, mean, round, sortBy, takeRight } from "lodash"
 
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
+import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "./constants"
 
 // Predictions use only the most recent cycles, so older cycles age
-// out as new ones are logged. A gap longer than MAX_CYCLE_LENGTH is
-// a break in tracking (pregnancy, time away from the app), not a
+// out as new ones are logged. A gap longer than the max cycle length
+// is a break in tracking (pregnancy, time away from the app), not a
 // cycle, and is left out of the prediction entirely. Of the cycles
 // that remain, with enough of them the shortest and longest are
 // dropped and the rest averaged; with fewer, the median is used, as
 // dropping values from a small sample lets an extreme value back in.
+// These are prediction tuning, not part of what defines a cycle, and
+// the trimmed mean needs TRIMMED_MEAN_MIN_COUNT of the (at most)
+// RECENT_CYCLES_COUNT values to ever run.
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
-const MAX_CYCLE_LENGTH = 90
-
-const median = (values) => {
-  const sorted = [...values].sort((a, b) => a - b)
-  const middle = (sorted.length - 1) / 2
-  return (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
-}
-
-const trimmedMean = (values) => {
-  const sorted = [...values].sort((a, b) => a - b)
-  const trimmed = sorted.slice(1, -1)
-  return sum(trimmed) / trimmed.length
-}
 
 const typicalValue = (values) => {
-  if (values.length >= TRIMMED_MEAN_MIN_COUNT) return trimmedMean(values)
-  return median(values)
+  const sorted = sortBy(values)
+  if (sorted.length >= TRIMMED_MEAN_MIN_COUNT) return mean(sorted.slice(1, -1))
+  const middle = (sorted.length - 1) / 2
+  return (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
 }
 
 const analyze = ({ sortedEntries, initialDaysBetween }) => {
@@ -44,7 +37,7 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     let difference = daysBetweenDates(entry.date, lastStartDate)
 
     if (entry.isMenses) {
-      if (difference > 14) {
+      if (difference > CYCLE_LENGTH_MIN_MAX.min) {
         // Entry is start of new cycle
         cycleIndex++
         cycle.startDates[cycleIndex] = entry.date
@@ -57,6 +50,8 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
       }
     }
 
+    // Tags are collected even for days in a break in tracking; only
+    // the cycle length below leaves breaks out, see issue #339
     if (difference > -1) {
       const cycleDay = difference
       if (cycle.tags[cycleDay]) {
@@ -67,14 +62,16 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     }
   }
 
-  const knownDaysBetweens = compact(cycle.daysBetweens).filter(
-    (days) => days <= MAX_CYCLE_LENGTH
+  const recentDaysBetweens = takeRight(
+    cycle.daysBetweens.filter(
+      (days) => days && days <= CYCLE_LENGTH_MIN_MAX.max
+    ),
+    RECENT_CYCLES_COUNT
   )
-  const recentDaysBetweens = takeRight(knownDaysBetweens, RECENT_CYCLES_COUNT)
   let daysBetween = round(typicalValue(recentDaysBetweens))
   let daysBetweenCalculated = true
   if (!daysBetween) {
-    daysBetween = 28
+    daysBetween = DEFAULT_CYCLE_LENGTH
     daysBetweenCalculated = false
   }
 
