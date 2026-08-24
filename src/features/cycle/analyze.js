@@ -3,19 +3,18 @@ import { last, mean, round, sortBy, takeRight } from "lodash"
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "./constants"
 
-// Predictions use only the most recent cycles, so older cycles age
-// out as new ones are logged. A gap longer than the max cycle length
-// is a break in tracking (pregnancy, time away from the app), not a
-// cycle, and is left out of the prediction entirely. Of the cycles
-// that remain, with enough of them the shortest and longest are
-// dropped and the rest averaged; with fewer, the median is used, as
-// dropping values from a small sample lets an extreme value back in.
-// These are prediction tuning, not part of what defines a cycle, and
-// the trimmed mean needs TRIMMED_MEAN_MIN_COUNT of the (at most)
-// RECENT_CYCLES_COUNT values to ever run.
+// Prediction tuning, not part of what defines a cycle. The trimmed
+// mean needs TRIMMED_MEAN_MIN_COUNT of the (at most)
+// RECENT_CYCLES_COUNT values to ever run; with fewer the median is
+// used, as dropping values from a small sample lets an extreme
+// value back in.
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
 
+// Only the most recent cycles are used, so older cycles age out as
+// new ones are logged. A gap outside the valid range is a break in
+// tracking (pregnancy, time away from the app), not a cycle, and is
+// left out of the prediction entirely.
 const recentValidCycleLengths = (cycleLengths) => {
   const validCycleLengths = cycleLengths.filter(
     (days) =>
@@ -28,11 +27,16 @@ const statistics = (cycleLengths) => {
   const sorted = sortBy(recentValidCycleLengths(cycleLengths))
   const middle = (sorted.length - 1) / 2
 
-  return {
-    count: sorted.length,
-    median: (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2,
-    trimmedMean: mean(sorted.slice(1, -1)),
-  }
+  // How many cycles the prediction has to lean on
+  const count = sorted.length
+
+  // The middle value, or the average of the two middle values
+  const median = (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
+
+  // The average with the shortest and longest value dropped
+  const trimmedMean = mean(sorted.slice(1, -1))
+
+  return { count, median, trimmedMean }
 }
 
 const analyze = ({ sortedEntries, initialCycleLength }) => {
