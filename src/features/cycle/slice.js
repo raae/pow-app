@@ -38,7 +38,7 @@ const selectAnalytics = createSelector(
   (entries, { initialCycleLength }) => {
     const analytics = analyze({
       sortedEntries: entries,
-      initialDaysBetween: initialCycleLength,
+      initialCycleLength,
     })
 
     return analytics

@@ -3,20 +3,20 @@ import analyzeEntries from "./analyze"
 describe("#analyzeEntries", () => {
   test("no cycle data", () => {
     const sortedEntries = []
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
     const menstruationTags = ["period", "test"]
 
     const result = {
       startDates: [],
       nextStartDate: undefined,
-      daysBetweens: [undefined],
+      cycleLengths: [undefined],
       isDaysBetweenCalculated: false,
       daysBetween: 28,
       tags: {},
     }
 
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
+      analyzeEntries({ sortedEntries, initialCycleLength, menstruationTags })
     ).toEqual(result)
   })
 
@@ -42,12 +42,12 @@ describe("#analyzeEntries", () => {
         tags: ["happy", "hungry"],
       },
     ]
-    const initialDaysBetween = 23
+    const initialCycleLength = 23
 
     const result = {
       startDates: [new Date("2019-08-02")],
       nextStartDate: new Date("2019-08-25"),
-      daysBetweens: [23],
+      cycleLengths: [23],
       daysBetween: 23,
       isDaysBetweenCalculated: true,
       tags: {
@@ -58,7 +58,7 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -86,12 +86,12 @@ describe("#analyzeEntries", () => {
         isMenses: false,
       },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
     const result = {
       startDates: [new Date("2019-08-02"), new Date("2019-08-25")],
       nextStartDate: new Date("2019-09-17"),
-      daysBetweens: [undefined, 23],
+      cycleLengths: [undefined, 23],
       daysBetween: 23,
       isDaysBetweenCalculated: true,
       tags: {
@@ -100,7 +100,7 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -138,7 +138,7 @@ describe("#analyzeEntries", () => {
         isMenses: true,
       },
     ]
-    const initialDaysBetween = 23
+    const initialCycleLength = 23
 
     const result = {
       startDates: [
@@ -146,9 +146,9 @@ describe("#analyzeEntries", () => {
         new Date("2019-06-25"),
         new Date("2019-07-16"),
       ],
-      nextStartDate: new Date("2019-08-07"),
-      daysBetweens: [23, 21, 21],
-      daysBetween: 22,
+      nextStartDate: new Date("2019-08-06"),
+      cycleLengths: [23, 21, 21],
+      daysBetween: 21,
       isDaysBetweenCalculated: true,
       tags: {
         0: ["period", "period", "period"],
@@ -157,7 +157,7 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -218,7 +218,7 @@ describe("#analyzeEntries", () => {
         isMenses: true,
       },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
     const result = {
       startDates: [
@@ -227,7 +227,7 @@ describe("#analyzeEntries", () => {
         new Date("2019-07-10"),
       ],
       nextStartDate: new Date("2019-07-30"),
-      daysBetweens: [undefined, 19, 20],
+      cycleLengths: [undefined, 19, 20],
       daysBetween: 20,
       isDaysBetweenCalculated: true,
       tags: {
@@ -241,8 +241,96 @@ describe("#analyzeEntries", () => {
         14: ["exhausted"],
       },
     }
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
+  })
+
+  test("one long gap (e.g. postpartum) does not skew the prediction", () => {
+    // A ~9 month gap between periods, followed by regular 28-day cycles
+    const sortedEntries = [
+      { date: new Date("2020-01-01"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-10-07"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-11-04"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-12-02"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-12-30"), tags: ["period"], isMenses: true },
+      { date: new Date("2021-01-27"), tags: ["period"], isMenses: true },
+    ]
+    const initialCycleLength = undefined
+
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
+
+    expect(analytics.cycleLengths).toEqual([undefined, 280, 28, 28, 28, 28])
+    expect(analytics.daysBetween).toEqual(28)
+    expect(analytics.nextStartDate).toEqual(new Date("2021-02-24"))
+  })
+
+  test("older cycles age out of the prediction", () => {
+    // Two 40-day cycles followed by six 26-day cycles;
+    // only the six most recent cycles count
+    const sortedEntries = [
+      { date: new Date("2020-01-01"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-02-10"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-03-21"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-04-16"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-05-12"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-06-07"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-07-03"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-07-29"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-08-24"), tags: ["period"], isMenses: true },
+    ]
+    const initialCycleLength = undefined
+
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
+
+    expect(analytics.cycleLengths).toEqual([
+      undefined,
+      40,
+      40,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+    ])
+    expect(analytics.daysBetween).toEqual(26)
+  })
+
+  test("irregular cycles average out, dropping the extremes", () => {
+    // Gaps of 25, 24, 38, 26, 27 and 60 days; the shortest (24) and
+    // longest (60) are dropped and the rest averaged: 29
+    const sortedEntries = [
+      { date: new Date("2020-01-01"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-01-26"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-02-19"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-03-28"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-04-23"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-05-20"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-07-19"), tags: ["period"], isMenses: true },
+    ]
+    const initialCycleLength = undefined
+
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
+
+    expect(analytics.cycleLengths).toEqual([undefined, 25, 24, 38, 26, 27, 60])
+    expect(analytics.daysBetween).toEqual(29)
+    expect(analytics.nextStartDate).toEqual(new Date("2020-08-17"))
+  })
+
+  test("an account picked back up after years keeps its cycle length", () => {
+    // A ~5 year break in tracking is not a cycle; the prediction
+    // sticks to the known 38-day cycle
+    const sortedEntries = [
+      { date: new Date("2021-09-07"), tags: ["period"], isMenses: true },
+      { date: new Date("2026-08-24"), tags: ["period"], isMenses: true },
+    ]
+    const initialCycleLength = 38
+
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
+
+    expect(analytics.cycleLengths).toEqual([38, 1812])
+    expect(analytics.daysBetween).toEqual(38)
+    expect(analytics.nextStartDate).toEqual(new Date("2026-10-01"))
   })
 })
