@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { TextField } from "@material-ui/core"
+import { PasswordTextField } from "../../../components"
 
 import { useUser } from "../useUser"
 
@@ -52,10 +52,9 @@ export const PasswordForm = ({ Component, title, onDone }) => {
       title={title}
       disabled={disabled}
     >
-      <TextField
+      <PasswordTextField
         disabled={disabled}
         id="currentPasswordInput"
-        type="password"
         variant="outlined"
         margin="normal"
         required
@@ -64,10 +63,9 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         name="Current password"
         autoComplete="current-password"
       />
-      <TextField
+      <PasswordTextField
         disabled={disabled}
         id="newPasswordInput"
-        type="password"
         variant="outlined"
         margin="normal"
         required
@@ -76,10 +74,9 @@ export const PasswordForm = ({ Component, title, onDone }) => {
         name="New Password"
         autoComplete="new-password"
       />
-      <TextField
+      <PasswordTextField
         disabled={disabled}
         id="newSamePassword"
-        type="password"
         variant="outlined"
         margin="normal"
         required
