@@ -16,8 +16,16 @@ import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "./constants"
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
 
-const statistics = (values) => {
-  const sorted = sortBy(values)
+const recentValidCycleLengths = (daysBetweens) => {
+  const validCycleLengths = daysBetweens.filter(
+    (days) =>
+      days >= CYCLE_LENGTH_MIN_MAX.min && days <= CYCLE_LENGTH_MIN_MAX.max
+  )
+  return takeRight(validCycleLengths, RECENT_CYCLES_COUNT)
+}
+
+const statistics = (daysBetweens) => {
+  const sorted = sortBy(recentValidCycleLengths(daysBetweens))
   const middle = (sorted.length - 1) / 2
 
   return {
@@ -66,14 +74,7 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     }
   }
 
-  const recentDaysBetweens = takeRight(
-    cycle.daysBetweens.filter(
-      (days) =>
-        days >= CYCLE_LENGTH_MIN_MAX.min && days <= CYCLE_LENGTH_MIN_MAX.max
-    ),
-    RECENT_CYCLES_COUNT
-  )
-  const { count, median, trimmedMean } = statistics(recentDaysBetweens)
+  const { count, median, trimmedMean } = statistics(cycle.daysBetweens)
   let daysBetween = round(
     count >= TRIMMED_MEAN_MIN_COUNT ? trimmedMean : median
   )
