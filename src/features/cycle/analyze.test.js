@@ -3,20 +3,20 @@ import analyzeEntries from "./analyze"
 describe("#analyzeEntries", () => {
   test("no cycle data", () => {
     const sortedEntries = []
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
     const menstruationTags = ["period", "test"]
 
     const result = {
       startDates: [],
       nextStartDate: undefined,
-      daysBetweens: [undefined],
+      cycleLengths: [undefined],
       isDaysBetweenCalculated: false,
       daysBetween: 28,
       tags: {},
     }
 
     expect(
-      analyzeEntries({ sortedEntries, initialDaysBetween, menstruationTags })
+      analyzeEntries({ sortedEntries, initialCycleLength, menstruationTags })
     ).toEqual(result)
   })
 
@@ -42,12 +42,12 @@ describe("#analyzeEntries", () => {
         tags: ["happy", "hungry"],
       },
     ]
-    const initialDaysBetween = 23
+    const initialCycleLength = 23
 
     const result = {
       startDates: [new Date("2019-08-02")],
       nextStartDate: new Date("2019-08-25"),
-      daysBetweens: [23],
+      cycleLengths: [23],
       daysBetween: 23,
       isDaysBetweenCalculated: true,
       tags: {
@@ -58,7 +58,7 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -86,12 +86,12 @@ describe("#analyzeEntries", () => {
         isMenses: false,
       },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
     const result = {
       startDates: [new Date("2019-08-02"), new Date("2019-08-25")],
       nextStartDate: new Date("2019-09-17"),
-      daysBetweens: [undefined, 23],
+      cycleLengths: [undefined, 23],
       daysBetween: 23,
       isDaysBetweenCalculated: true,
       tags: {
@@ -100,7 +100,7 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -138,7 +138,7 @@ describe("#analyzeEntries", () => {
         isMenses: true,
       },
     ]
-    const initialDaysBetween = 23
+    const initialCycleLength = 23
 
     const result = {
       startDates: [
@@ -147,7 +147,7 @@ describe("#analyzeEntries", () => {
         new Date("2019-07-16"),
       ],
       nextStartDate: new Date("2019-08-06"),
-      daysBetweens: [23, 21, 21],
+      cycleLengths: [23, 21, 21],
       daysBetween: 21,
       isDaysBetweenCalculated: true,
       tags: {
@@ -157,7 +157,7 @@ describe("#analyzeEntries", () => {
       },
     }
 
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -218,7 +218,7 @@ describe("#analyzeEntries", () => {
         isMenses: true,
       },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
     const result = {
       startDates: [
@@ -227,7 +227,7 @@ describe("#analyzeEntries", () => {
         new Date("2019-07-10"),
       ],
       nextStartDate: new Date("2019-07-30"),
-      daysBetweens: [undefined, 19, 20],
+      cycleLengths: [undefined, 19, 20],
       daysBetween: 20,
       isDaysBetweenCalculated: true,
       tags: {
@@ -241,7 +241,7 @@ describe("#analyzeEntries", () => {
         14: ["exhausted"],
       },
     }
-    expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
+    expect(analyzeEntries({ sortedEntries, initialCycleLength })).toEqual(
       result
     )
   })
@@ -256,11 +256,11 @@ describe("#analyzeEntries", () => {
       { date: new Date("2020-12-30"), tags: ["period"], isMenses: true },
       { date: new Date("2021-01-27"), tags: ["period"], isMenses: true },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
-    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
 
-    expect(analytics.daysBetweens).toEqual([undefined, 280, 28, 28, 28, 28])
+    expect(analytics.cycleLengths).toEqual([undefined, 280, 28, 28, 28, 28])
     expect(analytics.daysBetween).toEqual(28)
     expect(analytics.nextStartDate).toEqual(new Date("2021-02-24"))
   })
@@ -279,11 +279,11 @@ describe("#analyzeEntries", () => {
       { date: new Date("2020-07-29"), tags: ["period"], isMenses: true },
       { date: new Date("2020-08-24"), tags: ["period"], isMenses: true },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
-    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
 
-    expect(analytics.daysBetweens).toEqual([
+    expect(analytics.cycleLengths).toEqual([
       undefined,
       40,
       40,
@@ -309,11 +309,11 @@ describe("#analyzeEntries", () => {
       { date: new Date("2020-05-20"), tags: ["period"], isMenses: true },
       { date: new Date("2020-07-19"), tags: ["period"], isMenses: true },
     ]
-    const initialDaysBetween = undefined
+    const initialCycleLength = undefined
 
-    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
 
-    expect(analytics.daysBetweens).toEqual([undefined, 25, 24, 38, 26, 27, 60])
+    expect(analytics.cycleLengths).toEqual([undefined, 25, 24, 38, 26, 27, 60])
     expect(analytics.daysBetween).toEqual(29)
     expect(analytics.nextStartDate).toEqual(new Date("2020-08-17"))
   })
@@ -325,11 +325,11 @@ describe("#analyzeEntries", () => {
       { date: new Date("2021-09-07"), tags: ["period"], isMenses: true },
       { date: new Date("2026-08-24"), tags: ["period"], isMenses: true },
     ]
-    const initialDaysBetween = 38
+    const initialCycleLength = 38
 
-    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+    const analytics = analyzeEntries({ sortedEntries, initialCycleLength })
 
-    expect(analytics.daysBetweens).toEqual([38, 1812])
+    expect(analytics.cycleLengths).toEqual([38, 1812])
     expect(analytics.daysBetween).toEqual(38)
     expect(analytics.nextStartDate).toEqual(new Date("2026-10-01"))
   })

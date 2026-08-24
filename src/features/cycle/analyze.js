@@ -16,16 +16,16 @@ import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "./constants"
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
 
-const recentValidCycleLengths = (daysBetweens) => {
-  const validCycleLengths = daysBetweens.filter(
+const recentValidCycleLengths = (cycleLengths) => {
+  const validCycleLengths = cycleLengths.filter(
     (days) =>
       days >= CYCLE_LENGTH_MIN_MAX.min && days <= CYCLE_LENGTH_MIN_MAX.max
   )
   return takeRight(validCycleLengths, RECENT_CYCLES_COUNT)
 }
 
-const statistics = (daysBetweens) => {
-  const sorted = sortBy(recentValidCycleLengths(daysBetweens))
+const statistics = (cycleLengths) => {
+  const sorted = sortBy(recentValidCycleLengths(cycleLengths))
   const middle = (sorted.length - 1) / 2
 
   return {
@@ -35,12 +35,12 @@ const statistics = (daysBetweens) => {
   }
 }
 
-const analyze = ({ sortedEntries, initialDaysBetween }) => {
+const analyze = ({ sortedEntries, initialCycleLength }) => {
   let cycleIndex = 0
 
   const cycle = {
     startDates: [],
-    daysBetweens: [initialDaysBetween],
+    cycleLengths: [initialCycleLength],
     tags: {},
   }
 
@@ -53,7 +53,7 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
         // Entry is start of new cycle
         cycleIndex++
         cycle.startDates[cycleIndex] = entry.date
-        cycle.daysBetweens[cycleIndex] = difference
+        cycle.cycleLengths[cycleIndex] = difference
         difference = 0
       } else if (difference === -1) {
         // Entry is start of first cycle
@@ -74,7 +74,7 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     }
   }
 
-  const { count, median, trimmedMean } = statistics(cycle.daysBetweens)
+  const { count, median, trimmedMean } = statistics(cycle.cycleLengths)
   let daysBetween = round(
     count >= TRIMMED_MEAN_MIN_COUNT ? trimmedMean : median
   )
