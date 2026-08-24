@@ -146,9 +146,9 @@ describe("#analyzeEntries", () => {
         new Date("2019-06-25"),
         new Date("2019-07-16"),
       ],
-      nextStartDate: new Date("2019-08-07"),
+      nextStartDate: new Date("2019-08-06"),
       daysBetweens: [23, 21, 21],
-      daysBetween: 22,
+      daysBetween: 21,
       isDaysBetweenCalculated: true,
       tags: {
         0: ["period", "period", "period"],
@@ -244,5 +244,56 @@ describe("#analyzeEntries", () => {
     expect(analyzeEntries({ sortedEntries, initialDaysBetween })).toEqual(
       result
     )
+  })
+
+  test("one long gap (e.g. postpartum) does not skew the prediction", () => {
+    // A ~9 month gap between periods, followed by regular 28-day cycles
+    const sortedEntries = [
+      { date: new Date("2020-01-01"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-10-07"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-11-04"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-12-02"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-12-30"), tags: ["period"], isMenses: true },
+      { date: new Date("2021-01-27"), tags: ["period"], isMenses: true },
+    ]
+    const initialDaysBetween = undefined
+
+    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+
+    expect(analytics.daysBetweens).toEqual([undefined, 280, 28, 28, 28, 28])
+    expect(analytics.daysBetween).toEqual(28)
+    expect(analytics.nextStartDate).toEqual(new Date("2021-02-24"))
+  })
+
+  test("older cycles age out of the prediction", () => {
+    // Two 40-day cycles followed by six 26-day cycles;
+    // only the six most recent cycles count
+    const sortedEntries = [
+      { date: new Date("2020-01-01"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-02-10"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-03-21"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-04-16"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-05-12"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-06-07"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-07-03"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-07-29"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-08-24"), tags: ["period"], isMenses: true },
+    ]
+    const initialDaysBetween = undefined
+
+    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+
+    expect(analytics.daysBetweens).toEqual([
+      undefined,
+      40,
+      40,
+      26,
+      26,
+      26,
+      26,
+      26,
+      26,
+    ])
+    expect(analytics.daysBetween).toEqual(26)
   })
 })

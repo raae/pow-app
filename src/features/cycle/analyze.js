@@ -1,6 +1,17 @@
-import { compact, sum, round, last } from "lodash"
+import { compact, round, last, takeRight } from "lodash"
 
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
+
+// Predictions use the median of the most recent cycles, so a one-off
+// long gap (pregnancy, a break from logging) does not skew the
+// prediction, and older cycles age out as new ones are logged.
+const RECENT_CYCLES_COUNT = 6
+
+const median = (values) => {
+  const sorted = [...values].sort((a, b) => a - b)
+  const middle = (sorted.length - 1) / 2
+  return (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
+}
 
 const analyze = ({ sortedEntries, initialDaysBetween }) => {
   let cycleIndex = 0
@@ -39,8 +50,9 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     }
   }
 
-  const compactDaysBetweens = compact(cycle.daysBetweens)
-  let daysBetween = round(sum(compactDaysBetweens) / compactDaysBetweens.length)
+  const knownDaysBetweens = compact(cycle.daysBetweens)
+  const recentDaysBetweens = takeRight(knownDaysBetweens, RECENT_CYCLES_COUNT)
+  let daysBetween = round(median(recentDaysBetweens))
   let daysBetweenCalculated = true
   if (!daysBetween) {
     daysBetween = 28
