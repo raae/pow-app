@@ -16,20 +16,15 @@ import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "./constants"
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
 
-const median = (sorted) => {
-  const middle = (sorted.length - 1) / 2
-  return (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
-}
-
-const trimmedMean = (sorted) => {
-  const trimmed = sorted.slice(1, -1)
-  return mean(trimmed)
-}
-
-const typicalValue = (values) => {
+const statistics = (values) => {
   const sorted = sortBy(values)
-  if (sorted.length >= TRIMMED_MEAN_MIN_COUNT) return trimmedMean(sorted)
-  return median(sorted)
+  const middle = (sorted.length - 1) / 2
+
+  return {
+    count: sorted.length,
+    median: (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2,
+    trimmedMean: mean(sorted.slice(1, -1)),
+  }
 }
 
 const analyze = ({ sortedEntries, initialDaysBetween }) => {
@@ -77,7 +72,10 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     ),
     RECENT_CYCLES_COUNT
   )
-  let daysBetween = round(typicalValue(recentDaysBetweens))
+  const { count, median, trimmedMean } = statistics(recentDaysBetweens)
+  let daysBetween = round(
+    count >= TRIMMED_MEAN_MIN_COUNT ? trimmedMean : median
+  )
   let daysBetweenCalculated = true
   if (!daysBetween) {
     daysBetween = DEFAULT_CYCLE_LENGTH
