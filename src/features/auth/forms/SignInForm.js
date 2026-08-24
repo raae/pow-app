@@ -13,6 +13,7 @@ import { SIGN_IN, SIGN_UP, Link } from "../../navigation"
 
 import ErrorAlert from "./ErrorAlert"
 import RememberMeInput from "./RememberMe"
+import PasSwordForm from "./PasSwordForm"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,14 @@ const SignInForm = ({ className, redirect, ...props }) => {
   }
 
   const disabled = isAuthPending
-
+  const [values, setValues] = useState({
+    showPasSword: false,
+  })
+  const handlePeekABoo = () => {
+    setValues({
+      showPasSword: !values.showPasSword,
+    })
+  }
   return (
     <Paper
       component="form"
@@ -72,7 +80,6 @@ const SignInForm = ({ className, redirect, ...props }) => {
         required
         fullWidth
       />
-
       <TextField
         disabled={disabled}
         id="passwordInput"
@@ -80,7 +87,7 @@ const SignInForm = ({ className, redirect, ...props }) => {
         margin="normal"
         name="password"
         label="Password"
-        type="password"
+        type={values.showPasSword ? "text" : "password"}
         autoComplete="current-password"
         placeholder="glitter-rainbow-butterfly-kitty"
         InputLabelProps={{ shrink: true }}
@@ -88,6 +95,7 @@ const SignInForm = ({ className, redirect, ...props }) => {
         fullWidth
       />
 
+      <PasSwordForm />
       <RememberMeInput
         disabled={disabled}
         value={rememberMe}
