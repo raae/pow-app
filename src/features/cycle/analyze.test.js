@@ -317,4 +317,20 @@ describe("#analyzeEntries", () => {
     expect(analytics.daysBetween).toEqual(29)
     expect(analytics.nextStartDate).toEqual(new Date("2020-08-17"))
   })
+
+  test("an account picked back up after years keeps its cycle length", () => {
+    // A ~5 year break in tracking is not a cycle; the prediction
+    // sticks to the known 38-day cycle
+    const sortedEntries = [
+      { date: new Date("2021-09-07"), tags: ["period"], isMenses: true },
+      { date: new Date("2026-08-24"), tags: ["period"], isMenses: true },
+    ]
+    const initialDaysBetween = 38
+
+    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+
+    expect(analytics.daysBetweens).toEqual([38, 1812])
+    expect(analytics.daysBetween).toEqual(38)
+    expect(analytics.nextStartDate).toEqual(new Date("2026-10-01"))
+  })
 })

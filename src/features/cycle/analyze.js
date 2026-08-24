@@ -3,13 +3,15 @@ import { compact, round, last, sum, takeRight } from "lodash"
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 
 // Predictions use only the most recent cycles, so older cycles age
-// out as new ones are logged. With enough of them the shortest and
-// longest are dropped and the rest averaged; with fewer, the median
-// is used, as dropping values from a small sample lets an extreme
-// value back in. Either way a one-off long gap (pregnancy, a break
-// from logging) does not skew the prediction.
+// out as new ones are logged. A gap longer than MAX_CYCLE_LENGTH is
+// a break in tracking (pregnancy, time away from the app), not a
+// cycle, and is left out of the prediction entirely. Of the cycles
+// that remain, with enough of them the shortest and longest are
+// dropped and the rest averaged; with fewer, the median is used, as
+// dropping values from a small sample lets an extreme value back in.
 const RECENT_CYCLES_COUNT = 6
 const TRIMMED_MEAN_MIN_COUNT = 5
+const MAX_CYCLE_LENGTH = 90
 
 const median = (values) => {
   const sorted = [...values].sort((a, b) => a - b)
@@ -65,7 +67,9 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
     }
   }
 
-  const knownDaysBetweens = compact(cycle.daysBetweens)
+  const knownDaysBetweens = compact(cycle.daysBetweens).filter(
+    (days) => days <= MAX_CYCLE_LENGTH
+  )
   const recentDaysBetweens = takeRight(knownDaysBetweens, RECENT_CYCLES_COUNT)
   let daysBetween = round(typicalValue(recentDaysBetweens))
   let daysBetweenCalculated = true
