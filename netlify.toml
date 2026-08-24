@@ -6,6 +6,12 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+[build.environment]
+  # Pin the functions runtime explicitly instead of letting Netlify derive it
+  # from the build's Node version (see #340, where the derived runtime landed
+  # on retired nodejs14.x and deploys failed at the publish step).
+  AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
+
 [[plugins]]
 package = 'netlify-plugin-contextual-env'
   [plugins.inputs]

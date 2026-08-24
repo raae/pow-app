@@ -10,6 +10,7 @@ import * as yup from "yup"
 
 import { tagArrayToText, textToTagArray } from "./utils"
 import { tail } from "lodash"
+import { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH } from "../cycle/constants"
 
 const SLICE_NAME = "settings"
 const SLICE_ENTITY = "setting"
@@ -38,12 +39,7 @@ export const STATUS = {
 //
 // =========================================================
 
-export const CYCLE_LENGTH_MIN_MAX = {
-  min: 14,
-  max: 60,
-}
-
-export const DEFAULT_CYCLE_LENGTH = 28
+export { CYCLE_LENGTH_MIN_MAX, DEFAULT_CYCLE_LENGTH }
 
 export const cycleLengthSchema = yup
   .number()
