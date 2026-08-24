@@ -1,16 +1,31 @@
-import { compact, round, last, takeRight } from "lodash"
+import { compact, round, last, sum, takeRight } from "lodash"
 
 import { daysBetweenDates, addDaysToDate } from "../utils/days"
 
-// Predictions use the median of the most recent cycles, so a one-off
-// long gap (pregnancy, a break from logging) does not skew the
-// prediction, and older cycles age out as new ones are logged.
+// Predictions use only the most recent cycles, so older cycles age
+// out as new ones are logged. With enough of them the shortest and
+// longest are dropped and the rest averaged; with fewer, the median
+// is used, as dropping values from a small sample lets an extreme
+// value back in. Either way a one-off long gap (pregnancy, a break
+// from logging) does not skew the prediction.
 const RECENT_CYCLES_COUNT = 6
+const TRIMMED_MEAN_MIN_COUNT = 5
 
 const median = (values) => {
   const sorted = [...values].sort((a, b) => a - b)
   const middle = (sorted.length - 1) / 2
   return (sorted[Math.floor(middle)] + sorted[Math.ceil(middle)]) / 2
+}
+
+const trimmedMean = (values) => {
+  const sorted = [...values].sort((a, b) => a - b)
+  const trimmed = sorted.slice(1, -1)
+  return sum(trimmed) / trimmed.length
+}
+
+const typicalValue = (values) => {
+  if (values.length >= TRIMMED_MEAN_MIN_COUNT) return trimmedMean(values)
+  return median(values)
 }
 
 const analyze = ({ sortedEntries, initialDaysBetween }) => {
@@ -52,7 +67,7 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
 
   const knownDaysBetweens = compact(cycle.daysBetweens)
   const recentDaysBetweens = takeRight(knownDaysBetweens, RECENT_CYCLES_COUNT)
-  let daysBetween = round(median(recentDaysBetweens))
+  let daysBetween = round(typicalValue(recentDaysBetweens))
   let daysBetweenCalculated = true
   if (!daysBetween) {
     daysBetween = 28

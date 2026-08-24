@@ -296,4 +296,25 @@ describe("#analyzeEntries", () => {
     ])
     expect(analytics.daysBetween).toEqual(26)
   })
+
+  test("irregular cycles average out, dropping the extremes", () => {
+    // Gaps of 25, 24, 38, 26, 27 and 60 days; the shortest (24) and
+    // longest (60) are dropped and the rest averaged: 29
+    const sortedEntries = [
+      { date: new Date("2020-01-01"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-01-26"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-02-19"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-03-28"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-04-23"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-05-20"), tags: ["period"], isMenses: true },
+      { date: new Date("2020-07-19"), tags: ["period"], isMenses: true },
+    ]
+    const initialDaysBetween = undefined
+
+    const analytics = analyzeEntries({ sortedEntries, initialDaysBetween })
+
+    expect(analytics.daysBetweens).toEqual([undefined, 25, 24, 38, 26, 27, 60])
+    expect(analytics.daysBetween).toEqual(29)
+    expect(analytics.nextStartDate).toEqual(new Date("2020-08-17"))
+  })
 })
