@@ -68,7 +68,8 @@ const analyze = ({ sortedEntries, initialDaysBetween }) => {
 
   const recentDaysBetweens = takeRight(
     cycle.daysBetweens.filter(
-      (days) => days && days <= CYCLE_LENGTH_MIN_MAX.max
+      (days) =>
+        days >= CYCLE_LENGTH_MIN_MAX.min && days <= CYCLE_LENGTH_MIN_MAX.max
     ),
     RECENT_CYCLES_COUNT
   )
