@@ -18,5 +18,5 @@ const HeadComponents = [
   />,
 ]
 export const onRenderBody = ({ setHeadComponents }) => {
-  setHeadComponents([HeadComponents])
+  setHeadComponents(HeadComponents)
 }
