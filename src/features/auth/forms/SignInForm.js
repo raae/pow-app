@@ -8,6 +8,8 @@ import {
   makeStyles,
 } from "@material-ui/core"
 
+import { PasswordTextField } from "../../../components"
+
 import { useAuth } from "../useAuth"
 import { SIGN_IN, SIGN_UP, Link } from "../../navigation"
 
@@ -73,14 +75,13 @@ const SignInForm = ({ className, redirect, ...props }) => {
         fullWidth
       />
 
-      <TextField
+      <PasswordTextField
         disabled={disabled}
         id="passwordInput"
         variant="outlined"
         margin="normal"
         name="password"
         label="Password"
-        type="password"
         autoComplete="current-password"
         placeholder="glitter-rainbow-butterfly-kitty"
         InputLabelProps={{ shrink: true }}
