@@ -1,15 +1,31 @@
 [build]
-  publish = "public"
-  functions = "lambda"
-  command = "npm run prod"
+  publish = "dist"
+  command = "npm run build"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 [build.environment]
-  # The build runs on Node 14 (.nvmrc, required by Gatsby 3), but the
-  # nodejs14.x Lambda runtime is retired and Netlify refuses to deploy
-  # functions targeting it — pin the functions runtime separately.
+  # Pin the functions runtime explicitly instead of letting Netlify derive it
+  # from the build's Node version (see #340, where the derived runtime landed
+  # on retired nodejs14.x and deploys failed at the publish step).
   AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
 
 [[plugins]]
 package = 'netlify-plugin-contextual-env'
   [plugins.inputs]
   mode = 'suffix'
+
+# SPA fallback — every path serves the app shell and the client router takes
+# over. Function URLs (/.netlify/functions/*) are served before redirects.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Vite emits hashed filenames under /assets — cache them forever.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

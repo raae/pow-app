@@ -55,12 +55,8 @@ typings/
 .env*
 !.env.example
 
-# gatsby files
-.cache/
-public
-
-# Netlify functions build
-lambda/
+# Vite build output
+dist/
 
 # Mac files
 .DS_Store

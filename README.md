@@ -47,7 +47,7 @@ Todos:
 
 ## Tech Stack
 
-**Client:** [Gatsby](https://www.gatsbyjs.com/), [Redux Toolkit](https://redux-toolkit.js.org/), [MaterialUI](https://material-ui.com/)
+**Client:** [Vite](https://vite.dev/) + [React Router](https://reactrouter.com/), [Redux Toolkit](https://redux-toolkit.js.org/), [MaterialUI](https://material-ui.com/)
 
 **Serverless:** Netlify functions [Express style](https://www.serverless.com/blog/serverless-express-rest-api)
 
