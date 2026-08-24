@@ -1,9 +1,25 @@
 [build]
-  publish = "public"
-  functions = "lambda"
-  command = "npm run prod"
+  publish = "dist"
+  command = "npm run build"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
 [[plugins]]
 package = 'netlify-plugin-contextual-env'
   [plugins.inputs]
   mode = 'suffix'
+
+# SPA fallback — every path serves the app shell and the client router takes
+# over. Function URLs (/.netlify/functions/*) are served before redirects.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Vite emits hashed filenames under /assets — cache them forever.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

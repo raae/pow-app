@@ -1,7 +1,13 @@
 import userbase from "userbase-js"
 import { selectSettings, setInitialCycleLength } from "./slice"
 
-jest.mock("userbase-js")
+vi.mock("userbase-js", () => ({
+  default: {
+    openDatabase: vi.fn(),
+    insertItem: vi.fn(),
+    updateItem: vi.fn(),
+  },
+}))
 
 describe("settings/slice", () => {
   describe("#setInitialCycleLength", () => {
@@ -9,8 +15,8 @@ describe("settings/slice", () => {
     let getState
 
     beforeEach(() => {
-      dispatch = jest.fn()
-      getState = jest
+      dispatch = vi.fn()
+      getState = vi
         .fn()
         .mockName("getState")
         .mockReturnValue({
@@ -87,6 +93,7 @@ describe("settings/slice", () => {
       expect(selectSettings(state)).toEqual({
         mensesTags: ["period", "menses", "test"],
         mainMensesTag: "period",
+        otherMensesTags: ["menses", "test"],
         initialCycleLength: undefined,
       })
     })
@@ -104,8 +111,9 @@ describe("settings/slice", () => {
       }
 
       expect(selectSettings(state)).toEqual({
-        mensesTags: [],
+        mensesTags: undefined,
         mainMensesTag: undefined,
+        otherMensesTags: [],
         initialCycleLength: 28,
       })
     })
