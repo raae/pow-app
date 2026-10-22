@@ -14,6 +14,21 @@ export default defineConfig({
   define: {
     global: "globalThis",
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        // Vendor code changes far less often than app code; separate chunks
+        // keep returning visitors' caches warm across deploys.
+        codeSplitting: {
+          groups: [
+            { name: "userbase", test: /node_modules[\\/]userbase-js/ },
+            { name: "mui", test: /node_modules[\\/]@material-ui/ },
+            { name: "vendor", test: /node_modules/ },
+          ],
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: "node",
