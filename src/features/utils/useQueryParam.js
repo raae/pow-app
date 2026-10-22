@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import queryString from "query-string"
 
 const useSearchParams = () => {
   const [searchParams, setSearch] = useState({})
@@ -7,11 +6,7 @@ const useSearchParams = () => {
   useEffect(() => {
     if (!document) return {}
 
-    setSearch(
-      document.location.search
-        ? queryString.parse(document.location.search)
-        : {}
-    )
+    setSearch(Object.fromEntries(new URLSearchParams(document.location.search)))
   }, [])
 
   return searchParams
